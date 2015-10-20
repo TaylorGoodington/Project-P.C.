@@ -14,6 +14,17 @@ public class PlayerPrefsManager : MonoBehaviour {
 	const string FILE_3_PLAYER_NAME = "file_3_player_name";
 	const string FILE_3_LEVEL_PROGRESS = "file_3_level_progress";
 	const string TO_DELETE_MENU = "to_delete_menu";
+	const string SELECT_ITEM = "select_item";
+	
+	
+	public static void SetSelectItem (int inventoryID) {
+		PlayerPrefs.SetInt (SELECT_ITEM, inventoryID);
+	}
+	
+	public static int GetSelectItem () {
+		return PlayerPrefs.GetInt (SELECT_ITEM);
+	}
+	
 	
 	
 	public static void SetDeleteEntryPoint (string levelName) {

@@ -6,20 +6,37 @@ using UnityEngine.EventSystems;
 
 public class Inventory : MonoBehaviour {
 
+	//access to gamecontrol, muy importante.
+	private GameControl gameControl;
+
+	//items that populate the inventory menu.
 	public GameObject inventoryItem;
 	
+	//used to instantiate item use verification window.
+	public GameObject itemInventoryUse;
 	
 	private GameObject selectedItem;
+	
 	private Text displayItemName;
 	private Image displayItemIcon;
 	private Text displayItemDescription;
 	private Text displayItemType;
 	
 	//this can be private at some point.
-	public List<Items> inventory = new List<Items>();
+	public List<Items> inventoryList;
 	
+	//used to add items from the item database.
 	private ItemDatabase itemDatabase;
+	
 	private int inventorySlots = 20;
+	
+	//used to turn off all interactability of item buttons in the content panel.
+	private ContentPanel contentPanel;
+	
+	private Button useItemButton;
+	private Button destroyItemButton;
+	
+	private GameObject useItemVerificationCanvas;
 	
 	
 	void Awake () {
@@ -27,41 +44,47 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	void Start () {
+		gameControl = GameObject.FindObjectOfType<GameControl>();
 		itemDatabase = GameObject.FindGameObjectWithTag("Items Database").GetComponent<ItemDatabase>();
+		inventoryList = gameControl.itemInventoryList;
+	}
+	
+	void Update () {
+		GetItemInfo ();
+	}
+	
+	public void OpenItemMenu () {
 		
 		AddTempData ();
 		
-		//want to call this after the menu has been instantiated.
 		PopulateInventory ();
 		
-		//call these variables after the menu has been instantiated.
-		displayItemName = GameObject.FindGameObjectWithTag("Item Display Name").GetComponent<Text>();
-		displayItemIcon = GameObject.FindGameObjectWithTag("Item Display Icon").GetComponent<Image>();
-		displayItemDescription = GameObject.FindGameObjectWithTag("Item Display Description").GetComponent<Text>();
-		displayItemType = GameObject.FindGameObjectWithTag("Item Display Type").GetComponent<Text>();
+		ItemInfoDisplay ();
 	}
 
-	void AddTempData ()
-	{
-		inventory.Add (itemDatabase.items [1]);
-		inventory.Add (itemDatabase.items [0]);
-		inventory.Add (itemDatabase.items [0]);
-		inventory.Add (itemDatabase.items [1]);
-		inventory.Add (itemDatabase.items [0]);
-		inventory.Add (itemDatabase.items [0]);
-		inventory.Add (itemDatabase.items [1]);
-		inventory.Add (itemDatabase.items [0]);
-		inventory.Add (itemDatabase.items [0]);
-		inventory.Add (itemDatabase.items [1]);
-		inventory.Add (itemDatabase.items [0]);
-		inventory.Add (itemDatabase.items [0]);
+	void ItemInfoDisplay () {
+		displayItemName = GameObject.FindGameObjectWithTag ("Item Display Name").GetComponent<Text> ();
+		displayItemIcon = GameObject.FindGameObjectWithTag ("Item Display Icon").GetComponent<Image> ();
+		displayItemDescription = GameObject.FindGameObjectWithTag ("Item Display Description").GetComponent<Text> ();
+		displayItemType = GameObject.FindGameObjectWithTag ("Item Display Type").GetComponent<Text> ();
 	}
 
-	void PopulateInventory ()
-	{
-		foreach (var item in inventory) {
+	void AddTempData () {
+		gameControl.itemInventoryList.Add (itemDatabase.items [1]);
+		gameControl.itemInventoryList.Add (itemDatabase.items [0]);
+		gameControl.itemInventoryList.Add (itemDatabase.items [1]);
+		gameControl.itemInventoryList.Add (itemDatabase.items [1]);
+		gameControl.itemInventoryList.Add (itemDatabase.items [1]);
+		gameControl.itemInventoryList.Add (itemDatabase.items [0]);
+	}
+
+	void PopulateInventory () {
+		//FUGGIN MACK DADDY SETS THE CURRENT SELECTED OBJECT...WILL USE THIS TO CONTROL DIRECTION.
+		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Item Inventory Place Holder"),null);
+		
+		int inventoryCount = 0; //this works for now but i have my doubts...
+		foreach (var item in gameControl.itemInventoryList) {
 			GameObject newItem = Instantiate (inventoryItem) as GameObject;
-			InventoryItemButton newButton = inventoryItem.GetComponent<InventoryItemButton> ();
 			Text newItemText = newItem.GetComponentInChildren<Text>();
 			newItemText.text = item.itemName;
 			newItem.transform.SetParent (GameObject.FindGameObjectWithTag ("Inventory Content").transform, false);
@@ -71,13 +94,17 @@ public class Inventory : MonoBehaviour {
 			GameObject newItemIDObject = newItem.transform.GetChild(1).gameObject;
 			Text newItemID = newItemIDObject.GetComponent<Text>();
 			newItemID.text = item.itemID.ToString();
+	
+			
+			//Puts the inventory index as the text field for the third child of the new item button.
+			GameObject newItemIndexObject = newItem.transform.GetChild(2).gameObject;
+			Text newItemIndex = newItemIndexObject.GetComponent<Text>();
+			int inventoryCountIndex = inventoryCount;
+			newItemIndex.text = inventoryCountIndex.ToString();
+			inventoryCount ++;
 		}
 	}
 
-	
-	void Update () {
-		GetItemInfo ();
-	}
 	
 	public void GetItemInfo () {
 		selectedItem = EventSystem.current.currentSelectedGameObject;
@@ -86,6 +113,14 @@ public class Inventory : MonoBehaviour {
 			displayItemDescription.text = "";
 			displayItemType.text = "";
 			displayItemIcon.color = Color.black;
+		} else if (selectedItem.name == "Use Item") {
+		
+		} else if (selectedItem.name == "Destroy Item") {
+			
+		} else if (selectedItem.name == "Use Item Yes") {
+			
+		} else if (selectedItem.name == "Use Item No") {
+			
 		} else {
 			displayItemName.text = selectedItem.name;
 		
@@ -93,7 +128,13 @@ public class Inventory : MonoBehaviour {
 			GameObject newItemIDObject = selectedItem.transform.GetChild(1).gameObject;
 			Text newItemIDText = newItemIDObject.GetComponent<Text>();
 			int newItemID = int.Parse(newItemIDText.text);
-		
+			
+			//Gets inventory index as string and converts to int, then pushes to playerprefsmanager.
+			GameObject newItemIndexObject = selectedItem.transform.GetChild(2).gameObject;
+			Text newItemIndexText = newItemIndexObject.GetComponent<Text>();
+			int newItemIndex = int.Parse(newItemIndexText.text);
+			PlayerPrefsManager.SetSelectItem(newItemIndex); //I think i use playerprefsmanger too much...consider just using local variables.
+				
 			displayItemDescription.text = itemDatabase.items [newItemID].itemDescription;
 			displayItemIcon.color = Color.white;
 			displayItemIcon.sprite = itemDatabase.items [newItemID].itemIcon;
@@ -103,25 +144,68 @@ public class Inventory : MonoBehaviour {
 	
 	
 	public void AddItemToInventory (int itemNumber) {
-		if (inventory.Count == inventorySlots) {
+		if (inventoryList.Count == inventorySlots) {
 			return;
 			//present message saying out of space? Might need to be more complicated...
 		} else {
-			inventory.Add (itemDatabase.items [itemNumber]);
+			gameControl.itemInventoryList.Add (itemDatabase.items [itemNumber]);
 		}
-	
-	//add piece that looks at inventory size.
 	}
 	
-	public void RemoveItemFromInventory () {
-	
-	}
-	
-	public void EquipItemFromInventory () {
-	
+	public void SelectItem () {
+		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
+		useItemButton.interactable = true;
+		
+		destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
+		destroyItemButton.interactable = true;
+		
+		contentPanel = GameObject.FindObjectOfType<ContentPanel>();
+		contentPanel.DeactivateInventory();	
+		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Use Item Button"),null);
 	}
 	
 	public void UseItemInInventory () {
+		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
+		useItemButton.interactable = false;
+		
+		destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
+		destroyItemButton.interactable = false;
+		
+		GameObject useMenu = GameObject.Instantiate(itemInventoryUse);
+		
+		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Use Item Yes"),null);
+	}
+
+	public void UseItemYes () {
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		int itemIndex = PlayerPrefsManager.GetSelectItem ();
+		gameControl.itemInventoryList.RemoveAt (itemIndex);
+		
+		useItemVerificationCanvas = GameObject.FindGameObjectWithTag("Use Item Verification Canvas");
+		Destroy (useItemVerificationCanvas.gameObject);
+		contentPanel.RefreshInventory();
+		
+		PopulateInventory();
+		
+		ItemInfoDisplay ();
+	}
 	
+	public void UseItemNo () {
+		
+	}
+	
+	public void RemoveItemInInventory () {
+		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
+		useItemButton.interactable = false;
+		
+		useItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
+		useItemButton.interactable = false;
+		
+//		GameObject useMenu = GameObject.Instantiate(itemInventoryUse);
+	}
+	
+	public void RemoveItemYes () {
+		int itemIndex = PlayerPrefsManager.GetSelectItem();
+		inventoryList.RemoveAt(itemIndex);
 	}
 }

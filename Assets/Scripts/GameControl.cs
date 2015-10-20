@@ -3,10 +3,15 @@ using System.Collections;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Collections.Generic;
 
 public class GameControl : MonoBehaviour {
 
 	public static GameControl gameControl;
+	public GameObject itemInventoryMenu;
+	public GameObject itemInventory;
+	
+	
 	private LevelManager levelManager;
 	
 	
@@ -19,9 +24,21 @@ public class GameControl : MonoBehaviour {
 	public int baseIntelligence;
 	public int baseHealth;
 	public int baseMana;
+	public List<Items> itemInventoryList;
 
 	void Awake () {
 		DontDestroyOnLoad (gameObject);
+	}
+	
+	void Start () {
+		itemInventory = GameObject.FindGameObjectWithTag("Item Inventory");
+	}
+	
+	void Update () {
+		if (Input.GetKeyDown(KeyCode.P)) {
+			Instantiate(itemInventoryMenu);
+			itemInventory.GetComponent<Inventory>().OpenItemMenu();
+		}
 	}
 	
 	
@@ -32,7 +49,7 @@ public class GameControl : MonoBehaviour {
 	
 	public void Save () {
 		BinaryFormatter binaryFormatter = new BinaryFormatter ();
-		FileStream saveFile = File.Create (Application.persistentDataPath + "/playerInfo" + PlayerPrefsManager.GetGameFile() + ".dat"); //Its possible gameNumber might need to be based to the mehod.
+		FileStream saveFile = File.Create (Application.persistentDataPath + "/playerInfo" + PlayerPrefsManager.GetGameFile() + ".dat"); //Its possible gameNumber might need to be pased to the mehod.
 		
 		PlayerData playerData = new PlayerData ();
 		
@@ -45,6 +62,8 @@ public class GameControl : MonoBehaviour {
 		playerData.baseIntelligence = baseIntelligence;
 		playerData.baseHealth = baseHealth;
 		playerData.baseMana = baseMana;
+		playerData.itemInventoryList = itemInventoryList;
+		
 		
 		binaryFormatter.Serialize (saveFile, playerData);
 		saveFile.Close();
@@ -93,6 +112,7 @@ public class GameControl : MonoBehaviour {
 			baseIntelligence = playerData.baseIntelligence;
 			baseHealth = playerData.baseHealth;
 			baseMana = playerData.baseMana;
+			itemInventoryList = playerData.itemInventoryList;
 			
 			saveFile.Close(); //I wonder if this should go at the end of the method...
 		}
@@ -212,4 +232,5 @@ class PlayerData {
 	public int baseIntelligence;
 	public int baseHealth;
 	public int baseMana;
+	public List<Items> itemInventoryList;
 }
