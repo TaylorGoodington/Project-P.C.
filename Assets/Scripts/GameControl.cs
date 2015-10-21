@@ -8,8 +8,15 @@ using System.Collections.Generic;
 public class GameControl : MonoBehaviour {
 
 	public static GameControl gameControl;
+	
+	//item inventory menu for instantiating.
 	public GameObject itemInventoryMenu;
+	
+	//item inventory script access.
 	public GameObject itemInventory;
+	
+	//
+	public GameObject equipmentInventory;
 	
 	
 	private LevelManager levelManager;
@@ -25,6 +32,7 @@ public class GameControl : MonoBehaviour {
 	public int baseHealth;
 	public int baseMana;
 	public List<Items> itemInventoryList;
+	public List<Equipment> equipmentInventoryList;
 
 	void Awake () {
 		DontDestroyOnLoad (gameObject);
@@ -32,6 +40,7 @@ public class GameControl : MonoBehaviour {
 	
 	void Start () {
 		itemInventory = GameObject.FindGameObjectWithTag("Item Inventory");
+		equipmentInventory = GameObject.FindGameObjectWithTag("Equipment Inventory");
 	}
 	
 	void Update () {
@@ -63,6 +72,7 @@ public class GameControl : MonoBehaviour {
 		playerData.baseHealth = baseHealth;
 		playerData.baseMana = baseMana;
 		playerData.itemInventoryList = itemInventoryList;
+		playerData.equipmentInventoryList = equipmentInventoryList;
 		
 		
 		binaryFormatter.Serialize (saveFile, playerData);
@@ -113,6 +123,7 @@ public class GameControl : MonoBehaviour {
 			baseHealth = playerData.baseHealth;
 			baseMana = playerData.baseMana;
 			itemInventoryList = playerData.itemInventoryList;
+			equipmentInventoryList = playerData.equipmentInventoryList;
 			
 			saveFile.Close(); //I wonder if this should go at the end of the method...
 		}
@@ -233,4 +244,5 @@ class PlayerData {
 	public int baseHealth;
 	public int baseMana;
 	public List<Items> itemInventoryList;
+	public List<Equipment> equipmentInventoryList;
 }

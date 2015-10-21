@@ -12,11 +12,14 @@ public class Inventory : MonoBehaviour {
 	//items that populate the inventory menu.
 	public GameObject inventoryItem;
 	
-	//used to instantiate item use verification window.
+	//used to instantiate item use verification windows.
 	public GameObject itemInventoryUse;
+	public GameObject itemInventoryDestroy;
 	
+	//access the selected gameobject.
 	private GameObject selectedItem;
 	
+	//gets access to the info items.
 	private Text displayItemName;
 	private Image displayItemIcon;
 	private Text displayItemDescription;
@@ -37,6 +40,7 @@ public class Inventory : MonoBehaviour {
 	private Button destroyItemButton;
 	
 	private GameObject useItemVerificationCanvas;
+	private GameObject destroyItemVerificationCanvas;
 	
 	
 	void Awake () {
@@ -120,6 +124,10 @@ public class Inventory : MonoBehaviour {
 		} else if (selectedItem.name == "Use Item Yes") {
 			
 		} else if (selectedItem.name == "Use Item No") {
+		
+		} else if (selectedItem.name == "Destroy Item Yes") {
+			
+		} else if (selectedItem.name == "Destroy Item No") {
 			
 		} else {
 			displayItemName.text = selectedItem.name;
@@ -168,7 +176,7 @@ public class Inventory : MonoBehaviour {
 		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
 		useItemButton.interactable = false;
 		
-		destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
+		destroyItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
 		destroyItemButton.interactable = false;
 		
 		GameObject useMenu = GameObject.Instantiate(itemInventoryUse);
@@ -183,6 +191,7 @@ public class Inventory : MonoBehaviour {
 		
 		useItemVerificationCanvas = GameObject.FindGameObjectWithTag("Use Item Verification Canvas");
 		Destroy (useItemVerificationCanvas.gameObject);
+		
 		contentPanel.RefreshInventory();
 		
 		PopulateInventory();
@@ -191,7 +200,15 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	public void UseItemNo () {
+		useItemVerificationCanvas = GameObject.FindGameObjectWithTag("Use Item Verification Canvas");
+		Destroy (useItemVerificationCanvas.gameObject);
+		contentPanel.ActivateInventory();
 		
+		int itemIndex = PlayerPrefsManager.GetSelectItem ();
+		
+		GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Inventory Content");
+		GameObject lastSelected = inventoryContentPanel.transform.GetChild(itemIndex + 1).gameObject;
+		EventSystem.current.SetSelectedGameObject(lastSelected,null);
 	}
 	
 	public void RemoveItemInInventory () {
@@ -201,11 +218,35 @@ public class Inventory : MonoBehaviour {
 		useItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
 		useItemButton.interactable = false;
 		
-//		GameObject useMenu = GameObject.Instantiate(itemInventoryUse);
+		GameObject useMenu = GameObject.Instantiate(itemInventoryDestroy);
+		
+		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Destroy Item Yes"),null);
 	}
 	
 	public void RemoveItemYes () {
-		int itemIndex = PlayerPrefsManager.GetSelectItem();
-		inventoryList.RemoveAt(itemIndex);
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		int itemIndex = PlayerPrefsManager.GetSelectItem ();
+		gameControl.itemInventoryList.RemoveAt (itemIndex);
+		
+		destroyItemVerificationCanvas = GameObject.FindGameObjectWithTag("Item Destroy Verification Canvas");
+		Destroy (destroyItemVerificationCanvas.gameObject);
+		
+		contentPanel.RefreshInventory();
+		
+		PopulateInventory();
+		
+		ItemInfoDisplay ();
+	}
+	
+	public void RemoveItemNo () {
+		destroyItemVerificationCanvas = GameObject.FindGameObjectWithTag("Item Destroy Verification Canvas");
+		Destroy (destroyItemVerificationCanvas.gameObject);
+		contentPanel.ActivateInventory();
+		
+		int itemIndex = PlayerPrefsManager.GetSelectItem ();
+		
+		GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Inventory Content");
+		GameObject lastSelected = inventoryContentPanel.transform.GetChild(itemIndex + 1).gameObject;
+		EventSystem.current.SetSelectedGameObject(lastSelected,null);
 	}
 }
