@@ -30,7 +30,7 @@ public class Equipment {
 		equipmentID = id;
 		equipmentName = name;
 		equipmentDescription = description;
-		equipmentIcon = Resources.Load<Sprite>("Item Icons/" + name);
+		equipmentIcon = Resources.Load<Sprite>("Equipment Icons/" + name);
 		equipmentType = type;
 		equipmentStrength = strength;
 		equipmentDefense = defense;

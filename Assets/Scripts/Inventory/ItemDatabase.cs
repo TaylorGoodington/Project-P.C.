@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ItemDatabase : MonoBehaviour {
 
-	public List<Items> items = new List<Items>(); 
+	public List<Items> items; 
 	
 	void Awake () {
 		DontDestroyOnLoad (gameObject);

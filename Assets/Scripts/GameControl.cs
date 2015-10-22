@@ -11,49 +11,78 @@ public class GameControl : MonoBehaviour {
 	
 	//item inventory menu for instantiating.
 	public GameObject itemInventoryMenu;
+	public GameObject equipmentInventoryMenu;
 	
 	//item inventory script access.
 	public GameObject itemInventory;
 	
-	//
+	// equipment inventory script access.
 	public GameObject equipmentInventory;
 	
 	
 	private LevelManager levelManager;
 	
+	//Player Data//
 	
 	public string playerName;
+	
 	public int gameProgress;
+	
 	public int playerLevel;
+	
 	public int baseStrength;
 	public int baseDefense;
 	public int baseSpeed;
 	public int baseIntelligence;
 	public int baseHealth;
 	public int baseMana;
+	
+	public int currentStrength;
+	public int currentDefense;
+	public int currentSpeed;
+	public int currentIntelligence;
+	public int currentHealth;
+	public int currentMana;
+	
 	public List<Items> itemInventoryList;
 	public List<Equipment> equipmentInventoryList;
+//	public List<Weapons> weaponInventoryList;
+
+	public int equippedHead;
+	public int equippedChest;
+	public int equippedPants;
+	public int equippedFeet;
+	
+	public int equippedWeapon;
+	
+	
 
 	void Awake () {
 		DontDestroyOnLoad (gameObject);
 	}
 	
 	void Start () {
-		itemInventory = GameObject.FindGameObjectWithTag("Item Inventory");
-		equipmentInventory = GameObject.FindGameObjectWithTag("Equipment Inventory");
+//		I dont think i need these...
+//		itemInventory = GameObject.FindGameObjectWithTag("Item Inventory");
+//		equipmentInventory = GameObject.FindGameObjectWithTag("Equipment Inventory");
 	}
 	
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.P)) {
 			Instantiate(itemInventoryMenu);
 			itemInventory.GetComponent<Inventory>().OpenItemMenu();
+		} 
+		
+		if (Input.GetKeyDown(KeyCode.E)) {
+			Instantiate(equipmentInventoryMenu);
+			equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentMenu();
 		}
 	}
 	
 	
-	//**************************************************************************************
-	//Save Section
-	//**************************************************************************************
+	//**************************************************************************************//
+	//Save Section//
+	//**************************************************************************************//
 	
 	
 	public void Save () {
@@ -65,14 +94,30 @@ public class GameControl : MonoBehaviour {
 		playerData.playerName = playerName;
 		playerData.gameProgress = gameProgress;
 		playerData.playerLevel = playerLevel;
+		
 		playerData.baseStrength = baseStrength;
 		playerData.baseDefense = baseDefense;
 		playerData.baseSpeed = baseSpeed;
 		playerData.baseIntelligence = baseIntelligence;
 		playerData.baseHealth = baseHealth;
 		playerData.baseMana = baseMana;
+		
 		playerData.itemInventoryList = itemInventoryList;
 		playerData.equipmentInventoryList = equipmentInventoryList;
+		
+		playerData.currentStrength = currentStrength;
+		playerData.currentDefense = currentDefense;
+		playerData.currentSpeed = currentSpeed;
+		playerData.currentIntelligence = currentIntelligence;
+		playerData.currentHealth = currentHealth;
+		playerData.currentMana = currentMana;
+		
+		playerData.equippedHead = equippedHead;
+		playerData.equippedChest = equippedChest;
+		playerData.equippedPants = equippedPants;
+		playerData.equippedFeet = equippedFeet;
+		
+		playerData.equippedWeapon = equippedWeapon;
 		
 		
 		binaryFormatter.Serialize (saveFile, playerData);
@@ -116,14 +161,32 @@ public class GameControl : MonoBehaviour {
 			playerName = playerData.playerName;
 			gameProgress = playerData.gameProgress;
 			playerLevel = playerData.playerLevel;
+			
 			baseStrength = playerData.baseStrength;
 			baseDefense = playerData.baseDefense;
 			baseSpeed = playerData.baseSpeed;
 			baseIntelligence = playerData.baseIntelligence;
 			baseHealth = playerData.baseHealth;
 			baseMana = playerData.baseMana;
+			
 			itemInventoryList = playerData.itemInventoryList;
 			equipmentInventoryList = playerData.equipmentInventoryList;
+			
+			currentStrength = playerData.currentStrength;
+			currentDefense = playerData.currentDefense;
+			currentSpeed = playerData.currentSpeed;
+			currentIntelligence = playerData.currentIntelligence;
+			currentHealth = playerData.currentHealth;
+			currentMana = playerData.currentMana;
+			
+			equippedHead = playerData.equippedHead;
+			equippedChest = playerData.equippedChest;
+			equippedPants = playerData.equippedPants;
+			equippedFeet = playerData.equippedFeet;
+			
+			equippedWeapon = playerData.equippedWeapon;
+			
+			
 			
 			saveFile.Close(); //I wonder if this should go at the end of the method...
 		}
@@ -243,6 +306,22 @@ class PlayerData {
 	public int baseIntelligence;
 	public int baseHealth;
 	public int baseMana;
+	
 	public List<Items> itemInventoryList;
 	public List<Equipment> equipmentInventoryList;
+	//	public List<Weapons> weaponInventoryList;
+
+	public int currentStrength;
+	public int currentDefense;
+	public int currentSpeed;
+	public int currentIntelligence;
+	public int currentHealth;
+	public int currentMana;
+	
+	public int equippedHead;
+	public int equippedChest;
+	public int equippedPants;
+	public int equippedFeet;
+	
+	public int equippedWeapon;
 }

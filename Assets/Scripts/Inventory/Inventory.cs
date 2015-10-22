@@ -176,10 +176,10 @@ public class Inventory : MonoBehaviour {
 		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
 		useItemButton.interactable = false;
 		
-		destroyItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
+		destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
 		destroyItemButton.interactable = false;
 		
-		GameObject useMenu = GameObject.Instantiate(itemInventoryUse);
+		GameObject.Instantiate(itemInventoryUse);
 		
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Use Item Yes"),null);
 	}
@@ -215,10 +215,10 @@ public class Inventory : MonoBehaviour {
 		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
 		useItemButton.interactable = false;
 		
-		useItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
-		useItemButton.interactable = false;
+		destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
+		destroyItemButton.interactable = false;
 		
-		GameObject useMenu = GameObject.Instantiate(itemInventoryDestroy);
+		GameObject.Instantiate(itemInventoryDestroy);
 		
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Destroy Item Yes"),null);
 	}
