@@ -10,6 +10,7 @@ public class Equipment {
 	public string equipmentDescription;
 	public Sprite equipmentIcon;
 	public EquipmentType equipmentType;
+	public EquipmentMaterial equipmentMaterial;
 	public int equipmentStrength;
 	public int equipmentDefense;
 	public int equipmentSpeed;
@@ -25,13 +26,21 @@ public class Equipment {
 		Feet
 	}
 	
+	public enum EquipmentMaterial {
+		Cloth,
+		Leather,
+		Chainmail,
+		Platemail
+	}
 	
-	public Equipment (int id, string name, string description, EquipmentType type, int strength, int defense, int speed, int intelligence, int health, int mana) {
+	
+	public Equipment (int id, string name, string description, EquipmentType type, EquipmentMaterial material, int strength, int defense, int speed, int intelligence, int health, int mana) {
 		equipmentID = id;
 		equipmentName = name;
 		equipmentDescription = description;
 		equipmentIcon = Resources.Load<Sprite>("Equipment Icons/" + name);
 		equipmentType = type;
+		equipmentMaterial = material;
 		equipmentStrength = strength;
 		equipmentDefense = defense;
 		equipmentSpeed = speed;

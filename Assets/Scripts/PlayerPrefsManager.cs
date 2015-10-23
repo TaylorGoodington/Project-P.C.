@@ -15,6 +15,16 @@ public class PlayerPrefsManager : MonoBehaviour {
 	const string FILE_3_LEVEL_PROGRESS = "file_3_level_progress";
 	const string TO_DELETE_MENU = "to_delete_menu";
 	const string SELECT_ITEM = "select_item";
+	const string EQUIPMENT_ID = "equipment_ID";
+	
+	
+	public static void SetEquipmentID (int equipmentID) {
+		PlayerPrefs.SetInt (EQUIPMENT_ID, equipmentID);
+	}
+	
+	public static int GetEquipmentID () {
+		return PlayerPrefs.GetInt (EQUIPMENT_ID);
+	}
 	
 	
 	public static void SetSelectItem (int inventoryID) {

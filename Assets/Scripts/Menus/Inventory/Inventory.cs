@@ -54,7 +54,9 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	void Update () {
-		GetItemInfo ();
+		if (GameObject.FindGameObjectWithTag("Item Menu")) {
+			GetItemInfo ();
+		}
 	}
 	
 	public void OpenItemMenu () {
