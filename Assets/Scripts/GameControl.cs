@@ -19,6 +19,7 @@ public class GameControl : MonoBehaviour {
 	// equipment inventory script access.
 	public GameObject equipmentInventory;
 	
+	public ClassesDatabase classesDatabase;	
 	
 	private LevelManager levelManager;
 	
@@ -29,6 +30,8 @@ public class GameControl : MonoBehaviour {
 	public int gameProgress;
 	
 	public int playerLevel;
+	
+	public int playerClass;
 	
 	public int baseStrength;
 	public int baseDefense;
@@ -62,9 +65,7 @@ public class GameControl : MonoBehaviour {
 	}
 	
 	void Start () {
-//		I dont think i need these...
-//		itemInventory = GameObject.FindGameObjectWithTag("Item Inventory");
-//		equipmentInventory = GameObject.FindGameObjectWithTag("Equipment Inventory");
+
 	}
 	
 	void Update () {

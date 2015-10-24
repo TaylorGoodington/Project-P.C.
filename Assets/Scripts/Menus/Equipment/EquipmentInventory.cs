@@ -12,6 +12,8 @@ public class EquipmentInventory : MonoBehaviour {
 	//items that populate the inventory menu.
 	public GameObject equipmentItem;
 	
+	public ClassesDatabase classesDatabse;
+	
 	//used to instantiate item use verification windows.
 	public GameObject equipmentInventoryUse;
 	public GameObject equipmentInventoryDestroy;
@@ -69,6 +71,7 @@ public class EquipmentInventory : MonoBehaviour {
 	void Start () {
 		gameControl = GameObject.FindObjectOfType<GameControl>();
 		equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
+		classesDatabse = GameObject.FindObjectOfType<ClassesDatabase>();
 		equipmentList = gameControl.equipmentInventoryList;
 	}
 	
@@ -281,7 +284,7 @@ public class EquipmentInventory : MonoBehaviour {
 	}
 	
 	public void EquipEquipmentInInventory () { //needs to be written for so equipping in same class doesn open a new menu.
-//		if (gameControl.playerClass.equipmentMaterialIndex >= selectedEquipmentMaterialIndex) {}
+		if (classesDatabse.classes[gameControl.playerClass].equipmentMaterialIndex >= selectedEquipmentMaterialIndex) {}
 		//next section should be nested in the first if statement once its working.
 
 //		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equip Yes"),null);
