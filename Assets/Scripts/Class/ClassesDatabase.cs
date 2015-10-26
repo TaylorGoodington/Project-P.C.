@@ -13,7 +13,7 @@ public class ClassesDatabase : MonoBehaviour {
 	//the order for stats is: strength, defense, speed, intelligence, health, mana.
 	//there cant be null references in between item IDs so for now they look like this....
 	void Start () {
-		//placeholder
+		//Stats need to be re done to reflect new info on the drive.
 		classes.Add (new Classes (0, "Soldier", "The way of the sword", 3, 4, 3, 2, 1, 5, 1));
 		classes.Add (new Classes (1, "Berserker", "The way of the great axe", 3, 5, 3, 3, 1, 2, 2));
 		classes.Add (new Classes (2, "Rogue", "The way of the dagger", 2, 3, 1, 5, 3, 3, 1));

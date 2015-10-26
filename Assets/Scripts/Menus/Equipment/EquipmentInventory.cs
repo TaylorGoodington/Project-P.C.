@@ -12,7 +12,7 @@ public class EquipmentInventory : MonoBehaviour {
 	//items that populate the inventory menu.
 	public GameObject equipmentItem;
 	
-	public ClassesDatabase classesDatabse;
+	public ClassesDatabase classesDatabase;
 	
 	//used to instantiate item use verification windows.
 	public GameObject equipmentInventoryUse;
@@ -71,7 +71,7 @@ public class EquipmentInventory : MonoBehaviour {
 	void Start () {
 		gameControl = GameObject.FindObjectOfType<GameControl>();
 		equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
-		classesDatabse = GameObject.FindObjectOfType<ClassesDatabase>();
+//		classesDatabse = GameObject.FindObjectOfType<ClassesDatabase>();
 		equipmentList = gameControl.equipmentInventoryList;
 	}
 	
@@ -265,9 +265,7 @@ public class EquipmentInventory : MonoBehaviour {
 		contentPanel = GameObject.FindObjectOfType<ContentPanel>();
 		contentPanel.DeactivateInventory();	
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equip Button"),null);
-		
-		GetEquipmentMaterialIndex();
-	}
+		}
 	
 	public int GetEquipmentMaterialIndex () {
 		equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
@@ -283,21 +281,31 @@ public class EquipmentInventory : MonoBehaviour {
 		}
 	}
 	
-	public void EquipEquipmentInInventory () { //needs to be written for so equipping in same class doesn open a new menu.
-		if (classesDatabse.classes[gameControl.playerClass].equipmentMaterialIndex >= selectedEquipmentMaterialIndex) {}
-		//next section should be nested in the first if statement once its working.
-
-//		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equip Yes"),null);
+	public void EquipEquipmentInInventory () { 
+		gameControl = GameObject.FindObjectOfType<GameControl>();		
+		int itemIndex = PlayerPrefsManager.GetSelectItem ();
+		equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
+		destroyEquipmentButton = GameObject.FindGameObjectWithTag("Destroy Equipment Button").GetComponent<Button>();
+		classesDatabase = GameObject.FindObjectOfType<ClassesDatabase>();
+		
+		if (classesDatabase.classes[gameControl.playerClass].equipmentMaterialIndex >= selectedEquipmentMaterialIndex) {
+			if (equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentType == Equipment.EquipmentType.Head) {
+				gameControl.equippedHead = PlayerPrefsManager.GetEquipmentID();			
+			} else if (equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentType == Equipment.EquipmentType.Chest) {
+				gameControl.equippedChest = PlayerPrefsManager.GetEquipmentID();
+			} else if (equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentType == Equipment.EquipmentType.Pants) {
+				gameControl.equippedPants = PlayerPrefsManager.GetEquipmentID();
+			} else {
+				gameControl.equippedFeet = PlayerPrefsManager.GetEquipmentID();
+			}
+		}
+		gameControl.equipmentInventoryList.RemoveAt (itemIndex);
+		equipButton.interactable = false;
+		destroyEquipmentButton.interactable = false;
+		EquipEquipmentYes ();
 	}
 	
-	public void EquipEquipmentYes () {
-		gameControl = GameObject.FindObjectOfType<GameControl>();
-		int itemIndex = PlayerPrefsManager.GetSelectItem ();
-		gameControl.equipmentInventoryList.RemoveAt (itemIndex);
-		
-		equipVerificationCanvas = GameObject.FindGameObjectWithTag("Equip Equipment Verification Canvas");
-		Destroy (equipVerificationCanvas.gameObject);
-		
+	public void EquipEquipmentYes () {		
 		contentPanel.RefreshInventory();
 		
 		PopulateEquipment();

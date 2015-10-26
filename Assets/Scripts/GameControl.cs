@@ -33,6 +33,7 @@ public class GameControl : MonoBehaviour {
 	
 	public int playerClass;
 	
+	//I dont think i need the base stats, seems like i can handle everything with current stats.
 	public int baseStrength;
 	public int baseDefense;
 	public int baseSpeed;
@@ -65,7 +66,7 @@ public class GameControl : MonoBehaviour {
 	}
 	
 	void Start () {
-
+		playerClass = 7;
 	}
 	
 	void Update () {
@@ -78,6 +79,10 @@ public class GameControl : MonoBehaviour {
 			Instantiate(equipmentInventoryMenu);
 			equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentMenu();
 		}
+	}
+	
+	public void CurrentClass () {
+		//write in logic that determines class based on equipped weapon.
 	}
 	
 	
