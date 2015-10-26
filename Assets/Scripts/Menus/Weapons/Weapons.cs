@@ -9,32 +9,46 @@ public class Weapons {
 	public int weaponID;
 	public string weaponDescription;
 	public Sprite weaponIcon;
-	public WeaponType equipmentType;
-	public int equipmentStrength;
-	public int equipmentDefense;
-	public int equipmentSpeed;
-	public int equipmentIntelligence;
-	public int equipmentHealth;
-	public int equipmentMana;
+	public WeaponType weaponType;
+	public float attackSpeed;
+	public int weaponStrength;
+	public int weaponDefense;
+	public int weaponSpeed;
+	public int weaponIntelligence;
+	public int weaponHealth;
+	public int weaponMana;
+	public int weaponSkill;
+	public int buyPrice;
 	
 	
 	public enum WeaponType { 
-		Sword
+		Sword,
+		Axe,
+		Dagger,
+		Bow,
+		Tome,
+		Talisman,
+		Staff,
+		Polearm
 	}
 	
 	
-	public Weapons (int id, string name, string description, WeaponType type, int strength, int defense, int speed, int intelligence, int health, int mana) {
+	public Weapons (int id, string name, string description, WeaponType type, float atkSpeed, int strength, 
+					int defense, int speed, int intelligence, int health, int mana, int skill, int price) {
 		weaponID = id;
 		weaponName = name;
 		weaponDescription = description;
-		weaponIcon = Resources.Load<Sprite>("Equipment Icons/" + name);
-		equipmentType = type;
-		equipmentStrength = strength;
-		equipmentDefense = defense;
-		equipmentSpeed = speed;
-		equipmentIntelligence = intelligence;
-		equipmentHealth = health;
-		equipmentMana = mana;
+		weaponIcon = Resources.Load<Sprite>("Weapons Icons/" + name);
+		weaponType = type;
+		attackSpeed = atkSpeed;
+		weaponStrength = strength;
+		weaponDefense = defense;
+		weaponSpeed = speed;
+		weaponIntelligence = intelligence;
+		weaponHealth = health;
+		weaponMana = mana;
+		weaponSkill = skill;
+		buyPrice = price;
 	}
 	
 	public Weapons () {

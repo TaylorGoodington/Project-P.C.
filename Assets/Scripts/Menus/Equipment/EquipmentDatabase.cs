@@ -10,7 +10,6 @@ public class EquipmentDatabase : MonoBehaviour {
 		DontDestroyOnLoad (gameObject);
 	}
 	//the order for stats is: strength, defense, speed, intelligence, health, mana.
-	//there cant be null references in between item IDs so for now they look like this....
 	void Start () {
 		//placeholder
 		equipment.Add (new Equipment (0, "Nothing", "Nothing",Equipment.EquipmentType.Head, Equipment.EquipmentMaterial.Cloth, 0, 0, 0, 0, 0, 0));
