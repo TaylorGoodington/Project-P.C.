@@ -194,7 +194,7 @@ public class Inventory : MonoBehaviour {
 		useItemVerificationCanvas = GameObject.FindGameObjectWithTag("Use Item Verification Canvas");
 		Destroy (useItemVerificationCanvas.gameObject);
 		
-		contentPanel.RefreshInventory();
+		contentPanel.DeleteInventory();
 		
 		PopulateInventory();
 		
@@ -233,7 +233,7 @@ public class Inventory : MonoBehaviour {
 		destroyItemVerificationCanvas = GameObject.FindGameObjectWithTag("Item Destroy Verification Canvas");
 		Destroy (destroyItemVerificationCanvas.gameObject);
 		
-		contentPanel.RefreshInventory();
+		contentPanel.DeleteInventory();
 		
 		PopulateInventory();
 		

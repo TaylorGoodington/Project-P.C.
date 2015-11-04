@@ -11,7 +11,8 @@ public class GameControl : MonoBehaviour {
 	
 	//item inventory menu for instantiating.
 	public GameObject itemInventoryMenu;
-	public GameObject equipmentInventoryMenu;
+	public GameObject equipmentBaseMenu;
+	public GameObject equipmentSlotMenu;
 	
 	//item inventory script access.
 	public GameObject itemInventory;
@@ -67,6 +68,7 @@ public class GameControl : MonoBehaviour {
 	
 	void Start () {
 		playerClass = 7;
+		equippedWeapon = 9;
 	}
 	
 	void Update () {
@@ -76,8 +78,8 @@ public class GameControl : MonoBehaviour {
 		} 
 		
 		if (Input.GetKeyDown(KeyCode.E)) {
-			Instantiate(equipmentInventoryMenu);
-			equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentMenu();
+			Instantiate(equipmentBaseMenu);
+			equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentBaseMenu();
 		}
 	}
 	

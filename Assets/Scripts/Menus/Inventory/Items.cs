@@ -11,13 +11,14 @@ public class Items {
 	public Sprite itemIcon;
 	public ItemType itemType;
 	public ItemTarget itemTarget;
-	//public int maxCharges; 
-	//public int currentCharges; 
 	public ItemUseOcassion itemUseOcassion;
-	public float castTimeInSeconds;
+//	public float castTimeInSeconds;
 	[Range(0,1)]
 	public float successRatePercent;
-	//public int quantity; 
+	public int skillIndex;
+	public int buyPrice;
+	public int quantity;
+	
 	
 	public enum ItemType { 
 		Consumable,
@@ -37,7 +38,7 @@ public class Items {
 		OutOfCombat
 	}
 	
-	public Items (int id, string name, string description, ItemType type, ItemTarget target, ItemUseOcassion useOcassion, float castTime, float successRate) {
+	public Items (int id, string name, string description, ItemType type, ItemTarget target, ItemUseOcassion useOcassion, float successRate, int skill, int price, int qty) {
 		itemID = id;
 		itemName = name;
 		itemDescription = description;
@@ -45,8 +46,10 @@ public class Items {
 		itemType = type;
 		itemTarget = target;
 		itemUseOcassion = useOcassion;
-		castTimeInSeconds = castTime;
 		successRatePercent = successRate;
+		skillIndex = skill;
+		buyPrice = price;
+		quantity = qty;
 	}
 	
 	public Items () {

@@ -16,9 +16,9 @@ public class ContentPanel : MonoBehaviour {
 		}
 	}
 	
-	public void RefreshInventory () {
+	public void DeleteInventory () {
 		foreach (Transform child in transform) {
-			if (child.gameObject.name == "Place Holder") {
+			if (child.gameObject.name == "Place Holder" || child.gameObject.tag == "Equipped Slot" ) {
 			} else {
 				Destroy (child.gameObject);
 			}
