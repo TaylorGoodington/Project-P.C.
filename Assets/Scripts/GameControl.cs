@@ -19,6 +19,7 @@ public class GameControl : MonoBehaviour {
 	
 	// equipment inventory script access.
 	public GameObject equipmentInventory;
+	public EquipmentDatabase equipmentDatabase;
 	
 	public ClassesDatabase classesDatabase;	
 	
@@ -68,7 +69,7 @@ public class GameControl : MonoBehaviour {
 	
 	void Start () {
 		playerClass = 7;
-		equippedWeapon = 9;
+		equippedWeapon = 16;
 	}
 	
 	void Update () {
@@ -83,8 +84,34 @@ public class GameControl : MonoBehaviour {
 		}
 	}
 	
+	//I dont like the way this works, I would rather do a find based on the equipped weapon material...
 	public void CurrentClass () {
-		//write in logic that determines class based on equipped weapon.
+		string weaponClass = equipmentDatabase.equipment [equippedWeapon].equipmentMaterial.ToString();
+		if (weaponClass == "Soldier") {
+			int classIndex = 0;
+			playerClass = classIndex;
+		} else if (weaponClass == "Berserker") {
+			int classIndex = 1;
+			playerClass = classIndex;
+		} else if (weaponClass == "Rogue") {
+			int classIndex = 2;
+			playerClass = classIndex;
+		} else if (weaponClass == "Ranger") {
+			int classIndex = 3;
+			playerClass = classIndex;
+		} else if (weaponClass == "Wizard") {
+			int classIndex = 4;
+			playerClass = classIndex;
+		} else if (weaponClass == "Sorcerer") {
+			int classIndex = 5;
+			playerClass = classIndex;
+		} else if (weaponClass == "Monk") {
+			int classIndex = 6;
+			playerClass = classIndex;
+		} else {
+			int classIndex = 7;
+			playerClass = classIndex;
+		}
 	}
 	
 	

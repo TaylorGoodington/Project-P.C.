@@ -100,7 +100,7 @@ public class EquipmentInventory : MonoBehaviour {
 	public void OpenEquipmentBaseMenu () {
 	
 		AddTempData ();
-	
+		
 		EquipmentInfoDisplay ();
 		
 		AutoEquipClothes ();
@@ -178,20 +178,29 @@ public class EquipmentInventory : MonoBehaviour {
 		}
 	}
 	
+	
+	//Have equipment drops call this as needed.
+	public void AddEquipmentToInventory (params int[] equipmentNumber) {
+		gameControl = GameObject.FindObjectOfType<GameControl>(); 
+		if (equipmentList.Count == equipmentSlots) {
+			return;
+			//present message saying out of space? Might need to be more complicated...
+		} else {
+			foreach (int equipment in equipmentNumber) {
+				if (gameControl.equipmentInventoryList.Contains(equipmentDatabase.equipment[equipment])) {
+					int index = gameControl.equipmentInventoryList.IndexOf(equipmentDatabase.equipment[equipment]);
+					gameControl.equipmentInventoryList[index].quantity ++;
+				} else {
+					gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment[equipment]);
+				}
+			}
+		}
+	}
+	
+
 	void AddTempData () {
-		//take out of inventory at some point...
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [5]);
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [6]);
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [7]);
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [8]);
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [9]);
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [10]);
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [11]);
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [12]);
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [13]);		
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [14]);
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [15]);
-		gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment [16]);
+		//take out of inventory at some point...		
+		AddEquipmentToInventory(5, 6, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 	}
 	
 	void PopulateEquipment (Equipment.EquipmentSlot equipmentSlot) {
@@ -364,20 +373,6 @@ public class EquipmentInventory : MonoBehaviour {
 		}
 	}
 	
-	//Have equipment drops call this as needed.
-	public void AddEquipmentToInventory (int equipmentNumber) {
-		if (equipmentList.Count == equipmentSlots) {
-			return;
-			//present message saying out of space? Might need to be more complicated...
-		} else {
-			if (gameControl.equipmentInventoryList.Contains(equipmentDatabase.equipment[equipmentNumber])) {
-				gameControl.equipmentInventoryList[equipmentNumber].quantity ++;
-			} else {
-				gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment[equipmentNumber]);
-			}
-		}
-	}
-	
 	
 	public void SelectEquipment () {
 	
@@ -419,7 +414,7 @@ public class EquipmentInventory : MonoBehaviour {
 		destroyEquipmentButton = GameObject.FindGameObjectWithTag("Destroy Equipment Button").GetComponent<Button>();
 		classesDatabase = GameObject.FindObjectOfType<ClassesDatabase>();
 		
-		if (classesDatabase.classes[gameControl.playerClass].equipmentMaterialIndex >= selectedEquipmentMaterialIndex) {
+		if (classesDatabase.classes[gameControl.playerClass].equipmentMaterialIndex >= selectedEquipmentMaterialIndex || selectedEquipmentMaterialIndex == 5) {
 			if (equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentType == Equipment.EquipmentType.Head) {
 				if (gameControl.equippedHead != 1) {
 					AddEquipmentToInventory (gameControl.equippedHead);
@@ -438,45 +433,65 @@ public class EquipmentInventory : MonoBehaviour {
 				}
 				gameControl.equippedPants = PlayerPrefsManager.GetEquipmentID();
 				
-			} else {
+			} else if (equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentType == Equipment.EquipmentType.Feet) {
 				if (gameControl.equippedFeet != 4) {
 					AddEquipmentToInventory (gameControl.equippedFeet);
 				}
 				gameControl.equippedFeet = PlayerPrefsManager.GetEquipmentID();
+			} else {
+				AddEquipmentToInventory (gameControl.equippedWeapon);
+				gameControl.equippedWeapon = PlayerPrefsManager.GetEquipmentID();
+				gameControl.CurrentClass();
+				
+				//Add stuff about equipment falling off on class change...
 			}
+			
+			//updates quantity of equipped item.
+			if (gameControl.equipmentInventoryList [PlayerPrefsManager.GetSelectItem()].quantity > 1) {
+				gameControl.equipmentInventoryList [PlayerPrefsManager.GetSelectItem()].quantity --;
+			} else {
+				gameControl.equipmentInventoryList.RemoveAt (itemIndex);
+			}
+			
+			SetEquippedSlot ();
+			contentPanel.DeleteInventory();
+			PopulateEquipment(equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentSlot);			
+			EquipmentInfoDisplay ();
+			//good place to call an updated stats from gamecontrol.
 		}
 		
-		if (gameControl.equipmentInventoryList [PlayerPrefsManager.GetEquipmentID()].quantity > 1) {
-			gameControl.equipmentInventoryList [PlayerPrefsManager.GetEquipmentID()].quantity --;
-		} else {
-			gameControl.equipmentInventoryList.RemoveAt (itemIndex);
-		}
+		//write in call to unable to equip method? or just code it in.
+		
 		
 		equipButton.interactable = false;
 		destroyEquipmentButton.interactable = false;
+		
+
+		
+		
 	}
 	
 	
-	public void EquipEquipmentYes () {		
-		contentPanel.DeleteInventory();
-		
-//		PopulateEquipment();
-		
-		EquipmentInfoDisplay ();
-	}
-	
-	
-	public void EquipEquipmentNo () {
-		equipVerificationCanvas = GameObject.FindGameObjectWithTag("Equip Equipment Verification Canvas");
-		Destroy (equipVerificationCanvas.gameObject);
-		contentPanel.ActivateInventory();
-		
-		int itemIndex = PlayerPrefsManager.GetSelectItem ();
-		
-		GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Equipment Content");
-		GameObject lastSelected = inventoryContentPanel.transform.GetChild(itemIndex + 1).gameObject;
-		EventSystem.current.SetSelectedGameObject(lastSelected,null);
-	}
+//	public void EquipEquipmentYes () {		
+//		contentPanel.DeleteInventory();
+//		
+//		PopulateEquipment(equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentSlot);
+//		
+//		EquipmentInfoDisplay ();
+//	}
+//	
+//	
+//	public void EquipEquipmentNo () {
+//		equipVerificationCanvas = GameObject.FindGameObjectWithTag("Equip Equipment Verification Canvas");
+//		Destroy (equipVerificationCanvas.gameObject);
+//		contentPanel.ActivateInventory();
+//		
+//		int itemIndex = PlayerPrefsManager.GetSelectItem ();
+//		
+//		GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Equipment Content");
+//		GameObject lastSelected = inventoryContentPanel.transform.GetChild(itemIndex + 1).gameObject;
+//		EventSystem.current.SetSelectedGameObject(lastSelected,null);
+//	}
 	
 	
 	public void DestroyEquipmentInInventory () {
