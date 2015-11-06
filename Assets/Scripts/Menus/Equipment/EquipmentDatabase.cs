@@ -19,8 +19,8 @@ public class EquipmentDatabase : MonoBehaviour {
 		equipment.Add (new Equipment (3, "Skinny Jeans", "Nothing fancy, hipster pants.", Equipment.EquipmentType.Pants, Equipment.EquipmentMaterial.Cloth, Equipment.EquipmentSlot.Pants, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1));
 		equipment.Add (new Equipment (4, "Original Converse", "Chuck Taylors Yo.", Equipment.EquipmentType.Feet, Equipment.EquipmentMaterial.Cloth, Equipment.EquipmentSlot.Feet, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1));
 		
-		equipment.Add (new Equipment (5, "Platemail", "Study lookin chest.", Equipment.EquipmentType.Chest, Equipment.EquipmentMaterial.Platemail, Equipment.EquipmentSlot.Chest, 1, 2, 1, 1, 2, 1, 1, 0, 100, 1));
-		equipment.Add (new Equipment (6, "Helmet", "Study lookin helmet.", Equipment.EquipmentType.Head, Equipment.EquipmentMaterial.Chainmail, Equipment.EquipmentSlot.Head, 1, 2, 1, 1, 2, 1, 1, 0, 100, 1));
+		equipment.Add (new Equipment (5, "Helmet", "Study lookin helmet.", Equipment.EquipmentType.Head, Equipment.EquipmentMaterial.Chainmail, Equipment.EquipmentSlot.Head, 1, 2, 1, 1, 2, 1, 1, 0, 100, 1));
+		equipment.Add (new Equipment (6, "Platemail", "Study lookin chest.", Equipment.EquipmentType.Chest, Equipment.EquipmentMaterial.Platemail, Equipment.EquipmentSlot.Chest, 1, 2, 1, 1, 2, 1, 1, 0, 100, 1));
 		equipment.Add (new Equipment (7, "Assless Chaps", "Study lookin pants.", Equipment.EquipmentType.Pants, Equipment.EquipmentMaterial.Leather, Equipment.EquipmentSlot.Pants, 1, 2, 1, 1, 2, 1, 1, 0, 100, 1));
 		equipment.Add (new Equipment (8, "Air Jordans", "Study lookin shoes.", Equipment.EquipmentType.Feet, Equipment.EquipmentMaterial.Leather, Equipment.EquipmentSlot.Feet, 1, 2, 1, 1, 2, 1, 1, 0, 100, 1));
 		

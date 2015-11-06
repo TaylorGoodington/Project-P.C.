@@ -70,6 +70,10 @@ public class GameControl : MonoBehaviour {
 	void Start () {
 		playerClass = 7;
 		equippedWeapon = 16;
+		equippedHead = 5;
+		equippedChest = 6;
+		equippedPants = 7;
+		equippedFeet = 8;
 	}
 	
 	void Update () {
@@ -79,8 +83,12 @@ public class GameControl : MonoBehaviour {
 		} 
 		
 		if (Input.GetKeyDown(KeyCode.E)) {
-			Instantiate(equipmentBaseMenu);
+			equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
 			equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentBaseMenu();
+		}
+		//allows us of previous menu...
+		if (Input.GetKeyDown(KeyCode.X)) {
+			equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousMenu(equipmentInventory.GetComponent<EquipmentInventory>().EquipmentMenuLevel());
 		}
 	}
 	

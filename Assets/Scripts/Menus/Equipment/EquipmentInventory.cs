@@ -12,6 +12,8 @@ public class EquipmentInventory : MonoBehaviour {
 	//items that populate the inventory menu.
 	public GameObject equipmentItem;
 	
+	public GameObject equipmentBaseMenu;
+	
 	public GameObject equipmentSlotsMenu;
 	
 	public ClassesDatabase classesDatabase;
@@ -67,6 +69,8 @@ public class EquipmentInventory : MonoBehaviour {
 	private int selectedEquipmentID;
 	private int selectedEquipmentMaterialIndex;
 	
+	private int selectedLocalIndex;
+	
 	
 	void Awake () {
 		DontDestroyOnLoad (gameObject);
@@ -75,7 +79,6 @@ public class EquipmentInventory : MonoBehaviour {
 	void Start () {
 		gameControl = GameObject.FindObjectOfType<GameControl>();
 		equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
-//		classesDatabse = GameObject.FindObjectOfType<ClassesDatabase>();
 		equipmentList = gameControl.equipmentInventoryList;
 	}
 	
@@ -87,30 +90,61 @@ public class EquipmentInventory : MonoBehaviour {
 		}
 	}
 	
-	//once equipment is un equipped by class shifts the basic equipment is equipped.
-	public void AutoEquipClothes () {
-		gameControl = GameObject.FindObjectOfType<GameControl>();
-		
-		if (gameControl.equippedHead == 0) { gameControl.equippedHead = 1; } 
-		if (gameControl.equippedChest == 0) { gameControl.equippedChest = 2; } 
-		if (gameControl.equippedPants == 0) { gameControl.equippedPants = 3; } 
-		if (gameControl.equippedFeet == 0) { gameControl.equippedFeet = 4; }
+	
+	//I think this will work by identifying which level you are on and passing the information back to a "back" function.
+	public int EquipmentMenuLevel () {
+		if (GameObject.FindGameObjectWithTag("Destroy Equipment Verification Canvas")) {
+			return 4;
+		} else if (GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>().IsInteractable()) {
+			return 3;
+		} else if (GameObject.FindGameObjectWithTag("Equipment Menu")) {
+			return 2;
+		} else if (GameObject.FindGameObjectWithTag("Base Equipment Menu")) {
+			return 1;
+		}
+			return 0;
 	}
 	
-	public void OpenEquipmentBaseMenu () {
+
+	public void OpenPreviousMenu (int equipmentMenuLevel) {
+		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
+		if (equipmentMenuLevel == 4) {
+			DestroyEquipmentNo();
+			Invoke ("SelectEquipment", 0);
+		} else if (equipmentMenuLevel == 3) {
+			equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
+			equipButton.interactable = false;
+			
+			destroyEquipmentButton = GameObject.FindGameObjectWithTag("Destroy Equipment Button").GetComponent<Button>();
+			destroyEquipmentButton.interactable = false;
+			
+			contentPanel.ActivateInventory();
+			
+			int itemIndex = PlayerPrefsManager.GetSelectItem ();
+			
+			GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Equipment Content");
+			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Content").transform.GetChild(selectedLocalIndex).gameObject,null);
+		} else if (equipmentMenuLevel == 2) {
+			Destroy (GameObject.FindGameObjectWithTag("Equipment Menu"));
+			Invoke ("OpenEquipmentBaseMenu",0);
+		} else if (equipmentMenuLevel == 1) {
+			Destroy (GameObject.FindGameObjectWithTag("Base Equipment Menu"));
+			//Method for opening main menu level.
+		}
+	}
+
 	
-		AddTempData ();
-		
+	public void OpenEquipmentBaseMenu () {
+		Instantiate (equipmentBaseMenu);
 		EquipmentInfoDisplay ();
-		
 		AutoEquipClothes ();
-		
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Head Slot"),null);
 	}
 	
 	public void OpenEquipmentSlotMenu () {
 		equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
 		Instantiate (equipmentSlotsMenu);
+		
 		Destroy (GameObject.FindGameObjectWithTag("Base Equipment Menu"));
 		Equipment.EquipmentSlot selectSlot = equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentSlot;
 		
@@ -119,6 +153,8 @@ public class EquipmentInventory : MonoBehaviour {
 		EquipmentInfoDisplay ();
 		
 		SetEquippedSlot ();
+		
+		//I think I would like to call what the current selected is here...
 	}
 	
 	public void SetEquippedSlot () {
@@ -177,37 +213,18 @@ public class EquipmentInventory : MonoBehaviour {
 			manaLabel = GameObject.FindGameObjectWithTag ("Mana Label").GetComponent<Text> ();
 		}
 	}
-	
-	
-	//Have equipment drops call this as needed.
-	public void AddEquipmentToInventory (params int[] equipmentNumber) {
-		gameControl = GameObject.FindObjectOfType<GameControl>(); 
-		if (equipmentList.Count == equipmentSlots) {
-			return;
-			//present message saying out of space? Might need to be more complicated...
-		} else {
-			foreach (int equipment in equipmentNumber) {
-				if (gameControl.equipmentInventoryList.Contains(equipmentDatabase.equipment[equipment])) {
-					int index = gameControl.equipmentInventoryList.IndexOf(equipmentDatabase.equipment[equipment]);
-					gameControl.equipmentInventoryList[index].quantity ++;
-				} else {
-					gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment[equipment]);
-				}
-			}
-		}
-	}
-	
 
-	void AddTempData () {
+
+	public void AddTempData () {
 		//take out of inventory at some point...		
 		AddEquipmentToInventory(5, 6, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 	}
 	
-	void PopulateEquipment (Equipment.EquipmentSlot equipmentSlot) {
+	public void PopulateEquipment (Equipment.EquipmentSlot equipmentSlot) {
 		gameControl = GameObject.FindObjectOfType<GameControl>();
 		
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipped Slot"),null);
-		
+		int localIndexCount = 1;
 		foreach (var equipment in gameControl.equipmentInventoryList) {
 			if (equipment.equipmentSlot == equipmentSlot) {
 				GameObject newEquipment = Instantiate (equipmentItem) as GameObject;
@@ -231,6 +248,12 @@ public class EquipmentInventory : MonoBehaviour {
 				GameObject newEquipmentQuantityObject = newEquipment.transform.GetChild(3).gameObject;
 				Text newEquipmentQuantity = newEquipmentQuantityObject.GetComponent<Text>();
 				newEquipmentQuantity.text = equipment.quantity.ToString();
+				
+				//puts the local index in the fifth child.
+				localIndexCount ++;
+				GameObject newEquipmentLocalIndex = newEquipment.transform.GetChild(4).gameObject;
+				Text equipmentLocalIndex = newEquipmentLocalIndex.GetComponent<Text>();
+				equipmentLocalIndex.text = localIndexCount.ToString();
 			}
 		}
 	}
@@ -307,25 +330,9 @@ public class EquipmentInventory : MonoBehaviour {
 			speedStat.text = gameControl.currentSpeed + " => " + (gameControl.currentSpeed + equipmentDatabase.equipment [selectedEquipmentID].equipmentSpeed).ToString();
 			healthStat.text = gameControl.currentHealth + " => " + (gameControl.currentHealth + equipmentDatabase.equipment [selectedEquipmentID].equipmentHealth).ToString();
 			manaStat.text = gameControl.currentMana + " => " + (gameControl.currentMana + equipmentDatabase.equipment [selectedEquipmentID].equipmentMana).ToString();
-//			strengthLabel.color = Color.white;
-//			defenseLabel.color = Color.white;
-//			intelligenceLabel.color = Color.white;
-//			speedLabel.color = Color.white;
-//			healthLabel.color = Color.white;
-//			manaLabel.color = Color.white;
+
 		} else if (selectedItem.name == "Destroy Equipment") {
-			strengthStat.text = gameControl.currentStrength + " => " + (gameControl.currentStrength + equipmentDatabase.equipment [selectedEquipmentID].equipmentStrength).ToString();
-			defenseStat.text = gameControl.currentDefense + " => " + (gameControl.currentDefense + equipmentDatabase.equipment [selectedEquipmentID].equipmentDefense).ToString();
-			intelligenceStat.text = gameControl.currentIntelligence + " => " + (gameControl.currentIntelligence + equipmentDatabase.equipment [selectedEquipmentID].equipmentIntelligence).ToString();
-			speedStat.text = gameControl.currentSpeed + " => " + (gameControl.currentSpeed + equipmentDatabase.equipment [selectedEquipmentID].equipmentSpeed).ToString();
-			healthStat.text = gameControl.currentHealth + " => " + (gameControl.currentHealth + equipmentDatabase.equipment [selectedEquipmentID].equipmentHealth).ToString();
-			manaStat.text = gameControl.currentMana + " => " + (gameControl.currentMana + equipmentDatabase.equipment [selectedEquipmentID].equipmentMana).ToString();
-//			strengthLabel.color = Color.white;
-//			defenseLabel.color = Color.white;
-//			intelligenceLabel.color = Color.white;
-//			speedLabel.color = Color.white;
-//			healthLabel.color = Color.white;
-//			manaLabel.color = Color.white;
+
 		} else if (selectedItem.name == "Equip Equipment Yes") {
 			
 		} else if (selectedItem.name == "Equip Equipment No") {
@@ -349,6 +356,14 @@ public class EquipmentInventory : MonoBehaviour {
 			Text newItemIndexText = newItemIndexObject.GetComponent<Text>();
 			int newItemIndex = int.Parse(newItemIndexText.text);
 			PlayerPrefsManager.SetSelectItem(newItemIndex);
+			
+			//pushes the local index to a global variable.
+			if (selectedItem.transform.GetChild(4).gameObject) {
+				GameObject localEquipmentIndex = selectedItem.transform.GetChild(4).gameObject;
+				Text localEquipmentIndexText = localEquipmentIndex.GetComponent<Text>();
+				int localIndex = int.Parse(localEquipmentIndexText.text);
+				selectedLocalIndex = localIndex;
+			}
 			
 			displayEquipmentDescription.text = equipmentDatabase.equipment [newEquipmentID].equipmentDescription;
 			displayEquipmentIcon.color = Color.white;
@@ -376,7 +391,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	public void SelectEquipment () {
 	
-		selectedEquipmentMaterialIndex = GetEquipmentMaterialIndex ();
+		selectedEquipmentMaterialIndex = GetEquipmentMaterialIndex (PlayerPrefsManager.GetEquipmentID());
 		
 		equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
 		equipButton.interactable = true;
@@ -390,9 +405,8 @@ public class EquipmentInventory : MonoBehaviour {
 	}
 	
 	
-	public int GetEquipmentMaterialIndex () {
+	public int GetEquipmentMaterialIndex (int selectedEquipmentID) {
 		equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
-		selectedEquipmentID = PlayerPrefsManager.GetEquipmentID();
 		if (equipmentDatabase.equipment[selectedEquipmentID].equipmentMaterial == Equipment.EquipmentMaterial.Cloth) {
 			return 1;
 		} else if (equipmentDatabase.equipment [selectedEquipmentID].equipmentMaterial == Equipment.EquipmentMaterial.Leather) {
@@ -404,6 +418,36 @@ public class EquipmentInventory : MonoBehaviour {
 		} else {
 			return 5;
 		}
+	}
+	
+	
+	//Have equipment drops call this as needed.
+	public void AddEquipmentToInventory (params int[] equipmentNumber) {
+		gameControl = GameObject.FindObjectOfType<GameControl>(); 
+		if (equipmentList.Count == equipmentSlots) {
+			return;
+			//present message saying out of space? Might need to be more complicated...
+		} else {
+			foreach (int equipment in equipmentNumber) {
+				if (gameControl.equipmentInventoryList.Contains(equipmentDatabase.equipment[equipment])) {
+					int index = gameControl.equipmentInventoryList.IndexOf(equipmentDatabase.equipment[equipment]);
+					gameControl.equipmentInventoryList[index].quantity ++;
+				} else {
+					gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment[equipment]);
+				}
+			}
+		}
+	}
+	
+	
+	//once equipment is un equipped by class shifts the basic equipment is equipped.
+	public void AutoEquipClothes () {
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		
+		if (gameControl.equippedHead == 0) { gameControl.equippedHead = 1; } 
+		if (gameControl.equippedChest == 0) { gameControl.equippedChest = 2; } 
+		if (gameControl.equippedPants == 0) { gameControl.equippedPants = 3; } 
+		if (gameControl.equippedFeet == 0) { gameControl.equippedFeet = 4; }
 	}
 	
 	
@@ -443,7 +487,24 @@ public class EquipmentInventory : MonoBehaviour {
 				gameControl.equippedWeapon = PlayerPrefsManager.GetEquipmentID();
 				gameControl.CurrentClass();
 				
-				//Add stuff about equipment falling off on class change...
+				int classMaterialIndex = classesDatabase.classes[gameControl.playerClass].equipmentMaterialIndex;
+				if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedHead)) {
+					AddEquipmentToInventory (gameControl.equippedHead);
+					gameControl.equippedHead = 0;
+				}
+				if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedChest)) {
+					AddEquipmentToInventory (gameControl.equippedChest);
+					gameControl.equippedChest = 0;
+				}
+				if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedPants)) {
+					AddEquipmentToInventory (gameControl.equippedPants);
+					gameControl.equippedPants = 0;
+				}
+				if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedFeet)) {
+					AddEquipmentToInventory (gameControl.equippedFeet);
+					gameControl.equippedFeet = 0;
+				}
+				AutoEquipClothes ();
 			}
 			
 			//updates quantity of equipped item.
@@ -461,37 +522,12 @@ public class EquipmentInventory : MonoBehaviour {
 		}
 		
 		//write in call to unable to equip method? or just code it in.
+		//also need to set selected item....
 		
 		
 		equipButton.interactable = false;
 		destroyEquipmentButton.interactable = false;
-		
-
-		
-		
 	}
-	
-	
-//	public void EquipEquipmentYes () {		
-//		contentPanel.DeleteInventory();
-//		
-//		PopulateEquipment(equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentSlot);
-//		
-//		EquipmentInfoDisplay ();
-//	}
-//	
-//	
-//	public void EquipEquipmentNo () {
-//		equipVerificationCanvas = GameObject.FindGameObjectWithTag("Equip Equipment Verification Canvas");
-//		Destroy (equipVerificationCanvas.gameObject);
-//		contentPanel.ActivateInventory();
-//		
-//		int itemIndex = PlayerPrefsManager.GetSelectItem ();
-//		
-//		GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Equipment Content");
-//		GameObject lastSelected = inventoryContentPanel.transform.GetChild(itemIndex + 1).gameObject;
-//		EventSystem.current.SetSelectedGameObject(lastSelected,null);
-//	}
 	
 	
 	public void DestroyEquipmentInInventory () {
@@ -530,6 +566,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	
 	public void DestroyEquipmentNo () {
+		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
 		destroyEquipmentVerificationCanvas = GameObject.FindGameObjectWithTag("Destroy Equipment Verification Canvas");
 		Destroy (destroyEquipmentVerificationCanvas.gameObject);
 		contentPanel.ActivateInventory();
@@ -537,7 +574,6 @@ public class EquipmentInventory : MonoBehaviour {
 		int itemIndex = PlayerPrefsManager.GetSelectItem ();
 		
 		GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Equipment Content");
-		GameObject lastSelected = inventoryContentPanel.transform.GetChild(itemIndex - 2).gameObject;
-		EventSystem.current.SetSelectedGameObject(lastSelected,null);
+		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Content").transform.GetChild(selectedLocalIndex).gameObject,null);
 	}
 }
