@@ -68,9 +68,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	private int selectedEquipmentID;
 	private int selectedEquipmentMaterialIndex;
-	
-	private int selectedLocalIndex;
-	
+		
 	
 	void Awake () {
 		DontDestroyOnLoad (gameObject);
@@ -110,7 +108,7 @@ public class EquipmentInventory : MonoBehaviour {
 		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
 		if (equipmentMenuLevel == 4) {
 			DestroyEquipmentNo();
-			Invoke ("SelectEquipment", 0);
+//			Invoke ("SelectEquipment", 0);
 		} else if (equipmentMenuLevel == 3) {
 			equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
 			equipButton.interactable = false;
@@ -119,11 +117,8 @@ public class EquipmentInventory : MonoBehaviour {
 			destroyEquipmentButton.interactable = false;
 			
 			contentPanel.ActivateInventory();
-			
-			int itemIndex = PlayerPrefsManager.GetSelectItem ();
-			
-			GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Equipment Content");
-			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Content").transform.GetChild(selectedLocalIndex).gameObject,null);
+
+			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Content").transform.GetChild(PlayerPrefsManager.GetLocalEquipmentIndex()).gameObject,null);
 		} else if (equipmentMenuLevel == 2) {
 			Destroy (GameObject.FindGameObjectWithTag("Equipment Menu"));
 			Invoke ("OpenEquipmentBaseMenu",0);
@@ -226,7 +221,10 @@ public class EquipmentInventory : MonoBehaviour {
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipped Slot"),null);
 		int localIndexCount = 1;
 		foreach (var equipment in gameControl.equipmentInventoryList) {
-			if (equipment.equipmentSlot == equipmentSlot) {
+			if (equipmentSlot == Equipment.EquipmentSlot.Weapon) {
+				//do some stuff about populating the weapon menu, which is not part of the inventory.
+				Debug.Log ("Weapons!");
+			} else if (equipment.equipmentSlot == equipmentSlot) {
 				GameObject newEquipment = Instantiate (equipmentItem) as GameObject;
 				Text newequipmentText = newEquipment.GetComponentInChildren<Text>();
 				newequipmentText.text = equipment.equipmentName;
@@ -362,7 +360,7 @@ public class EquipmentInventory : MonoBehaviour {
 				GameObject localEquipmentIndex = selectedItem.transform.GetChild(4).gameObject;
 				Text localEquipmentIndexText = localEquipmentIndex.GetComponent<Text>();
 				int localIndex = int.Parse(localEquipmentIndexText.text);
-				selectedLocalIndex = localIndex;
+				PlayerPrefsManager.SetLocalEquipmentIndex(localIndex);
 			}
 			
 			displayEquipmentDescription.text = equipmentDatabase.equipment [newEquipmentID].equipmentDescription;
@@ -566,14 +564,13 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	
 	public void DestroyEquipmentNo () {
+	//Maybe I should make this work more like the open previous menu works.
 		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
 		destroyEquipmentVerificationCanvas = GameObject.FindGameObjectWithTag("Destroy Equipment Verification Canvas");
 		Destroy (destroyEquipmentVerificationCanvas.gameObject);
 		contentPanel.ActivateInventory();
-		
-		int itemIndex = PlayerPrefsManager.GetSelectItem ();
-		
-		GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Equipment Content");
-		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Content").transform.GetChild(selectedLocalIndex).gameObject,null);
+				
+		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Content").transform.GetChild(PlayerPrefsManager.GetLocalEquipmentIndex()).gameObject,null);
+		Invoke ("SelectEquipment", 0);
 	}
 }

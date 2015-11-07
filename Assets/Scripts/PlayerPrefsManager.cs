@@ -16,6 +16,16 @@ public class PlayerPrefsManager : MonoBehaviour {
 	const string TO_DELETE_MENU = "to_delete_menu";
 	const string SELECT_ITEM = "select_item";
 	const string EQUIPMENT_ID = "equipment_ID";
+	const string LOCAL_EQUIPMENT_INDEX = "local_equipment_index";
+	
+	
+	public static void SetLocalEquipmentIndex (int localIndex) {
+		PlayerPrefs.SetInt (LOCAL_EQUIPMENT_INDEX, localIndex);
+	}
+	
+	public static int GetLocalEquipmentIndex () {
+		return PlayerPrefs.GetInt (LOCAL_EQUIPMENT_INDEX);
+	}
 	
 	
 	public static void SetEquipmentID (int equipmentID) {
