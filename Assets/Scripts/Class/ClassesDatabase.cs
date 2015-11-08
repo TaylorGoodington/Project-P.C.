@@ -16,9 +16,9 @@ public class ClassesDatabase : MonoBehaviour {
 		classes.Add (new Classes (1, "Berserker", "The way of the axe", 3, 6, 4, 4, 1, 3, 3));
 		classes.Add (new Classes (2, "Rogue", "The way of the dagger", 2, 4, 1, 6, 4, 4, 2));
 		classes.Add (new Classes (3, "Ranger", "The way of the bow", 2, 4, 2, 5, 4, 2, 4));
-		classes.Add (new Classes (4, "Wizard", "The way of the tome", 1, 1, 3, 2, 6, 4, 5));
+		classes.Add (new Classes (4, "Wizard", "The way of the staff", 1, 1, 3, 2, 6, 4, 5));
 		classes.Add (new Classes (5, "Sorcerer", "The way of the talisman", 1, 3, 3, 3, 5, 1, 6));
-		classes.Add (new Classes (6, "Monk", "The way of the staff", 4, 2, 5, 4, 3, 3, 4));
+		classes.Add (new Classes (6, "Monk", "The way of the fist", 4, 2, 5, 4, 3, 3, 4));
 		classes.Add (new Classes (7, "Paladin", "The way of the polearm", 4, 3, 6, 1, 3 , 5, 3));
 	}
 }

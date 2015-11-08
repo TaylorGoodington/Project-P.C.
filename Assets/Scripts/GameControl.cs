@@ -35,13 +35,15 @@ public class GameControl : MonoBehaviour {
 	
 	public int playerClass;
 	
-	//I dont think i need the base stats, seems like i can handle everything with current stats.
 	public int baseStrength;
 	public int baseDefense;
 	public int baseSpeed;
 	public int baseIntelligence;
 	public int baseHealth;
 	public int baseMana;
+	//this needs to be saved.
+	public int hp;
+	public int mp;
 	
 	public int currentStrength;
 	public int currentDefense;
@@ -52,7 +54,8 @@ public class GameControl : MonoBehaviour {
 	
 	public List<Items> itemInventoryList;
 	public List<Equipment> equipmentInventoryList;
-//	public List<Weapons> weaponInventoryList;
+	//this needs to be saved.
+	public List<Equipment> weaponsList;
 
 	public int equippedHead;
 	public int equippedChest;
@@ -86,7 +89,7 @@ public class GameControl : MonoBehaviour {
 			equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
 			equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentBaseMenu();
 		}
-		//allows us of previous menu...
+		//allows use of previous menu...
 		if (Input.GetKeyDown(KeyCode.X)) {
 			equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousMenu(equipmentInventory.GetComponent<EquipmentInventory>().EquipmentMenuLevel());
 		}

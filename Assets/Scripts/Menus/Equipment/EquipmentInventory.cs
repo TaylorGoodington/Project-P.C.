@@ -108,16 +108,12 @@ public class EquipmentInventory : MonoBehaviour {
 		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
 		if (equipmentMenuLevel == 4) {
 			DestroyEquipmentNo();
-//			Invoke ("SelectEquipment", 0);
 		} else if (equipmentMenuLevel == 3) {
 			equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
 			equipButton.interactable = false;
-			
 			destroyEquipmentButton = GameObject.FindGameObjectWithTag("Destroy Equipment Button").GetComponent<Button>();
 			destroyEquipmentButton.interactable = false;
-			
 			contentPanel.ActivateInventory();
-
 			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Content").transform.GetChild(PlayerPrefsManager.GetLocalEquipmentIndex()).gameObject,null);
 		} else if (equipmentMenuLevel == 2) {
 			Destroy (GameObject.FindGameObjectWithTag("Equipment Menu"));
@@ -148,8 +144,6 @@ public class EquipmentInventory : MonoBehaviour {
 		EquipmentInfoDisplay ();
 		
 		SetEquippedSlot ();
-		
-		//I think I would like to call what the current selected is here...
 	}
 	
 	public void SetEquippedSlot () {
@@ -210,48 +204,91 @@ public class EquipmentInventory : MonoBehaviour {
 	}
 
 
+	public void WeaponEvolution (int equipID) {
+		//I think i'll set this up to take in the equip id from playerprefsmanager
+		if (equipID == gameControl.equippedWeapon) {
+			//I should just be able to change the int in gamecontrol.
+			UpdateEquippedStats();
+		}
+	}
+
 	public void AddTempData () {
 		//take out of inventory at some point...		
-		AddEquipmentToInventory(5, 6, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+		AddEquipmentToInventory(5, 6, 5, 6, 7, 8);
+		//temp way to add info to the weapons list.
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[9]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[10]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[11]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[12]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[13]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[14]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[15]);
 	}
 	
 	public void PopulateEquipment (Equipment.EquipmentSlot equipmentSlot) {
 		gameControl = GameObject.FindObjectOfType<GameControl>();
-		
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipped Slot"),null);
 		int localIndexCount = 1;
-		foreach (var equipment in gameControl.equipmentInventoryList) {
-			if (equipmentSlot == Equipment.EquipmentSlot.Weapon) {
-				//do some stuff about populating the weapon menu, which is not part of the inventory.
-				Debug.Log ("Weapons!");
-			} else if (equipment.equipmentSlot == equipmentSlot) {
+		
+		if (equipmentSlot == Equipment.EquipmentSlot.Weapon) {
+			//do some stuff about populating the weapon menu, which is not part of the inventory.
+			foreach (var weapons in gameControl.weaponsList) {
 				GameObject newEquipment = Instantiate (equipmentItem) as GameObject;
 				Text newequipmentText = newEquipment.GetComponentInChildren<Text>();
-				newequipmentText.text = equipment.equipmentName;
+				newequipmentText.text = weapons.equipmentName;
 				newEquipment.transform.SetParent (GameObject.FindGameObjectWithTag ("Equipment Content").transform, false);
-				newEquipment.gameObject.name = equipment.equipmentName;
-					
+				newEquipment.gameObject.name = weapons.equipmentName;
+				
 				//Puts the item ID as the text field for the second child of the new item button.
 				GameObject newEquipmentIDObject = newEquipment.transform.GetChild(1).gameObject;
 				Text newEquipmentID = newEquipmentIDObject.GetComponent<Text>();
-				newEquipmentID.text = equipment.equipmentID.ToString();
-					
+				newEquipmentID.text = weapons.equipmentID.ToString();
+				
 				//Puts the inventory index as the text field for the third child of the new item button.
 				GameObject newEquipmentIndexObject = newEquipment.transform.GetChild(2).gameObject;
 				Text newEquipmentIndex = newEquipmentIndexObject.GetComponent<Text>();
-				int equipmentInventoryCountIndex = gameControl.equipmentInventoryList.IndexOf(equipment);
+				int equipmentInventoryCountIndex = gameControl.equipmentInventoryList.IndexOf(weapons);
 				newEquipmentIndex.text = equipmentInventoryCountIndex.ToString();
 				
-				//Puts the quantity of the object in the fourth child.
-				GameObject newEquipmentQuantityObject = newEquipment.transform.GetChild(3).gameObject;
-				Text newEquipmentQuantity = newEquipmentQuantityObject.GetComponent<Text>();
-				newEquipmentQuantity.text = equipment.quantity.ToString();
+				//We dont use the quantity in weapons.
 				
 				//puts the local index in the fifth child.
 				localIndexCount ++;
 				GameObject newEquipmentLocalIndex = newEquipment.transform.GetChild(4).gameObject;
 				Text equipmentLocalIndex = newEquipmentLocalIndex.GetComponent<Text>();
 				equipmentLocalIndex.text = localIndexCount.ToString();
+			}
+		} else {
+			foreach (var equipment in gameControl.equipmentInventoryList) {
+				if (equipment.equipmentSlot == equipmentSlot) {
+					GameObject newEquipment = Instantiate (equipmentItem) as GameObject;
+					Text newequipmentText = newEquipment.GetComponentInChildren<Text>();
+					newequipmentText.text = equipment.equipmentName;
+					newEquipment.transform.SetParent (GameObject.FindGameObjectWithTag ("Equipment Content").transform, false);
+					newEquipment.gameObject.name = equipment.equipmentName;
+						
+					//Puts the item ID as the text field for the second child of the new item button.
+					GameObject newEquipmentIDObject = newEquipment.transform.GetChild(1).gameObject;
+					Text newEquipmentID = newEquipmentIDObject.GetComponent<Text>();
+					newEquipmentID.text = equipment.equipmentID.ToString();
+						
+					//Puts the inventory index as the text field for the third child of the new item button.
+					GameObject newEquipmentIndexObject = newEquipment.transform.GetChild(2).gameObject;
+					Text newEquipmentIndex = newEquipmentIndexObject.GetComponent<Text>();
+					int equipmentInventoryCountIndex = gameControl.equipmentInventoryList.IndexOf(equipment);
+					newEquipmentIndex.text = equipmentInventoryCountIndex.ToString();
+					
+					//Puts the quantity of the object in the fourth child.
+					GameObject newEquipmentQuantityObject = newEquipment.transform.GetChild(3).gameObject;
+					Text newEquipmentQuantity = newEquipmentQuantityObject.GetComponent<Text>();
+					newEquipmentQuantity.text = equipment.quantity.ToString();
+					
+					//puts the local index in the fifth child.
+					localIndexCount ++;
+					GameObject newEquipmentLocalIndex = newEquipment.transform.GetChild(4).gameObject;
+					Text equipmentLocalIndex = newEquipmentLocalIndex.GetComponent<Text>();
+					equipmentLocalIndex.text = localIndexCount.ToString();
+				}
 			}
 		}
 	}
@@ -322,12 +359,81 @@ public class EquipmentInventory : MonoBehaviour {
 			healthLabel.color = Color.black;
 			manaLabel.color = Color.black;
 		} else if (selectedItem.name == "Equip") {
-			strengthStat.text = gameControl.currentStrength + " => " + (gameControl.currentStrength + equipmentDatabase.equipment [selectedEquipmentID].equipmentStrength).ToString();
-			defenseStat.text = gameControl.currentDefense + " => " + (gameControl.currentDefense + equipmentDatabase.equipment [selectedEquipmentID].equipmentDefense).ToString();
-			intelligenceStat.text = gameControl.currentIntelligence + " => " + (gameControl.currentIntelligence + equipmentDatabase.equipment [selectedEquipmentID].equipmentIntelligence).ToString();
-			speedStat.text = gameControl.currentSpeed + " => " + (gameControl.currentSpeed + equipmentDatabase.equipment [selectedEquipmentID].equipmentSpeed).ToString();
-			healthStat.text = gameControl.currentHealth + " => " + (gameControl.currentHealth + equipmentDatabase.equipment [selectedEquipmentID].equipmentHealth).ToString();
-			manaStat.text = gameControl.currentMana + " => " + (gameControl.currentMana + equipmentDatabase.equipment [selectedEquipmentID].equipmentMana).ToString();
+			string equipmentSlot = equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentSlot.ToString();
+			int equippedID = 0;
+			if (equipmentSlot == "Head") {
+				equippedID = gameControl.equippedHead;
+			} else if (equipmentSlot == "Chest") {
+				equippedID = gameControl.equippedChest;
+			} else if (equipmentSlot == "Weapon") {
+				equippedID = gameControl.equippedWeapon;
+			} else if (equipmentSlot == "Pants") {
+				equippedID = gameControl.equippedPants;
+			} else {
+				equippedID = gameControl.equippedFeet;
+			}
+			strengthStat.text = gameControl.currentStrength + " => " + (gameControl.currentStrength - equipmentDatabase.equipment [equippedID].equipmentStrength + 
+							    																	  equipmentDatabase.equipment [selectedEquipmentID].equipmentStrength);
+			defenseStat.text = gameControl.currentDefense + " => " + (gameControl.currentDefense - equipmentDatabase.equipment [equippedID].equipmentDefense + 
+							   																	   equipmentDatabase.equipment [selectedEquipmentID].equipmentDefense);
+			intelligenceStat.text = gameControl.currentIntelligence + " => " + (gameControl.currentIntelligence - equipmentDatabase.equipment [equippedID].equipmentIntelligence + 
+																												  equipmentDatabase.equipment [selectedEquipmentID].equipmentIntelligence);
+			speedStat.text = gameControl.currentSpeed + " => " + (gameControl.currentSpeed - equipmentDatabase.equipment [equippedID].equipmentSpeed + 
+							 																 equipmentDatabase.equipment [selectedEquipmentID].equipmentSpeed);
+			healthStat.text = gameControl.currentHealth + " => " + (gameControl.currentHealth - equipmentDatabase.equipment [equippedID].equipmentHealth + 
+							  																	equipmentDatabase.equipment [selectedEquipmentID].equipmentHealth);
+			manaStat.text = gameControl.currentMana + " => " + (gameControl.currentMana - equipmentDatabase.equipment [equippedID].equipmentMana + 
+																						  equipmentDatabase.equipment [selectedEquipmentID].equipmentMana);
+			
+			//This section gets the stat color to change if the equipment is better or worse.
+			//Strength
+			if (equipmentDatabase.equipment [equippedID].equipmentStrength > equipmentDatabase.equipment [selectedEquipmentID].equipmentStrength) {
+				strengthStat.color = Color.red;
+			} else if (equipmentDatabase.equipment [equippedID].equipmentStrength < equipmentDatabase.equipment [selectedEquipmentID].equipmentStrength) {
+				strengthStat.color = Color.green;
+			} else {
+				strengthStat.color = Color.white;
+			}
+			//Defense
+			if (equipmentDatabase.equipment [equippedID].equipmentDefense > equipmentDatabase.equipment [selectedEquipmentID].equipmentDefense) {
+				defenseStat.color = Color.red;
+			} else if (equipmentDatabase.equipment [equippedID].equipmentDefense < equipmentDatabase.equipment [selectedEquipmentID].equipmentDefense) {
+				defenseStat.color = Color.green;
+			} else {
+				defenseStat.color = Color.white;
+			}
+			//Speed
+			if (equipmentDatabase.equipment [equippedID].equipmentSpeed > equipmentDatabase.equipment [selectedEquipmentID].equipmentSpeed) {
+				speedStat.color = Color.red;
+			} else if (equipmentDatabase.equipment [equippedID].equipmentSpeed < equipmentDatabase.equipment [selectedEquipmentID].equipmentSpeed) {
+				speedStat.color = Color.green;
+			} else {
+				speedStat.color = Color.white;
+			}
+			//Intelligence
+			if (equipmentDatabase.equipment [equippedID].equipmentIntelligence > equipmentDatabase.equipment [selectedEquipmentID].equipmentIntelligence) {
+				intelligenceStat.color = Color.red;
+			} else if (equipmentDatabase.equipment [equippedID].equipmentIntelligence < equipmentDatabase.equipment [selectedEquipmentID].equipmentIntelligence) {
+				intelligenceStat.color = Color.green;
+			} else {
+				intelligenceStat.color = Color.white;
+			}
+			//Health
+			if (equipmentDatabase.equipment [equippedID].equipmentHealth > equipmentDatabase.equipment [selectedEquipmentID].equipmentHealth) {
+				healthStat.color = Color.red;
+			} else if (equipmentDatabase.equipment [equippedID].equipmentHealth < equipmentDatabase.equipment [selectedEquipmentID].equipmentHealth) {
+				healthStat.color = Color.green;
+			} else {
+				healthStat.color = Color.white;
+			}
+			//Mana
+			if (equipmentDatabase.equipment [equippedID].equipmentMana > equipmentDatabase.equipment [selectedEquipmentID].equipmentMana) {
+				manaStat.color = Color.red;
+			} else if (equipmentDatabase.equipment [equippedID].equipmentMana < equipmentDatabase.equipment [selectedEquipmentID].equipmentMana) {
+				manaStat.color = Color.green;
+			} else {
+				manaStat.color = Color.white;
+			}
 
 		} else if (selectedItem.name == "Destroy Equipment") {
 
@@ -342,7 +448,7 @@ public class EquipmentInventory : MonoBehaviour {
 		} else {
 			displayEquipmentName.text = selectedItem.transform.GetChild(0).GetComponent<Text>().text;
 			
-			//Gets object number as string and converts to int.
+			//Gets equipment ID as string and converts to int.
 			GameObject newEquipmentIDObject = selectedItem.transform.GetChild(1).gameObject;
 			Text newEquipmentIDText = newEquipmentIDObject.GetComponent<Text>();
 			int newEquipmentID = int.Parse(newEquipmentIDText.text);
@@ -383,6 +489,13 @@ public class EquipmentInventory : MonoBehaviour {
 			speedLabel.color = Color.white;
 			healthLabel.color = Color.white;
 			manaLabel.color = Color.white;
+			
+			strengthStat.color = Color.white;
+			defenseStat.color = Color.white;
+			speedStat.color = Color.white;
+			intelligenceStat.color = Color.white;
+			healthStat.color = Color.white;
+			manaStat.color = Color.white;
 		}
 	}
 	
@@ -393,10 +506,10 @@ public class EquipmentInventory : MonoBehaviour {
 		
 		equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
 		equipButton.interactable = true;
-		
-		destroyEquipmentButton = GameObject.FindGameObjectWithTag("Destroy Equipment Button").GetComponent<Button>();
-		destroyEquipmentButton.interactable = true;
-		
+		if (selectedEquipmentMaterialIndex != 5) {
+			destroyEquipmentButton = GameObject.FindGameObjectWithTag("Destroy Equipment Button").GetComponent<Button>();
+			destroyEquipmentButton.interactable = true;
+		}
 		contentPanel = GameObject.FindObjectOfType<ContentPanel>();
 		contentPanel.DeactivateInventory();	
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equip Button"),null);
@@ -456,7 +569,36 @@ public class EquipmentInventory : MonoBehaviour {
 		destroyEquipmentButton = GameObject.FindGameObjectWithTag("Destroy Equipment Button").GetComponent<Button>();
 		classesDatabase = GameObject.FindObjectOfType<ClassesDatabase>();
 		
-		if (classesDatabase.classes[gameControl.playerClass].equipmentMaterialIndex >= selectedEquipmentMaterialIndex || selectedEquipmentMaterialIndex == 5) {
+		//Weapons
+		if (selectedEquipmentMaterialIndex == 5) {
+			gameControl.weaponsList.Add (equipmentDatabase.equipment[gameControl.equippedWeapon]);
+			gameControl.equippedWeapon = PlayerPrefsManager.GetEquipmentID();
+			gameControl.weaponsList.Remove(equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()]);
+			gameControl.CurrentClass();
+			
+			//checks equipped armor to see if it no longer meets class requirements.
+			int classMaterialIndex = classesDatabase.classes[gameControl.playerClass].equipmentMaterialIndex;
+			if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedHead)) {
+				AddEquipmentToInventory (gameControl.equippedHead);
+				gameControl.equippedHead = 0;
+			}
+			if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedChest)) {
+				AddEquipmentToInventory (gameControl.equippedChest);
+				gameControl.equippedChest = 0;
+			}
+			if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedPants)) {
+				AddEquipmentToInventory (gameControl.equippedPants);
+				gameControl.equippedPants = 0;
+			}
+			if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedFeet)) {
+				AddEquipmentToInventory (gameControl.equippedFeet);
+				gameControl.equippedFeet = 0;
+			}
+			SetEquippedSlot ();
+			AutoEquipClothes ();
+			
+		//Armor
+		} else if (classesDatabase.classes[gameControl.playerClass].equipmentMaterialIndex >= selectedEquipmentMaterialIndex) {
 			if (equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentType == Equipment.EquipmentType.Head) {
 				if (gameControl.equippedHead != 1) {
 					AddEquipmentToInventory (gameControl.equippedHead);
@@ -480,51 +622,60 @@ public class EquipmentInventory : MonoBehaviour {
 					AddEquipmentToInventory (gameControl.equippedFeet);
 				}
 				gameControl.equippedFeet = PlayerPrefsManager.GetEquipmentID();
-			} else {
-				AddEquipmentToInventory (gameControl.equippedWeapon);
-				gameControl.equippedWeapon = PlayerPrefsManager.GetEquipmentID();
-				gameControl.CurrentClass();
-				
-				int classMaterialIndex = classesDatabase.classes[gameControl.playerClass].equipmentMaterialIndex;
-				if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedHead)) {
-					AddEquipmentToInventory (gameControl.equippedHead);
-					gameControl.equippedHead = 0;
-				}
-				if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedChest)) {
-					AddEquipmentToInventory (gameControl.equippedChest);
-					gameControl.equippedChest = 0;
-				}
-				if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedPants)) {
-					AddEquipmentToInventory (gameControl.equippedPants);
-					gameControl.equippedPants = 0;
-				}
-				if (classMaterialIndex < GetEquipmentMaterialIndex(gameControl.equippedFeet)) {
-					AddEquipmentToInventory (gameControl.equippedFeet);
-					gameControl.equippedFeet = 0;
-				}
-				AutoEquipClothes ();
 			}
-			
-			//updates quantity of equipped item.
+			//updates quantity of equipped armor.
 			if (gameControl.equipmentInventoryList [PlayerPrefsManager.GetSelectItem()].quantity > 1) {
 				gameControl.equipmentInventoryList [PlayerPrefsManager.GetSelectItem()].quantity --;
 			} else {
 				gameControl.equipmentInventoryList.RemoveAt (itemIndex);
 			}
-			
 			SetEquippedSlot ();
-			contentPanel.DeleteInventory();
-			PopulateEquipment(equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentSlot);			
-			EquipmentInfoDisplay ();
-			//good place to call an updated stats from gamecontrol.
+			
+		//Unable to equip armor.
+		} else {
+			//write in call to unable to equip method? or just code it in.
 		}
 		
-		//write in call to unable to equip method? or just code it in.
-		//also need to set selected item....
-		
-		
+		contentPanel.DeleteInventory();
+		PopulateEquipment(equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()].equipmentSlot);			
+		EquipmentInfoDisplay ();
+		UpdateEquippedStats ();
+
 		equipButton.interactable = false;
 		destroyEquipmentButton.interactable = false;
+	}
+	
+	public void UpdateEquippedStats () {
+		gameControl.currentStrength = gameControl.baseStrength + equipmentDatabase.equipment[gameControl.equippedHead].equipmentStrength +
+																 equipmentDatabase.equipment[gameControl.equippedChest].equipmentStrength +
+																 equipmentDatabase.equipment[gameControl.equippedWeapon].equipmentStrength +
+																 equipmentDatabase.equipment[gameControl.equippedPants].equipmentStrength +
+																 equipmentDatabase.equipment[gameControl.equippedFeet].equipmentStrength;
+		gameControl.currentDefense = gameControl.baseDefense + equipmentDatabase.equipment[gameControl.equippedHead].equipmentDefense +
+															   equipmentDatabase.equipment[gameControl.equippedChest].equipmentDefense +
+															   equipmentDatabase.equipment[gameControl.equippedWeapon].equipmentDefense +
+															   equipmentDatabase.equipment[gameControl.equippedPants].equipmentDefense +
+															   equipmentDatabase.equipment[gameControl.equippedFeet].equipmentDefense;
+		gameControl.currentSpeed = gameControl.baseSpeed + equipmentDatabase.equipment[gameControl.equippedHead].equipmentSpeed +
+														   equipmentDatabase.equipment[gameControl.equippedChest].equipmentSpeed +
+														   equipmentDatabase.equipment[gameControl.equippedWeapon].equipmentSpeed +
+														   equipmentDatabase.equipment[gameControl.equippedPants].equipmentSpeed +
+														   equipmentDatabase.equipment[gameControl.equippedFeet].equipmentSpeed;
+		gameControl.currentIntelligence = gameControl.baseIntelligence + equipmentDatabase.equipment[gameControl.equippedHead].equipmentIntelligence +
+																		 equipmentDatabase.equipment[gameControl.equippedChest].equipmentIntelligence +
+																		 equipmentDatabase.equipment[gameControl.equippedWeapon].equipmentIntelligence +
+																		 equipmentDatabase.equipment[gameControl.equippedPants].equipmentIntelligence +
+																		 equipmentDatabase.equipment[gameControl.equippedFeet].equipmentIntelligence;
+		gameControl.currentHealth = gameControl.baseHealth + equipmentDatabase.equipment[gameControl.equippedHead].equipmentHealth +
+															 equipmentDatabase.equipment[gameControl.equippedChest].equipmentHealth +
+															 equipmentDatabase.equipment[gameControl.equippedWeapon].equipmentHealth +
+															 equipmentDatabase.equipment[gameControl.equippedPants].equipmentHealth +
+															 equipmentDatabase.equipment[gameControl.equippedFeet].equipmentHealth;
+		gameControl.currentMana = gameControl.baseMana + equipmentDatabase.equipment[gameControl.equippedHead].equipmentMana +
+														 equipmentDatabase.equipment[gameControl.equippedChest].equipmentMana +
+														 equipmentDatabase.equipment[gameControl.equippedWeapon].equipmentMana +
+														 equipmentDatabase.equipment[gameControl.equippedPants].equipmentMana +
+														 equipmentDatabase.equipment[gameControl.equippedFeet].equipmentMana;
 	}
 	
 	
@@ -564,12 +715,10 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	
 	public void DestroyEquipmentNo () {
-	//Maybe I should make this work more like the open previous menu works.
 		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
 		destroyEquipmentVerificationCanvas = GameObject.FindGameObjectWithTag("Destroy Equipment Verification Canvas");
 		Destroy (destroyEquipmentVerificationCanvas.gameObject);
 		contentPanel.ActivateInventory();
-				
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Content").transform.GetChild(PlayerPrefsManager.GetLocalEquipmentIndex()).gameObject,null);
 		Invoke ("SelectEquipment", 0);
 	}

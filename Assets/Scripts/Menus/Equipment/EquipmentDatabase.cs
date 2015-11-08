@@ -28,9 +28,9 @@ public class EquipmentDatabase : MonoBehaviour {
 		equipment.Add (new Equipment (10, "Axe", "Basic copper axe", Equipment.EquipmentType.Axe, Equipment.EquipmentMaterial.Berserker, Equipment.EquipmentSlot.Weapon, 2, 1, 1, 0, 1, 0, 1.2f, 0, 100, 1));
 		equipment.Add (new Equipment (11, "Dagger", "Basic copper dagger", Equipment.EquipmentType.Dagger, Equipment.EquipmentMaterial.Rogue, Equipment.EquipmentSlot.Weapon, 0, 0, 2, 0, 1, 0, 0.5f, 0, 100, 1));
 		equipment.Add (new Equipment (12, "Bow", "Basic wooden bow", Equipment.EquipmentType.Bow, Equipment.EquipmentMaterial.Ranger, Equipment.EquipmentSlot.Weapon, 1, 0, 2, 1, 1, 1, 0.75f, 0, 100, 1));
-		equipment.Add (new Equipment (13, "Tome", "Basic dusty tome", Equipment.EquipmentType.Tome, Equipment.EquipmentMaterial.Wizard, Equipment.EquipmentSlot.Weapon, 0, 0, 0, 2, 1, 2, 1, 0, 100, 1));
+		equipment.Add (new Equipment (13, "Knuckles", "Basic brass knuckles", Equipment.EquipmentType.Fist, Equipment.EquipmentMaterial.Monk, Equipment.EquipmentSlot.Weapon, 0, 0, 0, 2, 1, 2, 1, 0, 100, 1));
 		equipment.Add (new Equipment (14, "Talisman", "Basic dusty talisman", Equipment.EquipmentType.Talisman, Equipment.EquipmentMaterial.Sorcerer, Equipment.EquipmentSlot.Weapon, 0, 0, 0, 2, 1, 2, 1, 0, 100, 1));
-		equipment.Add (new Equipment (15, "Staff", "Basic wooden staff", Equipment.EquipmentType.Staff, Equipment.EquipmentMaterial.Monk, Equipment.EquipmentSlot.Weapon, 2, 2, 1, 0, 1, 0, 1.2f, 0, 100, 1));
+		equipment.Add (new Equipment (15, "Staff", "Basic wooden staff", Equipment.EquipmentType.Staff, Equipment.EquipmentMaterial.Wizard, Equipment.EquipmentSlot.Weapon, 2, 2, 1, 0, 1, 0, 1.2f, 0, 100, 1));
 		equipment.Add (new Equipment (16, "Polearm", "Basic copper polearm", Equipment.EquipmentType.Polearm, Equipment.EquipmentMaterial.Paladin, Equipment.EquipmentSlot.Weapon, 2, 3, 0, 0, 1, 0, 1.5f, 0, 100, 1));
 	}
 }

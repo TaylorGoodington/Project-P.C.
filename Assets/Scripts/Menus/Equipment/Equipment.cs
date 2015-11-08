@@ -33,7 +33,7 @@ public class Equipment {
 		Axe,
 		Dagger,
 		Bow,
-		Tome,
+		Fist,
 		Talisman,
 		Staff,
 		Polearm
