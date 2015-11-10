@@ -63,6 +63,8 @@ public class GameControl : MonoBehaviour {
 	public int equippedFeet;
 	
 	public int equippedWeapon;
+	//this needs to be saved.
+	public int availableEvolutions;
 	
 	
 
@@ -72,7 +74,7 @@ public class GameControl : MonoBehaviour {
 	
 	void Start () {
 		playerClass = 7;
-		equippedWeapon = 16;
+		equippedWeapon = 65;
 		equippedHead = 5;
 		equippedChest = 6;
 		equippedPants = 7;
@@ -92,6 +94,9 @@ public class GameControl : MonoBehaviour {
 		//allows use of previous menu...
 		if (Input.GetKeyDown(KeyCode.X)) {
 			equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousMenu(equipmentInventory.GetComponent<EquipmentInventory>().EquipmentMenuLevel());
+		}
+		if (Input.GetKeyDown(KeyCode.W)) {
+			equipmentInventory.GetComponent<EquipmentInventory>().OpenWeaponEvolutionMenu();
 		}
 	}
 	

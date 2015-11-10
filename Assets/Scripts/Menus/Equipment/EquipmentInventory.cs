@@ -16,6 +16,8 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	public GameObject equipmentSlotsMenu;
 	
+	public GameObject weaponEvolutionMenu;
+	
 	public ClassesDatabase classesDatabase;
 	
 	//used to instantiate item use verification windows.
@@ -146,6 +148,23 @@ public class EquipmentInventory : MonoBehaviour {
 		SetEquippedSlot ();
 	}
 	
+	public void OpenWeaponEvolutionMenu () {
+		//temp way to add info to the weapons list.
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[9]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[17]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[25]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[33]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[41]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[49]);
+		gameControl.weaponsList.Add (equipmentDatabase.equipment[57]);
+		
+		Instantiate (weaponEvolutionMenu);
+		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
+		contentPanel.InitiateWeaponEvolutionMenuSlots();
+		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Place Holder"),null);
+		EquipmentInfoDisplay ();
+	}
+	
 	public void SetEquippedSlot () {
 		equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
 		
@@ -153,9 +172,16 @@ public class EquipmentInventory : MonoBehaviour {
 		GameObject equippedSlotIDObject = equippedSlot.transform.GetChild(1).gameObject;
 		Text equippedSlotIDText = equippedSlotIDObject.GetComponent<Text>();
 		equippedSlotIDText.text = PlayerPrefsManager.GetEquipmentID().ToString();
+		
 		GameObject equippedSlotName = equippedSlot.transform.GetChild(0).gameObject;
 		Text equippedSlotNameText = equippedSlotName.GetComponent<Text>();
 		equippedSlotNameText.text = equipmentDatabase.equipment[PlayerPrefsManager.GetEquipmentID()].equipmentName;
+		
+		if (equipmentDatabase.equipment[PlayerPrefsManager.GetEquipmentID()].equipmentSlot == Equipment.EquipmentSlot.Weapon) {
+			GameObject equippedLevel = equippedSlot.transform.GetChild(3).gameObject;
+			Text equippedLevelText = equippedLevel.GetComponent<Text>();
+			equippedLevelText.text = equipmentDatabase.equipment[PlayerPrefsManager.GetEquipmentID()].quantity.ToString();
+		}
 	}
 	
 	//gets the components in the info display panel for future use.
@@ -204,25 +230,26 @@ public class EquipmentInventory : MonoBehaviour {
 	}
 
 
-	public void WeaponEvolution (int equipID) {
-		//I think i'll set this up to take in the equip id from playerprefsmanager
-		if (equipID == gameControl.equippedWeapon) {
-			//I should just be able to change the int in gamecontrol.
-			UpdateEquippedStats();
-		}
+	public void WeaponEvolution () {
+		int equipID = PlayerPrefsManager.GetEquipmentID();
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+//		if (gameControl.availableEvolutions > 0) { this will check if there is an available soul to use.
+			if (equipID == gameControl.equippedWeapon) {
+				gameControl.equippedWeapon = equipID + 1;;
+				UpdateEquippedStats();
+			} else {
+				gameControl.weaponsList.Remove (equipmentDatabase.equipment [equipID]);
+				gameControl.weaponsList.Add (equipmentDatabase.equipment [equipID + 1]);
+			}
+//			I need to do something about backing out of the equip and refreshing the list.
+//		} else {
+//			//present message about not having any souls.
+//		}
 	}
 
 	public void AddTempData () {
 		//take out of inventory at some point...		
 		AddEquipmentToInventory(5, 6, 5, 6, 7, 8);
-		//temp way to add info to the weapons list.
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[9]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[10]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[11]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[12]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[13]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[14]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[15]);
 	}
 	
 	public void PopulateEquipment (Equipment.EquipmentSlot equipmentSlot) {
@@ -250,7 +277,10 @@ public class EquipmentInventory : MonoBehaviour {
 				int equipmentInventoryCountIndex = gameControl.equipmentInventoryList.IndexOf(weapons);
 				newEquipmentIndex.text = equipmentInventoryCountIndex.ToString();
 				
-				//We dont use the quantity in weapons.
+				//Puts the level of the weapon in the fourth child.
+				GameObject newEquipmentQuantityObject = newEquipment.transform.GetChild(3).gameObject;
+				Text newEquipmentQuantity = newEquipmentQuantityObject.GetComponent<Text>();
+				newEquipmentQuantity.text = weapons.quantity.ToString();
 				
 				//puts the local index in the fifth child.
 				localIndexCount ++;
@@ -435,6 +465,22 @@ public class EquipmentInventory : MonoBehaviour {
 				manaStat.color = Color.white;
 			}
 
+		} else if (selectedItem.name == "Evolve Weapon") {
+			int equippedID = PlayerPrefsManager.GetEquipmentID();
+			strengthStat.text = equipmentDatabase.equipment [equippedID].equipmentStrength + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentStrength);
+			defenseStat.text = equipmentDatabase.equipment [equippedID].equipmentDefense + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentDefense);
+			intelligenceStat.text = equipmentDatabase.equipment [equippedID].equipmentIntelligence + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentIntelligence);
+			speedStat.text = equipmentDatabase.equipment [equippedID].equipmentSpeed + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentSpeed);
+			healthStat.text = equipmentDatabase.equipment [equippedID].equipmentHealth + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentHealth);
+			manaStat.text = equipmentDatabase.equipment [equippedID].equipmentMana + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentMana);
+			
+			strengthStat.color = Color.green;
+			defenseStat.color = Color.green;
+			speedStat.color = Color.green;
+			intelligenceStat.color = Color.green;
+			healthStat.color = Color.green;
+			manaStat.color = Color.green;
+			
 		} else if (selectedItem.name == "Destroy Equipment") {
 
 		} else if (selectedItem.name == "Equip Equipment Yes") {

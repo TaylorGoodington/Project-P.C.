@@ -24,4 +24,21 @@ public class ContentPanel : MonoBehaviour {
 			}
 		}
 	}
+	
+	public void InitiateWeaponEvolutionMenuSlots () {
+		EquipmentDatabase equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
+		foreach (Transform child in transform) {
+			if (child.gameObject.name == "Place Holder") {
+			} else {
+				Text weaponIDText = child.GetChild(1).GetComponent<Text>();
+				int weaponID = int.Parse(weaponIDText.text);
+				
+				Text weaponNameText = child.GetChild(0).GetComponent<Text>();
+				weaponNameText.text = equipmentDatabase.equipment[weaponID].equipmentName;
+				
+				Text weaponLevel = child.GetChild(3).GetComponent<Text>();
+				weaponLevel.text = equipmentDatabase.equipment[weaponID].quantity.ToString();
+			}
+		}
+	}
 }
