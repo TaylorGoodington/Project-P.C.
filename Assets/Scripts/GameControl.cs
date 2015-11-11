@@ -4,6 +4,7 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GameControl : MonoBehaviour {
 
@@ -90,15 +91,74 @@ public class GameControl : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.E)) {
 			equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
 			equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentBaseMenu();
+			//temp way to add info to the weapons list.
+			weaponsList.Add (equipmentDatabase.equipment[9]);
+			weaponsList.Add (equipmentDatabase.equipment[17]);
+			weaponsList.Add (equipmentDatabase.equipment[25]);
+			weaponsList.Add (equipmentDatabase.equipment[33]);
+			weaponsList.Add (equipmentDatabase.equipment[41]);
+			weaponsList.Add (equipmentDatabase.equipment[49]);
+			weaponsList.Add (equipmentDatabase.equipment[57]);
 		}
-		//allows use of previous menu...
+		
+		//"Back" function.
 		if (Input.GetKeyDown(KeyCode.X)) {
-			equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousMenu(equipmentInventory.GetComponent<EquipmentInventory>().EquipmentMenuLevel());
+			//Dialogue Menus from lady death.
+			if (GameObject.FindGameObjectWithTag("Weapon Evolution Menu")) {
+				Debug.Log ("Yay!!");
+			
+			//Menus from the Equipment Menus.
+			} else if (GameObject.FindGameObjectWithTag("Base Equipment Menu") || GameObject.FindGameObjectWithTag("Equipment Menu")) {
+				equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousEquipmentMenu(EquipmentMenuLevel());
+			}
 		}
+		
 		if (Input.GetKeyDown(KeyCode.W)) {
 			equipmentInventory.GetComponent<EquipmentInventory>().OpenWeaponEvolutionMenu();
+			//temp way to add info to the weapons list.
+			weaponsList.Add (equipmentDatabase.equipment[9]);
+			weaponsList.Add (equipmentDatabase.equipment[17]);
+			weaponsList.Add (equipmentDatabase.equipment[25]);
+			weaponsList.Add (equipmentDatabase.equipment[33]);
+			weaponsList.Add (equipmentDatabase.equipment[41]);
+			weaponsList.Add (equipmentDatabase.equipment[49]);
+			weaponsList.Add (equipmentDatabase.equipment[57]);
 		}
 	}
+	
+	//**************************************************************************************//
+	//The Menu Level Functions pass info to an "open previous menu" Function, which is called by the "back" function depending on which is acitve.
+	//**************************************************************************************//
+	public int EquipmentMenuLevel () {
+		if (GameObject.FindGameObjectWithTag("Destroy Equipment Verification Canvas")) {
+			return 4;
+		} else if (GameObject.FindGameObjectWithTag("Equip Button")) {
+			if (GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>().IsInteractable()) {
+				return 3;
+			}
+			return 2;
+		} else if (GameObject.FindGameObjectWithTag("Equipment Menu")) {
+			return 2;
+		} else if (GameObject.FindGameObjectWithTag("Base Equipment Menu")) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	
+	public int LadyDeathDialogueMenuLevel () {
+		return 0;
+	}
+	
+	public int InventoryMenuLevel () {
+		return 0;
+	}
+	
+	public int MainMenuLevel () {
+		return 0;
+	}
+	
+	
 	
 	//I dont like the way this works, I would rather do a find based on the equipped weapon material...
 	public void CurrentClass () {

@@ -91,30 +91,20 @@ public class EquipmentInventory : MonoBehaviour {
 	}
 	
 	
-	//I think this will work by identifying which level you are on and passing the information back to a "back" function.
-	public int EquipmentMenuLevel () {
-		if (GameObject.FindGameObjectWithTag("Destroy Equipment Verification Canvas")) {
-			return 4;
-		} else if (GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>().IsInteractable()) {
-			return 3;
-		} else if (GameObject.FindGameObjectWithTag("Equipment Menu")) {
-			return 2;
-		} else if (GameObject.FindGameObjectWithTag("Base Equipment Menu")) {
-			return 1;
+	public void OpenPreviousEquipmentMenu (int equipmentMenuLevel) {
+		if (GameObject.FindGameObjectWithTag ("Equipment Content")) {
+			contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
 		}
-			return 0;
-	}
-	
-
-	public void OpenPreviousMenu (int equipmentMenuLevel) {
-		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
+		
 		if (equipmentMenuLevel == 4) {
 			DestroyEquipmentNo();
 		} else if (equipmentMenuLevel == 3) {
 			equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
 			equipButton.interactable = false;
-			destroyEquipmentButton = GameObject.FindGameObjectWithTag("Destroy Equipment Button").GetComponent<Button>();
-			destroyEquipmentButton.interactable = false;
+			if (GameObject.FindGameObjectWithTag("Destroy Equipment Button")) {
+				destroyEquipmentButton = GameObject.FindGameObjectWithTag("Destroy Equipment Button").GetComponent<Button>();
+				destroyEquipmentButton.interactable = false;
+			}
 			contentPanel.ActivateInventory();
 			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Content").transform.GetChild(PlayerPrefsManager.GetLocalEquipmentIndex()).gameObject,null);
 		} else if (equipmentMenuLevel == 2) {
@@ -149,15 +139,6 @@ public class EquipmentInventory : MonoBehaviour {
 	}
 	
 	public void OpenWeaponEvolutionMenu () {
-		//temp way to add info to the weapons list.
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[9]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[17]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[25]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[33]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[41]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[49]);
-		gameControl.weaponsList.Add (equipmentDatabase.equipment[57]);
-		
 		Instantiate (weaponEvolutionMenu);
 		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
 		contentPanel.InitiateWeaponEvolutionMenuSlots();
@@ -234,14 +215,22 @@ public class EquipmentInventory : MonoBehaviour {
 		int equipID = PlayerPrefsManager.GetEquipmentID();
 		gameControl = GameObject.FindObjectOfType<GameControl>();
 //		if (gameControl.availableEvolutions > 0) { this will check if there is an available soul to use.
-			if (equipID == gameControl.equippedWeapon) {
-				gameControl.equippedWeapon = equipID + 1;;
-				UpdateEquippedStats();
-			} else {
-				gameControl.weaponsList.Remove (equipmentDatabase.equipment [equipID]);
-				gameControl.weaponsList.Add (equipmentDatabase.equipment [equipID + 1]);
+			if (equipmentDatabase.equipment[equipID].quantity < 8) {
+				if (equipID == gameControl.equippedWeapon) {
+					gameControl.equippedWeapon = equipID + 1;;
+					UpdateEquippedStats();
+				} else {
+					gameControl.weaponsList.Remove (equipmentDatabase.equipment [equipID]);
+					gameControl.weaponsList.Add (equipmentDatabase.equipment [equipID + 1]);
+				}
+			equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
+			contentPanel = GameObject.FindObjectOfType<ContentPanel>();
+			equipButton.interactable = false;
+			contentPanel.UpdateWeaponEvolutionMenu(PlayerPrefsManager.GetEquipmentID());
+			contentPanel.ActivateInventory();	
+			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Place Holder"),null);
 			}
-//			I need to do something about backing out of the equip and refreshing the list.
+//			//present message about weapon being at max level.
 //		} else {
 //			//present message about not having any souls.
 //		}
@@ -467,19 +456,21 @@ public class EquipmentInventory : MonoBehaviour {
 
 		} else if (selectedItem.name == "Evolve Weapon") {
 			int equippedID = PlayerPrefsManager.GetEquipmentID();
-			strengthStat.text = equipmentDatabase.equipment [equippedID].equipmentStrength + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentStrength);
-			defenseStat.text = equipmentDatabase.equipment [equippedID].equipmentDefense + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentDefense);
-			intelligenceStat.text = equipmentDatabase.equipment [equippedID].equipmentIntelligence + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentIntelligence);
-			speedStat.text = equipmentDatabase.equipment [equippedID].equipmentSpeed + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentSpeed);
-			healthStat.text = equipmentDatabase.equipment [equippedID].equipmentHealth + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentHealth);
-			manaStat.text = equipmentDatabase.equipment [equippedID].equipmentMana + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentMana);
-			
-			strengthStat.color = Color.green;
-			defenseStat.color = Color.green;
-			speedStat.color = Color.green;
-			intelligenceStat.color = Color.green;
-			healthStat.color = Color.green;
-			manaStat.color = Color.green;
+			if (equipmentDatabase.equipment[equippedID].quantity < 8) {
+				strengthStat.text = equipmentDatabase.equipment [equippedID].equipmentStrength + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentStrength);
+				defenseStat.text = equipmentDatabase.equipment [equippedID].equipmentDefense + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentDefense);
+				intelligenceStat.text = equipmentDatabase.equipment [equippedID].equipmentIntelligence + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentIntelligence);
+				speedStat.text = equipmentDatabase.equipment [equippedID].equipmentSpeed + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentSpeed);
+				healthStat.text = equipmentDatabase.equipment [equippedID].equipmentHealth + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentHealth);
+				manaStat.text = equipmentDatabase.equipment [equippedID].equipmentMana + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentMana);
+				
+				strengthStat.color = Color.green;
+				defenseStat.color = Color.green;
+				speedStat.color = Color.green;
+				intelligenceStat.color = Color.green;
+				healthStat.color = Color.green;
+				manaStat.color = Color.green;
+			}
 			
 		} else if (selectedItem.name == "Destroy Equipment") {
 
