@@ -67,6 +67,11 @@ public class GameControl : MonoBehaviour {
 	//this needs to be saved.
 	public int availableEvolutions;
 	
+	//Menu Levels are incremented by functions that dive deeper into the respective menu and are decremented by the back function.
+	public int equipmentMenuLevel = 0;
+	public int weaponEvolutionMenuLevel = 0;
+	public int mainMenuLevel = 0;
+	public int itemsMenuLevel = 0;
 	
 
 	void Awake () {
@@ -103,13 +108,28 @@ public class GameControl : MonoBehaviour {
 		
 		//"Back" function.
 		if (Input.GetKeyDown(KeyCode.X)) {
-			//Dialogue Menus from lady death.
-			if (GameObject.FindGameObjectWithTag("Weapon Evolution Menu")) {
-				Debug.Log ("Yay!!");
+			//Weapon Evolution Menu.
+			if (weaponEvolutionMenuLevel > 0) {
+				equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousWeaponMenu(weaponEvolutionMenuLevel);
+				weaponEvolutionMenuLevel --;
+			}
 			
-			//Menus from the Equipment Menus.
-			} else if (GameObject.FindGameObjectWithTag("Base Equipment Menu") || GameObject.FindGameObjectWithTag("Equipment Menu")) {
-				equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousEquipmentMenu(EquipmentMenuLevel());
+			//Main Menu.
+			if (mainMenuLevel > 0) {
+				
+				mainMenuLevel --;
+			}
+			
+			//Items Menu.
+			if (itemsMenuLevel > 0) {
+				
+				itemsMenuLevel --;
+			}
+			
+			//Equipment Menu.
+			if (equipmentMenuLevel > 0) {
+				equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousEquipmentMenu(equipmentMenuLevel);
+				equipmentMenuLevel --;
 			}
 		}
 		
@@ -125,40 +145,7 @@ public class GameControl : MonoBehaviour {
 			weaponsList.Add (equipmentDatabase.equipment[57]);
 		}
 	}
-	
-	//**************************************************************************************//
-	//The Menu Level Functions pass info to an "open previous menu" Function, which is called by the "back" function depending on which is acitve.
-	//**************************************************************************************//
-	public int EquipmentMenuLevel () {
-		if (GameObject.FindGameObjectWithTag("Destroy Equipment Verification Canvas")) {
-			return 4;
-		} else if (GameObject.FindGameObjectWithTag("Equip Button")) {
-			if (GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>().IsInteractable()) {
-				return 3;
-			}
-			return 2;
-		} else if (GameObject.FindGameObjectWithTag("Equipment Menu")) {
-			return 2;
-		} else if (GameObject.FindGameObjectWithTag("Base Equipment Menu")) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-	
-	public int LadyDeathDialogueMenuLevel () {
-		return 0;
-	}
-	
-	public int InventoryMenuLevel () {
-		return 0;
-	}
-	
-	public int MainMenuLevel () {
-		return 0;
-	}
-	
-	
+
 	
 	//I dont like the way this works, I would rather do a find based on the equipped weapon material...
 	public void CurrentClass () {

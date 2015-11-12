@@ -115,12 +115,27 @@ public class EquipmentInventory : MonoBehaviour {
 			//Method for opening main menu level.
 		}
 	}
+	
+	
+	public void OpenPreviousWeaponMenu (int equipmentMenuLevel) {
+		if (equipmentMenuLevel == 2) {
+			equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
+			contentPanel = GameObject.FindObjectOfType<ContentPanel>();
+			equipButton.interactable = false;
+			contentPanel.ActivateInventory();	
+			EventSystem.current.SetSelectedGameObject(contentPanel.transform.GetChild(PlayerPrefsManager.GetLocalEquipmentIndex()).gameObject,null);
+		} else if (equipmentMenuLevel == 1) {
+			Destroy (GameObject.FindGameObjectWithTag("Equipment Menu"));
+			//Method for opening lady death menu.
+		}
+	}
 
 	
 	public void OpenEquipmentBaseMenu () {
 		Instantiate (equipmentBaseMenu);
 		EquipmentInfoDisplay ();
 		AutoEquipClothes ();
+		gameControl.equipmentMenuLevel = 1;
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Head Slot"),null);
 	}
 	
@@ -136,9 +151,11 @@ public class EquipmentInventory : MonoBehaviour {
 		EquipmentInfoDisplay ();
 		
 		SetEquippedSlot ();
+		gameControl.equipmentMenuLevel = 2;
 	}
 	
 	public void OpenWeaponEvolutionMenu () {
+		gameControl.weaponEvolutionMenuLevel = 1;
 		Instantiate (weaponEvolutionMenu);
 		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
 		contentPanel.InitiateWeaponEvolutionMenuSlots();
@@ -214,7 +231,7 @@ public class EquipmentInventory : MonoBehaviour {
 	public void WeaponEvolution () {
 		int equipID = PlayerPrefsManager.GetEquipmentID();
 		gameControl = GameObject.FindObjectOfType<GameControl>();
-//		if (gameControl.availableEvolutions > 0) { this will check if there is an available soul to use.
+		if (gameControl.availableEvolutions > 0) {
 			if (equipmentDatabase.equipment[equipID].quantity < 8) {
 				if (equipID == gameControl.equippedWeapon) {
 					gameControl.equippedWeapon = equipID + 1;;
@@ -228,12 +245,12 @@ public class EquipmentInventory : MonoBehaviour {
 			equipButton.interactable = false;
 			contentPanel.UpdateWeaponEvolutionMenu(PlayerPrefsManager.GetEquipmentID());
 			contentPanel.ActivateInventory();	
-			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Place Holder"),null);
+			EventSystem.current.SetSelectedGameObject(contentPanel.transform.GetChild(PlayerPrefsManager.GetLocalEquipmentIndex()).gameObject,null);
 			}
-//			//present message about weapon being at max level.
-//		} else {
+			//present message about weapon being at max level. Or play noise or something.
+		} else {
 //			//present message about not having any souls.
-//		}
+		}
 	}
 
 	public void AddTempData () {
@@ -538,9 +555,8 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	
 	public void SelectEquipment () {
-	
 		selectedEquipmentMaterialIndex = GetEquipmentMaterialIndex (PlayerPrefsManager.GetEquipmentID());
-		
+		gameControl = GameObject.FindObjectOfType<GameControl>();
 		equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
 		equipButton.interactable = true;
 		if (selectedEquipmentMaterialIndex != 5) {
@@ -550,6 +566,12 @@ public class EquipmentInventory : MonoBehaviour {
 		contentPanel = GameObject.FindObjectOfType<ContentPanel>();
 		contentPanel.DeactivateInventory();	
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equip Button"),null);
+		
+		if (gameControl.equipmentMenuLevel == 2) {
+			gameControl.equipmentMenuLevel = 3;
+		} else {
+			gameControl.weaponEvolutionMenuLevel = 2;
+		}
 	}
 	
 	
@@ -717,6 +739,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	
 	public void DestroyEquipmentInInventory () {
+		gameControl.equipmentMenuLevel = 4;
 		equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
 		equipButton.interactable = false;
 		
