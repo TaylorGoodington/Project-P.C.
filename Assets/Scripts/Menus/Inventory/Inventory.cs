@@ -16,6 +16,9 @@ public class Inventory : MonoBehaviour {
 	public GameObject itemInventoryUse;
 	public GameObject itemInventoryDestroy;
 	
+	//Item Inventory Menu
+	public GameObject itemMenu;
+	
 	//access the selected gameobject.
 	private GameObject selectedItem;
 	
@@ -60,11 +63,8 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	public void OpenItemMenu () {
-		
-		AddTempData ();
-		
+		Instantiate (itemMenu);
 		PopulateInventory ();
-		
 		ItemInfoDisplay ();
 	}
 

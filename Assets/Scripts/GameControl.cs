@@ -14,6 +14,7 @@ public class GameControl : MonoBehaviour {
 	public GameObject itemInventoryMenu;
 	public GameObject equipmentBaseMenu;
 	public GameObject equipmentSlotMenu;
+	public GameObject pauseMenu;
 	
 	//item inventory script access.
 	public GameObject itemInventory;
@@ -88,14 +89,16 @@ public class GameControl : MonoBehaviour {
 	}
 	
 	void Update () {
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			OpenPauseMenu();
+		}
+		
 		if (Input.GetKeyDown(KeyCode.P)) {
 			Instantiate(itemInventoryMenu);
 			itemInventory.GetComponent<Inventory>().OpenItemMenu();
 		} 
 		
 		if (Input.GetKeyDown(KeyCode.E)) {
-			equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
-			equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentBaseMenu();
 			//temp way to add info to the weapons list.
 			weaponsList.Add (equipmentDatabase.equipment[9]);
 			weaponsList.Add (equipmentDatabase.equipment[17]);
@@ -104,6 +107,8 @@ public class GameControl : MonoBehaviour {
 			weaponsList.Add (equipmentDatabase.equipment[41]);
 			weaponsList.Add (equipmentDatabase.equipment[49]);
 			weaponsList.Add (equipmentDatabase.equipment[57]);
+			equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
+			
 		}
 		
 		//"Back" function.
@@ -144,6 +149,10 @@ public class GameControl : MonoBehaviour {
 			weaponsList.Add (equipmentDatabase.equipment[49]);
 			weaponsList.Add (equipmentDatabase.equipment[57]);
 		}
+	}
+	
+	public void OpenPauseMenu () {
+		Instantiate(pauseMenu);
 	}
 
 	
