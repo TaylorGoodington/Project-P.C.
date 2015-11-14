@@ -27,7 +27,7 @@ public class PauseMenu : MonoBehaviour {
 	
 	public void OpenEquipmentMenu () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(0);
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		
 		Destroy (gameObject);
 		equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentBaseMenu();
@@ -35,7 +35,7 @@ public class PauseMenu : MonoBehaviour {
 	
 	public void OpenItemMenu () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(1);
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		itemInventory.GetComponent<Inventory>().OpenItemMenu();
 		Destroy (gameObject);
 	}

@@ -64,6 +64,7 @@ public class Inventory : MonoBehaviour {
 	
 	public void OpenItemMenu () {
 		Instantiate (itemMenu);
+		AddTempData();
 		PopulateInventory ();
 		ItemInfoDisplay ();
 	}
@@ -76,18 +77,14 @@ public class Inventory : MonoBehaviour {
 	}
 
 	void AddTempData () {
-		gameControl.itemInventoryList.Add (itemDatabase.items [1]);
-		gameControl.itemInventoryList.Add (itemDatabase.items [0]);
-		gameControl.itemInventoryList.Add (itemDatabase.items [1]);
-		gameControl.itemInventoryList.Add (itemDatabase.items [1]);
-		gameControl.itemInventoryList.Add (itemDatabase.items [1]);
-		gameControl.itemInventoryList.Add (itemDatabase.items [0]);
+		AddItemsToInventory(1, 0, 1, 1, 1, 0);
 	}
 
 	void PopulateInventory () {
+		gameControl = GameObject.FindObjectOfType<GameControl>();
 		//FUGGIN MACK DADDY SETS THE CURRENT SELECTED OBJECT...WILL USE THIS TO CONTROL DIRECTION.
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Item Inventory Place Holder"),null);
-		
+		int localIndexCount = 1;
 		int inventoryCount = 0; //this works for now but i have my doubts...
 		foreach (var item in gameControl.itemInventoryList) {
 			GameObject newItem = Instantiate (inventoryItem) as GameObject;
@@ -108,11 +105,23 @@ public class Inventory : MonoBehaviour {
 			int inventoryCountIndex = inventoryCount;
 			newItemIndex.text = inventoryCountIndex.ToString();
 			inventoryCount ++;
+			
+			//Puts the level of the weapon in the fourth child.
+			GameObject newItemQuantityObject = newItem.transform.GetChild(3).gameObject;
+			Text newItemQuantity = newItemQuantityObject.GetComponent<Text>();
+			newItemQuantity.text = item.quantity.ToString();
+			
+			//puts the local index in the fifth child.
+			localIndexCount ++;
+			GameObject newItemLocalIndex = newItem.transform.GetChild(4).gameObject;
+			Text itemLocalIndex = newItemLocalIndex.GetComponent<Text>();
+			itemLocalIndex.text = localIndexCount.ToString();
 		}
 	}
 
 	
 	public void GetItemInfo () {
+		ItemInfoDisplay();
 		selectedItem = EventSystem.current.currentSelectedGameObject;
 		if (selectedItem.name == "Place Holder") {
 			displayItemName.text = "";
@@ -153,16 +162,29 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	
-	public void AddItemToInventory (int itemNumber) {
-		if (inventoryList.Count == inventorySlots) {
+	//Have item drops call this as needed.
+	public void AddItemsToInventory (params int[] itemNumber) {
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		itemDatabase = GameObject.FindGameObjectWithTag("Items Database").GetComponent<ItemDatabase>();
+		if (gameControl.itemInventoryList.Count == inventorySlots) {
 			return;
 			//present message saying out of space? Might need to be more complicated...
 		} else {
-			gameControl.itemInventoryList.Add (itemDatabase.items [itemNumber]);
+			foreach (int item in itemNumber) {
+				if (gameControl.itemInventoryList.Contains(itemDatabase.items[item])) {
+					int index = gameControl.itemInventoryList.IndexOf(itemDatabase.items[item]);
+					gameControl.itemInventoryList[index].quantity ++;
+				} else {
+					gameControl.itemInventoryList.Add (itemDatabase.items[item]);
+				}
+			}
 		}
 	}
+
 	
 	public void SelectItem () {
+		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
 		useItemButton.interactable = true;
 		
@@ -175,6 +197,8 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	public void UseItemInInventory () {
+		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
 		useItemButton.interactable = false;
 		
@@ -187,9 +211,18 @@ public class Inventory : MonoBehaviour {
 	}
 
 	public void UseItemYes () {
+		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
 		gameControl = GameObject.FindObjectOfType<GameControl>();
-		int itemIndex = PlayerPrefsManager.GetSelectItem ();
-		gameControl.itemInventoryList.RemoveAt (itemIndex);
+		
+		//some function about actually using the item goes here.
+		
+		int index = gameControl.itemInventoryList.IndexOf(itemDatabase.items[PlayerPrefsManager.GetEquipmentID ()]);
+		if (gameControl.itemInventoryList[index].quantity > 1) {
+			gameControl.itemInventoryList[index].quantity --;
+		} else {
+			gameControl.itemInventoryList.Remove (itemDatabase.items[PlayerPrefsManager.GetEquipmentID ()]);
+		}
 		
 		useItemVerificationCanvas = GameObject.FindGameObjectWithTag("Use Item Verification Canvas");
 		Destroy (useItemVerificationCanvas.gameObject);
@@ -202,6 +235,8 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	public void UseItemNo () {
+		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		useItemVerificationCanvas = GameObject.FindGameObjectWithTag("Use Item Verification Canvas");
 		Destroy (useItemVerificationCanvas.gameObject);
 		contentPanel.ActivateInventory();
@@ -214,6 +249,8 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	public void RemoveItemInInventory () {
+		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
 		useItemButton.interactable = false;
 		
@@ -226,9 +263,16 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	public void RemoveItemYes () {
+		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
 		gameControl = GameObject.FindObjectOfType<GameControl>();
-		int itemIndex = PlayerPrefsManager.GetSelectItem ();
-		gameControl.itemInventoryList.RemoveAt (itemIndex);
+		
+		int index = gameControl.itemInventoryList.IndexOf(itemDatabase.items[PlayerPrefsManager.GetEquipmentID ()]);
+		if (gameControl.itemInventoryList[index].quantity > 1) {
+			gameControl.itemInventoryList[index].quantity --;
+		} else {
+			gameControl.itemInventoryList.Remove (itemDatabase.items[PlayerPrefsManager.GetEquipmentID ()]);
+		}
 		
 		destroyItemVerificationCanvas = GameObject.FindGameObjectWithTag("Item Destroy Verification Canvas");
 		Destroy (destroyItemVerificationCanvas.gameObject);
@@ -241,6 +285,8 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	public void RemoveItemNo () {
+		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		destroyItemVerificationCanvas = GameObject.FindGameObjectWithTag("Item Destroy Verification Canvas");
 		Destroy (destroyItemVerificationCanvas.gameObject);
 		contentPanel.ActivateInventory();

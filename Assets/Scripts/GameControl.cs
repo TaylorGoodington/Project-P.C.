@@ -81,7 +81,7 @@ public class GameControl : MonoBehaviour {
 	
 	void Start () {
 		playerClass = 7;
-		equippedWeapon = 65;
+		equippedWeapon = 80;
 		equippedHead = 5;
 		equippedChest = 6;
 		equippedPants = 7;
@@ -100,13 +100,13 @@ public class GameControl : MonoBehaviour {
 		
 		if (Input.GetKeyDown(KeyCode.E)) {
 			//temp way to add info to the weapons list.
-			weaponsList.Add (equipmentDatabase.equipment[9]);
-			weaponsList.Add (equipmentDatabase.equipment[17]);
-			weaponsList.Add (equipmentDatabase.equipment[25]);
-			weaponsList.Add (equipmentDatabase.equipment[33]);
-			weaponsList.Add (equipmentDatabase.equipment[41]);
-			weaponsList.Add (equipmentDatabase.equipment[49]);
-			weaponsList.Add (equipmentDatabase.equipment[57]);
+			weaponsList.Add (equipmentDatabase.equipment[10]);
+			weaponsList.Add (equipmentDatabase.equipment[20]);
+			weaponsList.Add (equipmentDatabase.equipment[30]);
+			weaponsList.Add (equipmentDatabase.equipment[40]);
+			weaponsList.Add (equipmentDatabase.equipment[50]);
+			weaponsList.Add (equipmentDatabase.equipment[60]);
+			weaponsList.Add (equipmentDatabase.equipment[70]);
 			equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
 			
 		}
@@ -140,14 +140,6 @@ public class GameControl : MonoBehaviour {
 		
 		if (Input.GetKeyDown(KeyCode.W)) {
 			equipmentInventory.GetComponent<EquipmentInventory>().OpenWeaponEvolutionMenu();
-			//temp way to add info to the weapons list.
-			weaponsList.Add (equipmentDatabase.equipment[9]);
-			weaponsList.Add (equipmentDatabase.equipment[17]);
-			weaponsList.Add (equipmentDatabase.equipment[25]);
-			weaponsList.Add (equipmentDatabase.equipment[33]);
-			weaponsList.Add (equipmentDatabase.equipment[41]);
-			weaponsList.Add (equipmentDatabase.equipment[49]);
-			weaponsList.Add (equipmentDatabase.equipment[57]);
 		}
 	}
 	

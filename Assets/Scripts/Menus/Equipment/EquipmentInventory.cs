@@ -83,7 +83,7 @@ public class EquipmentInventory : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (gameControl.equipmentMenuLevel == 2) {
+		if (gameControl.equipmentMenuLevel >= 2 || gameControl.weaponEvolutionMenuLevel >= 1) {
 			GetSlotEquipmentInfo ();
 		} else if (gameControl.equipmentMenuLevel == 1) {
 			GetBaseEquipmentInfo ();
@@ -93,7 +93,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	public void OpenPreviousEquipmentMenu (int equipmentMenuLevel) {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(0);
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		if (GameObject.FindGameObjectWithTag ("Equipment Content")) {
 			contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
 		}
@@ -126,7 +126,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	public void OpenPreviousWeaponMenu (int equipmentMenuLevel) {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(0);
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		if (equipmentMenuLevel == 2) {
 			equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
 			contentPanel = GameObject.FindObjectOfType<ContentPanel>();
@@ -141,16 +141,19 @@ public class EquipmentInventory : MonoBehaviour {
 
 	
 	public void OpenEquipmentBaseMenu () {
+		gameControl = GameObject.FindObjectOfType<GameControl>();
 		Instantiate (equipmentBaseMenu);
+		gameControl.equipmentMenuLevel = 1;
 		EquipmentInfoDisplay ();
 		AutoEquipClothes ();
-		gameControl.equipmentMenuLevel = 1;
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Head Slot"),null);
 	}
 	
 	public void OpenEquipmentSlotMenu () {
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		gameControl.equipmentMenuLevel = 2;
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(0);
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
 		Instantiate (equipmentSlotsMenu);
 		
@@ -162,10 +165,12 @@ public class EquipmentInventory : MonoBehaviour {
 		EquipmentInfoDisplay ();
 		
 		SetEquippedSlot ();
-		gameControl.equipmentMenuLevel = 2;
 	}
 	
 	public void OpenWeaponEvolutionMenu () {
+		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		gameControl = GameObject.FindObjectOfType<GameControl>();
 		gameControl.weaponEvolutionMenuLevel = 1;
 		Instantiate (weaponEvolutionMenu);
 		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
@@ -195,7 +200,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	//gets the components in the info display panel for future use.
 	void EquipmentInfoDisplay () {
-		if (gameControl.equipmentMenuLevel == 2) { // This is for the slots menus...
+		if (gameControl.equipmentMenuLevel == 2 || gameControl.weaponEvolutionMenuLevel == 1) { // This is for the slots menus...
 			displayEquipmentName = GameObject.FindGameObjectWithTag ("Equipment Display Name").GetComponent<Text> ();
 			displayEquipmentIcon = GameObject.FindGameObjectWithTag ("Equipment Display Icon").GetComponent<Image> ();
 			displayEquipmentDescription = GameObject.FindGameObjectWithTag ("Equipment Display Description").GetComponent<Text> ();
@@ -243,7 +248,7 @@ public class EquipmentInventory : MonoBehaviour {
 		int equipID = PlayerPrefsManager.GetEquipmentID();
 		gameControl = GameObject.FindObjectOfType<GameControl>();
 		if (gameControl.availableEvolutions > 0) {
-			if (equipmentDatabase.equipment[equipID].quantity < 8) {
+			if (equipmentDatabase.equipment[equipID].quantity < 10) {
 				if (equipID == gameControl.equippedWeapon) {
 					gameControl.equippedWeapon = equipID + 1;;
 					UpdateEquippedStats();
@@ -485,7 +490,7 @@ public class EquipmentInventory : MonoBehaviour {
 
 		} else if (selectedItem.name == "Evolve Weapon") {
 			int equippedID = PlayerPrefsManager.GetEquipmentID();
-			if (equipmentDatabase.equipment[equippedID].quantity < 8) {
+			if (equipmentDatabase.equipment[equippedID].quantity < 10) {
 				strengthStat.text = equipmentDatabase.equipment [equippedID].equipmentStrength + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentStrength);
 				defenseStat.text = equipmentDatabase.equipment [equippedID].equipmentDefense + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentDefense);
 				intelligenceStat.text = equipmentDatabase.equipment [equippedID].equipmentIntelligence + " => " + (equipmentDatabase.equipment [equippedID + 1].equipmentIntelligence);
@@ -568,7 +573,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	public void SelectEquipment () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(0);
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		selectedEquipmentMaterialIndex = GetEquipmentMaterialIndex (PlayerPrefsManager.GetEquipmentID());
 		gameControl = GameObject.FindObjectOfType<GameControl>();
 		equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
@@ -608,7 +613,7 @@ public class EquipmentInventory : MonoBehaviour {
 	//Have equipment drops call this as needed.
 	public void AddEquipmentToInventory (params int[] equipmentNumber) {
 		gameControl = GameObject.FindObjectOfType<GameControl>(); 
-		if (equipmentList.Count == equipmentSlots) {
+		if (gameControl.equipmentInventoryList.Count == equipmentSlots) {
 			return;
 			//present message saying out of space? Might need to be more complicated...
 		} else {
@@ -646,7 +651,7 @@ public class EquipmentInventory : MonoBehaviour {
 		if (selectedEquipmentMaterialIndex == 5) {
 			SetEquippedSlot ();
 			PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-			sound.PlaySoundEffect(1);
+			sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
 			gameControl.weaponsList.Add (equipmentDatabase.equipment[gameControl.equippedWeapon]);
 			gameControl.equippedWeapon = PlayerPrefsManager.GetEquipmentID();
 			gameControl.weaponsList.Remove(equipmentDatabase.equipment [PlayerPrefsManager.GetEquipmentID()]);
@@ -707,12 +712,12 @@ public class EquipmentInventory : MonoBehaviour {
 			}
 			SetEquippedSlot ();
 			PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-			sound.PlaySoundEffect(1);
+			sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
 			
 		//Unable to equip armor.
 		} else {
 			PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-			sound.PlaySoundEffect(2);
+			sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
 		}
 		
 		contentPanel.DeleteInventory();
@@ -761,7 +766,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	public void DestroyEquipmentInInventory () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(0);
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		gameControl.equipmentMenuLevel = 4;
 		equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
 		equipButton.interactable = false;
@@ -777,7 +782,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	public void DestoryEquipmentYes () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(1);
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
 		gameControl = GameObject.FindObjectOfType<GameControl>();
 		int index = gameControl.equipmentInventoryList.IndexOf(equipmentDatabase.equipment[PlayerPrefsManager.GetEquipmentID ()]);
 		if (gameControl.equipmentInventoryList[index].quantity > 1) {
@@ -806,7 +811,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	public void DestroyEquipmentNo () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(1);
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
 		destroyEquipmentVerificationCanvas = GameObject.FindGameObjectWithTag("Destroy Equipment Verification Canvas");
 		Destroy (destroyEquipmentVerificationCanvas.gameObject);
