@@ -63,10 +63,57 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	public void OpenItemMenu () {
+		gameControl = GameObject.FindObjectOfType<GameControl>();
 		Instantiate (itemMenu);
-		AddTempData();
 		PopulateInventory ();
 		ItemInfoDisplay ();
+		gameControl.itemsMenuLevel = 1;
+	}
+	
+	public void OpenPreviousWeaponMenu (int itemMenuLevel) {
+		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		if (itemMenuLevel == 3) {
+			if (GameObject.FindGameObjectWithTag("Item Destroy Verification Canvas")) {
+				sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+				gameControl = GameObject.FindObjectOfType<GameControl>();
+				destroyItemVerificationCanvas = GameObject.FindGameObjectWithTag("Item Destroy Verification Canvas");
+				Destroy (destroyItemVerificationCanvas.gameObject);
+				useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
+				useItemButton.interactable = true;
+				
+				destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
+				destroyItemButton.interactable = true;
+				EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Use Item Button"),null);
+			} else {
+				sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+				gameControl = GameObject.FindObjectOfType<GameControl>();
+				useItemVerificationCanvas = GameObject.FindGameObjectWithTag("Use Item Verification Canvas");
+				Destroy (useItemVerificationCanvas.gameObject);
+				useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
+				useItemButton.interactable = true;
+				
+				destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
+				destroyItemButton.interactable = true;
+				EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Use Item Button"),null);	
+			}
+		} else if (itemMenuLevel == 2) {
+			useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
+			useItemButton.interactable = false;
+			
+			destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
+			destroyItemButton.interactable = false;
+			contentPanel = GameObject.FindGameObjectWithTag ("Inventory Content").GetComponent<ContentPanel>();
+			contentPanel.ActivateInventory();
+			int itemIndex = PlayerPrefsManager.GetSelectItem ();
+			GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Inventory Content");
+			GameObject lastSelected = inventoryContentPanel.transform.GetChild(itemIndex + 1).gameObject;
+			EventSystem.current.SetSelectedGameObject(lastSelected,null);
+		} else if (itemMenuLevel == 1) {
+			Destroy (GameObject.FindGameObjectWithTag("Item Menu"));
+			gameControl.OpenPauseMenu();
+		}
 	}
 
 	void ItemInfoDisplay () {
@@ -76,7 +123,7 @@ public class Inventory : MonoBehaviour {
 		displayItemType = GameObject.FindGameObjectWithTag ("Item Display Type").GetComponent<Text> ();
 	}
 
-	void AddTempData () {
+	public void AddTempData () {
 		AddItemsToInventory(1, 0, 1, 1, 1, 0);
 	}
 
@@ -147,6 +194,7 @@ public class Inventory : MonoBehaviour {
 			GameObject newItemIDObject = selectedItem.transform.GetChild(1).gameObject;
 			Text newItemIDText = newItemIDObject.GetComponent<Text>();
 			int newItemID = int.Parse(newItemIDText.text);
+			PlayerPrefsManager.SetEquipmentID(newItemID);
 			
 			//Gets inventory index as string and converts to int, then pushes to playerprefsmanager.
 			GameObject newItemIndexObject = selectedItem.transform.GetChild(2).gameObject;
@@ -185,6 +233,8 @@ public class Inventory : MonoBehaviour {
 	public void SelectItem () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
 		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		gameControl.itemsMenuLevel = 2;
 		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
 		useItemButton.interactable = true;
 		
@@ -199,6 +249,8 @@ public class Inventory : MonoBehaviour {
 	public void UseItemInInventory () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
 		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		gameControl.itemsMenuLevel = 3;
 		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
 		useItemButton.interactable = false;
 		
@@ -214,6 +266,8 @@ public class Inventory : MonoBehaviour {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
 		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
 		gameControl = GameObject.FindObjectOfType<GameControl>();
+		gameControl.itemsMenuLevel = 1;
+		itemDatabase = GameObject.FindGameObjectWithTag("Items Database").GetComponent<ItemDatabase>();
 		
 		//some function about actually using the item goes here.
 		
@@ -237,20 +291,23 @@ public class Inventory : MonoBehaviour {
 	public void UseItemNo () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
 		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		gameControl.itemsMenuLevel = 2;
 		useItemVerificationCanvas = GameObject.FindGameObjectWithTag("Use Item Verification Canvas");
 		Destroy (useItemVerificationCanvas.gameObject);
-		contentPanel.ActivateInventory();
+		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
+		useItemButton.interactable = true;
 		
-		int itemIndex = PlayerPrefsManager.GetSelectItem ();
-		
-		GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Inventory Content");
-		GameObject lastSelected = inventoryContentPanel.transform.GetChild(itemIndex + 1).gameObject;
-		EventSystem.current.SetSelectedGameObject(lastSelected,null);
+		destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
+		destroyItemButton.interactable = true;
+		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Use Item Button"),null);
 	}
 	
 	public void RemoveItemInInventory () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
 		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		gameControl.itemsMenuLevel = 3;
 		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
 		useItemButton.interactable = false;
 		
@@ -266,6 +323,8 @@ public class Inventory : MonoBehaviour {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
 		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
 		gameControl = GameObject.FindObjectOfType<GameControl>();
+		gameControl.itemsMenuLevel = 1;
+		itemDatabase = GameObject.FindGameObjectWithTag("Items Database").GetComponent<ItemDatabase>();
 		
 		int index = gameControl.itemInventoryList.IndexOf(itemDatabase.items[PlayerPrefsManager.GetEquipmentID ()]);
 		if (gameControl.itemInventoryList[index].quantity > 1) {
@@ -287,14 +346,15 @@ public class Inventory : MonoBehaviour {
 	public void RemoveItemNo () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
 		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		gameControl.itemsMenuLevel = 2;
 		destroyItemVerificationCanvas = GameObject.FindGameObjectWithTag("Item Destroy Verification Canvas");
 		Destroy (destroyItemVerificationCanvas.gameObject);
-		contentPanel.ActivateInventory();
+		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
+		useItemButton.interactable = true;
 		
-		int itemIndex = PlayerPrefsManager.GetSelectItem ();
-		
-		GameObject inventoryContentPanel = GameObject.FindGameObjectWithTag ("Inventory Content");
-		GameObject lastSelected = inventoryContentPanel.transform.GetChild(itemIndex + 1).gameObject;
-		EventSystem.current.SetSelectedGameObject(lastSelected,null);
+		destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
+		destroyItemButton.interactable = true;
+		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Use Item Button"),null);
 	}
 }
