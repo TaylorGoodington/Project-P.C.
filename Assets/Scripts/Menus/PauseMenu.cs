@@ -39,5 +39,7 @@ public class PauseMenu : MonoBehaviour {
 		itemInventory.GetComponent<Inventory>().OpenItemMenu();
 		Destroy (gameObject);
 	}
+	
+	
 
 }

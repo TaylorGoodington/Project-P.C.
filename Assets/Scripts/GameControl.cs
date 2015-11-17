@@ -90,7 +90,13 @@ public class GameControl : MonoBehaviour {
 	
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Escape)) {
-			OpenPauseMenu();
+			if (GameObject.FindGameObjectWithTag("Pause Menu")) {
+				ClosePauseMenu();
+				mainMenuLevel = 0;
+			} else {
+				OpenPauseMenu();
+				mainMenuLevel = 1;
+			}
 		}
 		
 		if (Input.GetKeyDown(KeyCode.E)) {
@@ -116,7 +122,7 @@ public class GameControl : MonoBehaviour {
 			
 			//Main Menu.
 			if (mainMenuLevel > 0) {
-				
+				ClosePauseMenu();
 				mainMenuLevel --;
 			}
 			
@@ -140,6 +146,10 @@ public class GameControl : MonoBehaviour {
 	
 	public void OpenPauseMenu () {
 		Instantiate(pauseMenu);
+	}
+	
+	public void ClosePauseMenu () {
+		Destroy(GameObject.FindGameObjectWithTag("Pause Menu"));
 	}
 
 	
@@ -311,6 +321,16 @@ public class GameControl : MonoBehaviour {
 	
 	
 	public void NewGame1 () {
+		if (File.Exists(Application.persistentDataPath + "/playerInfo1.dat")) {
+			PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+			sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
+		} 
+		
+		if (!File.Exists(Application.persistentDataPath + "/playerInfo1.dat")) {
+			PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+			sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
+		}
+		
 		//do some stuff about initializing here
 		playerName = "Taylor";
 		gameProgress = 27;
@@ -360,9 +380,9 @@ public class GameControl : MonoBehaviour {
 	//Delete Game Section
 	//**************************************************************************************
 	
-	public void ToDeleteMenu () {
-		PlayerPrefsManager.SetDeleteEntryPoint (Application.loadedLevelName);
-	}
+//	public void ToDeleteMenu () {
+//		PlayerPrefsManager.SetDeleteEntryPoint (Application.loadedLevelName);
+//	}
 	
 	public void DeleteGame1 () {
 		//add pop up for making sure....
