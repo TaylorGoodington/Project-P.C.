@@ -16,12 +16,12 @@ public class MusicManager : MonoBehaviour {
 	}
 	
 	void OnLevelWasLoaded (int level) {
-	AudioClip thisLevelMusic = levelMusicChangeArray[level];
-	if (thisLevelMusic) {
-		audioSource.clip = thisLevelMusic;
-		audioSource.loop = true;
-		audioSource.Play();
-	}
+		AudioClip thisLevelMusic = levelMusicChangeArray[level];
+		if (thisLevelMusic) {
+			audioSource.clip = thisLevelMusic;
+			audioSource.loop = true;
+			audioSource.Play();
+		}
 		
 	}
 	

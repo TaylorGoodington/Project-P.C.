@@ -9,10 +9,13 @@ public class PlayerPrefsManager : MonoBehaviour {
 	const string GAME_FILE = "game_file";
 	const string FILE_1_PLAYER_NAME = "file_1_player_name";
 	const string FILE_1_LEVEL_PROGRESS = "file_1_level_progress";
+	const string FILE_1_PLAYER_LEVEL = "file_1_player_level";
 	const string FILE_2_PLAYER_NAME = "file_2_player_name";
 	const string FILE_2_LEVEL_PROGRESS = "file_2_level_progress";
+	const string FILE_2_PLAYER_LEVEL = "file_2_player_level";
 	const string FILE_3_PLAYER_NAME = "file_3_player_name";
 	const string FILE_3_LEVEL_PROGRESS = "file_3_level_progress";
+	const string FILE_3_PLAYER_LEVEL = "file_3_player_level";
 	const string TO_DELETE_MENU = "to_delete_menu";
 	const string SELECT_ITEM = "select_item";
 	const string EQUIPMENT_ID = "equipment_ID";
@@ -95,6 +98,15 @@ public class PlayerPrefsManager : MonoBehaviour {
 		return PlayerPrefs.GetInt (FILE_1_LEVEL_PROGRESS);
 	}
 	
+	public static void SetFile1PlayerLevel (int playerLevel) {
+		PlayerPrefs.SetInt (FILE_1_PLAYER_LEVEL, playerLevel);
+	}
+	
+	public static int GetFile1PlayerLevel () {
+		return PlayerPrefs.GetInt (FILE_1_PLAYER_LEVEL);
+	}
+	
+	
 	
 	public static void SetFile2PlayerName (string playerName) {
 		PlayerPrefs.SetString (FILE_2_PLAYER_NAME, playerName);
@@ -112,6 +124,15 @@ public class PlayerPrefsManager : MonoBehaviour {
 		return PlayerPrefs.GetInt (FILE_2_LEVEL_PROGRESS);
 	}
 	
+	public static void SetFile2PlayerLevel (int playerLevel) {
+		PlayerPrefs.SetInt (FILE_2_PLAYER_LEVEL, playerLevel);
+	}
+	
+	public static int GetFile2PlayerLevel () {
+		return PlayerPrefs.GetInt (FILE_2_PLAYER_LEVEL);
+	}
+	
+	
 	
 	public static void SetFile3PlayerName (string playerName) {
 		PlayerPrefs.SetString (FILE_3_PLAYER_NAME, playerName);
@@ -127,6 +148,14 @@ public class PlayerPrefsManager : MonoBehaviour {
 	
 	public static int GetFile3LevelProgress () {
 		return PlayerPrefs.GetInt (FILE_3_LEVEL_PROGRESS);
+	}
+	
+	public static void SetFile3PlayerLevel (int playerLevel) {
+		PlayerPrefs.SetInt (FILE_3_PLAYER_LEVEL, playerLevel);
+	}
+	
+	public static int GetFile3PlayerLevel () {
+		return PlayerPrefs.GetInt (FILE_3_PLAYER_LEVEL);
 	}
 	
 	

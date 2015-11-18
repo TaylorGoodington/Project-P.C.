@@ -249,6 +249,8 @@ public class EquipmentInventory : MonoBehaviour {
 		gameControl = GameObject.FindObjectOfType<GameControl>();
 		if (gameControl.availableEvolutions > 0) {
 			if (equipmentDatabase.equipment[equipID].quantity < 10) {
+				PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+				sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
 				if (equipID == gameControl.equippedWeapon) {
 					gameControl.equippedWeapon = equipID + 1;;
 					UpdateEquippedStats();
@@ -263,9 +265,12 @@ public class EquipmentInventory : MonoBehaviour {
 			contentPanel.ActivateInventory();	
 			EventSystem.current.SetSelectedGameObject(contentPanel.transform.GetChild(PlayerPrefsManager.GetLocalEquipmentIndex()).gameObject,null);
 			}
-			//present message about weapon being at max level. Or play noise or something.
+			PlayerSoundEffects soundEffect = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+			soundEffect.PlaySoundEffect(soundEffect.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
 		} else {
 //			//present message about not having any souls.
+			PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+			sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
 		}
 	}
 

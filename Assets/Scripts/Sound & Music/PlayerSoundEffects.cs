@@ -24,17 +24,18 @@ public class PlayerSoundEffects : MonoBehaviour {
 	//The int returned matches the array number in the player sound effect Game Object.
 	public int SoundEffectToArrayInt (SoundEffect effect) {
 		if (effect == SoundEffect.MenuNavigation) {
-			return 0;
-		} else if (effect == SoundEffect.MenuConfirm) {
 			return 1;
-		} else if (effect == SoundEffect.MenuUnable) {
+		} else if (effect == SoundEffect.MenuConfirm) {
 			return 2;
+		} else if (effect == SoundEffect.MenuUnable) {
+			return 3;
 		}
-		return 10;
+		return 0;
 	}
 	
 	public void PlaySoundEffect (int sound) {
 		AudioClip soundEffect = playerSoundEffects[sound];
+		audioSource = GetComponent<AudioSource>();
 		if (soundEffect) {
 			audioSource.clip = soundEffect;
 			audioSource.loop = false;

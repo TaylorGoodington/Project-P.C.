@@ -15,6 +15,7 @@ public class GameControl : MonoBehaviour {
 	public GameObject equipmentBaseMenu;
 	public GameObject equipmentSlotMenu;
 	public GameObject pauseMenu;
+	public PlayerSoundEffects playerSoundEffects;
 	
 	//item inventory script access.
 	public GameObject itemInventory;
@@ -71,8 +72,9 @@ public class GameControl : MonoBehaviour {
 	//Menu Levels are incremented by functions that dive deeper into the respective menu and are decremented by the back function.
 	public int equipmentMenuLevel = 0;
 	public int weaponEvolutionMenuLevel = 0;
-	public int mainMenuLevel = 0;
+	public int pauseMenuLevel = 0;
 	public int itemsMenuLevel = 0;
+	public int mainMenuLevel = 0;
 	
 
 	void Awake () {
@@ -92,11 +94,17 @@ public class GameControl : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Escape)) {
 			if (GameObject.FindGameObjectWithTag("Pause Menu")) {
 				ClosePauseMenu();
-				mainMenuLevel = 0;
+				pauseMenuLevel = 0;
 			} else {
 				OpenPauseMenu();
-				mainMenuLevel = 1;
+				pauseMenuLevel = 1;
 			}
+		}
+		
+		//the answer to all my input manager prayers...
+		if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical")) {
+			playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
+			playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		}
 		
 		if (Input.GetKeyDown(KeyCode.E)) {
@@ -121,9 +129,9 @@ public class GameControl : MonoBehaviour {
 			}
 			
 			//Main Menu.
-			if (mainMenuLevel > 0) {
+			if (pauseMenuLevel > 0) {
 				ClosePauseMenu();
-				mainMenuLevel --;
+				pauseMenuLevel --;
 			}
 			
 			//Items Menu.
@@ -228,25 +236,23 @@ public class GameControl : MonoBehaviour {
 		saveFile.Close();
 	}
 	
-	public void SaveFile1 () {
-		PlayerPrefsManager.SetGameFile(1);
-		PlayerPrefsManager.SetFile1PlayerName(playerName);
-		PlayerPrefsManager.SetFile1LevelProgress(gameProgress);
-		Save ();
-	}
-	
-	public void SaveFile2 () {
-		PlayerPrefsManager.SetGameFile(2);
-		PlayerPrefsManager.SetFile2PlayerName(playerName);
-		PlayerPrefsManager.SetFile2LevelProgress(gameProgress);
-		Save ();
-	}
-	
-	public void SaveFile3 () {
-		PlayerPrefsManager.SetGameFile(3);
-		PlayerPrefsManager.SetFile3PlayerName(playerName);
-		PlayerPrefsManager.SetFile3LevelProgress(gameProgress);
-		Save ();
+	public void SaveFile (int fileNumber) {
+		if (fileNumber == 1) {
+			PlayerPrefsManager.SetGameFile(1);
+			PlayerPrefsManager.SetFile1PlayerName(playerName);
+			PlayerPrefsManager.SetFile1LevelProgress(gameProgress);
+			Save ();
+		} else if (fileNumber == 2) {
+			PlayerPrefsManager.SetGameFile(2);
+			PlayerPrefsManager.SetFile2PlayerName(playerName);
+			PlayerPrefsManager.SetFile2LevelProgress(gameProgress);
+			Save ();
+		} else {
+			PlayerPrefsManager.SetGameFile(3);
+			PlayerPrefsManager.SetFile3PlayerName(playerName);
+			PlayerPrefsManager.SetFile3LevelProgress(gameProgress);
+			Save ();
+		}
 	}
 	
 	
@@ -255,10 +261,10 @@ public class GameControl : MonoBehaviour {
 	//**************************************************************************************
 	
 	
-	public void Load () {
-		if(File.Exists(Application.persistentDataPath + "/playerInfo" + PlayerPrefsManager.GetGameFile() + ".dat")); {
+	public void LoadFile (int fileNumber) {	
+		if(File.Exists(Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat")) {
 			BinaryFormatter binaryFormatter = new BinaryFormatter();
-			FileStream saveFile = File.Open (Application.persistentDataPath + "/playerInfo" + PlayerPrefsManager.GetGameFile() + ".dat", FileMode.Open);
+			FileStream saveFile = File.Open (Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat", FileMode.Open);
 			PlayerData playerData = (PlayerData) binaryFormatter.Deserialize(saveFile);
 			
 			
@@ -294,44 +300,51 @@ public class GameControl : MonoBehaviour {
 			
 			saveFile.Close(); //I wonder if this should go at the end of the method...
 		}
+		if (fileNumber == 1) {
+			PlayerPrefsManager.SetGameFile(1);
+			PlayerPrefsManager.SetFile1PlayerName(playerName);
+			PlayerPrefsManager.SetFile1LevelProgress(gameProgress);
+			Save ();
+		} else if (fileNumber == 2) {
+			PlayerPrefsManager.SetGameFile(2);
+			PlayerPrefsManager.SetFile2PlayerName(playerName);
+			PlayerPrefsManager.SetFile2LevelProgress(gameProgress);
+			Save ();
+		} else {
+			PlayerPrefsManager.SetGameFile(3);
+			PlayerPrefsManager.SetFile3PlayerName(playerName);
+			PlayerPrefsManager.SetFile3LevelProgress(gameProgress);
+			Save ();
+		}
 	}
 	
-	public void LoadFile1 () {
-		PlayerPrefsManager.SetGameFile(1);
-		Load ();
-		//Need to add code here for loading the appropriate region scene.
-	}
-	
-	public void LoadFile2 () {
-		PlayerPrefsManager.SetGameFile(2);
-		Load ();
-		//Need to add code here for loading the appropriate region scene.
-	}
-	
-	public void LoadFile3 () {
-		PlayerPrefsManager.SetGameFile(3);
-		Load ();
-		//Need to add code here for loading the appropriate region scene.
-	}
+//	public void LoadFile1 () {
+//		PlayerPrefsManager.SetGameFile(1);
+//		Load ();
+//		//Need to add code here for loading the appropriate region scene.
+//	}
+//	
+//	public void LoadFile2 () {
+//		PlayerPrefsManager.SetGameFile(2);
+//		Load ();
+//		//Need to add code here for loading the appropriate region scene.
+//	}
+//	
+//	public void LoadFile3 () {
+//		PlayerPrefsManager.SetGameFile(3);
+//		Load ();
+//		//Need to add code here for loading the appropriate region scene.
+//	}
 	
 	
 	//**************************************************************************************
 	//New Game Section
 	//**************************************************************************************
 	
-	
-	public void NewGame1 () {
-		if (File.Exists(Application.persistentDataPath + "/playerInfo1.dat")) {
-			PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-			sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
-		} 
-		
-		if (!File.Exists(Application.persistentDataPath + "/playerInfo1.dat")) {
-			PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-			sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
-		}
-		
+	public void NewGame (int fileNumber) {
 		//do some stuff about initializing here
+		
+		//remove this stuff at some point.
 		playerName = "Taylor";
 		gameProgress = 27;
 		playerLevel = 27;
@@ -342,38 +355,54 @@ public class GameControl : MonoBehaviour {
 		baseHealth = 5;
 		baseMana = 6;
 		
-		SaveFile1 ();
+		SaveFile(fileNumber);
 	}
 	
-	public void NewGame2 () {
-		//do some stuff about initializing here
-		playerName = "Lee";
-		gameProgress = 9;
-		playerLevel = 9;
-		baseStrength = 5;
-		baseDefense = 5;
-		baseSpeed = 5;
-		baseIntelligence = 5;
-		baseHealth = 5;
-		baseMana = 5;
-		
-		SaveFile2 ();
-	}
 	
-	public void NewGame3 () {
-		//do some stuff about initializing here
-		playerName = "Katelyn";
-		gameProgress = 24;
-		playerLevel = 24;
-		baseStrength = 7;
-		baseDefense = 7;
-		baseSpeed = 7;
-		baseIntelligence = 7;
-		baseHealth = 7;
-		baseMana = 7;
-		
-		SaveFile3 ();
-	}
+//	public void NewGame1 () {	
+//		//do some stuff about initializing here
+//		playerName = "Taylor";
+//		gameProgress = 27;
+//		playerLevel = 27;
+//		baseStrength = 1;
+//		baseDefense = 2;
+//		baseSpeed = 3;
+//		baseIntelligence = 4;
+//		baseHealth = 5;
+//		baseMana = 6;
+//		
+//		SaveFile1 ();
+//	}
+//	
+//	public void NewGame2 () {
+//		//do some stuff about initializing here
+//		playerName = "Lee";
+//		gameProgress = 9;
+//		playerLevel = 9;
+//		baseStrength = 5;
+//		baseDefense = 5;
+//		baseSpeed = 5;
+//		baseIntelligence = 5;
+//		baseHealth = 5;
+//		baseMana = 5;
+//		
+//		SaveFile2 ();
+//	}
+//	
+//	public void NewGame3 () {
+//		//do some stuff about initializing here
+//		playerName = "Katelyn";
+//		gameProgress = 24;
+//		playerLevel = 24;
+//		baseStrength = 7;
+//		baseDefense = 7;
+//		baseSpeed = 7;
+//		baseIntelligence = 7;
+//		baseHealth = 7;
+//		baseMana = 7;
+//		
+//		SaveFile3 ();
+//	}
 	
 	
 	//**************************************************************************************
@@ -383,27 +412,46 @@ public class GameControl : MonoBehaviour {
 //	public void ToDeleteMenu () {
 //		PlayerPrefsManager.SetDeleteEntryPoint (Application.loadedLevelName);
 //	}
-	
-	public void DeleteGame1 () {
+
+	public void DeleteGame (int fileNumber) {
 		//add pop up for making sure....
-		File.Delete (Application.persistentDataPath + "/playerInfo1.dat");
-		PlayerPrefsManager.SetFile1PlayerName("");
-		PlayerPrefsManager.SetFile1LevelProgress(0);
+		File.Delete (Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat");
+	
+		if (fileNumber == 1) {
+			PlayerPrefsManager.SetFile1PlayerName("");
+			PlayerPrefsManager.SetFile1LevelProgress(0);
+			File.Delete (Application.persistentDataPath + "/playerInfo1.dat");
+		} else if (fileNumber == 2) {
+			PlayerPrefsManager.SetFile2PlayerName("");
+			PlayerPrefsManager.SetFile2LevelProgress(0);
+			File.Delete (Application.persistentDataPath + "/playerInfo2.dat");
+		} else {
+			PlayerPrefsManager.SetFile3PlayerName("");
+			PlayerPrefsManager.SetFile3LevelProgress(0);
+			File.Delete (Application.persistentDataPath + "/playerInfo3.dat");
+		}
 	}
 	
-	public void DeleteGame2 () {
-		//add pop up for making sure....
-		File.Delete (Application.persistentDataPath + "/playerInfo2.dat");
-		PlayerPrefsManager.SetFile2PlayerName("");
-		PlayerPrefsManager.SetFile2LevelProgress(0);
-	}
-	
-	public void DeleteGame3 () {
-		//add pop up for making sure....
-		File.Delete (Application.persistentDataPath + "/playerInfo3.dat");
-		PlayerPrefsManager.SetFile3PlayerName("");
-		PlayerPrefsManager.SetFile3LevelProgress(0);
-	}
+//	public void DeleteGame1 () {
+//		//add pop up for making sure....
+//		File.Delete (Application.persistentDataPath + "/playerInfo1.dat");
+//		PlayerPrefsManager.SetFile1PlayerName("");
+//		PlayerPrefsManager.SetFile1LevelProgress(0);
+//	}
+//	
+//	public void DeleteGame2 () {
+//		//add pop up for making sure....
+//		File.Delete (Application.persistentDataPath + "/playerInfo2.dat");
+//		PlayerPrefsManager.SetFile2PlayerName("");
+//		PlayerPrefsManager.SetFile2LevelProgress(0);
+//	}
+//	
+//	public void DeleteGame3 () {
+//		//add pop up for making sure....
+//		File.Delete (Application.persistentDataPath + "/playerInfo3.dat");
+//		PlayerPrefsManager.SetFile3PlayerName("");
+//		PlayerPrefsManager.SetFile3LevelProgress(0);
+//	}
 	
 	
 	
