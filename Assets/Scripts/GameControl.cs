@@ -5,6 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GameControl : MonoBehaviour {
 
@@ -91,7 +92,7 @@ public class GameControl : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (Input.GetKeyDown(KeyCode.Escape)) {
+		if (Input.GetButtonDown("Open Pause Menu")) {
 			if (GameObject.FindGameObjectWithTag("Pause Menu")) {
 				ClosePauseMenu();
 				pauseMenuLevel = 0;
@@ -100,7 +101,8 @@ public class GameControl : MonoBehaviour {
 				pauseMenuLevel = 1;
 			}
 		}
-		
+
+				
 		//the answer to all my input manager prayers...
 		if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical")) {
 			playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
@@ -121,7 +123,7 @@ public class GameControl : MonoBehaviour {
 		}
 		
 		//"Back" function.
-		if (Input.GetKeyDown(KeyCode.X)) {
+		if (Input.GetButtonDown("Cancel")) {
 			//Weapon Evolution Menu.
 			if (weaponEvolutionMenuLevel > 0) {
 				equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousWeaponMenu(weaponEvolutionMenuLevel);
