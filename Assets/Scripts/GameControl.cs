@@ -103,11 +103,6 @@ public class GameControl : MonoBehaviour {
 		}
 
 				
-		//the answer to all my input manager prayers...
-		if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical")) {
-			playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-			playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
-		}
 		
 		if (Input.GetKeyDown(KeyCode.E)) {
 			//temp way to add info to the weapons list.

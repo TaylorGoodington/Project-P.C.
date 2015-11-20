@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
+
 
 public class PlayerSoundEffects : MonoBehaviour {
 	
 	
 	public AudioClip[] playerSoundEffects;
 	private AudioSource audioSource;
+	public string lastObjectName;
 	
 	void Awake () {
 		DontDestroyOnLoad (gameObject);
@@ -13,6 +16,15 @@ public class PlayerSoundEffects : MonoBehaviour {
 	
 	void Start () {
 		audioSource = GetComponent<AudioSource>();
+		lastObjectName = "Start";
+	}
+	
+	void Update () {
+		if (Application.loadedLevel > 0) {
+			if (CheckLastSelectedObject() == false) {
+				PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
+			}
+		}
 	}
 	
 	public enum SoundEffect {
@@ -45,6 +57,16 @@ public class PlayerSoundEffects : MonoBehaviour {
 	
 	public void ChangeVolume (float volume) {
 		audioSource.volume = volume;
+	}
+	
+	
+	public bool CheckLastSelectedObject () {
+		if (lastObjectName == EventSystem.current.currentSelectedGameObject.name) {
+			return true;
+		} else {
+			lastObjectName = EventSystem.current.currentSelectedGameObject.name;
+			return false;
+		}
 	}
 	
 }
