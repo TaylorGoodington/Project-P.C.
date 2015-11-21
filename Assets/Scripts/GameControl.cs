@@ -116,6 +116,7 @@ public class GameControl : MonoBehaviour {
 			equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
 			itemInventory.GetComponent<Inventory>().AddTempData();
 		}
+	
 		
 		//"Back" function.
 		if (Input.GetButtonDown("Cancel")) {

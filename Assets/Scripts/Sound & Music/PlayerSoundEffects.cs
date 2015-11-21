@@ -20,8 +20,11 @@ public class PlayerSoundEffects : MonoBehaviour {
 	}
 	
 	void Update () {
+	// Feeling good about this now.
 		if (Application.loadedLevel > 0) {
-			if (CheckLastSelectedObject() == false) {
+			if (IsSelectedObjectDifferent() == true && ((Input.GetButtonDown("Horizontal") || Input.GetAxis("Horizontal") != 0) || 
+														(Input.GetButtonDown("Vertical") || Input.GetAxis("Vertical") != 0)) && 
+														 Input.GetButtonDown("Submit") == false) {
 				PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
 			}
 		}
@@ -60,12 +63,12 @@ public class PlayerSoundEffects : MonoBehaviour {
 	}
 	
 	
-	public bool CheckLastSelectedObject () {
+	public bool IsSelectedObjectDifferent () {
 		if (lastObjectName == EventSystem.current.currentSelectedGameObject.name) {
-			return true;
+			return false;
 		} else {
 			lastObjectName = EventSystem.current.currentSelectedGameObject.name;
-			return false;
+			return true;
 		}
 	}
 	

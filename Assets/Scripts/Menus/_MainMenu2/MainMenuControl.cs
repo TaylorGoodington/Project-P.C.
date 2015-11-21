@@ -11,6 +11,9 @@ public class MainMenuControl : MonoBehaviour {
 	public GameObject expandedGameSelection;
 	public GameObject mainMenuCanvas;
 	public GameObject deleteGameVerification;
+	public GameObject overwriteGameVerification;
+	public GameObject overwriteNewGameVerification;
+	public GameObject overwriteSlots;
 	
 	//Need to be found at the begining.
 	public GameControl gameControl;
@@ -45,7 +48,7 @@ public class MainMenuControl : MonoBehaviour {
 			
 			Text playerLevelText = gameSlot.transform.GetChild (3).GetComponent<Text> ();
 			playerLevelText.enabled = true;
-			playerLevelText.text = PlayerPrefsManager.GetFile1PlayerLevel().ToString();
+			playerLevelText.text = "Level: " + PlayerPrefsManager.GetFile1PlayerLevel().ToString();
 			
 			Text playerProgressText = gameSlot.transform.GetChild (5).GetComponent<Text> ();
 			playerProgressText.enabled = true;
@@ -81,7 +84,7 @@ public class MainMenuControl : MonoBehaviour {
 			
 			Text playerLevelText = gameSlot.transform.GetChild (3).GetComponent<Text> ();
 			playerLevelText.enabled = true;
-			playerLevelText.text = PlayerPrefsManager.GetFile2PlayerLevel().ToString();
+			playerLevelText.text = "Level: " + PlayerPrefsManager.GetFile2PlayerLevel().ToString();
 			
 			Text playerProgressText = gameSlot.transform.GetChild (5).GetComponent<Text> ();
 			playerProgressText.enabled = true;
@@ -117,7 +120,7 @@ public class MainMenuControl : MonoBehaviour {
 			
 			Text playerLevelText = gameSlot.transform.GetChild (3).GetComponent<Text> ();
 			playerLevelText.enabled = true;
-			playerLevelText.text = PlayerPrefsManager.GetFile3PlayerLevel().ToString();
+			playerLevelText.text = "Level: " + PlayerPrefsManager.GetFile3PlayerLevel().ToString();
 			
 			Text playerProgressText = gameSlot.transform.GetChild (5).GetComponent<Text> ();
 			playerProgressText.enabled = true;
@@ -142,23 +145,6 @@ public class MainMenuControl : MonoBehaviour {
 			playerProgressText.enabled = false;
 		}
 	}
-	
-	//I dont think I need this here due to explicit button paths.
-//	public void TurnOffAllButtons () {
-//		foreach (Transform child in mainMenuCanvas.transform) {
-//			if (child.GetComponent<Button>()) {
-//				child.GetComponent<Button>().interactable = false;
-//			}
-//		}
-//	}
-//	
-//	public void TurnOnAllButtons () {
-//		foreach (Transform child in mainMenuCanvas.transform) {
-//			if (child.GetComponent<Button>()) {
-//				child.GetComponent<Button>().interactable = true;
-//			}
-//		}
-//	}
 	
 	public void ExpandGameSelection (int fileNumber) {
 		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
@@ -213,7 +199,34 @@ public class MainMenuControl : MonoBehaviour {
 	
 	
 	public void CopyGame (int fileNumber) {
-	
+		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
+		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
+		
+		
+		int lowNumber;
+		if (fileNumber >= 2) {
+			lowNumber = 1;
+		} else {
+			lowNumber = 2;
+		}
+		int highNumber;
+		if (fileNumber == 3) {
+			highNumber = 2;
+		} else {
+			highNumber = 3;
+		}
+				
+		GameObject gameSlot = GameObject.FindGameObjectWithTag("Game " + fileNumber);
+		
+		GameObject expansion = Instantiate(overwriteSlots, new Vector3(0, -200, 0), Quaternion.identity) as GameObject;
+		expansion.transform.SetParent(gameSlot.transform, false);
+		
+		//I dont need to do this here, I just need to call the verification panel based on if the selected slot is empty or not.
+//		Button lowSlot = expansion.transform.GetChild(1).GetComponent<Button>();
+//		lowSlot.onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().CopyGame(fileNumber));
+//		
+//		Button highSlot = expansion.transform.GetChild(2).GetComponent<Button>();
+//		highSlot.onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().DeleteGame(fileNumber));
 	}
 	
 	
@@ -233,11 +246,11 @@ public class MainMenuControl : MonoBehaviour {
 		}
 		Text playerLevel = deleteCanvas.transform.GetChild(3).GetComponent<Text>();
 		if (fileNumber == 1) {
-			playerLevel.text = PlayerPrefsManager.GetFile1PlayerLevel().ToString();
+			playerLevel.text = "Level: " + PlayerPrefsManager.GetFile1PlayerLevel().ToString();
 		} else if (fileNumber == 2) {
-			playerLevel.text = PlayerPrefsManager.GetFile2PlayerLevel().ToString();
+			playerLevel.text = "Level: " + PlayerPrefsManager.GetFile2PlayerLevel().ToString();
 		} else if (fileNumber == 3) {
-			playerLevel.text = PlayerPrefsManager.GetFile3PlayerLevel().ToString();
+			playerLevel.text = "Level: " + PlayerPrefsManager.GetFile3PlayerLevel().ToString();
 		}
 		EventSystem.current.SetSelectedGameObject(GameObject.Find("No"), null);
 	}
@@ -267,4 +280,5 @@ public class MainMenuControl : MonoBehaviour {
 	//DONE....write delete options function.
 	//write copy options function.
 	//Hook up "back" function.
+	//Make it so pause menu cant be opened from here.
 }
