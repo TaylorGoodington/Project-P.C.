@@ -34,7 +34,8 @@ public class MusicManager : MonoBehaviour {
 	}
 	
 	public int LevelTrack () {
-		if (Application.loadedLevelName == "Start" || Application.loadedLevelName == "Main Menu") {
+		if (Application.loadedLevelName == "Start" || Application.loadedLevelName == "Main Menu" || 
+		    Application.loadedLevelName == "01b Options" || Application.loadedLevelName == "Extras") {
 		return 1;
 		}
 		return 0;

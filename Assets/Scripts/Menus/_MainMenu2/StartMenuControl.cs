@@ -4,9 +4,12 @@ using UnityEngine.EventSystems;
 
 public class StartMenuControl : MonoBehaviour {
 
+	public GameControl gameControl;
+
 	// Use this for initialization
 	void Start () {
 		EventSystem.current.SetSelectedGameObject(GameObject.Find("Start"),null);
+		gameControl.mainMenuLevel = 0;
 	}
 	
 	public void StartGame () {

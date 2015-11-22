@@ -29,6 +29,8 @@ public class MainMenuControl : MonoBehaviour {
 		
 		//I think I will have the system check for new display info here and after copy and delete.
 		RefreshGameLabels ();
+		
+		gameControl.mainMenuLevel = 1;
 	}
 	
 	// Update is called once per frame
@@ -146,6 +148,45 @@ public class MainMenuControl : MonoBehaviour {
 		}
 	}
 	
+	public void OpenPreviousMainMenu (int mainMenuLevel) {
+		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
+		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		if (mainMenuLevel == 3) {
+			Application.LoadLevel("Main Menu");
+		} else if (mainMenuLevel == 2) {
+			Destroy(GameObject.FindGameObjectWithTag("Expanded Game Select"));
+			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Game " + PlayerPrefsManager.GetGameFile()));
+		} else if (mainMenuLevel == 1) {
+			Application.LoadLevel("Start");
+		}
+	}
+	
+	public void OpenPreviousCopyMenu (int copyMenuLevel) {
+		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
+		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		if (copyMenuLevel == 2) {
+			if (GameObject.FindGameObjectWithTag("Overwrite New Game Verify")) {
+				Destroy(GameObject.FindGameObjectWithTag("Overwrite New Game Verify"));
+			} else {
+				Destroy(GameObject.FindGameObjectWithTag("Overwrite Game Verify"));
+			}
+			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Overwrite Slots").transform.GetChild(1).gameObject, null);
+		} else if (copyMenuLevel == 1) {
+			Destroy(GameObject.FindGameObjectWithTag("Overwrite Slots"));
+			Debug.Log ("");
+			ExpandGameSelection(PlayerPrefsManager.GetGameFile());
+		}
+	}
+	
+	public void OpenPreviousDeleteMenu (int deleteMenuLevel) {
+		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
+		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+
+		if (deleteMenuLevel == 1) {
+			DeleteGameNo();
+		}
+	}
+	
 	public void ExpandGameSelection (int fileNumber) {
 		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
 		
@@ -176,6 +217,8 @@ public class MainMenuControl : MonoBehaviour {
 			Button deleteButton = expansion.transform.GetChild(3).GetComponent<Button>();
 			deleteButton.onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().PlayUnableNoise());
 		}
+		gameControl = GameObject.FindObjectOfType<GameControl>();
+		gameControl.mainMenuLevel = 2;
 	}
 	
 	
@@ -216,6 +259,8 @@ public class MainMenuControl : MonoBehaviour {
 				
 		GameObject gameSlot = GameObject.FindGameObjectWithTag("Game " + fileNumber);
 		
+		Destroy(GameObject.FindGameObjectWithTag("Expanded Game Select"));
+		
 		GameObject expansion = Instantiate(overwriteSlots, new Vector3(0, -200, 0), Quaternion.identity) as GameObject;
 		expansion.transform.SetParent(gameSlot.transform, false);
 		
@@ -244,6 +289,8 @@ public class MainMenuControl : MonoBehaviour {
 				}
 			}
 		}
+		gameControl.mainMenuLevel = 0;
+		gameControl.mainMenuCopyLevel = 1;
 	}
 	
 	public void OverwriteNewGame (int fileNumber) {
@@ -253,6 +300,7 @@ public class MainMenuControl : MonoBehaviour {
 		overwriteMenu.transform.SetParent(GameObject.FindGameObjectWithTag("Main Menu").transform, false);
 		overwriteMenu.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().OverwriteNewGameYes(fileNumber));
 		EventSystem.current.SetSelectedGameObject(overwriteMenu.transform.GetChild(3).gameObject);
+		gameControl.mainMenuCopyLevel = 2;
 	}
 
 	void OverwriteNewGameYes (int fileNumber) {
@@ -264,12 +312,15 @@ public class MainMenuControl : MonoBehaviour {
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite New Game Verify"));
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Slots"));
 		Debug.Log ("OverwriteNewGameYes");
+		gameControl.mainMenuLevel = 1;
+		gameControl.mainMenuCopyLevel = 0;
 	}
 	
 	public void OverwriteNewGameNo () {
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite New Game Verify"));
 		Debug.Log ("OverwriteNewGameNo");
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("Overwrite Slots").transform.GetChild(1).gameObject, null);
+		gameControl.mainMenuCopyLevel = 1;
 	}
 	
 	public void OverwriteFile (int fileNumber) {
@@ -290,6 +341,7 @@ public class MainMenuControl : MonoBehaviour {
 		}
 		overwriteMenu.transform.GetChild(4).GetComponent<Button>().onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().OverwriteFileYes(fileNumber));
 		EventSystem.current.SetSelectedGameObject(overwriteMenu.transform.GetChild(4).gameObject);
+		gameControl.mainMenuCopyLevel = 2;
 	}
 	
 	public void OverwriteFileYes (int fileNumber) {
@@ -301,19 +353,22 @@ public class MainMenuControl : MonoBehaviour {
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Game Verify"));
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Slots"));
 		Debug.Log ("OverwriteFileYes");
+		gameControl.mainMenuLevel = 1;
+		gameControl.mainMenuCopyLevel = 0;
 	}
 	
 	public void OverwriteFileNo () {
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Game Verify"));
 		Debug.Log ("OverwriteFileNo");
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("Overwrite Slots").transform.GetChild(1).gameObject, null);
+		gameControl.mainMenuCopyLevel = 1;
 	}
 	
 	
 	public void DeleteGame (int fileNumber) {
 		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
 		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
-		
+		Destroy(GameObject.FindGameObjectWithTag("Expanded Game Select"));
 		GameObject deleteCanvas = Instantiate(deleteGameVerification);
 		deleteCanvas.transform.SetParent(mainMenuCanvas.transform, false);
 		Text playerName = deleteCanvas.transform.GetChild(2).GetComponent<Text>();
@@ -333,6 +388,8 @@ public class MainMenuControl : MonoBehaviour {
 			playerLevel.text = "Level: " + PlayerPrefsManager.GetFile3PlayerLevel().ToString();
 		}
 		EventSystem.current.SetSelectedGameObject(GameObject.Find("No"), null);
+		gameControl.mainMenuLevel = 0;
+		gameControl.mainMenuDeleteLevel = 1;
 	}
 	
 	public void DeleteGameYes () {
@@ -343,6 +400,8 @@ public class MainMenuControl : MonoBehaviour {
 		Destroy(GameObject.FindGameObjectWithTag("Expanded Game Select"));
 		Invoke("RefreshGameLabels", 0.0001f);
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Game " + PlayerPrefsManager.GetGameFile()), null);
+		gameControl.mainMenuLevel = 1;
+		gameControl.mainMenuDeleteLevel = 0;
 	}
 	
 	public void DeleteGameNo () {
@@ -350,15 +409,7 @@ public class MainMenuControl : MonoBehaviour {
 		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		Destroy(GameObject.FindGameObjectWithTag("Delete Game Verify"));
 		Debug.Log("");
-		EventSystem.current.SetSelectedGameObject(GameObject.Find("Play"), null);
+		ExpandGameSelection(PlayerPrefsManager.GetGameFile());
+		gameControl.mainMenuDeleteLevel = 0;
 	}
-	
-	//TODO:
-	//DONE....Write functions to for expanding the game slots (when you click they instantiate a second menu that appears below.
-	//DONE....Write function that replaces "New Game" with appropriate info.
-	//DONE....Wire up sounds.
-	//DONE....write delete options function.
-	//DONE....write copy options function.
-	//Hook up "back" function.
-	//Make it so pause menu cant be opened from here.
 }

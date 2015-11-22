@@ -17,6 +17,7 @@ public class GameControl : MonoBehaviour {
 	public GameObject equipmentSlotMenu;
 	public GameObject pauseMenu;
 	public PlayerSoundEffects playerSoundEffects;
+	public MusicManager musicManager;
 	
 	//item inventory script access.
 	public GameObject itemInventory;
@@ -26,6 +27,8 @@ public class GameControl : MonoBehaviour {
 	public EquipmentDatabase equipmentDatabase;
 	
 	public ClassesDatabase classesDatabase;	
+	
+	public MainMenuControl mainMenuControl;
 	
 	private LevelManager levelManager;
 	
@@ -76,6 +79,8 @@ public class GameControl : MonoBehaviour {
 	public int pauseMenuLevel = 0;
 	public int itemsMenuLevel = 0;
 	public int mainMenuLevel = 0;
+	public int mainMenuDeleteLevel = 0;
+	public int mainMenuCopyLevel = 0;
 	
 
 	void Awake () {
@@ -83,26 +88,41 @@ public class GameControl : MonoBehaviour {
 	}
 	
 	void Start () {
+		equipmentMenuLevel = 0;
+		weaponEvolutionMenuLevel = 0;
+		pauseMenuLevel = 0;
+		itemsMenuLevel = 0;
+		mainMenuLevel = 0;
+		mainMenuDeleteLevel = 0;
+		mainMenuCopyLevel = 0;
+		
 		playerClass = 7;
 		equippedWeapon = 80;
 		equippedHead = 5;
 		equippedChest = 6;
 		equippedPants = 7;
 		equippedFeet = 8;
+		
+		playerSoundEffects.ChangeVolume(PlayerPrefsManager.GetMasterEffectsVolume());
+		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
 	}
 	
 	void Update () {
 		if (Input.GetButtonDown("Open Pause Menu")) {
-			if (GameObject.FindGameObjectWithTag("Pause Menu")) {
-				ClosePauseMenu();
-				pauseMenuLevel = 0;
+			//makes opening pause menu impossible from the listed scenes, need to add a few for the world/region menus and cutscenes....might be easier to say when instead of when cant.
+			if (Application.loadedLevelName == "_Splash" || Application.loadedLevelName == "Start" || 
+				Application.loadedLevelName == "Main Menu" || Application.loadedLevelName == "01b Options" || Application.loadedLevelName == "Extras") {
 			} else {
-				OpenPauseMenu();
-				pauseMenuLevel = 1;
+				if (GameObject.FindGameObjectWithTag("Pause Menu")) {
+					ClosePauseMenu();
+					pauseMenuLevel = 0;
+				} else {
+					OpenPauseMenu();
+					pauseMenuLevel = 1;
+				}
 			}
 		}
-
-				
+	
 		
 		if (Input.GetKeyDown(KeyCode.E)) {
 			//temp way to add info to the weapons list.
@@ -120,28 +140,44 @@ public class GameControl : MonoBehaviour {
 		
 		//"Back" function.
 		if (Input.GetButtonDown("Cancel")) {
-			//Weapon Evolution Menu.
-			if (weaponEvolutionMenuLevel > 0) {
-				equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousWeaponMenu(weaponEvolutionMenuLevel);
-				weaponEvolutionMenuLevel --;
+			//Main Menu.
+			if (mainMenuLevel > 0) {
+				mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousMainMenu(mainMenuLevel);
+				mainMenuLevel --;
+			}
+			//Copy Branch
+			if (mainMenuCopyLevel > 0) {
+				mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousCopyMenu(mainMenuCopyLevel);
+				mainMenuCopyLevel --;
+			}
+			//Delete Branch
+			if (mainMenuDeleteLevel > 0) {
+				mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousDeleteMenu(mainMenuDeleteLevel);
+				mainMenuDeleteLevel --;
 			}
 			
-			//Main Menu.
+			
+			//Pause Menu.
 			if (pauseMenuLevel > 0) {
 				ClosePauseMenu();
 				pauseMenuLevel --;
 			}
-			
 			//Items Menu.
 			if (itemsMenuLevel > 0) {
 				itemInventory.GetComponent<Inventory>().OpenPreviousWeaponMenu(itemsMenuLevel);
 				itemsMenuLevel --;
 			}
-			
 			//Equipment Menu.
 			if (equipmentMenuLevel > 0) {
 				equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousEquipmentMenu(equipmentMenuLevel);
 				equipmentMenuLevel --;
+			}
+			
+			
+			//Weapon Evolution Menu.
+			if (weaponEvolutionMenuLevel > 0) {
+				equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousWeaponMenu(weaponEvolutionMenuLevel);
+				weaponEvolutionMenuLevel --;
 			}
 		}
 		

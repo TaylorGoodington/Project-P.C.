@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -9,7 +9,7 @@ public class SetStartVolume : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		musicManager = GameObject.FindObjectOfType<MusicManager>();
-		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterVolume());
+		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
 	}
 	
 	// Update is called once per frame
