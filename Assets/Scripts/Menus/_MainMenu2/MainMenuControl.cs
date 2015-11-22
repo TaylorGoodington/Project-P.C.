@@ -155,9 +155,7 @@ public class MainMenuControl : MonoBehaviour {
 		
 		GameObject expansion = Instantiate(expandedGameSelection, new Vector3(0, -200, 0), Quaternion.identity) as GameObject;
 		expansion.transform.SetParent(gameSlot.transform, false);
-		
-//		TurnOffAllButtons();
-		
+				
 		EventSystem.current.SetSelectedGameObject(GameObject.Find("Play"), null);
 		
 		//add listeners
@@ -221,12 +219,94 @@ public class MainMenuControl : MonoBehaviour {
 		GameObject expansion = Instantiate(overwriteSlots, new Vector3(0, -200, 0), Quaternion.identity) as GameObject;
 		expansion.transform.SetParent(gameSlot.transform, false);
 		
-		//I dont need to do this here, I just need to call the verification panel based on if the selected slot is empty or not.
-//		Button lowSlot = expansion.transform.GetChild(1).GetComponent<Button>();
-//		lowSlot.onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().CopyGame(fileNumber));
-//		
-//		Button highSlot = expansion.transform.GetChild(2).GetComponent<Button>();
-//		highSlot.onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().DeleteGame(fileNumber));
+		Text lowSlot = expansion.transform.GetChild(1).GetComponent<Text>();
+		lowSlot.text = "File " + lowNumber;
+		
+		Text highSlot = expansion.transform.GetChild(2).GetComponent<Text>();
+		highSlot.text = "File " + highNumber;
+		
+		EventSystem.current.SetSelectedGameObject(expansion.transform.GetChild(1).gameObject, null);
+		
+		foreach (Transform child in expansion.transform) {
+			if (child.GetComponent<Button>() == true) {
+				if (child.name == "Low Slot") {
+					if (File.Exists(Application.persistentDataPath + "/playerInfo" + lowNumber + ".dat")) {
+						child.GetComponent<Button>().onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().OverwriteFile(lowNumber));
+					} else {
+						child.GetComponent<Button>().onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().OverwriteNewGame(lowNumber));
+					}
+				} else {
+					if (File.Exists(Application.persistentDataPath + "/playerInfo" + highNumber + ".dat")) {
+						child.GetComponent<Button>().onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().OverwriteFile(highNumber));
+					} else {
+						child.GetComponent<Button>().onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().OverwriteNewGame(highNumber));
+					}
+				}
+			}
+		}
+	}
+	
+	public void OverwriteNewGame (int fileNumber) {
+		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
+		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		GameObject overwriteMenu = Instantiate(overwriteNewGameVerification);
+		overwriteMenu.transform.SetParent(GameObject.FindGameObjectWithTag("Main Menu").transform, false);
+		overwriteMenu.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().OverwriteNewGameYes(fileNumber));
+		EventSystem.current.SetSelectedGameObject(overwriteMenu.transform.GetChild(3).gameObject);
+	}
+
+	void OverwriteNewGameYes (int fileNumber) {
+		int gameFile = PlayerPrefsManager.GetGameFile ();
+		gameControl.LoadFile (gameFile);
+		gameControl.SaveFile (fileNumber);
+		RefreshGameLabels ();
+		
+		Destroy (GameObject.FindGameObjectWithTag ("Overwrite New Game Verify"));
+		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Slots"));
+		Debug.Log ("OverwriteNewGameYes");
+	}
+	
+	public void OverwriteNewGameNo () {
+		Destroy (GameObject.FindGameObjectWithTag ("Overwrite New Game Verify"));
+		Debug.Log ("OverwriteNewGameNo");
+		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("Overwrite Slots").transform.GetChild(1).gameObject, null);
+	}
+	
+	public void OverwriteFile (int fileNumber) {
+		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
+		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		GameObject overwriteMenu = Instantiate(overwriteGameVerification);
+		overwriteMenu.transform.SetParent(GameObject.FindGameObjectWithTag("Main Menu").transform, false);
+		
+		if (fileNumber == 1) {
+			overwriteMenu.transform.GetChild(2).GetComponent<Text>().text = PlayerPrefsManager.GetFile1PlayerName();
+			overwriteMenu.transform.GetChild(3).GetComponent<Text>().text = "Level: " + PlayerPrefsManager.GetFile1PlayerLevel().ToString();
+		} else if (fileNumber == 2) {
+			overwriteMenu.transform.GetChild(2).GetComponent<Text>().text = PlayerPrefsManager.GetFile2PlayerName();
+			overwriteMenu.transform.GetChild(3).GetComponent<Text>().text = "Level: " + PlayerPrefsManager.GetFile2PlayerLevel().ToString();
+		} else {
+			overwriteMenu.transform.GetChild(2).GetComponent<Text>().text = PlayerPrefsManager.GetFile3PlayerName();
+			overwriteMenu.transform.GetChild(3).GetComponent<Text>().text = "Level: " + PlayerPrefsManager.GetFile3PlayerLevel().ToString();
+		}
+		overwriteMenu.transform.GetChild(4).GetComponent<Button>().onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().OverwriteFileYes(fileNumber));
+		EventSystem.current.SetSelectedGameObject(overwriteMenu.transform.GetChild(4).gameObject);
+	}
+	
+	public void OverwriteFileYes (int fileNumber) {
+		int gameFile = PlayerPrefsManager.GetGameFile ();
+		gameControl.LoadFile (gameFile);
+		gameControl.SaveFile (fileNumber);
+		RefreshGameLabels ();
+		
+		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Game Verify"));
+		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Slots"));
+		Debug.Log ("OverwriteFileYes");
+	}
+	
+	public void OverwriteFileNo () {
+		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Game Verify"));
+		Debug.Log ("OverwriteFileNo");
+		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("Overwrite Slots").transform.GetChild(1).gameObject, null);
 	}
 	
 	
@@ -278,7 +358,7 @@ public class MainMenuControl : MonoBehaviour {
 	//DONE....Write function that replaces "New Game" with appropriate info.
 	//DONE....Wire up sounds.
 	//DONE....write delete options function.
-	//write copy options function.
+	//DONE....write copy options function.
 	//Hook up "back" function.
 	//Make it so pause menu cant be opened from here.
 }
