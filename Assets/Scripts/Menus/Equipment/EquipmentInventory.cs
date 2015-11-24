@@ -790,8 +790,8 @@ public class EquipmentInventory : MonoBehaviour {
 		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
 		gameControl = GameObject.FindObjectOfType<GameControl>();
 		int index = gameControl.equipmentInventoryList.IndexOf(equipmentDatabase.equipment[PlayerPrefsManager.GetEquipmentID ()]);
-		if (gameControl.equipmentInventoryList[index].quantity > 1) {
-			gameControl.equipmentInventoryList[index].quantity --;
+		if (PlayerPrefsManager.GetQuantity() < gameControl.equipmentInventoryList[index].quantity) {
+			gameControl.equipmentInventoryList[index].quantity = gameControl.equipmentInventoryList[index].quantity - PlayerPrefsManager.GetQuantity();
 		} else {
 			gameControl.equipmentInventoryList.Remove (equipmentDatabase.equipment[PlayerPrefsManager.GetEquipmentID ()]);
 		}

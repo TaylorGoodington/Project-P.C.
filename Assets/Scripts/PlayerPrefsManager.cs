@@ -21,6 +21,17 @@ public class PlayerPrefsManager : MonoBehaviour {
 	const string SELECT_ITEM = "select_item";
 	const string EQUIPMENT_ID = "equipment_ID";
 	const string LOCAL_EQUIPMENT_INDEX = "local_equipment_index";
+	const string QUANTITY = "quantity";
+	
+	
+	
+	public static void SetQuantity (int quantity) {
+		PlayerPrefs.SetInt (QUANTITY, quantity);
+	}
+	
+	public static int GetQuantity () {
+		return PlayerPrefs.GetInt (QUANTITY);
+	}
 	
 	
 	public static void SetLocalEquipmentIndex (int localIndex) {

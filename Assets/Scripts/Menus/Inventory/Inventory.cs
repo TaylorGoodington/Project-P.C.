@@ -327,8 +327,8 @@ public class Inventory : MonoBehaviour {
 		itemDatabase = GameObject.FindGameObjectWithTag("Items Database").GetComponent<ItemDatabase>();
 		
 		int index = gameControl.itemInventoryList.IndexOf(itemDatabase.items[PlayerPrefsManager.GetEquipmentID ()]);
-		if (gameControl.itemInventoryList[index].quantity > 1) {
-			gameControl.itemInventoryList[index].quantity --;
+		if (PlayerPrefsManager.GetQuantity() < gameControl.itemInventoryList[index].quantity) {
+			gameControl.itemInventoryList[index].quantity = gameControl.itemInventoryList[index].quantity - PlayerPrefsManager.GetQuantity();
 		} else {
 			gameControl.itemInventoryList.Remove (itemDatabase.items[PlayerPrefsManager.GetEquipmentID ()]);
 		}
