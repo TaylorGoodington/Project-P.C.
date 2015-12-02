@@ -48,7 +48,7 @@ public class GameControl : MonoBehaviour {
 	public int baseIntelligence;
 	public int baseHealth;
 	public int baseMana;
-	//this needs to be saved.
+//	this needs to be saved.
 	public int hp;
 	public int mp;
 	
@@ -61,7 +61,7 @@ public class GameControl : MonoBehaviour {
 	
 	public List<Items> itemInventoryList;
 	public List<Equipment> equipmentInventoryList;
-	//this needs to be saved.
+//	this needs to be saved.
 	public List<Equipment> weaponsList;
 
 	public int equippedHead;
@@ -70,7 +70,7 @@ public class GameControl : MonoBehaviour {
 	public int equippedFeet;
 	
 	public int equippedWeapon;
-	//this needs to be saved.
+//	this needs to be saved.
 	public int availableEvolutions;
 	
 	//Menu Levels are incremented by functions that dive deeper into the respective menu and are decremented by the back function.
@@ -81,6 +81,11 @@ public class GameControl : MonoBehaviour {
 	public int mainMenuLevel = 0;
 	public int mainMenuDeleteLevel = 0;
 	public int mainMenuCopyLevel = 0;
+	
+//		this needs to be saved.
+	//Next section is for profile selecting.
+	public int currentProfile;
+	
 	
 
 	void Awake () {

@@ -9,6 +9,8 @@ public class PlayerSoundEffects : MonoBehaviour {
 	public AudioClip[] playerSoundEffects;
 	private AudioSource audioSource;
 	public string lastObjectName;
+	private bool hasVerticalAxisReset;
+	private bool hasHorizontalAxisReset;
 	
 	void Awake () {
 		DontDestroyOnLoad (gameObject);
@@ -17,16 +19,50 @@ public class PlayerSoundEffects : MonoBehaviour {
 	void Start () {
 		audioSource = GetComponent<AudioSource>();
 		lastObjectName = "Start";
+		hasVerticalAxisReset = true;
+		hasHorizontalAxisReset = true;
 	}
 	
 	void Update () {
-	// Feeling good about this now.
 		if (Application.loadedLevel > 0) {
-			if (IsSelectedObjectDifferent() == true && ((Input.GetButtonDown("Horizontal") || Input.GetAxis("Horizontal") != 0) || 
-														(Input.GetButtonDown("Vertical") || Input.GetAxis("Vertical") != 0)) && 
-														 Input.GetButtonDown("Submit") == false) {
-				PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
-			}
+			HasDirectionalAxisReset ();
+			
+			//I will handle all naviagtion noises here so I don't have my current problem of double noise.
+//			if (we're in the menu system) {
+				if (Input.GetButtonDown("Cancel")) {
+					PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
+				}
+//			}
+		}
+		
+		
+		if (IsSelectedObjectDifferent() == true && HasDirectionalInputBeenReceived() == true) {
+			hasVerticalAxisReset = false;
+			hasHorizontalAxisReset = false;
+			PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
+			Debug.Log ("THE BEST");
+		}
+	}
+
+	//Partners with HasDirectionalInputBeenReceived
+	void HasDirectionalAxisReset () {
+		if (Input.GetAxisRaw ("Vertical") < 0.2 && Input.GetAxisRaw ("Vertical") > -0.2 && hasVerticalAxisReset == false) {
+			hasVerticalAxisReset = true;
+		}
+		if (Input.GetAxisRaw ("Horizontal") < 0.2 && Input.GetAxisRaw ("Horizontal") > -0.2 && hasHorizontalAxisReset == false) {
+			hasHorizontalAxisReset = true;
+		}
+	}
+	
+	//Strong way to test if there was joystick movement.
+	public bool HasDirectionalInputBeenReceived () {
+		if ((Input.GetButtonDown("Vertical") || ((Input.GetAxisRaw("Vertical") > 0.2 && hasVerticalAxisReset == true) || 
+		                                         (Input.GetAxisRaw("Vertical") < -0.2 && hasVerticalAxisReset == true))) || 
+		    (Input.GetButtonDown("Horizontal") || ((Input.GetAxisRaw("Horizontal") > 0.2 && hasHorizontalAxisReset == true) || 
+												   (Input.GetAxisRaw("Horizontal") < -0.2 && hasHorizontalAxisReset == true)))) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

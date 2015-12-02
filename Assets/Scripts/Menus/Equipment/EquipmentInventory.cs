@@ -92,8 +92,8 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	
 	public void OpenPreviousEquipmentMenu (int equipmentMenuLevel) {
-		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+//		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+//		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		if (GameObject.FindGameObjectWithTag ("Equipment Content")) {
 			contentPanel = GameObject.FindGameObjectWithTag ("Equipment Content").GetComponent<ContentPanel>();
 		}
@@ -104,7 +104,24 @@ public class EquipmentInventory : MonoBehaviour {
 			Destroy (destroyEquipmentVerificationCanvas.gameObject);
 			contentPanel.ActivateInventory();
 			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Content").transform.GetChild(PlayerPrefsManager.GetLocalEquipmentIndex()).gameObject,null);
-			Invoke ("SelectEquipment", 0.00001f);
+			
+			selectedEquipmentMaterialIndex = GetEquipmentMaterialIndex (PlayerPrefsManager.GetEquipmentID());
+			gameControl = GameObject.FindObjectOfType<GameControl>();
+			equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
+			equipButton.interactable = true;
+			if (selectedEquipmentMaterialIndex != 5) {
+				destroyEquipmentButton = GameObject.FindGameObjectWithTag("Destroy Equipment Button").GetComponent<Button>();
+				destroyEquipmentButton.interactable = true;
+			}
+			contentPanel = GameObject.FindObjectOfType<ContentPanel>();
+			contentPanel.DeactivateInventory();	
+			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equip Button"),null);
+			
+			if (gameControl.equipmentMenuLevel == 2) {
+				gameControl.equipmentMenuLevel = 3;
+			} else {
+				gameControl.weaponEvolutionMenuLevel = 2;
+			}
 		} else if (equipmentMenuLevel == 3) {
 			equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
 			equipButton.interactable = false;
@@ -125,8 +142,8 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	
 	public void OpenPreviousWeaponMenu (int equipmentMenuLevel) {
-		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+//		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+//		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		if (equipmentMenuLevel == 2) {
 			equipButton = GameObject.FindGameObjectWithTag("Equip Button").GetComponent<Button>();
 			contentPanel = GameObject.FindObjectOfType<ContentPanel>();
