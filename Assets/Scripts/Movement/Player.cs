@@ -6,13 +6,13 @@ public class Player : MonoBehaviour {
 	
 	public float jumpHeight = 4;
 	public float timeToJumpApex = .4f;
-	float accelerationTimeAirborne = .2f;
-	float accelerationTimeGrounded = .1f;
-	float moveSpeed = 6;
+	public float accelerationTimeAirborne = .2f;
+	public float accelerationTimeGrounded = .1f;
+	public float moveSpeed = 6;
 	
 	float gravity;
 	float jumpVelocity;
-	public Vector3 velocity;
+	Vector3 velocity;
 	float velocityXSmoothing;
 	
 	Controller2D controller;
