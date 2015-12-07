@@ -113,6 +113,7 @@ public class Inventory : MonoBehaviour {
 		} else if (itemMenuLevel == 1) {
 			Destroy (GameObject.FindGameObjectWithTag("Item Menu"));
 			gameControl.OpenPauseMenu();
+			GameControl.gameControl.pauseMenuLevel = 1;
 		}
 	}
 

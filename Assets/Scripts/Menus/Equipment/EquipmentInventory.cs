@@ -137,6 +137,7 @@ public class EquipmentInventory : MonoBehaviour {
 		} else if (equipmentMenuLevel == 1) {
 			Destroy (GameObject.FindGameObjectWithTag("Base Equipment Menu"));
 			gameControl.OpenPauseMenu();
+			GameControl.gameControl.pauseMenuLevel = 1;
 		}
 	}
 	

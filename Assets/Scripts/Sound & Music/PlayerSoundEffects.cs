@@ -27,21 +27,19 @@ public class PlayerSoundEffects : MonoBehaviour {
 		if (Application.loadedLevel > 0) {
 			HasDirectionalAxisReset ();
 			
-			//I will handle all naviagtion noises here so I don't have my current problem of double noise.
-//			if (we're in the menu system) {
+			//I will handle all naviagtion noises here so I don't double noise.
+			if (GameControl.gameControl.AnyOpenMenus() == true) {
 				if (Input.GetButtonDown("Cancel")) {
 					PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
 				}
-//			}
-		}
-		
-		
-		if (IsSelectedObjectDifferent() == true && HasDirectionalInputBeenReceived() == true) {
-			hasVerticalAxisReset = false;
-			hasHorizontalAxisReset = false;
-			PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
-			Debug.Log ("THE BEST");
-		}
+				
+				if (IsSelectedObjectDifferent() == true && HasDirectionalInputBeenReceived() == true) {
+					hasVerticalAxisReset = false;
+					hasHorizontalAxisReset = false;
+					PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
+				}
+			}
+		}	
 	}
 
 	//Partners with HasDirectionalInputBeenReceived

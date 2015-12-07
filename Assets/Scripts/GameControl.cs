@@ -93,6 +93,8 @@ public class GameControl : MonoBehaviour {
 	}
 	
 	void Start () {
+		gameControl = GetComponent<GameControl>();
+	
 		equipmentMenuLevel = 0;
 		weaponEvolutionMenuLevel = 0;
 		pauseMenuLevel = 0;
@@ -110,6 +112,9 @@ public class GameControl : MonoBehaviour {
 		
 		playerSoundEffects.ChangeVolume(PlayerPrefsManager.GetMasterEffectsVolume());
 		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
+		
+		//this will be called by something else at some point....
+//		CameraFollow.cameraFollow.UpdateTarget();
 	}
 	
 	void Update () {
@@ -188,6 +193,15 @@ public class GameControl : MonoBehaviour {
 		
 		if (Input.GetKeyDown(KeyCode.W)) {
 			equipmentInventory.GetComponent<EquipmentInventory>().OpenWeaponEvolutionMenu();
+		}
+	}
+	
+	public bool AnyOpenMenus () {
+		int menuIndex = equipmentMenuLevel + weaponEvolutionMenuLevel + pauseMenuLevel + itemsMenuLevel + mainMenuLevel + mainMenuDeleteLevel + mainMenuCopyLevel;
+		if (menuIndex > 0) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

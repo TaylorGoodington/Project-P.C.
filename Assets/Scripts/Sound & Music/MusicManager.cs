@@ -37,8 +37,11 @@ public class MusicManager : MonoBehaviour {
 		if (Application.loadedLevelName == "Start" || Application.loadedLevelName == "Main Menu" || 
 		    Application.loadedLevelName == "01b Options" || Application.loadedLevelName == "Extras") {
 		return 1;
+		} else if (Application.loadedLevelName == "Test Level") {
+			return 2;
+		} else {
+			return 0;
 		}
-		return 0;
 	}
 	
 	public void ChangeVolume (float volume) {
