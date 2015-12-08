@@ -26,7 +26,7 @@ public class CameraFollow : MonoBehaviour {
 	bool lookAheadStopped;
 	
 	void Start() {
-		focusArea = new FocusArea (target.collider.bounds, focusAreaSize);
+		focusArea = new FocusArea (target.boxCollider.bounds, focusAreaSize);
 		//this will be called by something else at some point....
 		UpdateTarget();
 	}
@@ -36,7 +36,7 @@ public class CameraFollow : MonoBehaviour {
 	}
 	
 	void LateUpdate() {
-		focusArea.Update (target.collider.bounds);
+		focusArea.Update (target.boxCollider.bounds);
 		
 		Vector2 focusPosition = focusArea.center + Vector2.up * verticalOffset;
 		
@@ -54,12 +54,23 @@ public class CameraFollow : MonoBehaviour {
 			}
 		}
 		
+//		currentLookAheadX = Mathf.Clamp(Mathf.SmoothDamp (currentLookAheadX, targetLookAheadX, ref smoothLookVelocityX, lookSmoothTimeX),
+//		                    (ParallaxScrolling.parallaxScrolling.levelBounds.min.x + 8f), ParallaxScrolling.parallaxScrolling.levelBounds.max.x - 8f);
 		
 		currentLookAheadX = Mathf.SmoothDamp (currentLookAheadX, targetLookAheadX, ref smoothLookVelocityX, lookSmoothTimeX);
 		
-		focusPosition.y = Mathf.SmoothDamp (transform.position.y, focusPosition.y, ref smoothVelocityY, verticalSmoothTime);
+		//clamps to current level bounds in y.
+		focusPosition.y = Mathf.Clamp(Mathf.SmoothDamp (transform.position.y, focusPosition.y, ref smoothVelocityY, verticalSmoothTime), 
+						  (ParallaxScrolling.parallaxScrolling.levelBounds.min.y + 4.5f), ParallaxScrolling.parallaxScrolling.levelBounds.max.y - 4.5f);
+
+
+		//old code that doesnt clamp.
+//		focusPosition.y = Mathf.SmoothDamp (transform.position.y, focusPosition.y, ref smoothVelocityY, verticalSmoothTime);
+//		transform.position = (Vector3)focusPosition + Vector3.forward * -10;		
+		
 		focusPosition += Vector2.right * currentLookAheadX;
-		transform.position = (Vector3)focusPosition + Vector3.forward * -10;
+		transform.position = new Vector3 (Mathf.Clamp (focusPosition.x, ParallaxScrolling.parallaxScrolling.levelBounds.min.x + 8, 
+																		ParallaxScrolling.parallaxScrolling.levelBounds.max.x - 8), focusPosition.y, -10);
 	}
 	
 	void OnDrawGizmos() {

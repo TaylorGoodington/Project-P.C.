@@ -3,33 +3,38 @@ using System.Collections;
 
 public class ParallaxScrolling : MonoBehaviour {
 
+	public static ParallaxScrolling parallaxScrolling;
+
 	public Transform[] backgrounds;
 	private float smoothing = 30;
 	
 	private BoxCollider2D levelCollider;
 	private float levelSize;
-	
+	[HideInInspector]
+	public Bounds levelBounds;
 	private Controller2D Controller2D;
 	
 	//This is static and I dont like it....
 	private float cameraWidth = 16f;
 	
 	private float cameraPosition;
+	private GameObject cameraObject;
 	
 	void Awake () {
 	}
 
 	void Start () {
+		parallaxScrolling = GetComponent<ParallaxScrolling>();
 		cameraPosition = GameObject.FindGameObjectWithTag("MainCamera").transform.position.x;
 		levelCollider = this.GetComponent<BoxCollider2D>();
 		levelSize = levelCollider.bounds.size.x - (cameraWidth / 2);
+		levelBounds = levelCollider.bounds;
 		Controller2D = GameObject.FindObjectOfType<Controller2D>();
 	}
 	
 	
 	void Update () {
 		cameraPosition = GameObject.FindGameObjectWithTag("MainCamera").transform.position.x;
-		int directionX = Controller2D.collisions.faceDir;
 		
 		for (var i = 0; i < backgrounds.Length; i++) {
 			float backgroundSize = backgrounds[i].GetComponent<SpriteRenderer>().bounds.size.x;

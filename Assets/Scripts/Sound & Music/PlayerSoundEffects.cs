@@ -4,9 +4,11 @@ using UnityEngine.EventSystems;
 
 
 public class PlayerSoundEffects : MonoBehaviour {
+
+	public static PlayerSoundEffects playerSoundEffects;
 	
 	
-	public AudioClip[] playerSoundEffects;
+	public AudioClip[] soundEffects;
 	private AudioSource audioSource;
 	public string lastObjectName;
 	private bool hasVerticalAxisReset;
@@ -17,6 +19,7 @@ public class PlayerSoundEffects : MonoBehaviour {
 	}
 	
 	void Start () {
+		playerSoundEffects = GetComponent<PlayerSoundEffects>();
 		audioSource = GetComponent<AudioSource>();
 		lastObjectName = "Start";
 		hasVerticalAxisReset = true;
@@ -83,7 +86,7 @@ public class PlayerSoundEffects : MonoBehaviour {
 	}
 	
 	public void PlaySoundEffect (int sound) {
-		AudioClip soundEffect = playerSoundEffects[sound];
+		AudioClip soundEffect = soundEffects[sound];
 		audioSource = GetComponent<AudioSource>();
 		if (soundEffect) {
 			audioSource.clip = soundEffect;

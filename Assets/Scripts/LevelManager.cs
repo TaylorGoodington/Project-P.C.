@@ -5,9 +5,12 @@ using UnityEngine.EventSystems;
 
 public class LevelManager : MonoBehaviour {
 
+	public static LevelManager levelManager;
+
 	public float autoLoadNextLevelAfter;
 	
 	void Start () {
+		levelManager = GetComponent<LevelManager>();
 		if (Application.loadedLevel == 0) {
 			if (autoLoadNextLevelAfter <= 0) {
 			}else {
