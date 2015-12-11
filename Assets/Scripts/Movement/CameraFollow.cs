@@ -15,6 +15,11 @@ public class CameraFollow : MonoBehaviour {
 	public float verticalSmoothTime;
 	public Vector2 focusAreaSize;
 	
+	private float cameraWidth = 4;
+	private float cameraHeight = 2;
+	
+	private ParallaxScrolling parallaxScrolling;
+	
 	FocusArea focusArea;
 	
 	float currentLookAheadX;
@@ -29,6 +34,7 @@ public class CameraFollow : MonoBehaviour {
 		focusArea = new FocusArea (target.boxCollider.bounds, focusAreaSize);
 		//this will be called by something else at some point....
 		UpdateTarget();
+		parallaxScrolling = GameObject.FindObjectOfType<ParallaxScrolling>().GetComponent<ParallaxScrolling>();
 	}
 	
 	public void UpdateTarget () {
@@ -61,7 +67,7 @@ public class CameraFollow : MonoBehaviour {
 		
 		//clamps to current level bounds in y.
 		focusPosition.y = Mathf.Clamp(Mathf.SmoothDamp (transform.position.y, focusPosition.y, ref smoothVelocityY, verticalSmoothTime), 
-						  (ParallaxScrolling.parallaxScrolling.levelBounds.min.y + 4.5f), ParallaxScrolling.parallaxScrolling.levelBounds.max.y - 4.5f);
+		                              (parallaxScrolling.levelBounds.min.y + cameraHeight), parallaxScrolling.levelBounds.max.y - cameraHeight);
 
 
 		//old code that doesnt clamp.
@@ -69,8 +75,8 @@ public class CameraFollow : MonoBehaviour {
 //		transform.position = (Vector3)focusPosition + Vector3.forward * -10;		
 		
 		focusPosition += Vector2.right * currentLookAheadX;
-		transform.position = new Vector3 (Mathf.Clamp (focusPosition.x, ParallaxScrolling.parallaxScrolling.levelBounds.min.x + 8, 
-																		ParallaxScrolling.parallaxScrolling.levelBounds.max.x - 8), focusPosition.y, -10);
+		transform.position = new Vector3 (Mathf.Clamp (focusPosition.x, parallaxScrolling.levelBounds.min.x + 4, 
+																		parallaxScrolling.levelBounds.max.x - 4), focusPosition.y, -10);
 	}
 	
 	void OnDrawGizmos() {

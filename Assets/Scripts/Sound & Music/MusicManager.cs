@@ -37,7 +37,7 @@ public class MusicManager : MonoBehaviour {
 		if (Application.loadedLevelName == "Start" || Application.loadedLevelName == "Main Menu" || 
 		    Application.loadedLevelName == "01b Options" || Application.loadedLevelName == "Extras") {
 		return 1;
-		} else if (Application.loadedLevelName == "Test Level") {
+		} else if (Application.loadedLevelName == "Test Level" || Application.loadedLevelName == "Test Level 2") {
 			return 2;
 		} else {
 			return 0;
