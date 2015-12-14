@@ -37,9 +37,9 @@ public class ParallaxScrolling : MonoBehaviour {
 	void Update () {
 		cameraPosition = GameObject.FindGameObjectWithTag("MainCamera").transform.position.x;
 		for (var i = 0; i < backgrounds.Length; i++) {
-			float backgroundSize = backgrounds[i].GetComponent<SpriteRenderer>().bounds.size.x;
+			float backgroundSize = backgrounds[i].GetComponent<SpriteRenderer>().bounds.size.x * 0.95f;
 			float rateOfMovement = (backgroundSize - cameraWidth) / levelSize;
-			var backgroundTargetPosition = (cameraPosition - cameraWidth / 2) - (cameraPosition * (rateOfMovement));
+			var backgroundTargetPosition = ((cameraPosition - cameraWidth / 2)) - (cameraPosition * (rateOfMovement));
 			backgrounds[i].position = Vector3.Lerp(
 				backgrounds[i].position, //from
 				new Vector3(backgroundTargetPosition, backgrounds[i].position.y, backgrounds[i].position.z), //to

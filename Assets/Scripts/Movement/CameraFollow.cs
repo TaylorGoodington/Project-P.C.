@@ -15,7 +15,7 @@ public class CameraFollow : MonoBehaviour {
 	public float verticalSmoothTime;
 	public Vector2 focusAreaSize;
 	
-	private float cameraWidth = 4;
+//	private float cameraWidth = 4;
 	private float cameraHeight = 2;
 	
 	private ParallaxScrolling parallaxScrolling;
@@ -31,8 +31,9 @@ public class CameraFollow : MonoBehaviour {
 	bool lookAheadStopped;
 	
 	void Start() {
+		cameraFollow = GetComponent<CameraFollow>();
 		focusArea = new FocusArea (target.boxCollider.bounds, focusAreaSize);
-		//this will be called by something else at some point....
+		//these will be called by something else at some point....
 		UpdateTarget();
 		parallaxScrolling = GameObject.FindObjectOfType<ParallaxScrolling>().GetComponent<ParallaxScrolling>();
 	}
@@ -60,28 +61,37 @@ public class CameraFollow : MonoBehaviour {
 			}
 		}
 		
-//		currentLookAheadX = Mathf.Clamp(Mathf.SmoothDamp (currentLookAheadX, targetLookAheadX, ref smoothLookVelocityX, lookSmoothTimeX),
-//		                    (ParallaxScrolling.parallaxScrolling.levelBounds.min.x + 8f), ParallaxScrolling.parallaxScrolling.levelBounds.max.x - 8f);
-		
 		currentLookAheadX = Mathf.SmoothDamp (currentLookAheadX, targetLookAheadX, ref smoothLookVelocityX, lookSmoothTimeX);
 		
-		//clamps to current level bounds in y.
-		focusPosition.y = Mathf.Clamp(Mathf.SmoothDamp (transform.position.y, focusPosition.y, ref smoothVelocityY, verticalSmoothTime), 
-		                              (parallaxScrolling.levelBounds.min.y + cameraHeight), parallaxScrolling.levelBounds.max.y - cameraHeight);
-
-
-		//old code that doesnt clamp.
-//		focusPosition.y = Mathf.SmoothDamp (transform.position.y, focusPosition.y, ref smoothVelocityY, verticalSmoothTime);
-//		transform.position = (Vector3)focusPosition + Vector3.forward * -10;		
+		//This section allows the camera to pan up or down depending on the direction pressed.
+		if (GameControl.gameControl.AnyOpenMenus() == false) {
+			float panDirection = Mathf.Sign(Input.GetAxisRaw("Vertical"));
+			if (Input.GetAxisRaw ("Vertical") > 0.4f || Input.GetAxisRaw ("Vertical") < -0.4f) {
+				focusPosition.y = Mathf.SmoothDamp (transform.position.y, focusArea.center.y + ((focusAreaSize.y / 2) * panDirection), ref smoothVelocityY, verticalSmoothTime);
+			} else if (Input.GetAxisRaw ("Vertical") < 0.4f || Input.GetAxisRaw ("Vertical") > -0.4f) {
+				focusPosition.y = Mathf.SmoothDamp (transform.position.y, focusPosition.y, ref smoothVelocityY, verticalSmoothTime);
+			}	
+		}
+		
 		
 		focusPosition += Vector2.right * currentLookAheadX;
 		transform.position = new Vector3 (Mathf.Clamp (focusPosition.x, parallaxScrolling.levelBounds.min.x + 4, 
-																		parallaxScrolling.levelBounds.max.x - 4), focusPosition.y, -10);
+																		parallaxScrolling.levelBounds.max.x - 4), 
+		                                  Mathf.Clamp(focusPosition.y,(parallaxScrolling.levelBounds.min.y + cameraHeight), 
+		                                  							   parallaxScrolling.levelBounds.max.y - cameraHeight), -10);
 	}
 	
 	void OnDrawGizmos() {
 		Gizmos.color = new Color (1, 0, 0, .5f);
 		Gizmos.DrawCube (focusArea.center, focusAreaSize);
+	}
+	
+	public void PanCamera () {
+		float panDirection = Mathf.Sign(Input.GetAxisRaw("Vertical"));
+		if (panDirection == -1) {
+		
+		}
+		Debug.Log(panDirection);
 	}
 	
 	struct FocusArea {

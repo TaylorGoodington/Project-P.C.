@@ -6,6 +6,9 @@ public class Controller2D : RaycastController {
 	public float maxClimbAngle = 80;
 	public float maxDescendAngle = 80;
 	
+	[HideInInspector]
+	public bool isWallJumpable;
+	
 	public CollisionInfo collisions;
 	[HideInInspector]
 	public Vector2 playerInput;
@@ -62,6 +65,14 @@ public class Controller2D : RaycastController {
 			Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength,Color.red);
 			
 			if (hit) {
+			
+				//wall jumping restriction!
+				if (hit.collider.gameObject.GetComponent<WallJumpable>()) {
+					isWallJumpable = true;
+				} else {
+					isWallJumpable = false;
+				}
+				
 				
 				if (hit.distance == 0) {
 					continue;

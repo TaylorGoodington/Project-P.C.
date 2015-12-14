@@ -44,7 +44,7 @@ public class Player : MonoBehaviour {
 			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 			
 			bool wallSliding = false;
-			if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0) {
+			if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && controller.isWallJumpable == true) {
 				wallSliding = true;
 				
 				if (velocity.y < -wallSlideSpeedMax) {
