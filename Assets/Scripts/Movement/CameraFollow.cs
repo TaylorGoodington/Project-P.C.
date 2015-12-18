@@ -15,8 +15,7 @@ public class CameraFollow : MonoBehaviour {
 	public float verticalSmoothTime;
 	public Vector2 focusAreaSize;
 	
-//	private float cameraWidth = 4;
-	private float cameraHeight = 2;
+	private float cameraHeight;
 	
 	private ParallaxScrolling parallaxScrolling;
 	
@@ -36,6 +35,7 @@ public class CameraFollow : MonoBehaviour {
 		//these will be called by something else at some point....
 		UpdateTarget();
 		parallaxScrolling = GameObject.FindObjectOfType<ParallaxScrolling>().GetComponent<ParallaxScrolling>();
+		cameraHeight = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().orthographicSize;
 	}
 	
 	public void UpdateTarget () {
@@ -75,8 +75,8 @@ public class CameraFollow : MonoBehaviour {
 		
 		
 		focusPosition += Vector2.right * currentLookAheadX;
-		transform.position = new Vector3 (Mathf.Clamp (focusPosition.x, parallaxScrolling.levelBounds.min.x + 4, 
-																		parallaxScrolling.levelBounds.max.x - 4), 
+		transform.position = new Vector3 (Mathf.Clamp (focusPosition.x, parallaxScrolling.levelBounds.min.x + (cameraHeight * 2), 
+		                                                               parallaxScrolling.levelBounds.max.x - (cameraHeight * 2)), 
 		                                  Mathf.Clamp(focusPosition.y,(parallaxScrolling.levelBounds.min.y + cameraHeight), 
 		                                  							   parallaxScrolling.levelBounds.max.y - cameraHeight), -10);
 	}

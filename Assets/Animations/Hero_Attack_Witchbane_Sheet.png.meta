@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 7095195c2908d594cba0e80c2efed5fb
-timeCreated: 1450226192
+guid: 6f62d71b77542ae4eb2dfce16ca6d8f8
+timeCreated: 1450398742
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Attack_Sword_Sheet_0
-    21300002: Attack_Sword_Sheet_1
-    21300004: Attack_Sword_Sheet_2
-    21300006: Attack_Sword_Sheet_3
+    21300000: Hero_Attack_Witchbane_Sheet_0
+    21300002: Hero_Attack_Witchbane_Sheet_1
+    21300004: Hero_Attack_Witchbane_Sheet_2
+    21300006: Hero_Attack_Witchbane_Sheet_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -47,51 +47,51 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 50
+  spritePixelsToUnits: 1
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Attack_Sword_Sheet_0
+    - name: Hero_Attack_Witchbane_Sheet_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 18
+        width: 32
         height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 4
+      pivot: {x: 0, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Attack_Sword_Sheet_1
+    - name: Hero_Attack_Witchbane_Sheet_1
       rect:
         serializedVersion: 2
-        x: 24
+        x: 32
         y: 0
-        width: 20
+        width: 32
         height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 4
+      pivot: {x: 0, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Attack_Sword_Sheet_2
+    - name: Hero_Attack_Witchbane_Sheet_2
       rect:
         serializedVersion: 2
-        x: 52
+        x: 64
         y: 0
-        width: 20
-        height: 23
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 32
+        height: 24
+      alignment: 4
+      pivot: {x: 0, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Attack_Sword_Sheet_3
+    - name: Hero_Attack_Witchbane_Sheet_3
       rect:
         serializedVersion: 2
-        x: 76
+        x: 96
         y: 0
-        width: 19
-        height: 23
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 32
+        height: 24
+      alignment: 4
+      pivot: {x: 0, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

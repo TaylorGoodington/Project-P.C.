@@ -1,9 +1,12 @@
 fileFormatVersion: 2
-guid: 2e635d80614c2344793f2c5211bb0b72
-timeCreated: 1450224698
+guid: 0c6237cca0e71c34cb2b5d5fabe0d3aa
+timeCreated: 1450400251
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Hero_Run_Sheet_0
+    21300002: Hero_Run_Sheet_1
+    21300004: Hero_Run_Sheet_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -37,10 +40,10 @@ TextureImporter:
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 6
+  alignment: 4
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
@@ -48,7 +51,37 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: Hero_Run_Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 27
+        height: 24
+      alignment: 9
+      pivot: {x: .200000003, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Hero_Run_Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 0
+        width: 27
+        height: 24
+      alignment: 9
+      pivot: {x: .200000003, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Hero_Run_Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 0
+        width: 27
+        height: 24
+      alignment: 9
+      pivot: {x: .200000003, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
   assetBundleName: 

@@ -46,6 +46,7 @@ public class Controller2D : RaycastController {
 		
 		if (standingOnPlatform) {
 			collisions.below = true;
+			//add call to change variable for if grounded or not.
 		}
 	}
 	
@@ -172,6 +173,7 @@ public class Controller2D : RaycastController {
 			velocity.y = climbVelocityY;
 			velocity.x = Mathf.Cos (slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign (velocity.x);
 			collisions.below = true;
+			//add call to change variable for if grounded or not.
 			collisions.climbingSlope = true;
 			collisions.slopeAngle = slopeAngle;
 		}
@@ -195,6 +197,7 @@ public class Controller2D : RaycastController {
 						collisions.slopeAngle = slopeAngle;
 						collisions.descendingSlope = true;
 						collisions.below = true;
+						//add call to change variable for if grounded or not.
 					}
 				}
 			}

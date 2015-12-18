@@ -6,7 +6,7 @@ public class ParallaxScrolling : MonoBehaviour {
 	public static ParallaxScrolling parallaxScrolling;
 
 	public Transform[] backgrounds;
-	private float smoothing = 30;
+	public float smoothing = 20;
 	
 	private BoxCollider2D levelCollider;
 	private float levelSize;
@@ -37,7 +37,7 @@ public class ParallaxScrolling : MonoBehaviour {
 	void Update () {
 		cameraPosition = GameObject.FindGameObjectWithTag("MainCamera").transform.position.x;
 		for (var i = 0; i < backgrounds.Length; i++) {
-			float backgroundSize = backgrounds[i].GetComponent<SpriteRenderer>().bounds.size.x * .95f;
+			float backgroundSize = backgrounds[i].GetComponent<SpriteRenderer>().bounds.size.x * 0.99f;
 			float rateOfMovement = (backgroundSize - cameraWidth) / levelSize;
 			var backgroundTargetPosition = ((cameraPosition - cameraWidth / 2)) - (cameraPosition * (rateOfMovement));
 			backgrounds[i].position = Vector3.Lerp(

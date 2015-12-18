@@ -17,6 +17,13 @@ public class Player : MonoBehaviour {
 	
 	public float wallSlideSpeedMax = 3;
 	public float wallStickTime = .25f;
+	
+	[HideInInspector]
+	public bool isAttacking;
+	public bool isJumping;
+	
+	private PlayerAnimationController playerAnimationController;
+	
 	float timeToWallUnstick;
 	
 	float gravity;
@@ -29,16 +36,24 @@ public class Player : MonoBehaviour {
 	
 	void Start() {
 		controller = GetComponent<Controller2D> ();
+		playerAnimationController = GetComponent<PlayerAnimationController>();
 		
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
+		isAttacking = false;
+		isJumping = false;
 	}
 	
 	void Update() {
 		if (GameControl.gameControl.AnyOpenMenus() == false) {
 			Vector2 input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 			int wallDirX = (controller.collisions.left) ? -1 : 1;
+			
+			//cant move if attacking.
+			if (isAttacking) {
+				input = Vector2.zero;
+			}
 			
 			float targetVelocityX = input.x * moveSpeed;
 			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
@@ -68,28 +83,37 @@ public class Player : MonoBehaviour {
 				
 			}
 			
-			if (Input.GetButtonDown ("Jump")) {
-				if (wallSliding) {
-					if (wallDirX == input.x) {
-						velocity.x = -wallDirX * wallJumpClimb.x;
-						velocity.y = wallJumpClimb.y;
-					}
-					else if (input.x == 0) {
-						velocity.x = -wallDirX * wallJumpOff.x;
-						velocity.y = wallJumpOff.y;
-					}
-					else {
-						velocity.x = -wallDirX * wallLeap.x;
-						velocity.y = wallLeap.y;
-					}
-				}
-				if (controller.collisions.below) {
-					velocity.y = maxJumpVelocity;
-				}
+			if (Input.GetButtonDown("Attack")) {
+				playerAnimationController.PlayAnimation("Attack", controller.collisions.faceDir);
+				
 			}
-			if (Input.GetButtonUp ("Jump")) {
-				if (velocity.y > minJumpVelocity) {
-					velocity.y = minJumpVelocity;
+			
+			//cant jump if attacking.
+			if (!isAttacking) {
+				if (Input.GetButtonDown ("Jump")) {
+				
+					if (wallSliding) {
+						if (wallDirX == input.x) {
+							velocity.x = -wallDirX * wallJumpClimb.x;
+							velocity.y = wallJumpClimb.y;
+						}
+						else if (input.x == 0) {
+							velocity.x = -wallDirX * wallJumpOff.x;
+							velocity.y = wallJumpOff.y;
+						}
+						else {
+							velocity.x = -wallDirX * wallLeap.x;
+							velocity.y = wallLeap.y;
+						}
+					}
+					if (controller.collisions.below) {
+						velocity.y = maxJumpVelocity;
+					}
+				}
+				if (Input.GetButtonUp ("Jump")) {
+					if (velocity.y > minJumpVelocity) {
+						velocity.y = minJumpVelocity;
+					}
 				}
 			}
 			
@@ -101,5 +125,14 @@ public class Player : MonoBehaviour {
 				velocity.y = 0;
 			}
 		}
+	}
+	
+	//called from attacking animation at the begining and end.
+	public void IsAttacking () {
+		isAttacking = !isAttacking;
+	}
+	
+	public void IsJumping () {
+		isJumping = !isJumping;
 	}
 }
