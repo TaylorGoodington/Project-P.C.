@@ -6,7 +6,7 @@ public class CameraFollow : MonoBehaviour {
 	//Singleton Pattern
 	public static CameraFollow cameraFollow;
 	
-	[HideInInspector]
+//	[HideInInspector]
 	public Controller2D target;
 	
 	public float verticalOffset;

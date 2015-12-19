@@ -8,21 +8,28 @@ public class PlayerAnimationController : MonoBehaviour {
 	void Start () {
 		animator = GetComponent<Animator>();
 	}
-	
-	void Update () {
-	
-	}
-	
+
 	public void PlayAnimation (string animationName, int direction) {
 		if (direction == 1) {
 			if (animationName == "Attack") {
 				animator.Play("AttackingRight");
+			} else if (animationName == "Running") {
+				animator.Play("RunningRight");
+			} else if (animationName == "Idle") {
+				animator.Play("IdleRight");
+			} else if (animationName == "Jumping") {
+				animator.Play("JumpingRight");
+			}
+		} else {
+			if (animationName == "Attack") {
+				animator.Play("AttackingLeft");
+			} else if (animationName == "Running") {
+				animator.Play("RunningLeft");
+			} else if (animationName == "Idle") {
+				animator.Play("IdleLeft");
+			} else if (animationName == "Jumping") {
+				animator.Play("JumpingLeft");
 			}
 		}
-	}
-	
-	public void AdjustPosition (float directionX, float directionY) {
-//		transform.position.x = gameObject.transform.position.x + directionX;
-//		transform.position.y = gameObject.transform.position.y + directionY;
 	}
 }

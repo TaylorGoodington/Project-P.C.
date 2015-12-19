@@ -3,6 +3,8 @@ using System.Collections;
 
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
+
+	public LayerMask attackingLayer;
 	
 	public float maxJumpHeight = 4;
 	public float minJumpHeight = 1;
@@ -55,6 +57,25 @@ public class Player : MonoBehaviour {
 				input = Vector2.zero;
 			}
 			
+			//Animation Call Section
+			if (Input.GetButtonDown("Attack")) {
+				playerAnimationController.PlayAnimation("Attack", controller.collisions.faceDir);
+			}
+			
+			if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false) {
+				playerAnimationController.PlayAnimation("Jumping", controller.collisions.faceDir);
+			}
+			
+			if (input.x != 0 && controller.collisions.below == true) {
+				playerAnimationController.PlayAnimation("Running", controller.collisions.faceDir);
+			}
+			
+			if (input.x == 0 && isAttacking == false && controller.collisions.below == true) {
+				playerAnimationController.PlayAnimation("Idle", controller.collisions.faceDir);
+			}
+			
+			Debug.Log (input);
+			
 			float targetVelocityX = input.x * moveSpeed;
 			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 			
@@ -82,12 +103,7 @@ public class Player : MonoBehaviour {
 				}
 				
 			}
-			
-			if (Input.GetButtonDown("Attack")) {
-				playerAnimationController.PlayAnimation("Attack", controller.collisions.faceDir);
-				
-			}
-			
+
 			//cant jump if attacking.
 			if (!isAttacking) {
 				if (Input.GetButtonDown ("Jump")) {
@@ -132,7 +148,17 @@ public class Player : MonoBehaviour {
 		isAttacking = !isAttacking;
 	}
 	
-	public void IsJumping () {
-		isJumping = !isJumping;
+	//called from the animations for attacking.
+	public void Attack () {
+		float directionX = controller.collisions.faceDir;
+		float rayLength = 12f; //make each weapon have a length component?
+		float rayOriginX = 0; //define as the edge of the collider?
+		float rayOriginY = 0; //define as the edge of the collider?
+		Vector2 rayOrigin = new Vector2 (rayOriginX, rayOriginY);
+		
+		RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, attackingLayer);
+		if (hit) {
+			CombatEngine.combatEngine.Attacking();
+		}
 	}
 }
