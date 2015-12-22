@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
 	float accelerationTimeAirborne = .2f;
 	float accelerationTimeGrounded = .1f;
 	public float moveSpeed = 6;
+	public float climbSpeed = 50;
 	
 	public Vector2 wallJumpClimb;
 	public Vector2 wallJumpOff;
@@ -23,6 +24,8 @@ public class Player : MonoBehaviour {
 	[HideInInspector]
 	public bool isAttacking;
 	public bool isJumping;
+	public bool isClimbable;
+	public bool climbing;
 	
 	private PlayerAnimationController playerAnimationController;
 	
@@ -74,8 +77,7 @@ public class Player : MonoBehaviour {
 				playerAnimationController.PlayAnimation("Idle", controller.collisions.faceDir);
 			}
 			
-			Debug.Log (input);
-			
+						
 			float targetVelocityX = input.x * moveSpeed;
 			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 			
@@ -101,13 +103,17 @@ public class Player : MonoBehaviour {
 				else {
 					timeToWallUnstick = wallStickTime;
 				}
-				
 			}
-
+			
 			//cant jump if attacking.
 			if (!isAttacking) {
 				if (Input.GetButtonDown ("Jump")) {
-				
+					if (climbing) {
+						velocity.x = controller.collisions.faceDir * wallJumpClimb.x;
+						velocity.y = wallJumpOff.y;
+						climbing = false;
+					}
+					
 					if (wallSliding) {
 						if (wallDirX == input.x) {
 							velocity.x = -wallDirX * wallJumpClimb.x;
@@ -133,8 +139,26 @@ public class Player : MonoBehaviour {
 				}
 			}
 			
+			//climbing stuff
+			if (isClimbable) {
+				if (Input.GetButtonDown("Interact")) {
+					climbing = true;
+					velocity.y = 0;
+				}
+			}
 			
-			velocity.y += gravity * Time.deltaTime;
+			if (climbing) {
+				gravity = 0;
+				velocity.y = input.y * climbSpeed;
+				velocity.x = input.x * climbSpeed;
+			} else {
+				gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
+				velocity.y += gravity * Time.deltaTime;
+			}
+			
+			
+			//possible that if climbing works i wont need this anymore.
+//			velocity.y += gravity * Time.deltaTime;
 			controller.Move (velocity * Time.deltaTime, input);
 			
 			if (controller.collisions.above || controller.collisions.below) {
@@ -142,6 +166,22 @@ public class Player : MonoBehaviour {
 			}
 		}
 	}
+	
+	//this will be used to gauge interactions...I might need to do these things in the climbable script.
+	public void OnTriggerEnter2D (Collider2D collider) {
+		if (collider.gameObject.GetComponent<IsClimbable>()) {
+			isClimbable = true;
+		}
+	}
+	
+	//this will be used to gauge interactions...I might need to do these things in the climbable script.
+	public void OnTriggerExit2D (Collider2D collider) {
+		if (collider.gameObject.GetComponent<IsClimbable>()) {
+			isClimbable = false;
+			climbing = false;
+		}
+	}
+	
 	
 	//called from attacking animation at the begining and end.
 	public void IsAttacking () {
@@ -153,7 +193,7 @@ public class Player : MonoBehaviour {
 		float directionX = controller.collisions.faceDir;
 		float rayLength = 12f; //make each weapon have a length component?
 		float rayOriginX = 0; //define as the edge of the collider?
-		float rayOriginY = 0; //define as the edge of the collider?
+		float rayOriginY = 0; //define as the center of the collider?
 		Vector2 rayOrigin = new Vector2 (rayOriginX, rayOriginY);
 		
 		RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, attackingLayer);

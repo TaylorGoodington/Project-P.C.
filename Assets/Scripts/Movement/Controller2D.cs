@@ -8,6 +8,8 @@ public class Controller2D : RaycastController {
 	
 	[HideInInspector]
 	public bool isWallJumpable;
+//	[HideInInspector]
+//	public bool isClimbable;
 	
 	public CollisionInfo collisions;
 	[HideInInspector]
@@ -29,17 +31,42 @@ public class Controller2D : RaycastController {
 		collisions.velocityOld = velocity;
 		playerInput = input;
 		
-		if (velocity.x != 0) {
-			collisions.faceDir = (int)Mathf.Sign(velocity.x);
-		}
-		
-		if (velocity.y < 0) {
-			DescendSlope(ref velocity);
-		}
-		
-		HorizontalCollisions (ref velocity);
-		if (velocity.y != 0) {
-			VerticalCollisions (ref velocity);
+		//this section will change the movement for climbing.
+		Player player = gameObject.GetComponent<Player>();
+		if (player.climbing) {
+			velocity.x = input.x;
+			velocity.y = input.y;
+			velocity.z = 0;
+			
+			if (velocity.x != 0) {
+				collisions.faceDir = (int)Mathf.Sign(velocity.x);
+			}
+			
+			HorizontalCollisions (ref velocity);
+			
+			if (velocity.y < 0) {
+				DescendSlope(ref velocity);
+			}
+			
+			if (velocity.y != 0) {
+				VerticalCollisions (ref velocity);
+			}
+			
+		//this section handles all other movement.
+		} else {
+			if (velocity.x != 0) {
+				collisions.faceDir = (int)Mathf.Sign(velocity.x);
+			}
+			
+			HorizontalCollisions (ref velocity);
+			
+			if (velocity.y < 0) {
+				DescendSlope(ref velocity);
+			}
+			
+			if (velocity.y != 0) {
+				VerticalCollisions (ref velocity);
+			}
 		}
 		
 		transform.Translate (velocity);
@@ -61,12 +88,18 @@ public class Controller2D : RaycastController {
 		for (int i = 0; i < horizontalRayCount; i ++) {
 			Vector2 rayOrigin = (directionX == -1)?raycastOrigins.bottomLeft:raycastOrigins.bottomRight;
 			rayOrigin += Vector2.up * (horizontalRaySpacing * i);
-			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
+			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);			
 			
 			Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength,Color.red);
 			
 			if (hit) {
-			
+//				if (hit.collider.gameObject.GetComponent<IsClimbable>()) {
+//					isClimbable = true;
+//					continue;
+//				} else {
+//					isClimbable = false;
+//				}
+				
 				//wall jumping restriction!
 				if (hit.collider.gameObject.GetComponent<WallJumpable>()) {
 					isWallJumpable = true;
@@ -123,6 +156,13 @@ public class Controller2D : RaycastController {
 			Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength,Color.red);
 			
 			if (hit) {
+//				if (hit.collider.gameObject.GetComponent<IsClimbable>()) {
+//					isClimbable = true;
+//					continue;
+//				} else {
+//					isClimbable = false;
+//				}
+				
 				if (hit.collider.tag == "Through") {
 					if (directionY == 1 || hit.distance == 0) {
 						continue;
@@ -132,7 +172,7 @@ public class Controller2D : RaycastController {
 					}
 					if (playerInput.y == -1) {
 						collisions.fallingThroughPlatform = true;
-						Invoke("ResetFallingThroughPlatform",.5f);
+						Invoke("ResetFallingThroughPlatform", 0.15f);
 						continue;
 					}
 				}

@@ -4,7 +4,7 @@ using System.Collections;
 [ExecuteInEditMode]
 public class PixelPerfectScale : MonoBehaviour {
 
-	public int screenVerticalPixels;
+	private int screenVerticalPixels = 200;
 	public bool preferUncropped = true;
 	
 	private float screenPixelsY = 0;
@@ -23,7 +23,8 @@ public class PixelPerfectScale : MonoBehaviour {
 			} else {
 				ratio = Mathf.Ceil(screenRatio) / screenRatio;
 			}
-			transform.localScale = Vector3.one * ratio;
+			//this used to work by multiplying by ratio, but the best ratio in preview play mode is 0.7794.
+			transform.localScale = Vector3.one * 0.7794f;
 		}
 	}
 }
