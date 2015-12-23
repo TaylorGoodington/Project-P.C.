@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class MusicManager : MonoBehaviour {
 
@@ -34,10 +34,10 @@ public class MusicManager : MonoBehaviour {
 	}
 	
 	public int LevelTrack () {
-		if (Application.loadedLevelName == "Start" || Application.loadedLevelName == "Main Menu" || 
-		    Application.loadedLevelName == "01b Options" || Application.loadedLevelName == "Extras") {
+		if (SceneManager.GetActiveScene().name == "Start" || SceneManager.GetActiveScene().name == "Main Menu" ||
+            SceneManager.GetActiveScene().name == "01b Options" || SceneManager.GetActiveScene().name == "Extras") {
 		return 1;
-		} else if (Application.loadedLevelName == "Test Level" || Application.loadedLevelName == "Test Level 2") {
+		} else if (SceneManager.GetActiveScene().name == "Test Level" || SceneManager.GetActiveScene().name == "Test Level 2") {
 			return 2;
 		} else {
 			return 0;

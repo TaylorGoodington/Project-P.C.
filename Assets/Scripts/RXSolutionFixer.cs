@@ -1,10 +1,6 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
-using System.Collections;
-using System;
 
 class RXSolutionFixer : AssetPostprocessor 
 {

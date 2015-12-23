@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class ParallaxScrolling : MonoBehaviour {
 
@@ -19,7 +18,6 @@ public class ParallaxScrolling : MonoBehaviour {
 	private float cameraWidth;
 	
 	private Vector2 cameraPosition;
-	private GameObject cameraObject;
 	
 	void Awake () {
 	}

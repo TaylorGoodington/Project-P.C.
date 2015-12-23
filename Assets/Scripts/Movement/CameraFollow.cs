@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class CameraFollow : MonoBehaviour {
 
@@ -31,46 +29,115 @@ public class CameraFollow : MonoBehaviour {
 	float smoothVelocityY;
 	
 	bool lookAheadStopped;
-		
-	void Start() {
+
+	//hit points for checking if the camera is in the level.
+	private Vector2 topRightHitPoint;
+	private Vector2 topLeftHitPoint;
+    private Vector2 bottomRightHitPoint;
+    private Vector2 bottomLeftHitPoint;
+    private Vector2 rightTopHitPoint;
+    private Vector2 leftTopHitPoint;
+    private Vector2 rightBottomHitPoint;
+    private Vector2 leftBottomHitPoint;
+
+    private float maxYCameraClamp;
+    private float minYCameraClamp;
+    private float maxXCameraClamp;
+    private float minXCameraClamp;
+
+    void Start() {
 		cameraFollow = GetComponent<CameraFollow>();
 		focusArea = new FocusArea (target.boxCollider.bounds, focusAreaSize);
 		//these will be called by something else at some point....
 		UpdateTarget();
 		parallaxScrolling = GameObject.FindObjectOfType<ParallaxScrolling>().GetComponent<ParallaxScrolling>();
 		cameraHeight = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().orthographicSize;
-		
-		FindBounds();
-	}
+    }
 	
 	public void UpdateTarget () {
 		target = GameObject.FindGameObjectWithTag("Player").GetComponent<Controller2D>();
 	}
 	
 	public void FindBounds () {
-		Vector2 topRight = new Vector2 (transform.position.x + (cameraHeight * 2), transform.position.y + cameraHeight);
-		Vector2 topLeft = new Vector2 (transform.position.x - (cameraHeight * 2), transform.position.y + cameraHeight);
-		Vector2 bottomRight = new Vector2 (transform.position.x + (cameraHeight * 2), transform.position.y - cameraHeight);
-		Vector2 bottomLeft = new Vector2 (transform.position.x - (cameraHeight * 2), transform.position.y - cameraHeight);
-		Vector2 rightTop = new Vector2 (transform.position.x + (cameraHeight * 2), transform.position.y + cameraHeight);
-		Vector2 leftTop = new Vector2 (transform.position.x - (cameraHeight * 2), transform.position.y + cameraHeight);
-		Vector2 rightBottom = new Vector2 (transform.position.x + (cameraHeight * 2), transform.position.y - cameraHeight);
-		Vector2 leftBottom = new Vector2 (transform.position.x - (cameraHeight * 2), transform.position.y - cameraHeight);
+		Vector2 topRight = new Vector2 ((transform.position.x - 1 + (cameraHeight * 2)), (transform.position.y + cameraHeight));
+		Vector2 topLeft = new Vector2 ((transform.position.x + 1 - (cameraHeight * 2)), (transform.position.y + cameraHeight));
+		Vector2 bottomRight = new Vector2 ((transform.position.x - 1 + (cameraHeight * 2)), (transform.position.y - cameraHeight));
+		Vector2 bottomLeft = new Vector2 ((transform.position.x + 1 - (cameraHeight * 2)), (transform.position.y - cameraHeight));
+		Vector2 rightTop = new Vector2 ((transform.position.x + (cameraHeight * 2)), (transform.position.y - 1 + cameraHeight));
+		Vector2 leftTop = new Vector2 ((transform.position.x - (cameraHeight * 2)), (transform.position.y - 1 + cameraHeight));
+		Vector2 rightBottom = new Vector2 ((transform.position.x + (cameraHeight * 2)), (transform.position.y + 1 - cameraHeight));
+		Vector2 leftBottom = new Vector2 ((transform.position.x - (cameraHeight * 2)), (transform.position.y + 1 - cameraHeight));
 		
-//		List<Vector2> cameraCorners = new List<Vector2>();
-//		cameraCorners.Add (topRight);
-//		cameraCorners.Add (topLeft);
-//		
-//		Debug.Log (cameraCorners[1].x);
-	//I dont think making a list is working, guess i need to do it one at a time.
-		
-		RaycastHit2D topRightHit = Physics2D.Raycast(topRight, Vector2.right, 5000, levelBounds);
+		RaycastHit2D topRightHit = Physics2D.Raycast(topRight, Vector2.up, 5000, levelBounds);
 		if (topRightHit) {
-			Vector2 topRightHitPoint = topRightHit.point;
+			topRightHitPoint = topRightHit.point;
 		}
-	}
-	
-	void LateUpdate() {
+		RaycastHit2D topLeftHit = Physics2D.Raycast(topLeft, Vector2.up, 5000, levelBounds);
+		if (topLeftHit) {
+            topLeftHitPoint = topLeftHit.point;
+		}
+        RaycastHit2D bottomRightHit = Physics2D.Raycast(bottomRight, Vector2.down, 5000, levelBounds);
+        if (bottomRightHit) {
+            bottomRightHitPoint = bottomRightHit.point;
+        }
+        RaycastHit2D bottomLeftHit = Physics2D.Raycast(bottomLeft, Vector2.down, 5000, levelBounds);
+        if (bottomLeftHit) {
+            bottomLeftHitPoint = bottomLeftHit.point;
+        }
+        RaycastHit2D rightTopHit = Physics2D.Raycast(rightTop, Vector2.right, 5000, levelBounds);
+        if (rightTopHit)
+        {
+            rightTopHitPoint = rightTopHit.point;
+        }
+        RaycastHit2D leftTopHit = Physics2D.Raycast(leftTop, Vector2.left, 5000, levelBounds);
+        if (leftTopHit)
+        {
+            leftTopHitPoint = leftTopHit.point;
+        }
+        RaycastHit2D rightBottomHit = Physics2D.Raycast(rightBottom, Vector2.right, 5000, levelBounds);
+        if (rightBottomHit)
+        {
+            rightBottomHitPoint = rightBottomHit.point;
+        }
+        RaycastHit2D leftBottomHit = Physics2D.Raycast(leftBottom, Vector2.left, 5000, levelBounds);
+        if (leftBottomHit)
+        {
+            leftBottomHitPoint = leftBottomHit.point;
+        }
+
+        //MaxY Clamp
+        if (topRightHitPoint.y >= topLeftHitPoint.y) {
+            maxYCameraClamp = topLeftHitPoint.y;
+        } else {
+            maxYCameraClamp = topRightHitPoint.y;
+        }
+        //MinY Clamp
+        if (bottomRightHitPoint.y >= bottomLeftHitPoint.y)
+        {
+            minYCameraClamp = bottomRightHitPoint.y;
+        }
+        else {
+            minYCameraClamp = bottomLeftHitPoint.y;
+        }
+        //MaxX Clamp
+        if (rightTopHitPoint.x >= rightBottomHitPoint.x)
+        {
+            maxXCameraClamp = rightBottomHitPoint.x;
+        }
+        else {
+            maxXCameraClamp = rightTopHitPoint.x;
+        }
+        //MinX Clamp
+        if (leftTopHitPoint.x >= leftBottomHitPoint.x)
+        {
+            minXCameraClamp = leftTopHitPoint.x;
+        }
+        else {
+            minXCameraClamp = leftBottomHitPoint.x;
+        }
+    }
+
+    void LateUpdate() {
 		focusArea.Update (target.boxCollider.bounds);
 		
 		Vector2 focusPosition = focusArea.center + Vector2.up * verticalOffset;
@@ -103,16 +170,19 @@ public class CameraFollow : MonoBehaviour {
 		
 		
 		focusPosition += Vector2.right * currentLookAheadX;
-		
-//		transform.position = new Vector3 (Mathf.Clamp (focusPosition.x, parallaxScrolling.levelBounds.min.x + (cameraHeight * 2), 
-//		                                                               parallaxScrolling.levelBounds.max.x - (cameraHeight * 2)), 
-//		                                  Mathf.Clamp(focusPosition.y,(parallaxScrolling.levelBounds.min.y + cameraHeight), 
-//		                                  							   parallaxScrolling.levelBounds.max.y - cameraHeight), -10);
-		                                  							   
-		transform.position = new Vector3 (Mathf.Clamp (focusPosition.x, parallaxScrolling.levelBounds.min.x + (cameraHeight * 2), 
-		                                               parallaxScrolling.levelBounds.max.x - (cameraHeight * 2)), 
-		                                  Mathf.Clamp(focusPosition.y,(parallaxScrolling.levelBounds.min.y + cameraHeight), 
-		            parallaxScrolling.levelBounds.max.y - cameraHeight), -10);
+
+        //		transform.position = new Vector3 (Mathf.Clamp (focusPosition.x, parallaxScrolling.levelBounds.min.x + (cameraHeight * 2), 
+        //		                                                               parallaxScrolling.levelBounds.max.x - (cameraHeight * 2)), 
+        //		                                  Mathf.Clamp(focusPosition.y,(parallaxScrolling.levelBounds.min.y + cameraHeight), 
+        //		                                  							   parallaxScrolling.levelBounds.max.y - cameraHeight), -10);
+
+        FindBounds();
+        Debug.Log("bottom right: " + bottomRightHitPoint);
+        Debug.Log("bottom left: " + bottomLeftHitPoint);
+        Debug.Log("top right: " + topRightHitPoint);
+        Debug.Log("top left: " + topLeftHitPoint);
+        transform.position = new Vector3 (Mathf.Clamp (focusPosition.x, (minXCameraClamp + (cameraHeight * 2)), maxXCameraClamp - (cameraHeight * 2)), 
+		                                  Mathf.Clamp(focusPosition.y, (minYCameraClamp + cameraHeight), (maxYCameraClamp - cameraHeight)), -10);
 		            
 		parallaxScrolling.Scrolling();
 	}

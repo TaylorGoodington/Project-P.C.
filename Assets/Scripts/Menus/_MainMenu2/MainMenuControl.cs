@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine.SceneManagement;
 using System.IO;
-using System.Collections.Generic;
 
 public class MainMenuControl : MonoBehaviour {
 
@@ -152,12 +150,12 @@ public class MainMenuControl : MonoBehaviour {
 		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
 		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		if (mainMenuLevel == 3) {
-			Application.LoadLevel("Main Menu");
+			SceneManager.LoadScene("Main Menu");
 		} else if (mainMenuLevel == 2) {
 			Destroy(GameObject.FindGameObjectWithTag("Expanded Game Select"));
 			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Game " + PlayerPrefsManager.GetGameFile()));
 		} else if (mainMenuLevel == 1) {
-			Application.LoadLevel("Start");
+            SceneManager.LoadScene("Start");
 		}
 	}
 	

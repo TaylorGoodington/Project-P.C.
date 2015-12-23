@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class StartMenuControl : MonoBehaviour {
 
@@ -15,7 +15,7 @@ public class StartMenuControl : MonoBehaviour {
 	public void StartGame () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
 		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
-		Application.LoadLevel("Main Menu");
+		SceneManager.LoadScene("Main Menu");
 	}
 	
 	public void QuitGame () {

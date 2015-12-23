@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.SceneManagement;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Collections.Generic;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class GameControl : MonoBehaviour {
 
@@ -13,8 +11,8 @@ public class GameControl : MonoBehaviour {
 	
 	//item inventory menu for instantiating.
 	public GameObject itemInventoryMenu;
-	public GameObject equipmentBaseMenu;
-	public GameObject equipmentSlotMenu;
+    public GameObject equipmentBaseMenu;
+    public GameObject equipmentSlotMenu;
 	public GameObject pauseMenu;
 	public PlayerSoundEffects playerSoundEffects;
 	public MusicManager musicManager;
@@ -29,8 +27,6 @@ public class GameControl : MonoBehaviour {
 	public ClassesDatabase classesDatabase;	
 	
 	public MainMenuControl mainMenuControl;
-	
-	private LevelManager levelManager;
 	
 	//Player Data//
 	
@@ -89,7 +85,7 @@ public class GameControl : MonoBehaviour {
 	
 
 	void Awake () {
-		DontDestroyOnLoad (gameObject);
+		DontDestroyOnLoad (transform.root.gameObject);
 	}
 	
 	void Start () {
@@ -120,8 +116,8 @@ public class GameControl : MonoBehaviour {
 	void Update () {
 		if (Input.GetButtonDown("Open Pause Menu")) {
 			//makes opening pause menu impossible from the listed scenes, need to add a few for the world/region menus and cutscenes....might be easier to say when instead of when cant.
-			if (Application.loadedLevelName == "_Splash" || Application.loadedLevelName == "Start" || 
-				Application.loadedLevelName == "Main Menu" || Application.loadedLevelName == "01b Options" || Application.loadedLevelName == "Extras") {
+			if (SceneManager.GetActiveScene().name == "_Splash" || SceneManager.GetActiveScene().name == "Start" || 
+				SceneManager.GetActiveScene().name == "Main Menu" || SceneManager.GetActiveScene().name == "01b Options" || SceneManager.GetActiveScene().name == "Extras") {
 			} else {
 				if (GameObject.FindGameObjectWithTag("Pause Menu")) {
 					ClosePauseMenu();

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -50,11 +49,11 @@ public class EquipmentInventory : MonoBehaviour {
 	private Button equipButton;
 	private Button destroyEquipmentButton;
 	
-	private GameObject equipVerificationCanvas;
+	//private GameObject equipVerificationCanvas;
 	private GameObject destroyEquipmentVerificationCanvas;
 	
 	//stat change info panel
-	private GameObject statChangeInfo;
+	//private GameObject statChangeInfo;
 	private Text strengthStat;
 	private Text strengthLabel;
 	private Text defenseStat;

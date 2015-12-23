@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.EventSystems;
-
+using UnityEngine.SceneManagement;
 
 public class PlayerSoundEffects : MonoBehaviour {
 
@@ -27,9 +26,9 @@ public class PlayerSoundEffects : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (Application.loadedLevel > 0) {
+		if (SceneManager.GetActiveScene().buildIndex > 0) {
 			HasDirectionalAxisReset ();
-			
+
 			//I will handle all naviagtion noises here so I don't double noise.
 			if (GameControl.gameControl.AnyOpenMenus() == true) {
 				if (Input.GetButtonDown("Cancel")) {
