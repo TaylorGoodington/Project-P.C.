@@ -16,7 +16,7 @@ public class PixelPerfectScale : MonoBehaviour {
 			currentCropped = preferUncropped;
 			
 			float screenRatio = screenPixelsY / screenVerticalPixels;
-			float ratio;
+			float ratio = 0;
 			
 			if (preferUncropped) {
 				ratio = Mathf.Floor(screenRatio) / screenRatio;
