@@ -14,7 +14,7 @@ public class PlayerSoundEffects : MonoBehaviour {
 	private bool hasHorizontalAxisReset;
 	
 	void Awake () {
-		DontDestroyOnLoad (gameObject);
+		//DontDestroyOnLoad (gameObject);
 	}
 	
 	void Start () {

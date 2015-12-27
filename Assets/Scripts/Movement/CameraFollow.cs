@@ -30,6 +30,8 @@ public class CameraFollow : MonoBehaviour {
 	
 	bool lookAheadStopped;
 
+    private Player player;
+
 	//hit points for checking if the camera is in the level.
 	private Vector2 topRightHitPoint;
 	private Vector2 topLeftHitPoint;
@@ -52,6 +54,7 @@ public class CameraFollow : MonoBehaviour {
 		UpdateTarget();
 		parallaxScrolling = GameObject.FindObjectOfType<ParallaxScrolling>().GetComponent<ParallaxScrolling>();
 		cameraHeight = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().orthographicSize;
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 	
 	public void UpdateTarget () {
@@ -158,8 +161,8 @@ public class CameraFollow : MonoBehaviour {
 		
 		currentLookAheadX = Mathf.SmoothDamp (currentLookAheadX, targetLookAheadX, ref smoothLookVelocityX, lookSmoothTimeX);
 		
-		//This section allows the camera to pan up or down depending on the direction pressed.
-		if (GameControl.gameControl.AnyOpenMenus() == false) {
+		//This section allows the camera to pan up or down depending on the direction pressed, Can't pan when climbing.
+		if (GameControl.gameControl.AnyOpenMenus() == false && !player.climbing) {
 			float panDirection = Mathf.Sign(Input.GetAxisRaw("Vertical"));
 			if (Input.GetAxisRaw ("Vertical") > 0.4f || Input.GetAxisRaw ("Vertical") < -0.4f) {
 				focusPosition.y = Mathf.SmoothDamp (transform.position.y, focusArea.center.y + ((focusAreaSize.y / 2) * panDirection), ref smoothVelocityY, verticalSmoothTime);
@@ -177,10 +180,6 @@ public class CameraFollow : MonoBehaviour {
         //		                                  							   parallaxScrolling.levelBounds.max.y - cameraHeight), -10);
 
         FindBounds();
-        Debug.Log("bottom right: " + bottomRightHitPoint);
-        Debug.Log("bottom left: " + bottomLeftHitPoint);
-        Debug.Log("top right: " + topRightHitPoint);
-        Debug.Log("top left: " + topLeftHitPoint);
         transform.position = new Vector3 (Mathf.Clamp (focusPosition.x, (minXCameraClamp + (cameraHeight * 2)), maxXCameraClamp - (cameraHeight * 2)), 
 		                                  Mathf.Clamp(focusPosition.y, (minYCameraClamp + cameraHeight), (maxYCameraClamp - cameraHeight)), -10);
 		            

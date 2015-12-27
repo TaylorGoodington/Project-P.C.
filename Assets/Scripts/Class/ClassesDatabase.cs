@@ -6,7 +6,7 @@ public class ClassesDatabase : MonoBehaviour {
 	public List<Classes> classes; 
 	
 	void Awake () {
-		DontDestroyOnLoad (gameObject);
+		//DontDestroyOnLoad (gameObject);
 	}
 	//Just before stats is the material equipment index, 1 = cloth, 2 = leather, 3 = chainmail, 4 = platemail.
 	//the order for stats is: strength, defense, speed, intelligence, health, mana.

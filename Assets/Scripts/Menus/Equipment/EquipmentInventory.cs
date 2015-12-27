@@ -72,7 +72,7 @@ public class EquipmentInventory : MonoBehaviour {
 		
 	
 	void Awake () {
-		DontDestroyOnLoad (gameObject);
+		//DontDestroyOnLoad (gameObject);
 	}
 	
 	void Start () {

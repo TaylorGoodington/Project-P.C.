@@ -46,7 +46,7 @@ public class Inventory : MonoBehaviour {
 	
 	
 	void Awake () {
-		DontDestroyOnLoad (gameObject);
+		//DontDestroyOnLoad (gameObject);
 	}
 	
 	void Start () {

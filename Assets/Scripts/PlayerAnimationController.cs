@@ -18,8 +18,16 @@ public class PlayerAnimationController : MonoBehaviour {
 				animator.Play("IdleRight");
 			} else if (animationName == "Jumping") {
 				animator.Play("JumpingRight");
-			}
-		} else {
+            }
+            else if (animationName == "Climbing")
+            {
+                animator.Play("Climbing");
+            }
+            else if (animationName == "ClimbingUp")
+            {
+                animator.Play("ClimbingUp");
+            }
+        } else {
 			if (animationName == "Attack") {
 				animator.Play("AttackingLeft");
 			} else if (animationName == "Running") {
@@ -29,6 +37,14 @@ public class PlayerAnimationController : MonoBehaviour {
 			} else if (animationName == "Jumping") {
 				animator.Play("JumpingLeft");
 			}
-		}
+            else if (animationName == "Climbing")
+            {
+                animator.Play("Climbing");
+            }
+            else if (animationName == "ClimbingUp")
+            {
+                animator.Play("ClimbingUp");
+            }
+        }
 	}
 }

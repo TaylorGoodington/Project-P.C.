@@ -10,6 +10,9 @@ public class LevelManager : MonoBehaviour {
 	
 	void Start () {
 		levelManager = GetComponent<LevelManager>();
+        if (SceneManager.GetActiveScene().name == "_Splash") {
+            Invoke("LoadNextLevel", 3f);
+        }
 	}
 
 	public void LoadLevel (string name) {
@@ -23,5 +26,10 @@ public class LevelManager : MonoBehaviour {
 	public void LevelBack () {
 		SceneManager.LoadScene (PlayerPrefsManager.GetDeleteEntryPoint());
 	}
+
+    public void LoadNextLevel() {
+        int sceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(sceneBuildIndex + 1);
+    }
 }
 

@@ -25,6 +25,9 @@ public class Player : MonoBehaviour {
 	public bool isJumping;
 	public bool isClimbable;
 	public bool climbing;
+
+    private float climbingUpPosition;
+    private bool climbingUp;
 	
 	private PlayerAnimationController playerAnimationController;
 	
@@ -58,21 +61,37 @@ public class Player : MonoBehaviour {
 			if (isAttacking) {
 				input = Vector2.zero;
 			}
-			
-			//Animation Call Section
-			if (Input.GetButtonDown("Attack")) {
-				playerAnimationController.PlayAnimation("Attack", controller.collisions.faceDir);
+
+            //Animation Call Section
+            if (climbingUp) {
+                playerAnimationController.animator.enabled = true;
+                playerAnimationController.PlayAnimation("ClimbingUp", controller.collisions.faceDir);
+            }
+			if (Input.GetButtonDown("Attack") && !climbingUp) {
+                playerAnimationController.animator.enabled = true;
+                playerAnimationController.PlayAnimation("Attack", controller.collisions.faceDir);
+            }
+
+            if (climbing && (velocity.y != 0 || velocity.x != 0) && !isAttacking && !climbingUp)
+            {
+                playerAnimationController.animator.enabled = true;
+                playerAnimationController.PlayAnimation("Climbing", controller.collisions.faceDir);
+            }
+            if (climbing && (velocity.y == 0 && velocity.x == 0) && !isAttacking && !climbingUp)
+            {
+                playerAnimationController.animator.enabled = false;
+            }
+
+            if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false && !climbing) {
+                playerAnimationController.animator.enabled = true;
+                playerAnimationController.PlayAnimation("Jumping", controller.collisions.faceDir);
 			}
 			
-			if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false) {
-				playerAnimationController.PlayAnimation("Jumping", controller.collisions.faceDir);
-			}
-			
-			if (input.x != 0 && controller.collisions.below == true) {
+			if (input.x != 0 && controller.collisions.below == true && !climbing && !climbingUp) {
 				playerAnimationController.PlayAnimation("Running", controller.collisions.faceDir);
 			}
 			
-			if (input.x == 0 && isAttacking == false && controller.collisions.below == true) {
+			if (input.x == 0 && isAttacking == false && controller.collisions.below == true && !climbing && !climbingUp) {
 				playerAnimationController.PlayAnimation("Idle", controller.collisions.faceDir);
 			}
 			
@@ -150,6 +169,11 @@ public class Player : MonoBehaviour {
 				gravity = 0;
 				velocity.y = input.y * climbSpeed;
 				velocity.x = input.x * climbSpeed;
+
+                if (climbingUp) {
+                    velocity = Vector3.zero;
+                    Invoke("MovePlayerWhenClimbingUp", 0.125f);
+                }
 			} else {
 				gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 				velocity.y += gravity * Time.deltaTime;
@@ -171,6 +195,10 @@ public class Player : MonoBehaviour {
 		if (collider.gameObject.GetComponent<IsClimbable>()) {
 			isClimbable = true;
 		}
+        //climbing up action
+        if (collider.gameObject.layer == 15 && climbing) {
+            ClimbingTransition(collider);
+        }
 	}
 	
 	//this will be used to gauge interactions...I might need to do these things in the climbable script.
@@ -179,13 +207,28 @@ public class Player : MonoBehaviour {
 			isClimbable = false;
 			climbing = false;
 		}
-	}
+    }
+
+    public void ClimbingTransition(Collider2D collider) {
+        climbingUpPosition = collider.bounds.max.y;
+        climbingUp = true;
+    }
 	
 	
 	//called from attacking animation at the begining and end.
 	public void IsAttacking () {
 		isAttacking = !isAttacking;
 	}
+
+    //called by climbing up animation to stop animating.
+    public void IsClimbingUp() {
+        climbingUp = false;
+    }
+
+    //used as an invoke to move the player
+    public void MovePlayerWhenClimbingUp() {
+        this.gameObject.transform.position = new Vector3(transform.position.x, climbingUpPosition);
+    }
 	
 	//called from the animations for attacking.
 	public void Attack () {

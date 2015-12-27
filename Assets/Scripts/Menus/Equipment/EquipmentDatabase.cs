@@ -6,7 +6,7 @@ public class EquipmentDatabase : MonoBehaviour {
 	public List<Equipment> equipment; 
 	
 	void Awake () {
-		DontDestroyOnLoad (gameObject);
+		//DontDestroyOnLoad (gameObject);
 	}
 	//the order for stats is: strength, defense, speed, intelligence, health, mana.
 	void Start () {

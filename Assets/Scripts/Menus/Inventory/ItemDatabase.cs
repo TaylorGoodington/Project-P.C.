@@ -6,7 +6,7 @@ public class ItemDatabase : MonoBehaviour {
 	public List<Items> items; 
 	
 	void Awake () {
-		DontDestroyOnLoad (gameObject);
+		//DontDestroyOnLoad (gameObject);
 	}
 	
 	void Start () {

@@ -9,7 +9,7 @@ public class MusicManager : MonoBehaviour {
 	private AudioSource audioSource;
 
 	void Awake () {
-		DontDestroyOnLoad (gameObject);
+		//DontDestroyOnLoad (gameObject);
 	}
 	
 	void Start () {
@@ -37,9 +37,14 @@ public class MusicManager : MonoBehaviour {
 		if (SceneManager.GetActiveScene().name == "Start" || SceneManager.GetActiveScene().name == "Main Menu" ||
             SceneManager.GetActiveScene().name == "01b Options" || SceneManager.GetActiveScene().name == "Extras") {
 		return 1;
-		} else if (SceneManager.GetActiveScene().name == "Test Level" || SceneManager.GetActiveScene().name == "Test Level 2") {
+		} else if (SceneManager.GetActiveScene().name == "Level 1-1" || SceneManager.GetActiveScene().name == "Test Level 2") {
 			return 2;
-		} else {
+        }
+        else if (SceneManager.GetActiveScene().name == "Level 3-1")
+        {
+            return 3;
+        }
+        else {
 			return 0;
 		}
 	}

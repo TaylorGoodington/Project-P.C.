@@ -12,7 +12,7 @@ public class ParallaxScrolling : MonoBehaviour {
 	private float levelSizeY;
 	[HideInInspector]
 	public Bounds levelBounds;
-	private Controller2D Controller2D;
+	//private Controller2D Controller2D;
 	
 	//this works in 2:1 aspect ratio.
 	private float cameraWidth;
@@ -30,7 +30,7 @@ public class ParallaxScrolling : MonoBehaviour {
 		levelSizeX = levelCollider.bounds.size.x - (cameraWidth / 2);
 		levelSizeY = levelCollider.bounds.size.y;
 		levelBounds = levelCollider.bounds;
-		Controller2D = GameObject.FindObjectOfType<Controller2D>();
+		//Controller2D = GameObject.FindObjectOfType<Controller2D>();
 	}
 	
 	//called from the camera follow script.
