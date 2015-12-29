@@ -1,11 +1,13 @@
 fileFormatVersion: 2
-guid: 8d4789064801007418f801595eb66caa
-timeCreated: 1451143485
+guid: d56a4d532a29fe841afd71844925ffff
+timeCreated: 1451245056
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Hero_Climb_Sheet_0
-    21300002: Hero_Climb_Sheet_1
+    21300000: Hero_Attack_Witchbane_Sheet_0
+    21300002: Hero_Attack_Witchbane_Sheet_1
+    21300004: Hero_Attack_Witchbane_Sheet_2
+    21300006: Hero_Attack_Witchbane_Sheet_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -25,7 +27,7 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
+  cubemapConvolutionSteps: 8
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
@@ -43,7 +45,7 @@ TextureImporter:
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 4
+  alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
@@ -52,26 +54,48 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Hero_Climb_Sheet_0
+    - name: Hero_Attack_Witchbane_Sheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 22
-        height: 32
+        width: 32
+        height: 24
       alignment: 9
-      pivot: {x: 0.2, y: 0.5}
+      pivot: {x: 0.32, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Hero_Climb_Sheet_1
+    - name: Hero_Attack_Witchbane_Sheet_1
       rect:
         serializedVersion: 2
-        x: 22
+        x: 32
         y: 0
-        width: 22
-        height: 32
+        width: 32
+        height: 24
       alignment: 9
-      pivot: {x: 0.2, y: 0.5}
+      pivot: {x: 0.32, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Hero_Attack_Witchbane_Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 24
+      alignment: 9
+      pivot: {x: 0.32, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Hero_Attack_Witchbane_Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 24
+      alignment: 9
+      pivot: {x: 0.32, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     outline: []

@@ -1,13 +1,15 @@
 fileFormatVersion: 2
-guid: 6f62d71b77542ae4eb2dfce16ca6d8f8
-timeCreated: 1450398742
+guid: c3e00ba6b9569e146ab8948c6029d130
+timeCreated: 1451244811
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Hero_Attack_Witchbane_Sheet_0
-    21300002: Hero_Attack_Witchbane_Sheet_1
-    21300004: Hero_Attack_Witchbane_Sheet_2
-    21300006: Hero_Attack_Witchbane_Sheet_3
+    21300000: Hero_Run_Sheet_0
+    21300002: Hero_Run_Sheet_1
+    21300004: Hero_Run_Sheet_2
+    21300006: Hero_Run_Sheet 1_0
+    21300008: Hero_Run_Sheet 1_1
+    21300010: Hero_Run_Sheet 1_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -21,7 +23,7 @@ TextureImporter:
   bumpmap:
     convertToNormalMap: 0
     externalNormalMap: 0
-    heightScale: .25
+    heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
@@ -41,11 +43,12 @@ TextureImporter:
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
+  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: .5, y: .5}
+  alignment: 4
+  spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
   alphaIsTransparency: 1
@@ -53,46 +56,40 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Hero_Attack_Witchbane_Sheet_0
+    - name: Hero_Run_Sheet 1_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
-        width: 32
+        width: 26
         height: 24
-      alignment: 4
-      pivot: {x: 0, y: .5}
+      alignment: 9
+      pivot: {x: 0.45, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Hero_Attack_Witchbane_Sheet_1
+      outline: []
+    - name: Hero_Run_Sheet 1_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 28
         y: 0
-        width: 32
+        width: 26
         height: 24
-      alignment: 4
-      pivot: {x: 0, y: .5}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Hero_Attack_Witchbane_Sheet_2
+      outline: []
+    - name: Hero_Run_Sheet 1_2
       rect:
         serializedVersion: 2
-        x: 64
+        x: 55
         y: 0
-        width: 32
+        width: 26
         height: 24
-      alignment: 4
-      pivot: {x: 0, y: .5}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Hero_Attack_Witchbane_Sheet_3
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 0
-        width: 32
-        height: 24
-      alignment: 4
-      pivot: {x: 0, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
   spritePackingTag: 
   userData: 
   assetBundleName: 
