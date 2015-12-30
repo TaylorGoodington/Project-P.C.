@@ -195,8 +195,6 @@ public class Player : MonoBehaviour {
 			}
 			
 			
-			//possible that if climbing works i wont need this anymore.
-//			velocity.y += gravity * Time.deltaTime;
 			controller.Move (velocity * Time.deltaTime, input);
 			
 			if (controller.collisions.above || controller.collisions.below) {
