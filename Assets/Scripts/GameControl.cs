@@ -66,7 +66,8 @@ public class GameControl : MonoBehaviour {
 	public int equippedFeet;
 	
 	public int equippedWeapon;
-//	this needs to be saved.
+    //	this needs to be saved.
+    public int activeItem;
 	public int availableEvolutions;
 	
 	//Menu Levels are incremented by functions that dive deeper into the respective menu and are decremented by the back function.
@@ -128,6 +129,10 @@ public class GameControl : MonoBehaviour {
 				}
 			}
 		}
+
+        if (Input.GetButtonDown("Item Cycle")) {
+            //Inventory.inventory.CycleActiveItems(Input.GetAxisRaw("Item Cycle"));
+        }
 	
 		
 		if (Input.GetKeyDown(KeyCode.E)) {

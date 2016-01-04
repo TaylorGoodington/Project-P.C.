@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class Inventory : MonoBehaviour {
 
+    public static Inventory inventory;
+
 	//access to gamecontrol, muy importante.
 	private GameControl gameControl;
 
@@ -29,6 +31,8 @@ public class Inventory : MonoBehaviour {
 	
 	//this can be private at some point.
 	public List<Items> inventoryList;
+
+    public List<Items> consumableItems;
 	
 	//used to add items from the item database.
 	private ItemDatabase itemDatabase;
@@ -50,6 +54,7 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	void Start () {
+        inventory = GetComponent<Inventory>();
 		gameControl = GameObject.FindObjectOfType<GameControl>();
 		itemDatabase = GameObject.FindGameObjectWithTag("Items Database").GetComponent<ItemDatabase>();
 		inventoryList = gameControl.itemInventoryList;
@@ -60,6 +65,39 @@ public class Inventory : MonoBehaviour {
 			GetItemInfo ();
 		}
 	}
+
+    ////I need to have this run if active item = 0, should be in this script.
+    //public void CycleActiveItems(float direction) {
+    //    //I think i will have to make a new list of just the consumable items, I will add them to the new list in the foreach loop.
+    //    foreach (Items item in GameControl.gameControl.itemInventoryList) {
+    //        if (item.itemType == Items.ItemType.Consumable) {
+    //            consumableItems.Add(item);
+    //        }
+    //    }
+        
+    //    int consumableItemsLength = consumableItems.Count;
+    //    //This will run if there isn't an acitve item.
+    //    if (GameControl.gameControl.activeItem == 0 && consumableItemsLength > 0)
+    //    {
+    //        GameControl.gameControl.activeItem = consumableItems[0].itemID;
+    //    }
+    //    //this runs if there is an active item.
+    //    else if (GameControl.gameControl.activeItem != 0)
+    //    {
+    //        if (consumableItemsLength == 0)
+    //        {
+    //            Debug.Log("0");
+    //        }
+    //        if (direction == 1)
+    //        {
+    //            if (consumableItems.IndexOf(GameControl.gameControl.itemInventoryList[GameControl.gameControl.activeItem]) == 1)
+    //            {
+
+    //            }
+    //        }
+    //        Debug.Log(direction);
+    //    }
+    //}
 	
 	public void OpenItemMenu () {
 		gameControl = GameObject.FindObjectOfType<GameControl>();
@@ -124,7 +162,7 @@ public class Inventory : MonoBehaviour {
 	}
 
 	public void AddTempData () {
-		AddItemsToInventory(1, 0, 1, 1, 1, 0);
+		AddItemsToInventory(2, 1, 2, 2, 2, 1);
 	}
 
 	void PopulateInventory () {
@@ -232,18 +270,19 @@ public class Inventory : MonoBehaviour {
 	
 	public void SelectItem () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
-		gameControl = GameObject.FindObjectOfType<GameControl>();
-		gameControl.itemsMenuLevel = 2;
-		useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
-		useItemButton.interactable = true;
+        //This section was commented out because at 1/3/2016 we no longer have usable items.
+		//sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		//gameControl = GameObject.FindObjectOfType<GameControl>();
+		//gameControl.itemsMenuLevel = 2;
+		//useItemButton = GameObject.FindGameObjectWithTag("Use Item Button").GetComponent<Button>();
+		//useItemButton.interactable = true;
 		
-		destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
-		destroyItemButton.interactable = true;
+		//destroyItemButton = GameObject.FindGameObjectWithTag("Destroy Item Button").GetComponent<Button>();
+		//destroyItemButton.interactable = true;
 		
-		contentPanel = GameObject.FindObjectOfType<ContentPanel>();
-		contentPanel.DeactivateInventory();	
-		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Use Item Button"),null);
+		//contentPanel = GameObject.FindObjectOfType<ContentPanel>();
+		//contentPanel.DeactivateInventory();	
+		//EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Use Item Button"),null);
 	}
 	
 	public void UseItemInInventory () {
