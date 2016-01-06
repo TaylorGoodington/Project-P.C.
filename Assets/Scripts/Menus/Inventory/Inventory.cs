@@ -269,7 +269,7 @@ public class Inventory : MonoBehaviour {
 
 	
 	public void SelectItem () {
-		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
+		//PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
         //This section was commented out because at 1/3/2016 we no longer have usable items.
 		//sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		//gameControl = GameObject.FindObjectOfType<GameControl>();

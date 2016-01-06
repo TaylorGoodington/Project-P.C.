@@ -2,10 +2,10 @@
 
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
+    [Tooltip("This field is used to specify which layers block the attacking and abilities raycasts.")]
+    public LayerMask attackingLayer;
 
-	public LayerMask attackingLayer;
-	
-	public float maxJumpHeight = 4;
+    public float maxJumpHeight = 4;
 	public float minJumpHeight = 1;
 	public float timeToJumpApex = .4f;
 	float accelerationTimeAirborne = .2f;
@@ -40,10 +40,13 @@ public class Player : MonoBehaviour {
 	float velocityXSmoothing;
 	
 	Controller2D controller;
+
+    private Collider2D playerCollider;
 	
 	void Start() {
 		controller = GetComponent<Controller2D> ();
         playerAnimationController = GetComponent<Animator>();
+        playerCollider = GetComponent<Collider2D>();
 
         gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
@@ -249,16 +252,23 @@ public class Player : MonoBehaviour {
     }
 	
 	//called from the animations for attacking.
+    
+    //I think I will need to pass the collider being hit to the attacking function.
 	public void Attack () {
 		float directionX = controller.collisions.faceDir;
-		float rayLength = 12f; //make each weapon have a length component?
-		float rayOriginX = 0; //define as the edge of the collider?
-		float rayOriginY = 0; //define as the center of the collider?
+		float rayLength = 100f; //make each weapon have a length component?
+		float rayOriginX = playerCollider.bounds.max.x + 0.01f; //defined as the edge of the collider.
+		float rayOriginY = playerCollider.bounds.center.y; //defined as the center of the collider.
 		Vector2 rayOrigin = new Vector2 (rayOriginX, rayOriginY);
-		
-		RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, attackingLayer);
-		if (hit) {
-			CombatEngine.combatEngine.Attacking();
-		}
+
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, attackingLayer);
+        //Layer 14 is currently the enemies layer.
+        if (hit)
+        {
+            if (hit.collider.gameObject.layer == 14)
+            {
+                CombatEngine.combatEngine.Attacking(hit.collider);
+            }
+        }
 	}
 }

@@ -3,13 +3,17 @@ using System.Collections.Generic;
 
 public class EquipmentDatabase : MonoBehaviour {
 
-	public List<Equipment> equipment; 
-	
+	public List<Equipment> equipment;
+
+    public static EquipmentDatabase equipmentDatabase;
+    	
 	void Awake () {
 		//DontDestroyOnLoad (gameObject);
 	}
 	//the order for stats is: strength, defense, speed, intelligence, health, mana.
 	void Start () {
+        equipmentDatabase = GetComponent<EquipmentDatabase>();
+
 		equipment.Add (new Equipment (0, "Nothing", "Nothing", Equipment.EquipmentType.Head, Equipment.EquipmentMaterial.Cloth, Equipment.EquipmentSlot.Head, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1));
 		
 		//inital four that are equipped when nothing else is...They also dont show up in the inventory
