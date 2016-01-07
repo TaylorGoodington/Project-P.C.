@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class SkillsController : MonoBehaviour {
 
     public static SkillsController skillsController;
     private SkillsDatabase skillsDatabase;
+    public List<Skills> acquiredSkills;
+    public List<Skills> activeSkills;
 
 	void Start () {
         skillsController = GetComponent<SkillsController>();

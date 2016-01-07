@@ -267,7 +267,7 @@ public class Player : MonoBehaviour {
         {
             if (hit.collider.gameObject.layer == 14)
             {
-                CombatEngine.combatEngine.Attacking(hit.collider);
+                CombatEngine.combatEngine.AttackingEnemies(hit.collider);
             }
         }
 	}

@@ -20,6 +20,9 @@ public class Skills : MonoBehaviour {
     public int skillDuration;
     //only for passive skills, everything else is 1.
     public float triggerRate;
+    public float critModifier;
+    public float dodgeModifier;
+    public float counterModifier;
 
 
     public enum AbilityType {
@@ -49,7 +52,7 @@ public class Skills : MonoBehaviour {
     }
 
     public Skills (int id, string name, string description, RequiredStat statName, int statValue, RequiredWeapon weapon, AbilityType type, float cost, 
-                   float cd, bool interupt, int duration, float rate) {
+                   float cd, bool interupt, int duration, float rate, float crit, float dodge, float counter) {
         skillID = id;
         skillName = name;
         skillDescription = description;
@@ -62,6 +65,9 @@ public class Skills : MonoBehaviour {
         interuptable = interupt;
         skillDuration = duration;
         triggerRate = rate;
+        critModifier = crit;
+        dodgeModifier = dodge;
+        counterModifier = counter;
     }
 
     public Skills() {
