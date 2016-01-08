@@ -61,9 +61,15 @@ public class CombatEngine : MonoBehaviour {
         }
     }
 
-    public bool AttackingPhaseOneSucceeds (Collider2D collider) {
-        if (1 == 1)
+    public bool AttackingPhase (Collider2D collider) {
+        float playerMissRate = 0; //I dont know how this will be set yet.
+        float enemyDodgeRate = 0; //this will at some point be set to the enemies dodge rate, accessed through the collider.
+
+        int randomNumber = Random.Range(0, 100);
+
+        if (randomNumber > (playerMissRate + enemyDodgeRate) * 100 )
         {
+            Debug.Log(randomNumber);
             return true;
         }
         else {
@@ -72,16 +78,14 @@ public class CombatEngine : MonoBehaviour {
     }
 	
 	public void AttackingEnemies (Collider2D collider) {
-        if (AttackingPhaseOneSucceeds(collider))
+        if (AttackingPhase(collider))
         {
             Debug.Log("Phase one is successful!");
             Debug.Log(collider.gameObject.name);
-            CalculateAttackDamage();
-            CalculateSecondaryStats();
         }
         else
         {
-            //before these we go through the phases of combat.
+            //call these at the begining of phase 3.
             CalculateAttackDamage();
             CalculateSecondaryStats();
 
