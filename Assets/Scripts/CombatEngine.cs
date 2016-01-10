@@ -45,31 +45,35 @@ public class CombatEngine : MonoBehaviour {
         Equipment.EquipmentMaterial weaponClass = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentMaterial;
         if (weaponClass == Equipment.EquipmentMaterial.Soldier || weaponClass == Equipment.EquipmentMaterial.Berserker)
         {
-            attackDamage = Mathf.RoundToInt(GameControl.gameControl.currentStrength * 1.25f);
+            attackDamage = Mathf.RoundToInt(GameControl.gameControl.currentStrength);
         }
         else if (weaponClass == Equipment.EquipmentMaterial.Paladin || weaponClass == Equipment.EquipmentMaterial.Monk)
         {
-            attackDamage = GameControl.gameControl.currentDefense;
+            attackDamage = GameControl.gameControl.currentStrength;
         }
         else if (weaponClass == Equipment.EquipmentMaterial.Sorcerer || weaponClass == Equipment.EquipmentMaterial.Wizard)
         {
-            attackDamage = GameControl.gameControl.currentIntelligence;
+            attackDamage = GameControl.gameControl.currentStrength;
         }
         else if (weaponClass == Equipment.EquipmentMaterial.Ranger || weaponClass == Equipment.EquipmentMaterial.Rogue)
         {
-            attackDamage = GameControl.gameControl.currentSpeed;
+            attackDamage = GameControl.gameControl.currentStrength;
         }
     }
 
     public bool AttackingPhase (Collider2D collider) {
-        float playerMissRate = 0; //I dont know how this will be set yet.
+        //float playerMissRate = 0; //We aren't using this right now.
         float enemyDodgeRate = 0; //this will at some point be set to the enemies dodge rate, accessed through the collider.
+
+        
+
+        SkillsController.skillsController.ActivateAttackingPhaseAbilities();
 
         int randomNumber = Random.Range(0, 100);
 
-        if (randomNumber > (playerMissRate + enemyDodgeRate) * 100 )
+        if (randomNumber > (enemyDodgeRate) * 100 )
         {
-            Debug.Log(randomNumber);
+            //Debug.Log(randomNumber);
             return true;
         }
         else {
@@ -81,7 +85,7 @@ public class CombatEngine : MonoBehaviour {
         if (AttackingPhase(collider))
         {
             Debug.Log("Phase one is successful!");
-            Debug.Log(collider.gameObject.name);
+            //Debug.Log(collider.gameObject.name);
         }
         else
         {
@@ -90,6 +94,7 @@ public class CombatEngine : MonoBehaviour {
             CalculateSecondaryStats();
 
             Debug.Log("We Missed!");
+            //at the end we should clear the active skills list.
         }
 	}
 }
