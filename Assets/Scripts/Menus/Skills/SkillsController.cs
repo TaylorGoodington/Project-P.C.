@@ -22,17 +22,17 @@ public class SkillsController : MonoBehaviour {
         return skill1.groupNumber.CompareTo(skill2.groupNumber);
     }
 
-    public void ActivateAttackingPhaseAbilities() {
-        //I will loop through the acquired skills to see if any should trigger, if they do I will check the active list to see if they are already there, by group number.
-        //
-        
+    public void ActivateCurrentPhaseAbilities(Skills.TriggerPhase triggerPhase)
+    {
         int currentGroupNumber = 0;
         int triggeringSkill = 0;
         float triggeringSkillRate = 0;
 
         acquiredSkills.Sort(SortByGroupNumber);
-        foreach (Skills skill in acquiredSkills) {
-            if (skill.triggerPhase == Skills.TriggerPhase.Attacking) {
+        foreach (Skills skill in acquiredSkills)
+        {
+            if (skill.triggerPhase == triggerPhase)
+            {
                 //the first if statement needs to check if the ability is the last in the list. If it is check the if below.
                 if (skill.skillID == activeSkills.Last().skillID)
                 {

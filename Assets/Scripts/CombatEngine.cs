@@ -12,8 +12,8 @@ public class CombatEngine : MonoBehaviour {
 
     private float maxIntelligence = 100;
     private float maxNakedCritRate = 25;
-    private float maxAgility = 100;
-    private float maxNakedDodgeRate = 25;
+    //private float maxAgility = 100;
+    //private float maxNakedDodgeRate = 25;
     private float maxDefense = 100;
     private float maxNakedCounterRate = 25;
 
@@ -28,16 +28,16 @@ public class CombatEngine : MonoBehaviour {
     public void CalculateSecondaryStats() {
         //I need to multiply these by some factor, then also check the active skill list for any spell that increases crit rate.
         float critModifier = 0;
-        float dodgeModifier = 0;
+        //float dodgeModifier = 0;
         float counterModifier = 0;
 
         foreach (Skills skill in SkillsController.skillsController.activeSkills) {
             critModifier += skill.critModifier;
-            dodgeModifier += skill.dodgeModifier;
+            //dodgeModifier += skill.dodgeModifier;
             counterModifier = skill.counterModifier;
         }
         critRate = ((GameControl.gameControl.currentIntelligence / maxIntelligence) * maxNakedCritRate) + (critModifier * 100);
-        dodgeRate = ((GameControl.gameControl.currentSpeed / maxAgility) * maxNakedDodgeRate) + (dodgeModifier * 100);
+        //dodgeRate = ((GameControl.gameControl.currentSpeed / maxAgility) * maxNakedDodgeRate) + (dodgeModifier * 100);
         counterRate = ((GameControl.gameControl.currentDefense / maxDefense) * maxNakedCounterRate) + (counterModifier * 100);
     }
 
@@ -63,29 +63,24 @@ public class CombatEngine : MonoBehaviour {
 
     public bool AttackingPhase (Collider2D collider) {
         //float playerMissRate = 0; //We aren't using this right now.
-        float enemyDodgeRate = 0; //this will at some point be set to the enemies dodge rate, accessed through the collider.
+        //float enemyDodgeRate = 0; //We aren't using this right now.
+        SkillsController.skillsController.ActivateCurrentPhaseAbilities(Skills.TriggerPhase.Attacking);
+        return true;
+    }
 
-        
-
-        SkillsController.skillsController.ActivateAttackingPhaseAbilities();
-
-        int randomNumber = Random.Range(0, 100);
-
-        if (randomNumber > (enemyDodgeRate) * 100 )
-        {
-            //Debug.Log(randomNumber);
-            return true;
-        }
-        else {
-            return false;
-        }
+    public bool HittingPhase(Collider2D collider) {
+        SkillsController.skillsController.ActivateCurrentPhaseAbilities(Skills.TriggerPhase.Hitting);
+        return true;
     }
 	
 	public void AttackingEnemies (Collider2D collider) {
         if (AttackingPhase(collider))
         {
             Debug.Log("Phase one is successful!");
-            //Debug.Log(collider.gameObject.name);
+            if (HittingPhase(collider))
+            {
+                Debug.Log("Phase two is successful!");
+            }
         }
         else
         {
