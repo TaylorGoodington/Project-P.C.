@@ -44,6 +44,10 @@ public class MusicManager : MonoBehaviour {
         {
             return 3;
         }
+        else if (SceneManager.GetActiveScene().name == "Level 4-1")
+        {
+            return 4;
+        }
         else {
 			return 0;
 		}
