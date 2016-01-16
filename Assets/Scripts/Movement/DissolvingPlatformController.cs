@@ -4,12 +4,10 @@ using System.Collections;
 public class DissolvingPlatformController : MonoBehaviour {
 
     private Collider2D boxCollider;
-    private SpriteRenderer spriteRenderer;
     private Animator animator;
 
 	void Start () {
         boxCollider = GetComponent<BoxCollider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
 	}
 

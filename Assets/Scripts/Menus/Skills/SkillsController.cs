@@ -9,17 +9,29 @@ public class SkillsController : MonoBehaviour {
     public List<Skills> acquiredSkills;
     public List<Skills> activeSkills;
 
-	void Start () {
+    void Start() {
         skillsController = GetComponent<SkillsController>();
         skillsDatabase = GetComponent<SkillsDatabase>();
-	}
-	
-	void Update () {
-	}
+    }
+
+    void Update() {
+    }
 
     //this is for sorting any list by group number....Not sure if it will work.
     static int SortByGroupNumber(Skills skill1, Skills skill2) {
         return skill1.groupNumber.CompareTo(skill2.groupNumber);
+    }
+
+    public void ClearAttackingCombatTriggeredAbilitiesFromList()
+    {
+        foreach (Skills skill in activeSkills)
+        {
+            if (skill.skillDuration == 0 && (skill.triggerPhase == Skills.TriggerPhase.Attacking || skill.triggerPhase == Skills.TriggerPhase.Hitting || 
+                                             skill.triggerPhase == Skills.TriggerPhase.DealingDamage))
+            {
+                activeSkills.Remove(skill);
+            }
+        }
     }
 
     public void ActivateCurrentPhaseAbilities(Skills.TriggerPhase triggerPhase)

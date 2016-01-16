@@ -92,15 +92,25 @@ public class Controller2D : RaycastController {
 			Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength,Color.red);
 			
 			if (hit) {
-//				if (hit.collider.gameObject.GetComponent<IsClimbable>()) {
-//					isClimbable = true;
-//					continue;
-//				} else {
-//					isClimbable = false;
-//				}
-				
-				//wall jumping restriction!
-				if (hit.collider.gameObject.GetComponent<WallJumpable>()) {
+                //this section is for moving through the side of platforms that can be fallen through.
+                if (hit.collider.tag == "Through")
+                {
+                    if (directionX != 0)
+                    {
+                        continue;
+                    }
+                }
+
+                //this section is for moving through the side of platforms that can't be fallen through.
+                if (hit.collider.tag == "3Sides")
+                {
+                    if (directionX != 0)
+                    {
+                        continue;
+                    }
+                }
+
+                if (hit.collider.gameObject.GetComponent<WallJumpable>()) {
 					isWallJumpable = true;
 				} else {
 					isWallJumpable = false;
@@ -155,14 +165,17 @@ public class Controller2D : RaycastController {
 			Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength,Color.red);
 			
 			if (hit) {
-//				if (hit.collider.gameObject.GetComponent<IsClimbable>()) {
-//					isClimbable = true;
-//					continue;
-//				} else {
-//					isClimbable = false;
-//				}
-				
-				if (hit.collider.tag == "Through") {
+                //this section is for moving through the side of platforms that can't be fallen through.
+                if (hit.collider.tag == "3Sides")
+                {
+                    if (directionY == 1)
+                    {
+                        continue;
+                    }
+                }
+
+                //Copy the through portion for another tag, maybe 3sides?
+                if (hit.collider.tag == "Through") {
 					if (directionY == 1 || hit.distance == 0) {
 						continue;
 					}
