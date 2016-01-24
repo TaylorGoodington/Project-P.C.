@@ -46,7 +46,7 @@ public class ParallaxScrolling : MonoBehaviour {
 			float rateOfMovementX = (backgroundSizeX - cameraWidth) / levelSizeX;
 			float rateOfMovementY = (backgroundSizeY - (cameraWidth / 2)) / levelSizeY;
 
-			var backgroundTargetPositionX = ((cameraPosition.x - cameraWidth / 2)) - (cameraPosition.x * (rateOfMovementX));
+			var backgroundTargetPositionX = ((cameraPosition.x - cameraWidth / 2) + (rateOfMovementX * (cameraWidth / 2))) - (cameraPosition.x * (rateOfMovementX));
 			var backgroundTargetPositionY = ((cameraPosition.y - cameraWidth / 4) + (rateOfMovementY * (cameraWidth / 4))) - (cameraPosition.y * (rateOfMovementY));
 			
 			backgrounds[i].position = Vector3.Lerp(

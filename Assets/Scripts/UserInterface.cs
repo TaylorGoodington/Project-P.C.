@@ -10,7 +10,7 @@ public class UserInterface : MonoBehaviour {
     private Slider manaBar;
     private Text manaText;
 
-    private Image activeSkillIcon;
+    //private Image activeSkillIcon;
     public Text activeSkillCooldownTimer;
     public Image activeSkillShade;
 
@@ -20,7 +20,7 @@ public class UserInterface : MonoBehaviour {
         healthText = healthBar.transform.GetChild(2).GetComponent<Text>();
         manaBar = transform.GetChild(2).GetComponent<Slider>();
         manaText = manaBar.transform.GetChild(2).GetComponent<Text>();
-        activeSkillIcon = transform.GetChild(3).transform.GetChild(1).GetComponent<Image>();
+        //activeSkillIcon = transform.GetChild(3).transform.GetChild(1).GetComponent<Image>();
         activeSkillShade = transform.GetChild(3).transform.GetChild(3).GetComponent<Image>();
         activeSkillCooldownTimer = transform.GetChild(3).transform.GetChild(3).GetComponent<Text>();
 

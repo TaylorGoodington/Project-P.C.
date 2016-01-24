@@ -29,44 +29,21 @@ public class Controller2D : RaycastController {
 		collisions.Reset ();
 		collisions.velocityOld = velocity;
 		playerInput = input;
+
+			if (velocity.x != 0) {
+				collisions.faceDir = (int)Mathf.Sign(velocity.x);
+			}
+			
+			HorizontalCollisions (ref velocity);
+			
+			if (velocity.y < 0) {
+				DescendSlope(ref velocity);
+			}
+			
+			if (velocity.y != 0) {
+				VerticalCollisions (ref velocity);
+			}
 		
-		//this section will change the movement for climbing.
-		Player player = gameObject.GetComponent<Player>();
-		if (player.climbing) {
-			velocity.x = input.x;
-			velocity.y = input.y;
-			velocity.z = 0;
-			
-			if (velocity.x != 0) {
-				collisions.faceDir = (int)Mathf.Sign(velocity.x);
-			}
-			
-			HorizontalCollisions (ref velocity);
-			
-			if (velocity.y < 0) {
-				DescendSlope(ref velocity);
-			}
-			
-			if (velocity.y != 0) {
-				VerticalCollisions (ref velocity);
-			}
-			
-		//this section handles all other movement.
-		} else {
-			if (velocity.x != 0) {
-				collisions.faceDir = (int)Mathf.Sign(velocity.x);
-			}
-			
-			HorizontalCollisions (ref velocity);
-			
-			if (velocity.y < 0) {
-				DescendSlope(ref velocity);
-			}
-			
-			if (velocity.y != 0) {
-				VerticalCollisions (ref velocity);
-			}
-		}
 		
 		transform.Translate (velocity);
 		
@@ -281,5 +258,4 @@ public class Controller2D : RaycastController {
 			slopeAngle = 0;
 		}
 	}
-	
 }

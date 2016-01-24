@@ -41,12 +41,12 @@ public class Player : MonoBehaviour {
 	
 	Controller2D controller;
 
-    private Collider2D playerCollider;
+    private BoxCollider2D playerCollider;
 	
 	void Start() {
 		controller = GetComponent<Controller2D> ();
         playerAnimationController = GetComponent<Animator>();
-        playerCollider = GetComponent<Collider2D>();
+        playerCollider = GetComponent<BoxCollider2D>();
 
         gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;

@@ -32,8 +32,8 @@ public class EquipmentInventory : MonoBehaviour {
 	private Text displayEquipmentDescription;
 	private Text displayEquipmentType;
 	private Text displayEquipmentMaterial;
-	private Image displaySkillIcon;
-	private Text displaySkillDescription;
+	//private Image displaySkillIcon;
+	//private Text displaySkillDescription;
 	
 	//this can be private at some point.
 	public List<Equipment> equipmentList;
@@ -242,8 +242,8 @@ public class EquipmentInventory : MonoBehaviour {
 			displayEquipmentDescription = GameObject.FindGameObjectWithTag ("Equipment Display Description").GetComponent<Text> ();
 			displayEquipmentType = GameObject.FindGameObjectWithTag ("Equipment Display Type").GetComponent<Text> ();
 			displayEquipmentMaterial = GameObject.FindGameObjectWithTag ("Equipment Display Material").GetComponent<Text> ();
-			displaySkillIcon = GameObject.FindGameObjectWithTag ("Skill Icon").GetComponent<Image>();
-			displaySkillDescription = GameObject.FindGameObjectWithTag ("Skill Description").GetComponent<Text>();
+			//displaySkillIcon = GameObject.FindGameObjectWithTag ("Skill Icon").GetComponent<Image>();
+			//displaySkillDescription = GameObject.FindGameObjectWithTag ("Skill Description").GetComponent<Text>();
 			
 			strengthStat = GameObject.FindGameObjectWithTag ("Strength").GetComponent<Text> ();
 			strengthLabel = GameObject.FindGameObjectWithTag ("Strength Label").GetComponent<Text> ();
