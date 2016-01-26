@@ -42,20 +42,26 @@ public class Player : MonoBehaviour {
 	Controller2D controller;
 
     private BoxCollider2D playerCollider;
+
+    float startPosY;
 	
 	void Start() {
 		controller = GetComponent<Controller2D> ();
         playerAnimationController = GetComponent<Animator>();
         playerCollider = GetComponent<BoxCollider2D>();
 
-        gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
-		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+        gravity = -1000;
+        maxJumpVelocity = Mathf.Abs(gravity) * (timeToJumpApex) * (maxJumpHeight * 0.02312f);
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
 		isAttacking = false;
 		isJumping = false;
+
+        startPosY = transform.position.y;
 	}
 	
 	void Update() {
+        //Debug.Log(transform.position.y - startPosY);
+        //Debug.Log(velocity.y);
 		if (GameControl.gameControl.AnyOpenMenus() == false) {
 			Vector2 input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 			int wallDirX = (controller.collisions.left) ? -1 : 1;
@@ -193,7 +199,7 @@ public class Player : MonoBehaviour {
                     Invoke("MovePlayerWhenClimbingUp", 0.125f);
                 }
 			} else {
-				gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
+				gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
 				velocity.y += gravity * Time.deltaTime;
 			}
 			

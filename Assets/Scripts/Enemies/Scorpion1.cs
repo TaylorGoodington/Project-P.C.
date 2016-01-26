@@ -60,6 +60,10 @@ public class Scorpion1 : MonoBehaviour
     private PlayerDetection playerDetection;
 
     private GameObject player;
+    private float playerPlatformMaxY;
+    private float playerPlatformMinY;
+    private float playerPlatformMaxX;
+    private float playerPlatformMinX;
 
     void Start()
     {
@@ -69,8 +73,8 @@ public class Scorpion1 : MonoBehaviour
         playerDetection = transform.GetChild(0).GetComponent<PlayerDetection>();
         player = FindObjectOfType<Player>().gameObject;
 
-        gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
-        //maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+        gravity = -1000;
+        //maxJumpVelocity = Mathf.Abs(gravity) * (timeToJumpApex) * (maxJumpHeight * 0.02312f);
         //minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
         isAttacking = false;
         changingDirection = false;
@@ -135,8 +139,38 @@ public class Scorpion1 : MonoBehaviour
                 if (controller.collisions.faceDir == targetDirection)
                 {
                     changingDirection = false;
-                    velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * chaseSpeed, 1f);
+
+                    //if we are at the max of the original patrol path.
+                    if (transform.position.x >= maxPatrolX || transform.position.x <= minPatrolX)
+                    {
+                        patrolPathCreated = false;
+
+                        //see what platform the player is on.
+                        float rayLength = 250f;
+                        RaycastHit2D playerPlatform = Physics2D.Raycast(player.transform.position, Vector2.down, rayLength, patrolMask);
+                        if (playerPlatform)
+                        {
+                            if (playerPlatform.collider.gameObject.layer == 10)
+                            {
+                                playerPlatformMaxX = playerPlatform.collider.bounds.max.x;
+                                playerPlatformMinX = playerPlatform.collider.bounds.min.x;
+                                playerPlatformMaxY = playerPlatform.collider.bounds.max.y;
+                                playerPlatformMinY = playerPlatform.collider.bounds.min.y;
+                            }
+                        }
+
+                        //compare where the player is to the enemy. See if the distance can be covered, by jumping.
+                        //need to do math....yuck.
+                        velocity.x = 0;
+                    }
+
+                    //still in the original patrol path.
+                    else
+                    {
+                        velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * chaseSpeed, 1f);
+                    }
                 }
+
 
                 //if they enemy is facing the wrong direction.
                 if ((controller.collisions.faceDir != targetDirection) && changingDirection == false)
