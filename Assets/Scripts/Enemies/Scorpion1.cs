@@ -17,7 +17,7 @@ public class Scorpion1 : MonoBehaviour
 
     public float jumpHeight = 4;
     //private float minJumpHeight = 1;
-    private float timeToJumpApex = .4f;
+    private float timeToJumpApex = .3f;
     //private float accelerationTimeAirborne = .2f;
     //private float accelerationTimeGrounded = .1f;
     public float patrolSpeed = 6;
@@ -49,8 +49,10 @@ public class Scorpion1 : MonoBehaviour
 
 
     private float gravity;
-    //private float maxJumpVelocity;
-    //private float minJumpVelocity;
+    private float maxJumpVelocity;
+    private float maxJumpDistance;
+    private float timeAirborn;
+    private bool airborne;
     private Vector3 velocity;
 
     private Controller2D controller;
@@ -74,8 +76,10 @@ public class Scorpion1 : MonoBehaviour
         player = FindObjectOfType<Player>().gameObject;
 
         gravity = -1000;
-        //maxJumpVelocity = Mathf.Abs(gravity) * (timeToJumpApex) * (maxJumpHeight * 0.02312f);
-        //minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
+        maxJumpVelocity = (Mathf.Abs(gravity) * (timeToJumpApex)) * ((Mathf.Pow(jumpHeight, -0.5221f)) * 0.1694f) * jumpHeight;
+        timeAirborn = (maxJumpVelocity / Mathf.Abs(gravity)) * 2;
+        maxJumpDistance = timeAirborn * chaseSpeed;
+        airborne = false;
         isAttacking = false;
         changingDirection = false;
         patrolPathCreated = false;
@@ -102,6 +106,16 @@ public class Scorpion1 : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
         }
 
+        //Airborne Check
+        if(controller.collisions.below)
+        {
+            airborne = false;
+        }
+        else
+        {
+            airborne = true;
+        }
+
         //cant move if attacking.
         if (isAttacking)
         {
@@ -126,69 +140,89 @@ public class Scorpion1 : MonoBehaviour
         //Chasing
         if (state == EnemyState.Chasing)
         {
-            if (!LineOfSight())
+            //If the enemy is in the air we dont want them loosing their directive and trying to make a path. So we make finishing the jump the priority.
+            if (airborne)
             {
-                EngagementCountDown();
+                 
             }
 
-            if (engagementCounter > 0)
+            //If the enemy is on the ground they continue operations as normal.
+            else if (!airborne)
             {
-                int targetDirection = (transform.position.x >= player.transform.position.x) ? -1 : 1;
-
-                //if the enemy is facing the right direction.
-                if (controller.collisions.faceDir == targetDirection)
+                if (!LineOfSight())
                 {
-                    changingDirection = false;
+                    EngagementCountDown();
+                }
 
-                    //if we are at the max of the original patrol path.
-                    if (transform.position.x >= maxPatrolX || transform.position.x <= minPatrolX)
+                if (engagementCounter > 0)
+                {
+                    int targetDirection = (transform.position.x >= player.transform.position.x) ? -1 : 1;
+
+                    //if the enemy is facing the right direction.
+                    if (controller.collisions.faceDir == targetDirection)
                     {
-                        patrolPathCreated = false;
+                        changingDirection = false;
 
-                        //see what platform the player is on.
-                        float rayLength = 250f;
-                        RaycastHit2D playerPlatform = Physics2D.Raycast(player.transform.position, Vector2.down, rayLength, patrolMask);
-                        if (playerPlatform)
+                        //if we are at the max of the original patrol path.
+                        if (transform.position.x >= maxPatrolX || transform.position.x <= minPatrolX)
                         {
-                            if (playerPlatform.collider.gameObject.layer == 10)
+                            //see what platform the player is on.
+                            float rayLength = 250f;
+                            RaycastHit2D playerPlatform = Physics2D.Raycast(player.transform.position, Vector2.down, rayLength, patrolMask);
+                            if (playerPlatform)
                             {
-                                playerPlatformMaxX = playerPlatform.collider.bounds.max.x;
-                                playerPlatformMinX = playerPlatform.collider.bounds.min.x;
-                                playerPlatformMaxY = playerPlatform.collider.bounds.max.y;
-                                playerPlatformMinY = playerPlatform.collider.bounds.min.y;
+                                if (playerPlatform.collider.gameObject.layer == 10)
+                                {
+                                    playerPlatformMaxX = playerPlatform.collider.bounds.max.x;
+                                    playerPlatformMinX = playerPlatform.collider.bounds.min.x;
+                                    playerPlatformMaxY = playerPlatform.collider.bounds.max.y;
+                                    playerPlatformMinY = playerPlatform.collider.bounds.min.y;
+                                }
                             }
+
+                            //Scenario 1
+                            //the player is above the enemy and within the enemies vertical jump range.
+                            if (playerPlatformMaxY - (transform.position.y - enemyCollider.size.y / 2) < jumpHeight && playerPlatformMaxY > enemyCollider.bounds.min.y)
+                            {
+
+                            }
+
+                            //Scenario 2
+                            //the player is below the enemy and within the enemies horizontal jump range.
+                            if (playerPlatformMaxY - (transform.position.y - enemyCollider.size.y / 2) < maxJumpDistance && playerPlatformMaxY > enemyCollider.bounds.min.y)
+                            {
+
+                            }
+
+                            velocity.x = 0;
                         }
 
-                        //compare where the player is to the enemy. See if the distance can be covered, by jumping.
-                        //need to do math....yuck.
-                        velocity.x = 0;
+                        //still in the original patrol path.
+                        else
+                        {
+                            velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * chaseSpeed, 1f);
+                        }
                     }
 
-                    //still in the original patrol path.
-                    else
+
+                    //if they enemy is facing the wrong direction.
+                    if ((controller.collisions.faceDir != targetDirection) && changingDirection == false)
                     {
-                        velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * chaseSpeed, 1f);
+                        velocity.x = Mathf.Lerp(velocity.x, 0f, 1f);
+                        StartCoroutine(ChangeDirection(chaseSpeed));
+                        changingDirection = true;
                     }
+
+                    gravity = -1000;
+                    velocity.y += gravity * Time.deltaTime;
+
+                    controller.Move(velocity * Time.deltaTime, input);
                 }
-
-
-                //if they enemy is facing the wrong direction.
-                if ((controller.collisions.faceDir != targetDirection) && changingDirection == false)
+                else
                 {
-                    velocity.x = Mathf.Lerp(velocity.x, 0f, 1f);
-                    StartCoroutine(ChangeDirection(chaseSpeed));
-                    changingDirection = true;
+                    state = EnemyState.Patroling;
+                    ResetEngagementCountDown();
                 }
-
-                gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
-                velocity.y += gravity * Time.deltaTime;
-
-                controller.Move(velocity * Time.deltaTime, input);
-            }
-            else
-            {
-                state = EnemyState.Patroling;
-                ResetEngagementCountDown();
             }
         }
 
@@ -215,7 +249,7 @@ public class Scorpion1 : MonoBehaviour
             }
 
 
-            gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
+            gravity = -1000;
             velocity.y += gravity * Time.deltaTime;
 
             controller.Move(velocity * Time.deltaTime, input);
