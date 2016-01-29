@@ -47,12 +47,22 @@ public class Scorpion1 : MonoBehaviour
 
     private Animator enemyAnimationController;
 
+    Vector2 targetPosition;
+
+    Vector2 eyePositionLeft;
+    Vector2 eyePositionRight;
+    Vector2 eyePosition;
+    float eyePositionModifierX;
+    float eyePositionModifierY;
 
     private float gravity;
     private float maxJumpVelocity;
     private float maxJumpDistance;
     private float timeAirborn;
     private bool airborne;
+    float jumpTargetX;
+    float jumpTargetY;
+    private Vector2 jumpTarget;
     private Vector3 velocity;
 
     private Controller2D controller;
@@ -86,6 +96,9 @@ public class Scorpion1 : MonoBehaviour
 
         engagementCounter = chaseTime + pivotTime;
 
+        eyePositionModifierX = (enemyCollider.size.x / 2) * .5f;
+        eyePositionModifierY = (enemyCollider.size.y / 2) * .0f;
+
         CreatePatrolPath();
         state = EnemyState.Patroling;
     }
@@ -100,10 +113,14 @@ public class Scorpion1 : MonoBehaviour
         if (controller.collisions.faceDir == -1)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            eyePositionLeft = new Vector2(transform.position.x - eyePositionModifierX, transform.position.y + eyePositionModifierY);
+            eyePosition = eyePositionLeft;
         }
         else
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            eyePositionRight = new Vector2(transform.position.x + eyePositionModifierX, transform.position.y + eyePositionModifierY);
+            eyePosition = eyePositionRight;
         }
 
         //Airborne Check
@@ -123,45 +140,98 @@ public class Scorpion1 : MonoBehaviour
         }
 
         //trigger for entering chase mode.
-        if(playerDetection.playerInRadius)
+        if(playerDetection.playerInRadius && state == EnemyState.Patroling)
         {
-            if (LineOfSight())
+            if (OriginalLineOfSight())
             {
                 state = EnemyState.Chasing;
                 ResetEngagementCountDown();
             }
-        }
-        else
-        {
-            EngagementCountDown();
         }
 
 
         //Chasing
         if (state == EnemyState.Chasing)
         {
-            //If the enemy is in the air we dont want them loosing their directive and trying to make a path. So we make finishing the jump the priority.
-            if (airborne)
+            Chasing (input);
+        }
+
+
+        //Investigating
+        if (state == EnemyState.Investigating)
+        {
+            Investigating();
+        }
+
+
+        //Patroling
+        if (state == EnemyState.Patroling)
+        {
+            Patrolling();
+
+            gravity = -1000;
+            velocity.y += gravity * Time.deltaTime;
+
+            controller.Move(velocity * Time.deltaTime, input);
+        }
+
+
+        if (controller.collisions.above || controller.collisions.below)
+        {
+            velocity.y = 0;
+        }
+    }
+
+    private void Chasing(Vector2 input)
+    {
+        //If the enemy is in the air we dont want them loosing their directive and trying to make a path. So we make finishing the jump the priority.
+        if (airborne)
+        {
+            engagementCounter += 0.8f;
+        }
+
+        //If the enemy is on the ground they continue operations as normal.
+        else if (!airborne)
+        {
+            //If the engagement counter has run out we stop chasing.
+            if (engagementCounter <= 0)
             {
-                 
+                state = EnemyState.Patroling;
+                ResetEngagementCountDown();
             }
 
-            //If the enemy is on the ground they continue operations as normal.
-            else if (!airborne)
+            //If the engagement counter still has time we continue chasing.
+            else if (engagementCounter > 0)
             {
+                //Check if the line of sight is broken.
                 if (!LineOfSight())
                 {
-                    EngagementCountDown();
+                    targetPosition = player.transform.position;
+                    state = EnemyState.Investigating;
                 }
 
-                if (engagementCounter > 0)
+                //If we have a LOS we continue to chase.
+                else if (LineOfSight())
                 {
+                    ResetEngagementCountDown();
+
                     int targetDirection = (transform.position.x >= player.transform.position.x) ? -1 : 1;
 
+                    //if they enemy is facing the wrong direction.
+                    if ((controller.collisions.faceDir != targetDirection) && changingDirection == false)
+                    {
+                        velocity.x = Mathf.Lerp(velocity.x, 0f, 1f);
+                        StartCoroutine(ChangeDirection(chaseSpeed));
+                        changingDirection = true;
+                    }
+
                     //if the enemy is facing the right direction.
-                    if (controller.collisions.faceDir == targetDirection)
+                    else if (controller.collisions.faceDir == targetDirection)
                     {
                         changingDirection = false;
+
+                        //run through the scenarios....
+                        ChaseScernarios();
 
                         //if we are at the max of the original patrol path.
                         if (transform.position.x >= maxPatrolX || transform.position.x <= minPatrolX)
@@ -182,8 +252,18 @@ public class Scorpion1 : MonoBehaviour
 
                             //Scenario 1
                             //the player is above the enemy and within the enemies vertical jump range.
-                            if (playerPlatformMaxY - (transform.position.y - enemyCollider.size.y / 2) < jumpHeight && playerPlatformMaxY > enemyCollider.bounds.min.y)
+                            if (playerPlatformMaxY - (transform.position.y - enemyCollider.size.y / 2) < (jumpHeight - 5) && playerPlatformMaxY > enemyCollider.bounds.min.y)
                             {
+                                //if the platform is to the left of the enemy.
+                                if (transform.position.x > playerPlatformMaxX)
+                                {
+                                    jumpTargetX = playerPlatformMaxX - (enemyCollider.size.x / 2);
+                                }
+                                //if the platform is to the right of the enemy.
+                                else
+                                {
+
+                                }
 
                             }
 
@@ -204,62 +284,95 @@ public class Scorpion1 : MonoBehaviour
                         }
                     }
 
-
-                    //if they enemy is facing the wrong direction.
-                    if ((controller.collisions.faceDir != targetDirection) && changingDirection == false)
-                    {
-                        velocity.x = Mathf.Lerp(velocity.x, 0f, 1f);
-                        StartCoroutine(ChangeDirection(chaseSpeed));
-                        changingDirection = true;
-                    }
-
                     gravity = -1000;
                     velocity.y += gravity * Time.deltaTime;
 
                     controller.Move(velocity * Time.deltaTime, input);
                 }
-                else
-                {
-                    state = EnemyState.Patroling;
-                    ResetEngagementCountDown();
-                }
             }
         }
+    }
 
-
-        //Patroling
-        if (state == EnemyState.Patroling)
+    private void Patrolling()
+    {
+        if (!patrolPathCreated)
         {
-            if (!patrolPathCreated)
-            {
-                CreatePatrolPath();
-            }
+            CreatePatrolPath();
+        }
 
-            if ((transform.position.x >= minPatrolX && transform.position.x <= maxPatrolX))
-            {
-                changingDirection = false;
-                velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * patrolSpeed, 1f);
-            }
+        if ((transform.position.x >= minPatrolX && transform.position.x <= maxPatrolX))
+        {
+            changingDirection = false;
+            velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * patrolSpeed, 1f);
+        }
 
-            if ((transform.position.x <= minPatrolX || transform.position.x >= maxPatrolX) && changingDirection == false)
+        if ((transform.position.x <= minPatrolX || transform.position.x >= maxPatrolX) && changingDirection == false)
+        {
+            //check if the current direction puts the enemy off the platform.
+            if (((transform.position.x + ((1 * controller.collisions.faceDir) * 5) > maxPatrolX) || (transform.position.x + ((1 * controller.collisions.faceDir) * 5) < minPatrolX)) && changingDirection == false)
             {
-                velocity.x = Mathf.Lerp(velocity.x, 0f, 1f);
+                velocity.x = 0;
                 StartCoroutine(ChangeDirection(patrolSpeed));
                 changingDirection = true;
             }
-
-
-            gravity = -1000;
-            velocity.y += gravity * Time.deltaTime;
-
-            controller.Move(velocity * Time.deltaTime, input);
+            else
+            {
+                velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * patrolSpeed, 1f);
+            }
         }
+    }
 
-
-        if (controller.collisions.above || controller.collisions.below)
+    private void Investigating()
+    {
+        //Set state to patrolling once the counter has run out.
+        if (engagementCounter <= 0)
         {
-            velocity.y = 0;
+            state = EnemyState.Patroling;
+            ResetEngagementCountDown();
         }
+
+        //Engagement counter still has time.
+        else if (engagementCounter > 0)
+        {
+            //Go back to chasing.
+            if (LineOfSight())
+            {
+                ResetEngagementCountDown();
+                state = EnemyState.Chasing;
+            }
+
+            //Going to the last known location.
+            else if (!LineOfSight())
+            {
+                EngagementCountDown();
+                Debug.Log("the game is afoot");
+
+                //Check if a platform is below where the player is.
+                RaycastHit2D hit = Physics2D.Raycast(targetPosition, Vector2.down, 500, patrolMask);
+                if (hit)
+                {
+                    if (hit.collider.gameObject.layer == 10)
+                    {
+                        jumpTargetX = targetPosition.x;
+                        jumpTargetY = hit.collider.bounds.max.y;
+                    }
+                }
+
+                //Scenario 1 - No obstacles in the way, No Jumping Required.
+                //continue movement until position is reached.
+
+                //Scenario 2 - No obstacles in the way, Jumping Required.
+                //continue movement until the jump is possible.
+
+                //Scenario 3 - Jumping is necessary (obstacles are in the way).
+                //see the enemy can jump over the obstacle
+            }
+        }
+    }
+
+    public void ChaseScernarios ()
+    {
+
     }
 
     public void EngagementCountDown ()
@@ -275,11 +388,11 @@ public class Scorpion1 : MonoBehaviour
         engagementCounter = chaseTime + pivotTime;
     }
 
-    public bool LineOfSight ()
+    public bool OriginalLineOfSight ()
     {
         if (controller.collisions.faceDir == 1 && player.transform.position.x >= transform.position.x)
         {
-            RaycastHit2D hit = Physics2D.Linecast(transform.position, player.transform.position, attackingLayer); 
+            RaycastHit2D hit = Physics2D.Linecast(eyePosition, player.transform.position, attackingLayer); 
             if (hit)
             {
                 if (hit.collider.gameObject.tag == "Player")
@@ -291,7 +404,7 @@ public class Scorpion1 : MonoBehaviour
             return false;
         } else if (controller.collisions.faceDir == -1 && player.transform.position.x <= transform.position.x)
         {
-            RaycastHit2D hit = Physics2D.Linecast(transform.position, player.transform.position, attackingLayer);
+            RaycastHit2D hit = Physics2D.Linecast(eyePosition, player.transform.position, attackingLayer);
             if (hit)
             {
                 if (hit.collider.gameObject.tag == "Player")
@@ -299,6 +412,20 @@ public class Scorpion1 : MonoBehaviour
                     return true;
                 }
                 return false;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    public bool LineOfSight ()
+    {
+        RaycastHit2D hit = Physics2D.Linecast(eyePosition, player.transform.position, attackingLayer);
+        if (hit)
+        {
+            if (hit.collider.gameObject.tag == "Player" && playerDetection.playerInRadius)
+            {
+                return true;
             }
             return false;
         }
@@ -363,6 +490,7 @@ public class Scorpion1 : MonoBehaviour
     {
         Patroling,
         Chasing,
+        Investigating,
         Attacking,
         Fleeing
     }
