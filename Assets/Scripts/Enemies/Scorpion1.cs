@@ -34,6 +34,7 @@ public class Scorpion1 : MonoBehaviour
 
     private float minPatrolX;
     private float maxPatrolX;
+    GameObject patrolPlatform;
 
     public LayerMask patrolMask;
 
@@ -59,11 +60,13 @@ public class Scorpion1 : MonoBehaviour
     private float maxJumpVelocity;
     private float maxJumpDistance;
     private float timeAirborn;
-    private bool airborne;
-    private bool investigating;
+    public bool airborne;
+    public bool investigating;
     float jumpTargetX;
     float jumpTargetY;
     private Vector2 jumpTarget;
+    GameObject targetPlatform;
+
     private Vector3 velocity;
 
     private Controller2D controller;
@@ -125,16 +128,6 @@ public class Scorpion1 : MonoBehaviour
             eyePosition = eyePositionRight;
         }
 
-        //Airborne Check
-        if(controller.collisions.below)
-        {
-            airborne = false;
-        }
-        else
-        {
-            airborne = true;
-        }
-
         //cant move if attacking.
         if (isAttacking)
         {
@@ -156,6 +149,10 @@ public class Scorpion1 : MonoBehaviour
         if (state == EnemyState.Chasing)
         {
             Chasing (input);
+
+            gravity = -1000;
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime, input);
         }
 
 
@@ -163,6 +160,10 @@ public class Scorpion1 : MonoBehaviour
         if (state == EnemyState.Investigating)
         {
             Investigating();
+
+            gravity = -1000;
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime, input);
         }
 
 
@@ -173,7 +174,6 @@ public class Scorpion1 : MonoBehaviour
 
             gravity = -1000;
             velocity.y += gravity * Time.deltaTime;
-
             controller.Move(velocity * Time.deltaTime, input);
         }
 
@@ -184,6 +184,7 @@ public class Scorpion1 : MonoBehaviour
         }
     }
 
+    //chasing needs work....
     private void Chasing(Vector2 input)
     {
         //If the enemy is in the air we dont want them loosing their directive and trying to make a path. So we make finishing the jump the priority.
@@ -326,72 +327,138 @@ public class Scorpion1 : MonoBehaviour
 
     private void Investigating()
     {
-        //Set state to patrolling once the counter has run out.
-        if (engagementCounter <= 0)
+        if (airborne)
         {
-            ResetEngagementCountDown();
-            investigating = false;
-            state = EnemyState.Patroling;
+            if ((jumpTargetX <= transform.position.x && controller.collisions.faceDir == -1) || (jumpTargetX >= transform.position.x && controller.collisions.faceDir == 1))
+            {
+                velocity.x = controller.collisions.faceDir * chaseSpeed;
+            }
+            else
+            {
+                velocity.x = 0;
+                airborne = false;
+                CreatePatrolPath();
+            }
         }
-
-        //Engagement counter still has time.
-        else if (engagementCounter > 0)
+        else
         {
-            //Go back to chasing.
-            if (LineOfSight())
+            //Set state to patrolling once the counter has run out.
+            if (engagementCounter <= 0)
             {
                 ResetEngagementCountDown();
                 investigating = false;
-                state = EnemyState.Chasing;
+                state = EnemyState.Patroling;
             }
-            else if (!LineOfSight())
+
+            //Engagement counter still has time.
+            else if (engagementCounter > 0)
             {
-                EngagementCountDown();
-                Debug.Log("the game is afoot");
-
-                //If we have been through the investigation scenarios and have a target.
-                if (investigating)
+                //Go back to chasing.
+                if (LineOfSight())
                 {
-                    //handle movement to the taget.
-
-                    //Once the target is reached investigating = false;
+                    ResetEngagementCountDown();
+                    investigating = false;
+                    state = EnemyState.Chasing;
                 }
-                else if (!investigating)
+                else if (!LineOfSight())
                 {
-                    //Check if a platform is below where the player is.
-                    RaycastHit2D hit = Physics2D.Raycast(targetPosition, Vector2.down, 500, patrolMask);
-                    if (hit)
-                    {
-                        if (hit.collider.gameObject.layer == 10)
-                        {
-                            jumpTargetX = targetPosition.x;
-                            jumpTargetY = hit.collider.bounds.max.y;
+                    EngagementCountDown();
+                    Debug.Log("the game is afoot");
 
-                            //Move through the investigation scenarios.
-                            InvestigationScenarios();
+                    //If we have been through the investigation scenarios and have a target.
+                    if (investigating)
+                    {
+                        //Moving without jumping, and to the same platform.
+                        if (jumpTargetY == transform.position.y && targetPlatform == patrolPlatform)
+                        {
+                            Debug.Log("no jumping needed.");
+                            Debug.Log(jumpTargetX);
+                            if ((jumpTargetX < transform.position.x && controller.collisions.faceDir == -1) || (jumpTargetX > transform.position.x && controller.collisions.faceDir == 1))
+                            {
+                                velocity.x = controller.collisions.faceDir * chaseSpeed;
+                            }
+                            else
+                            {
+                                ChangeDirection(chaseSpeed);
+                            }
                         }
 
-                        //If we didn't find a platform under the player when the LOS broke.
+                        //Moving with jumping.
                         else
                         {
-                            if ((transform.position.x >= minPatrolX && transform.position.x <= maxPatrolX))
+                            Debug.Log("jumping needed.");
+                            Debug.Log(jumpTargetX - maxJumpDistance);
+                            //check if the jump is possible. This is broken...
+                            if (((jumpTargetX - maxJumpDistance <= maxPatrolX) && controller.collisions.faceDir == 1) || ((jumpTargetX + maxJumpDistance >= minPatrolX) && controller.collisions.faceDir == -1))
                             {
-                                changingDirection = false;
-                                velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * patrolSpeed, 1f);
-                            }
-
-                            if ((transform.position.x <= minPatrolX || transform.position.x >= maxPatrolX) && changingDirection == false)
-                            {
-                                //check if the current direction puts the enemy off the platform.
-                                if (((transform.position.x + ((1 * controller.collisions.faceDir) * 5) > maxPatrolX) || (transform.position.x + ((1 * controller.collisions.faceDir) * 5) < minPatrolX)) && changingDirection == false)
+                                Debug.Log("jump is possible");
+                                //Movement.
+                                if ((jumpTargetX <= transform.position.x && controller.collisions.faceDir == -1) || (jumpTargetX >= transform.position.x && controller.collisions.faceDir == 1))
                                 {
-                                    velocity.x = 0;
-                                    StartCoroutine(ChangeDirection(patrolSpeed));
-                                    changingDirection = true;
+                                    velocity.x = controller.collisions.faceDir * chaseSpeed;
                                 }
                                 else
                                 {
+                                    velocity.x = 0;
+                                }
+
+                                //Jumping.
+                                if ((transform.position.x <= minPatrolX || transform.position.x >= maxPatrolX))
+                                {
+                                    velocity.y = maxJumpVelocity;
+                                    airborne = true;
+                                }
+                            }
+                            else
+                            {
+                                if ((transform.position.x >= minPatrolX && transform.position.x <= maxPatrolX))
+                                {
+                                    changingDirection = false;
                                     velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * patrolSpeed, 1f);
+                                }
+
+                                if ((transform.position.x <= minPatrolX || transform.position.x >= maxPatrolX))
+                                {
+                                    velocity.x = 0;
+                                }
+                            }
+                        }
+
+                        //If we have reached the last known position and still have no LOS, we wait until the timer runs out.
+                        if ((jumpTargetX <= transform.position.x && controller.collisions.faceDir == 1) || (jumpTargetX >= transform.position.x && controller.collisions.faceDir == -1))
+                        {
+                            velocity.x = 0;
+                        }
+                    }
+                    else if (!investigating)
+                    {
+                        //Check if a platform is below where the player is.
+                        RaycastHit2D hit = Physics2D.Raycast(targetPosition, Vector2.down, 500, patrolMask);
+                        if (hit)
+                        {
+                            if (hit.collider.gameObject.layer == 10)
+                            {
+                                targetPlatform = hit.collider.gameObject;
+                                jumpTargetX = targetPosition.x;
+                                jumpTargetY = hit.collider.bounds.max.y + (enemyCollider.size.y / 2);
+                                jumpTarget = new Vector2(jumpTargetX, jumpTargetY);
+
+                                //Move through the investigation scenarios.
+                                InvestigationScenarios();
+                            }
+
+                            //If we didn't find a platform under the player when the LOS broke.
+                            else
+                            {
+                                if ((transform.position.x >= minPatrolX && transform.position.x <= maxPatrolX))
+                                {
+                                    changingDirection = false;
+                                    velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * patrolSpeed, 1f);
+                                }
+
+                                if ((transform.position.x <= minPatrolX || transform.position.x >= maxPatrolX))
+                                {
+                                    velocity.x = 0;
                                 }
                             }
                         }
@@ -403,15 +470,58 @@ public class Scorpion1 : MonoBehaviour
 
     public void InvestigationScenarios ()
     {
-        //Scenario 1 - No obstacles in the way, No Jumping Required.
-        //continue movement until position is reached.
-        //we have to first check to see if an obstacle is in the way.
+        RaycastHit2D hit = Physics2D.Linecast(eyePosition, jumpTarget, attackingLayer);
+        Collider2D targetPlatformCollider = targetPlatform.GetComponent<BoxCollider2D>();
+        Collider2D patrolPlatformCollider = patrolPlatform.GetComponent<BoxCollider2D>();
 
-        //Scenario 2 - No obstacles in the way, Jumping Required.
-        //continue movement until the jump is possible.
+        //Scenario 1 - No obstacles in the way, Same Platform, No Jumping.
+        if (!hit && patrolPlatform == targetPlatform)
+        {
+            if(jumpTargetX < transform.position.x)
+            {
+                jumpTargetX = jumpTargetX + (enemyCollider.size.x / 2);
+            }
+            else
+            {
+                jumpTargetX = jumpTargetX - (enemyCollider.size.x / 2);
+            }
+            jumpTargetY = transform.position.y;
+            investigating = true;
+            Debug.Log("Investigation #1");
+        }
 
-        //Scenario 3 - Jumping is necessary (obstacles are in the way).
-        //see the enemy can jump over the obstacle
+        //Scenario 2 - No obstacle in the way, New Platform, Jumping to the same Y.
+        if (!hit && patrolPlatform != targetPlatform && (targetPlatformCollider.bounds.max.y == patrolPlatformCollider.bounds.max.y)) 
+        {
+            if (jumpTargetX < transform.position.x)
+            {
+                jumpTargetX = targetPlatform.GetComponent<BoxCollider2D>().bounds.max.x - (enemyCollider.size.x / 2);
+            }
+            else
+            {
+                jumpTargetX = targetPlatform.GetComponent<BoxCollider2D>().bounds.min.x + (enemyCollider.size.x / 2);
+            }
+            
+            investigating = true;
+            Debug.Log("Investigation #2");
+        }
+
+        //Scenario 3 - Current platform is in the way/No Obstacle in the way, New Platform, Jumping down.
+        if ((!hit || hit.collider.gameObject == patrolPlatform) && (targetPlatformCollider.bounds.max.y < patrolPlatformCollider.bounds.max.y))
+        {
+            if(hit.collider.gameObject == patrolPlatform)
+            {
+                //Vector2 platformEdge = () ? 1 : 1;
+                //RaycastHit2D hit2 = Physics2D.Linecast(platformEdge, jumpTarget, attackingLayer);
+            }
+            //if the obstacle in the way is patrol platform then fire a line from the edge of the patrol platform closest to the jump target. 
+            //If thats clear dont change the jump targets.
+        }
+
+        //Scenario 4 - Obstacle in the way, new platform
+        //if the obstacle is the current platform then we dont need to worry about jumping.
+
+        jumpTarget = new Vector2(jumpTargetX, jumpTargetY);
     }
 
     public void ChaseScernarios ()
@@ -498,6 +608,7 @@ public class Scorpion1 : MonoBehaviour
             {
                 minPatrolX = bottom.collider.bounds.min.x + (enemyCollider.size.x / 2);
                 maxPatrolX = bottom.collider.bounds.max.x - (enemyCollider.size.x / 2);
+                patrolPlatform = bottom.collider.gameObject;
             }
         }
 
