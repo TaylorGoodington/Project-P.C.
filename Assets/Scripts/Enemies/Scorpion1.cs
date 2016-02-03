@@ -363,16 +363,14 @@ public class Scorpion1 : MonoBehaviour
                 else if (!LineOfSight())
                 {
                     EngagementCountDown();
-                    Debug.Log("the game is afoot");
-
                     //If we have been through the investigation scenarios and have a target.
                     if (investigating)
                     {
-                        //Moving without jumping, and to the same platform.
-                        if (jumpTargetY == transform.position.y && targetPlatform == patrolPlatform)
+                        //Check if jump is necessary.
+                        //Jumping is not necessary.
+                        if (!IsJumpNecessary())
                         {
                             Debug.Log("no jumping needed.");
-                            Debug.Log(jumpTargetX);
                             if ((jumpTargetX < transform.position.x && controller.collisions.faceDir == -1) || (jumpTargetX > transform.position.x && controller.collisions.faceDir == 1))
                             {
                                 velocity.x = controller.collisions.faceDir * chaseSpeed;
@@ -383,13 +381,16 @@ public class Scorpion1 : MonoBehaviour
                             }
                         }
 
-                        //Moving with jumping.
+                        //Jumping is necessary.
                         else
                         {
                             Debug.Log("jumping needed.");
                             Debug.Log(jumpTargetX - maxJumpDistance);
-                            //check if the jump is possible. This is broken...
-                            if (((jumpTargetX - maxJumpDistance <= maxPatrolX) && controller.collisions.faceDir == 1) || ((jumpTargetX + maxJumpDistance >= minPatrolX) && controller.collisions.faceDir == -1))
+
+                            //if (((jumpTargetX - maxJumpDistance <= maxPatrolX) && controller.collisions.faceDir == 1) || ((jumpTargetX + maxJumpDistance >= minPatrolX) && controller.collisions.faceDir == -1))
+                            
+                            //check if the jump is possible.
+                            if (IsJumpPossible())
                             {
                                 Debug.Log("jump is possible");
                                 //Movement.
@@ -468,13 +469,29 @@ public class Scorpion1 : MonoBehaviour
         }
     }
 
+    private bool IsJumpPossible() //NEEDS WORK.
+    {
+        Vector2 position1 = new Vector2(1, 1);
+        Vector2 position2 = new Vector2(1, 1);
+        Vector2 position3 = new Vector2(1, 1);
+
+        RaycastHit2D part1 = Physics2D.Linecast(transform.position, position1, attackingLayer);
+        RaycastHit2D part2 = Physics2D.Linecast(position1, position2, attackingLayer);
+        RaycastHit2D part3 = Physics2D.Linecast(position2, position3, attackingLayer);
+        RaycastHit2D part4 = Physics2D.Linecast(position3, jumpTarget, attackingLayer);
+        return true;
+    }
+
+    public bool IsJumpNecessary () //NEEDS WORK.
+    {
+        return true;
+    }
+
     public void InvestigationScenarios ()
     {
         RaycastHit2D hit = Physics2D.Linecast(eyePosition, jumpTarget, attackingLayer);
-        Collider2D targetPlatformCollider = targetPlatform.GetComponent<BoxCollider2D>();
-        Collider2D patrolPlatformCollider = patrolPlatform.GetComponent<BoxCollider2D>();
-
-        //Scenario 1 - No obstacles in the way, Same Platform, No Jumping.
+        
+        //Scenario 1 - No Jumping is required for investigation, Same Platform.
         if (!hit && patrolPlatform == targetPlatform)
         {
             if(jumpTargetX < transform.position.x)
@@ -490,8 +507,8 @@ public class Scorpion1 : MonoBehaviour
             Debug.Log("Investigation #1");
         }
 
-        //Scenario 2 - No obstacle in the way, New Platform, Jumping to the same Y.
-        if (!hit && patrolPlatform != targetPlatform && (targetPlatformCollider.bounds.max.y == patrolPlatformCollider.bounds.max.y)) 
+        //Scenario 2 - Jumping is required for investigation, Different platforms, No Overlap.
+        else if (patrolPlatform != targetPlatform && !PlatformOverlap())
         {
             if (jumpTargetX < transform.position.x)
             {
@@ -501,32 +518,42 @@ public class Scorpion1 : MonoBehaviour
             {
                 jumpTargetX = targetPlatform.GetComponent<BoxCollider2D>().bounds.min.x + (enemyCollider.size.x / 2);
             }
-            
+
             investigating = true;
             Debug.Log("Investigation #2");
         }
-
-        //Scenario 3 - Current platform is in the way/No Obstacle in the way, New Platform, Jumping down.
-        if ((!hit || hit.collider.gameObject == patrolPlatform) && (targetPlatformCollider.bounds.max.y < patrolPlatformCollider.bounds.max.y))
+        
+        //Scenario 3 - Jumping is required for investigation, Different platforms, Overlap.
+        else if (patrolPlatform != targetPlatform && PlatformOverlap())
         {
-            if(hit.collider.gameObject == patrolPlatform)
-            {
-                //Vector2 platformEdge = () ? 1 : 1;
-                //RaycastHit2D hit2 = Physics2D.Linecast(platformEdge, jumpTarget, attackingLayer);
-            }
-            //if the obstacle in the way is patrol platform then fire a line from the edge of the patrol platform closest to the jump target. 
-            //If thats clear dont change the jump targets.
+            //Keep the jump targets as they were.
+            investigating = true;
+            Debug.Log("Investigation #3");
         }
 
-        //Scenario 4 - Obstacle in the way, new platform
-        //if the obstacle is the current platform then we dont need to worry about jumping.
-
+        //Scenario 4 - Jumping is required for investigation, Same platform.
+        if (hit && patrolPlatform == targetPlatform)
+        {
+            investigating = true;
+            Debug.Log("Investigation #4");
+        }
         jumpTarget = new Vector2(jumpTargetX, jumpTargetY);
     }
 
     public void ChaseScernarios ()
     {
 
+    }
+
+    public bool PlatformOverlap ()
+    {
+        Bounds targetPlatformBounds = targetPlatform.GetComponent<Collider2D>().bounds;
+        Bounds patrolPlatformBounds = patrolPlatform.GetComponent<Collider2D>().bounds;
+        if (targetPlatformBounds.max.x > patrolPlatformBounds.min.x || targetPlatformBounds.min.x < patrolPlatformBounds.max.x)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void EngagementCountDown ()
@@ -673,9 +700,7 @@ public class Scorpion1 : MonoBehaviour
     {
         enemyAnimationController.enabled = false;
     }
-
-    //called from the animations for attacking.
-
+    
     //I think I will need to pass the collider being hit to the attacking function.
     public void Attack()
     {
