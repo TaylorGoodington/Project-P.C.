@@ -3,38 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Controller2D))]
+[RequireComponent(typeof(EnemyStats))]
 public class Scorpion1 : MonoBehaviour
 {
+    [HideInInspector]
+    public EnemyStats stats;
+
     [Tooltip("This field is used to specify which layers block the attacking and abilities raycasts.")]
     public LayerMask attackingLayer;
 
-    public int hP;
-    public int expGained;
-    public float attackDamage;
-    public float defense;
-    //public List<Items> itemsDropped;
-    //public List<Equipment> equipmentDropped;
-
-    public float jumpHeight = 4;
-    //private float minJumpHeight = 1;
+    private float jumpHeight;
     private float timeToJumpApex = .3f;
-    //private float accelerationTimeAirborne = .2f;
-    //private float accelerationTimeGrounded = .1f;
-    public float patrolSpeed = 6;
-    public float chaseSpeed = 6;
+    private float patrolSpeed;
+    private float chaseSpeed;
     [Tooltip("The amount of time an enemy will remain engaged after losing the line of sight.")]
-    public float chaseTime;
-    public float climbSpeed = 50;
+    private float chaseTime;
+    //private float climbSpeed = 50;
     [Tooltip("The length of time in seconds it takes for the enemy to change directions.")]
-    public float pivotTime;
+    private float pivotTime;
 
     public float engagementCounter;
 
     public bool changingDirection;
 
-    private float minPatrolX;
-    private float maxPatrolX;
-    GameObject patrolPlatform;
+    public float minPatrolX;
+    public float maxPatrolX;
+    public GameObject patrolPlatform;
 
     public LayerMask patrolMask;
 
@@ -64,8 +58,8 @@ public class Scorpion1 : MonoBehaviour
     public bool investigating;
     float jumpTargetX;
     float jumpTargetY;
-    private Vector2 jumpTarget;
-    GameObject targetPlatform;
+    public Vector2 jumpTarget;
+    public GameObject targetPlatform;
 
     private Vector3 velocity;
 
@@ -76,23 +70,37 @@ public class Scorpion1 : MonoBehaviour
     private PlayerDetection playerDetection;
 
     private GameObject player;
-    private float playerPlatformMaxY;
-    private float playerPlatformMinY;
-    private float playerPlatformMaxX;
-    private float playerPlatformMinX;
+
+    private GameObject freeFallPoints;
+    private BoxCollider2D fallPoint1;
+    private BoxCollider2D fallPoint2;
+    private BoxCollider2D fallPoint3;
+
+    private GameObject jumpPoints;
+    private BoxCollider2D jumpPoint1;
+    private BoxCollider2D jumpPoint2;
+    private BoxCollider2D jumpPoint3;
+    private BoxCollider2D jumpPoint4;
 
     void Start()
     {
+        stats = GetComponent<EnemyStats>();
+        patrolSpeed = stats.patrolSpeed;
+        chaseSpeed = stats.chaseSpeed;
+        chaseTime = stats.chaseTime;
+        jumpHeight = stats.jumpHeight;
+        pivotTime = stats.pivotTime;
+
         controller = GetComponent<Controller2D>();
         enemyAnimationController = GetComponent<Animator>();
         enemyCollider = GetComponent<BoxCollider2D>();
         playerDetection = transform.GetChild(0).GetComponent<PlayerDetection>();
+        jumpPoints = transform.GetChild(1).gameObject;
+        freeFallPoints = transform.GetChild(2).gameObject;
         player = FindObjectOfType<Player>().gameObject;
 
-        gravity = -1000;
-        maxJumpVelocity = (Mathf.Abs(gravity) * (timeToJumpApex)) * ((Mathf.Pow(jumpHeight, -0.5221f)) * 0.1694f) * jumpHeight;
-        timeAirborn = (maxJumpVelocity / Mathf.Abs(gravity)) * 2;
-        maxJumpDistance = timeAirborn * chaseSpeed;
+        CalculatePhysics();
+
         airborne = false;
         isAttacking = false;
         changingDirection = false;
@@ -104,34 +112,59 @@ public class Scorpion1 : MonoBehaviour
         eyePositionModifierX = (enemyCollider.size.x / 2) * .5f;
         eyePositionModifierY = (enemyCollider.size.y / 2) * .0f;
 
+        jumpPoints = transform.GetChild(1).gameObject;
+
         CreatePatrolPath();
         state = EnemyState.Patroling;
+
+        jumpPoint1 = jumpPoints.transform.GetChild(0).GetComponent<BoxCollider2D>();
+        jumpPoint2 = jumpPoints.transform.GetChild(1).GetComponent<BoxCollider2D>();
+        jumpPoint3 = jumpPoints.transform.GetChild(2).GetComponent<BoxCollider2D>();
+        jumpPoint4 = jumpPoints.transform.GetChild(3).GetComponent<BoxCollider2D>();
+
+        fallPoint1 = freeFallPoints.transform.GetChild(0).GetComponent<BoxCollider2D>();
+        fallPoint2 = freeFallPoints.transform.GetChild(1).GetComponent<BoxCollider2D>();
+        fallPoint3 = freeFallPoints.transform.GetChild(2).GetComponent<BoxCollider2D>();
+
+        CalculateJumpCollders();
     }
 
     void Update()
     {
-        //this will be changed based on the state of the enemy.
         Vector2 input = new Vector2(0, 0);
-        //int wallDirX = (controller.collisions.left) ? 1 : 1;
-
+        
         //flips sprite depending on direction facing.
         if (controller.collisions.faceDir == -1)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
             eyePositionLeft = new Vector2(transform.position.x - eyePositionModifierX, transform.position.y + eyePositionModifierY);
             eyePosition = eyePositionLeft;
+            jumpPoints.transform.localScale = new Vector3(1, 1, 1);
+            freeFallPoints.transform.localScale = new Vector3(1, 1, 1);
         }
         else
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
             eyePositionRight = new Vector2(transform.position.x + eyePositionModifierX, transform.position.y + eyePositionModifierY);
             eyePosition = eyePositionRight;
+            jumpPoints.transform.localScale = new Vector3(-1, 1, 1);
+            freeFallPoints.transform.localScale = new Vector3(-1, 1, 1);
         }
 
         //cant move if attacking.
         if (isAttacking)
         {
             input = Vector2.zero;
+        }
+
+        //Creates a patrol path when we are on the ground.
+        if(velocity.y == 0)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, (enemyCollider.size.y / 2) + 5, patrolMask);
+            if (hit)
+            {
+                CreatePatrolPath();
+            }
         }
 
         //trigger for entering chase mode.
@@ -144,11 +177,21 @@ public class Scorpion1 : MonoBehaviour
             }
         }
 
+        //Attacking
+        if (state == EnemyState.Attacking)
+        {
+            //This is where we would call the animator to attack.
+
+            if (!InAttackRange())
+            {
+                state = EnemyState.Chasing;
+            }
+        }
 
         //Chasing
         if (state == EnemyState.Chasing)
         {
-            Chasing (input);
+            Chasing ();
 
             gravity = -1000;
             velocity.y += gravity * Time.deltaTime;
@@ -184,13 +227,57 @@ public class Scorpion1 : MonoBehaviour
         }
     }
 
-    //chasing needs work....
-    private void Chasing(Vector2 input)
+    private void CalculatePhysics()
+    {
+        gravity = -1000;
+        maxJumpVelocity = (Mathf.Abs(gravity) * (timeToJumpApex)) * ((Mathf.Pow(jumpHeight, -0.5221f)) * 0.1694f) * jumpHeight;
+        timeAirborn = (maxJumpVelocity / Mathf.Abs(gravity)) * 2;
+        maxJumpDistance = timeAirborn * chaseSpeed;
+    }
+
+    private void CalculateJumpCollders ()
+    {
+        //Currently only works if the enemy collider is a box.
+        jumpPoint1.size = enemyCollider.size;
+        jumpPoint2.size = enemyCollider.size;
+        jumpPoint3.size = enemyCollider.size;
+        jumpPoint4.size = enemyCollider.size;
+
+        //Adjusts jump points based on current speed and jump height.
+        float jumpFactor = 0.7f;
+        float airborneAdjustment = timeAirborn / 2 * jumpFactor;
+
+        jumpPoint1.transform.localPosition = new Vector2((timeAirborn / 2) * jumpFactor * chaseSpeed * -1, ((maxJumpVelocity * airborneAdjustment) - 
+                                                    (Mathf.Abs(gravity) * 0.5f * (Mathf.Pow(airborneAdjustment,2)))) - jumpHeight * 0.1f);
+        jumpPoint2.transform.localPosition = new Vector2(maxJumpDistance / 2 * -1, jumpHeight);
+
+        jumpPoint3.transform.localPosition = new Vector2((timeAirborn / 2) * (1 - jumpFactor + 1) * chaseSpeed * -1, ((maxJumpVelocity * airborneAdjustment) -
+                                                    (Mathf.Abs(gravity) * 0.5f * (Mathf.Pow(airborneAdjustment, 2)))) - jumpHeight * 0.1f);
+        jumpPoint4.transform.localPosition = new Vector2(-chaseSpeed * 1.5f, (maxJumpVelocity * 2) - (500 * (1.5f * 1.5f)));
+
+        //Adjusts fall points based on current speed and jump height.
+        fallPoint1.size = enemyCollider.size;
+        fallPoint2.size = enemyCollider.size;
+        fallPoint3.size = enemyCollider.size;
+
+        fallPoint1.transform.localPosition = new Vector2((.1f * -chaseSpeed) - enemyCollider.size.x, (gravity / 2) * (.1f * .1f));
+        fallPoint2.transform.localPosition = new Vector2((.3f * -chaseSpeed) - enemyCollider.size.x, (gravity / 2) * (.3f * .3f));
+        fallPoint3.transform.localPosition = new Vector2((1f * -chaseSpeed) - enemyCollider.size.x, (gravity / 2) * (1f * 1f));
+    }
+
+    private void Chasing() 
     {
         //If the enemy is in the air we dont want them loosing their directive and trying to make a path. So we make finishing the jump the priority.
         if (airborne)
         {
-            engagementCounter += 0.8f;
+            if (velocity.y != 0)
+            {
+                velocity.x = controller.collisions.faceDir * chaseSpeed;
+            }
+            else
+            {
+                airborne = false;
+            }
         }
 
         //If the enemy is on the ground they continue operations as normal.
@@ -233,64 +320,55 @@ public class Scorpion1 : MonoBehaviour
                     {
                         changingDirection = false;
 
-                        //run through the scenarios....
-                        ChaseScernarios();
-
-                        //if we are at the max of the original patrol path.
-                        if (transform.position.x >= maxPatrolX || transform.position.x <= minPatrolX)
+                        //If we are close enough to attack.
+                        if (InAttackRange())
                         {
-                            //see what platform the player is on.
-                            float rayLength = 250f;
-                            RaycastHit2D playerPlatform = Physics2D.Raycast(player.transform.position, Vector2.down, rayLength, patrolMask);
-                            if (playerPlatform)
-                            {
-                                if (playerPlatform.collider.gameObject.layer == 10)
-                                {
-                                    playerPlatformMaxX = playerPlatform.collider.bounds.max.x;
-                                    playerPlatformMinX = playerPlatform.collider.bounds.min.x;
-                                    playerPlatformMaxY = playerPlatform.collider.bounds.max.y;
-                                    playerPlatformMinY = playerPlatform.collider.bounds.min.y;
-                                }
-                            }
-
-                            //Scenario 1
-                            //the player is above the enemy and within the enemies vertical jump range.
-                            if (playerPlatformMaxY - (transform.position.y - enemyCollider.size.y / 2) < (jumpHeight - 5) && playerPlatformMaxY > enemyCollider.bounds.min.y)
-                            {
-                                //if the platform is to the left of the enemy.
-                                if (transform.position.x > playerPlatformMaxX)
-                                {
-                                    jumpTargetX = playerPlatformMaxX - (enemyCollider.size.x / 2);
-                                }
-                                //if the platform is to the right of the enemy.
-                                else
-                                {
-
-                                }
-
-                            }
-
-                            //Scenario 2
-                            //the player is below the enemy and within the enemies horizontal jump range.
-                            if (playerPlatformMaxY - (transform.position.y - enemyCollider.size.y / 2) < maxJumpDistance && playerPlatformMaxY > enemyCollider.bounds.min.y)
-                            {
-
-                            }
-
-                            velocity.x = 0;
+                            state = EnemyState.Attacking;
                         }
 
-                        //still in the original patrol path.
+                        //If were at the max/min patrol point. CHANGE TO ACCOUNT FOR WHERE THE PLAYER IS AS TO WHICH PLATFORM WE ARE WORKING WITH.
+                        if (AtNearestPatrolPointToTarget())
+                        {
+                            //See if jumping makes sense.
+                            if (player.transform.position.y >= transform.position.y && IsJumpPossible(JumpDirection.Up))
+                            {
+                                Debug.Log("Jumping!");
+                                velocity.x = controller.collisions.faceDir * chaseSpeed;
+                                velocity.y = maxJumpVelocity;
+                                airborne = true;
+                            }
+
+                            //see if falling makes sense.
+                            else if (player.transform.position.y + 5 < transform.position.y && IsJumpPossible(JumpDirection.Down))
+                            {
+                                Debug.Log("Free Falling!");
+                                velocity.x = controller.collisions.faceDir * chaseSpeed;
+                                airborne = true;
+                            }
+
+                            //If the first two don't work. TAKEN OUT FOR NOW...
+                            //else if (IsJumpPossible(JumpDirection.LastChance))
+                            //{
+                            //    Debug.Log("Last Chance!");
+                            //    velocity.x = controller.collisions.faceDir * chaseSpeed;
+                            //    velocity.y = maxJumpVelocity;
+                            //    airborne = true;
+                            //}
+
+                            //We can go no further.
+                            else
+                            {
+                                Debug.Log("Not Moving!");
+                                velocity.x = 0;
+                            }
+                        }
+
+                        //If were not at the max/min patrol point.
                         else
                         {
-                            velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * chaseSpeed, 1f);
+                            velocity.x = controller.collisions.faceDir * chaseSpeed;
                         }
                     }
-
-                    gravity = -1000;
-                    velocity.y += gravity * Time.deltaTime;
-
-                    controller.Move(velocity * Time.deltaTime, input);
                 }
             }
         }
@@ -325,19 +403,17 @@ public class Scorpion1 : MonoBehaviour
         }
     }
 
-    private void Investigating()
+    private void Investigating() 
     {
         if (airborne)
         {
-            if ((jumpTargetX <= transform.position.x && controller.collisions.faceDir == -1) || (jumpTargetX >= transform.position.x && controller.collisions.faceDir == 1))
+            if (velocity.y != 0)
             {
                 velocity.x = controller.collisions.faceDir * chaseSpeed;
             }
             else
             {
-                velocity.x = 0;
                 airborne = false;
-                CreatePatrolPath();
             }
         }
         else
@@ -360,77 +436,71 @@ public class Scorpion1 : MonoBehaviour
                     investigating = false;
                     state = EnemyState.Chasing;
                 }
+
+                //Time to investigate.
                 else if (!LineOfSight())
                 {
                     EngagementCountDown();
+
                     //If we have been through the investigation scenarios and have a target.
                     if (investigating)
                     {
-                        //Check if jump is necessary.
-                        //Jumping is not necessary.
-                        if (!IsJumpNecessary())
+                        //If we have reached our investigation target and still have no LOS on the player.
+                        if ((transform.position.x >= jumpTargetX && controller.collisions.faceDir == 1) || (transform.position.x <= jumpTargetX && controller.collisions.faceDir == -1))
                         {
-                            Debug.Log("no jumping needed.");
-                            if ((jumpTargetX < transform.position.x && controller.collisions.faceDir == -1) || (jumpTargetX > transform.position.x && controller.collisions.faceDir == 1))
-                            {
-                                velocity.x = controller.collisions.faceDir * chaseSpeed;
-                            }
-                            else
-                            {
-                                ChangeDirection(chaseSpeed);
-                            }
+                            Debug.Log("Made it!");
+                            velocity.x = 0;
                         }
 
-                        //Jumping is necessary.
+                        //If we have not reached our jump target and still have no LOS on the player.
                         else
                         {
-                            Debug.Log("jumping needed.");
-                            Debug.Log(jumpTargetX - maxJumpDistance);
-
-                            //if (((jumpTargetX - maxJumpDistance <= maxPatrolX) && controller.collisions.faceDir == 1) || ((jumpTargetX + maxJumpDistance >= minPatrolX) && controller.collisions.faceDir == -1))
-                            
-                            //check if the jump is possible.
-                            if (IsJumpPossible())
+                            //If were at the max/min patrol point.
+                            if (AtNearestPatrolPointToTarget())
                             {
-                                Debug.Log("jump is possible");
-                                //Movement.
-                                if ((jumpTargetX <= transform.position.x && controller.collisions.faceDir == -1) || (jumpTargetX >= transform.position.x && controller.collisions.faceDir == 1))
+                                //See if jumping makes sense.
+                                if (jumpTargetY >= transform.position.y && IsJumpPossible(JumpDirection.Up))
                                 {
+                                    Debug.Log("Jumping!");
                                     velocity.x = controller.collisions.faceDir * chaseSpeed;
-                                }
-                                else
-                                {
-                                    velocity.x = 0;
-                                }
-
-                                //Jumping.
-                                if ((transform.position.x <= minPatrolX || transform.position.x >= maxPatrolX))
-                                {
                                     velocity.y = maxJumpVelocity;
                                     airborne = true;
                                 }
-                            }
-                            else
-                            {
-                                if ((transform.position.x >= minPatrolX && transform.position.x <= maxPatrolX))
+
+                                //see if falling makes sense.
+                                else if (jumpTargetY + 5 < transform.position.y && IsJumpPossible(JumpDirection.Down))
                                 {
-                                    changingDirection = false;
-                                    velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * patrolSpeed, 1f);
+                                    Debug.Log("Free Falling!");
+                                    velocity.x = controller.collisions.faceDir * chaseSpeed;
+                                    airborne = true;
                                 }
 
-                                if ((transform.position.x <= minPatrolX || transform.position.x >= maxPatrolX))
+                                //If the first two don't work. TAKEN OUT FOR NOW...
+                                //else if (IsJumpPossible(JumpDirection.LastChance))
+                                //{
+                                //    Debug.Log("Last Chance!");
+                                //    velocity.x = controller.collisions.faceDir * chaseSpeed;
+                                //    velocity.y = maxJumpVelocity;
+                                //    airborne = true;
+                                //}
+
+                                //We can go no further.
+                                else
                                 {
+                                    Debug.Log("Not Moving!");
                                     velocity.x = 0;
                                 }
                             }
-                        }
 
-                        //If we have reached the last known position and still have no LOS, we wait until the timer runs out.
-                        if ((jumpTargetX <= transform.position.x && controller.collisions.faceDir == 1) || (jumpTargetX >= transform.position.x && controller.collisions.faceDir == -1))
-                        {
-                            velocity.x = 0;
+                            //If were not at the max/min patrol point.
+                            else
+                            {
+                                velocity.x = controller.collisions.faceDir * chaseSpeed;
+                            }
                         }
                     }
+
+                    //We need to set the investigation targets.
                     else if (!investigating)
                     {
                         //Check if a platform is below where the player is.
@@ -443,24 +513,23 @@ public class Scorpion1 : MonoBehaviour
                                 jumpTargetX = targetPosition.x;
                                 jumpTargetY = hit.collider.bounds.max.y + (enemyCollider.size.y / 2);
                                 jumpTarget = new Vector2(jumpTargetX, jumpTargetY);
+                                
+                                investigating = true;
+                            }  
+                        }
 
-                                //Move through the investigation scenarios.
-                                InvestigationScenarios();
+                        //If we didn't find a platform under the player when the LOS broke.
+                        else
+                        {
+                            if ((transform.position.x >= minPatrolX && transform.position.x <= maxPatrolX))
+                            {
+                                changingDirection = false;
+                                velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * chaseSpeed, 1f);
                             }
 
-                            //If we didn't find a platform under the player when the LOS broke.
-                            else
+                            if ((transform.position.x <= minPatrolX || transform.position.x >= maxPatrolX))
                             {
-                                if ((transform.position.x >= minPatrolX && transform.position.x <= maxPatrolX))
-                                {
-                                    changingDirection = false;
-                                    velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * patrolSpeed, 1f);
-                                }
-
-                                if ((transform.position.x <= minPatrolX || transform.position.x >= maxPatrolX))
-                                {
-                                    velocity.x = 0;
-                                }
+                                velocity.x = 0;
                             }
                         }
                     }
@@ -469,91 +538,540 @@ public class Scorpion1 : MonoBehaviour
         }
     }
 
-    private bool IsJumpPossible() //NEEDS WORK.
+    public bool AtNearestPatrolPointToTarget ()
     {
-        Vector2 position1 = new Vector2(1, 1);
-        Vector2 position2 = new Vector2(1, 1);
-        Vector2 position3 = new Vector2(1, 1);
-
-        RaycastHit2D part1 = Physics2D.Linecast(transform.position, position1, attackingLayer);
-        RaycastHit2D part2 = Physics2D.Linecast(position1, position2, attackingLayer);
-        RaycastHit2D part3 = Physics2D.Linecast(position2, position3, attackingLayer);
-        RaycastHit2D part4 = Physics2D.Linecast(position3, jumpTarget, attackingLayer);
-        return true;
-    }
-
-    public bool IsJumpNecessary () //NEEDS WORK.
-    {
-        return true;
-    }
-
-    public void InvestigationScenarios ()
-    {
-        RaycastHit2D hit = Physics2D.Linecast(eyePosition, jumpTarget, attackingLayer);
-        
-        //Scenario 1 - No Jumping is required for investigation, Same Platform.
-        if (!hit && patrolPlatform == targetPlatform)
+        //See if we are at the minPatrolX.
+        if (transform.position.x <= minPatrolX)
         {
-            if(jumpTargetX < transform.position.x)
+            if (player.transform.position.x < transform.position.x)
             {
-                jumpTargetX = jumpTargetX + (enemyCollider.size.x / 2);
+                return true;
             }
-            else
-            {
-                jumpTargetX = jumpTargetX - (enemyCollider.size.x / 2);
-            }
-            jumpTargetY = transform.position.y;
-            investigating = true;
-            Debug.Log("Investigation #1");
         }
 
-        //Scenario 2 - Jumping is required for investigation, Different platforms, No Overlap.
-        else if (patrolPlatform != targetPlatform && !PlatformOverlap())
+        //See if we are at the maxPatrolX.
+        else if (transform.position.x >=maxPatrolX)
         {
-            if (jumpTargetX < transform.position.x)
+            if (player.transform.position.x > transform.position.x)
             {
-                jumpTargetX = targetPlatform.GetComponent<BoxCollider2D>().bounds.max.x - (enemyCollider.size.x / 2);
+                return true;
             }
-            else
-            {
-                jumpTargetX = targetPlatform.GetComponent<BoxCollider2D>().bounds.min.x + (enemyCollider.size.x / 2);
-            }
-
-            investigating = true;
-            Debug.Log("Investigation #2");
-        }
-        
-        //Scenario 3 - Jumping is required for investigation, Different platforms, Overlap.
-        else if (patrolPlatform != targetPlatform && PlatformOverlap())
-        {
-            //Keep the jump targets as they were.
-            investigating = true;
-            Debug.Log("Investigation #3");
-        }
-
-        //Scenario 4 - Jumping is required for investigation, Same platform.
-        if (hit && patrolPlatform == targetPlatform)
-        {
-            investigating = true;
-            Debug.Log("Investigation #4");
-        }
-        jumpTarget = new Vector2(jumpTargetX, jumpTargetY);
-    }
-
-    public void ChaseScernarios ()
-    {
-
-    }
-
-    public bool PlatformOverlap ()
-    {
-        Bounds targetPlatformBounds = targetPlatform.GetComponent<Collider2D>().bounds;
-        Bounds patrolPlatformBounds = patrolPlatform.GetComponent<Collider2D>().bounds;
-        if (targetPlatformBounds.max.x > patrolPlatformBounds.min.x || targetPlatformBounds.min.x < patrolPlatformBounds.max.x)
-        {
-            return true;
         }
         return false;
+    }
+
+    private bool IsJumpPossible(JumpDirection direction) 
+    {
+        if (direction == JumpDirection.Up || direction == JumpDirection.LastChance)
+        {
+            //Assign the Raycast Points.
+            Vector2 jumpPoint1a;
+            Vector2 jumpPoint1b;
+            Vector2 jumpPoint1c;
+            Vector2 jumpPoint1d;
+            Vector2 jumpPoint1e;
+
+            Vector2 jumpPoint2a;
+            Vector2 jumpPoint2b;
+            Vector2 jumpPoint2c;
+            Vector2 jumpPoint2d;
+            Vector2 jumpPoint2e;
+            Vector2 jumpPoint2f;
+
+            Vector2 jumpPoint3a;
+            Vector2 jumpPoint3b;
+
+            if (controller.collisions.faceDir == 1)
+            {
+                jumpPoint1a = new Vector2(enemyCollider.bounds.max.x, enemyCollider.bounds.min.y);
+                jumpPoint1b = new Vector2(jumpPoint1.bounds.max.x, jumpPoint1.bounds.min.y);
+                jumpPoint1c = new Vector2(jumpPoint2.transform.position.x, jumpPoint2.bounds.min.y);
+                jumpPoint1d = new Vector2(jumpPoint3.bounds.min.x, jumpPoint3.bounds.min.y);
+                jumpPoint1e = new Vector2(jumpPoint4.bounds.min.x, jumpPoint4.bounds.min.y);
+
+                jumpPoint2a = new Vector2(enemyCollider.bounds.min.x, enemyCollider.bounds.max.y);
+                jumpPoint2b = new Vector2(jumpPoint1.bounds.min.x, jumpPoint1.bounds.max.y);
+                jumpPoint2c = new Vector2(jumpPoint2.bounds.min.x, jumpPoint2.bounds.max.y);
+                jumpPoint2d = new Vector2(jumpPoint2.bounds.max.x, jumpPoint2.bounds.max.y);
+                jumpPoint2e = new Vector2(jumpPoint3.bounds.max.x, jumpPoint3.bounds.max.y);
+                jumpPoint2f = new Vector2(jumpPoint4.bounds.max.x, jumpPoint4.bounds.max.y);
+
+                jumpPoint3a = new Vector2(jumpPoint3.bounds.max.x, jumpPoint3.bounds.min.y);
+                jumpPoint3b = new Vector2(jumpPoint4.bounds.max.x, jumpPoint4.bounds.min.y);
+            }
+            else
+            {
+                jumpPoint1a = new Vector2(enemyCollider.bounds.min.x, enemyCollider.bounds.min.y);
+                jumpPoint1b = new Vector2(jumpPoint1.bounds.min.x, jumpPoint1.bounds.min.y);
+                jumpPoint1c = new Vector2(jumpPoint2.transform.position.x, jumpPoint2.bounds.min.y);
+                jumpPoint1d = new Vector2(jumpPoint3.bounds.max.x, jumpPoint3.bounds.min.y);
+                jumpPoint1e = new Vector2(jumpPoint4.bounds.max.x, jumpPoint4.bounds.min.y);
+
+                jumpPoint2a = new Vector2(enemyCollider.bounds.max.x, enemyCollider.bounds.max.y);
+                jumpPoint2b = new Vector2(jumpPoint1.bounds.max.x, jumpPoint1.bounds.max.y);
+                jumpPoint2c = new Vector2(jumpPoint2.bounds.max.x, jumpPoint2.bounds.max.y);
+                jumpPoint2d = new Vector2(jumpPoint2.bounds.min.x, jumpPoint2.bounds.max.y);
+                jumpPoint2e = new Vector2(jumpPoint3.bounds.min.x, jumpPoint3.bounds.max.y);
+                jumpPoint2f = new Vector2(jumpPoint4.bounds.min.x, jumpPoint4.bounds.max.y);
+
+                jumpPoint3a = new Vector2(jumpPoint3.bounds.min.x, jumpPoint3.bounds.min.y);
+                jumpPoint3b = new Vector2(jumpPoint4.bounds.min.x, jumpPoint4.bounds.min.y);
+            }
+
+            RaycastHit2D segment1a = Physics2D.Linecast(jumpPoint1a, jumpPoint1b, patrolMask);
+            RaycastHit2D segment1b = Physics2D.Linecast(jumpPoint1b, jumpPoint1c, patrolMask);
+            RaycastHit2D segment1c = Physics2D.Linecast(jumpPoint1c, jumpPoint1d, patrolMask);
+            RaycastHit2D segment1d = Physics2D.Linecast(jumpPoint1d, jumpPoint1e, patrolMask);
+
+            RaycastHit2D segment2a = Physics2D.Linecast(jumpPoint2a, jumpPoint2b, patrolMask);
+            RaycastHit2D segment2b = Physics2D.Linecast(jumpPoint2b, jumpPoint2c, patrolMask);
+            RaycastHit2D segment2c = Physics2D.Linecast(jumpPoint2c, jumpPoint2d, patrolMask);
+            RaycastHit2D segment2d = Physics2D.Linecast(jumpPoint2d, jumpPoint2e, patrolMask);
+            RaycastHit2D segment2e = Physics2D.Linecast(jumpPoint2e, jumpPoint2f, patrolMask);
+
+            RaycastHit2D segment3a = Physics2D.Linecast(jumpPoint1c, jumpPoint3a, patrolMask);
+            RaycastHit2D segment3b = Physics2D.Linecast(jumpPoint3a, jumpPoint3b, patrolMask);
+
+            //check the jump raycasts.
+
+            //Always reject hits on 2a and 2d.
+            if (segment2a || segment2d)
+            {
+                return false;
+            }
+
+            if (segment1a)
+            {
+                if (segment1a.collider.gameObject != targetPlatform.gameObject)
+                {
+                    return false;
+                }
+            }
+
+            //1b.
+            if (segment1b)
+            {
+                //If hit we can check if below the hit is a platform
+                Vector2 hitOrigin = new Vector2(segment1b.point.x - (1 * controller.collisions.faceDir), segment1b.collider.bounds.min.y - .5f);
+                RaycastHit2D hit = Physics2D.Raycast(hitOrigin, Vector2.down, 200, patrolMask);
+                if (hit)
+                {
+                    //If the platform below is not the patrol platform and is higher than the patrol platform.
+                    if (hit.collider.gameObject != patrolPlatform.gameObject && hit.collider.bounds.max.y > patrolPlatform.GetComponent<Collider2D>().bounds.max.y)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            //2b.
+            if (segment2b)
+            {
+                //If hit we can check if below the hit is a platform
+                Vector2 hitOrigin = new Vector2(segment2b.point.x - (1 * controller.collisions.faceDir), segment2b.collider.bounds.min.y - .5f);
+                RaycastHit2D hit = Physics2D.Raycast(hitOrigin, Vector2.down, 200, patrolMask);
+                if (hit)
+                {
+                    //If the platform below is not the patrol platform and is higher than the patrol platform.
+                    if (hit.collider.gameObject != patrolPlatform.gameObject && hit.collider.bounds.max.y > patrolPlatform.GetComponent<Collider2D>().bounds.max.y)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            //2c.
+            if (segment2c)
+            {
+                //If hit we can check if below the hit is a platform
+                Vector2 hitOrigin = new Vector2(segment2c.point.x - (1 * controller.collisions.faceDir), segment2c.collider.bounds.min.y - .5f);
+                RaycastHit2D hit = Physics2D.Raycast(hitOrigin, Vector2.down, 200, patrolMask);
+                if (hit)
+                {
+                    //If the platform below is not the patrol platform and is higher than the patrol platform.
+                    if (hit.collider.gameObject != patrolPlatform.gameObject && hit.collider.bounds.max.y > patrolPlatform.GetComponent<Collider2D>().bounds.max.y)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            //1c.
+            if (segment1c)
+            {
+                if (direction == JumpDirection.Up)
+                {
+                    //If the platform hit is higher than the patrol platform.
+                    if (segment1c.collider.bounds.max.y > patrolPlatform.GetComponent<Collider2D>().bounds.max.y)
+                    {
+                        //If we hit the top of a platform.
+                        if (segment1c.point.y >= segment1c.collider.bounds.max.y - .25f && segment1c.point.y <= segment1c.collider.bounds.max.y + .25f)
+                        {
+                            return true;
+                        }
+
+                        else {
+                            //If they hit we can check if below the hit is a platform
+                            Vector2 hitOrigin = new Vector2(segment1c.point.x - (1 * controller.collisions.faceDir), segment1c.point.y);
+                            RaycastHit2D hit = Physics2D.Raycast(hitOrigin, Vector2.down, 200, patrolMask);
+                            if (hit)
+                            {
+                                //If the platform below is not the patrol platform.
+                                if (hit.collider.gameObject != patrolPlatform.gameObject)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //Last chance ignores if the platform is higher than the patrol platform.
+                else
+                {
+                    //If we hit the top of a platform.
+                    if (segment1c.point.y >= segment1c.collider.bounds.max.y - .25f && segment1c.point.y <= segment1c.collider.bounds.max.y + .25f)
+                    {
+                        return true;
+                    }
+
+                    else {
+                        //If they hit we can check if below the hit is a platform
+                        Vector2 hitOrigin = new Vector2(segment1c.point.x - (1 * controller.collisions.faceDir), segment1c.point.y);
+                        RaycastHit2D hit = Physics2D.Raycast(hitOrigin, Vector2.down, 200, patrolMask);
+                        if (hit)
+                        {
+                            //If the platform below is not the patrol platform.
+                            if (hit.collider.gameObject != patrolPlatform.gameObject)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //1d.
+            if (segment1d)
+            {
+                if (direction == JumpDirection.Up)
+                {
+                    //If the platform hit is higher than the patrol platform.
+                    if (segment1d.collider.bounds.max.y > patrolPlatform.GetComponent<Collider2D>().bounds.max.y)
+                    {
+                        //If we hit the top of a platform.
+                        if (segment1d.point.y >= segment1d.collider.bounds.max.y - .25f && segment1d.point.y <= segment1d.collider.bounds.max.y + .25f)
+                        {
+                            return true;
+                        }
+
+                        else {
+                            //If they hit we can check if below the hit is a platform
+                            Vector2 hitOrigin = new Vector2(segment1d.point.x - (1 * controller.collisions.faceDir), segment1d.point.y);
+                            RaycastHit2D hit = Physics2D.Raycast(hitOrigin, Vector2.down, 200, patrolMask);
+                            if (hit)
+                            {
+                                //If the platform below is not the patrol platform.
+                                if (hit.collider.gameObject != patrolPlatform.gameObject)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //Last chance ignores if the platform is higher than the patrol platform.
+                else
+                {
+                    //If we hit the top of a platform.
+                    if (segment1d.point.y >= segment1d.collider.bounds.max.y - .25f && segment1d.point.y <= segment1d.collider.bounds.max.y + .25f)
+                    {
+                        return true;
+                    }
+
+                    else {
+                        //If they hit we can check if below the hit is a platform
+                        Vector2 hitOrigin = new Vector2(segment1d.point.x - (1 * controller.collisions.faceDir), segment1d.point.y);
+                        RaycastHit2D hit = Physics2D.Raycast(hitOrigin, Vector2.down, 200, patrolMask);
+                        if (hit)
+                        {
+                            //If the platform below is not the patrol platform.
+                            if (hit.collider.gameObject != patrolPlatform.gameObject)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //2e.
+            if (segment2e)
+            {
+                if (segment3b)
+                {
+                    if (segment2e.collider.gameObject != segment3b.collider.gameObject)
+                    {
+                        return false;
+                    }
+                }
+                if (segment1d)
+                {
+                    if (segment2e.collider.gameObject != segment1d.collider.gameObject)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            //3a.
+            if (segment3a)
+            {
+                if (direction == JumpDirection.Up)
+                {
+                    //If the platform hit is higher than the patrol platform.
+                    if (segment3a.collider.bounds.max.y > patrolPlatform.GetComponent<Collider2D>().bounds.max.y)
+                    {
+                        //If we hit the top of a platform.
+                        if (segment3a.point.y >= segment3a.collider.bounds.max.y - .25f && segment3a.point.y <= segment3a.collider.bounds.max.y + .25f)
+                        {
+                            return true;
+                        }
+
+                        else {
+                            //If they hit we can check if below the hit is a platform
+                            Vector2 hitOrigin = new Vector2(segment3a.point.x - (1 * controller.collisions.faceDir), segment3a.point.y);
+                            RaycastHit2D hit = Physics2D.Raycast(hitOrigin, Vector2.down, 200, patrolMask);
+                            if (hit)
+                            {
+                                //If the platform below is not the patrol platform.
+                                if (hit.collider.gameObject != patrolPlatform.gameObject)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //Last chance ignores if the platform is higher than the patrol platform.
+                else
+                {
+                    //If we hit the top of a platform.
+                    if (segment3a.point.y >= segment3a.collider.bounds.max.y - .25f && segment3a.point.y <= segment3a.collider.bounds.max.y + .25f)
+                    {
+                        return true;
+                    }
+
+                    else {
+                        //If they hit we can check if below the hit is a platform
+                        Vector2 hitOrigin = new Vector2(segment3a.point.x - (1 * controller.collisions.faceDir), segment3a.point.y);
+                        RaycastHit2D hit = Physics2D.Raycast(hitOrigin, Vector2.down, 200, patrolMask);
+                        if (hit)
+                        {
+                            //If the platform below is not the patrol platform.
+                            if (hit.collider.gameObject != patrolPlatform.gameObject)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //3b.
+            if (segment3b)
+            {
+                if (direction == JumpDirection.Up)
+                {
+                    //If the platform hit is higher than the patrol platform.
+                    if (segment3b.collider.bounds.max.y > patrolPlatform.GetComponent<Collider2D>().bounds.max.y)
+                    {
+                        //If we hit the top of a platform.
+                        if (segment3b.point.y >= segment3b.collider.bounds.max.y - .25f && segment3b.point.y <= segment3b.collider.bounds.max.y + .25f)
+                        {
+                            return true;
+                        }
+
+                        else {
+                            //If they hit we can check if below the hit is a platform
+                            Vector2 hitOrigin = new Vector2(segment3b.point.x - (1 * controller.collisions.faceDir), segment3b.point.y);
+                            RaycastHit2D hit = Physics2D.Raycast(hitOrigin, Vector2.down, 200, patrolMask);
+                            if (hit)
+                            {
+                                //If the platform below is not the patrol platform.
+                                if (hit.collider.gameObject != patrolPlatform.gameObject)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //Last chance ignores if the platform is higher than the patrol platform.
+                else
+                {
+                    //If we hit the top of a platform.
+                    if (segment3b.point.y >= segment3b.collider.bounds.max.y - .25f && segment3b.point.y <= segment3b.collider.bounds.max.y + .25f)
+                    {
+                        return true;
+                    }
+
+                    else {
+                        //If they hit we can check if below the hit is a platform
+                        Vector2 hitOrigin = new Vector2(segment3b.point.x - (1 * controller.collisions.faceDir), segment3b.point.y);
+                        RaycastHit2D hit = Physics2D.Raycast(hitOrigin, Vector2.down, 200, patrolMask);
+                        if (hit)
+                        {
+                            //If the platform below is not the patrol platform.
+                            if (hit.collider.gameObject != patrolPlatform.gameObject)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        else if (direction == JumpDirection.Down)
+        {
+            //check the free fall raycasts.
+            //1 is the back corner.
+            Vector2 fallPoint1a;
+            Vector2 fallPoint1b;
+            Vector2 fallPoint1c;
+
+            //2 is the top corner.
+            Vector2 fallPoint2a;
+            Vector2 fallPoint2b;
+            Vector2 fallPoint2c;
+
+            //3 is the front corner.
+            Vector2 fallPoint3a;
+            Vector2 fallPoint3b;
+            Vector2 fallPoint3c;
+
+            if (controller.collisions.faceDir == 1)
+            {
+                fallPoint1a = new Vector2(fallPoint1.bounds.min.x, fallPoint1.bounds.min.y);
+                fallPoint1b = new Vector2(fallPoint2.bounds.min.x, fallPoint2.bounds.min.y);
+                fallPoint1c = new Vector2(fallPoint3.bounds.min.x, fallPoint3.bounds.min.y);
+
+                fallPoint2a = new Vector2(fallPoint1.bounds.max.x, fallPoint1.bounds.max.y);
+                fallPoint2b = new Vector2(fallPoint2.bounds.max.x, fallPoint2.bounds.max.y);
+                fallPoint2c = new Vector2(fallPoint3.bounds.max.x, fallPoint3.bounds.max.y);
+            }
+            else
+            {
+                fallPoint1a = new Vector2(fallPoint1.bounds.max.x, fallPoint1.bounds.min.y);
+                fallPoint1b = new Vector2(fallPoint2.bounds.max.x, fallPoint2.bounds.min.y);
+                fallPoint1c = new Vector2(fallPoint3.bounds.max.x, fallPoint3.bounds.min.y);
+
+                fallPoint2a = new Vector2(fallPoint1.bounds.min.x, fallPoint1.bounds.max.y);
+                fallPoint2b = new Vector2(fallPoint2.bounds.min.x, fallPoint2.bounds.max.y);
+                fallPoint2c = new Vector2(fallPoint3.bounds.min.x, fallPoint3.bounds.max.y);
+            }
+
+            fallPoint3a = new Vector2(fallPoint1.transform.position.x, fallPoint1.bounds.min.y);
+            fallPoint3b = new Vector2(fallPoint2.transform.position.x, fallPoint2.bounds.min.y);
+            fallPoint3c = new Vector2(fallPoint3.transform.position.x, fallPoint3.bounds.min.y);
+
+            RaycastHit2D segment1a = Physics2D.Linecast(fallPoint1a, fallPoint1b, patrolMask);
+            RaycastHit2D segment1b = Physics2D.Linecast(fallPoint1b, fallPoint1c, patrolMask);
+            
+            RaycastHit2D segment2a = Physics2D.Linecast(fallPoint2a, fallPoint2b, patrolMask);
+            RaycastHit2D segment2b = Physics2D.Linecast(fallPoint2b, fallPoint2c, patrolMask);
+
+            RaycastHit2D segment3a = Physics2D.Linecast(fallPoint3a, fallPoint3b, patrolMask);
+            RaycastHit2D segment3b = Physics2D.Linecast(fallPoint3b, fallPoint3c, patrolMask);
+
+            if (segment2a)
+            {
+                if (segment1b)
+                {
+                    if (segment2a.collider.gameObject != segment1b.collider.gameObject)
+                    {
+                        return false;
+                    }
+                }
+                if (segment3b)
+                {
+                    if (segment2a.collider.gameObject != segment3b.collider.gameObject)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (segment2b)
+            {
+                if (segment1b)
+                {
+                    if (segment2b.collider.gameObject != segment1b.collider.gameObject)
+                    {
+                        return false;
+                    } 
+                }
+                if (segment3b)
+                {
+                    if (segment2b.collider.gameObject != segment3b.collider.gameObject)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (segment1a || segment1b || segment3a || segment3b)
+            {
+                if (segment1a)
+                {
+                    if (segment1a.point.y >= segment1a.collider.bounds.max.y - .25f && segment1a.point.y <= segment1a.collider.bounds.max.y + .25f)
+                    {
+                        return true;
+                    }
+                }
+                if (segment1b)
+                {
+                    if (segment1b.point.y >= segment1b.collider.bounds.max.y - .25f && segment1b.point.y <= segment1b.collider.bounds.max.y + .25f)
+                    {
+                        return true;
+                    }
+                }
+                if (segment3a)
+                {
+                    if (segment3a.point.y >= segment3a.collider.bounds.max.y - .25f && segment3a.point.y <= segment3a.collider.bounds.max.y + .25f)
+                    {
+                        return true;
+                    }
+                }
+                if (segment3b)
+                {
+                    if (segment3b.point.y >= segment3b.collider.bounds.max.y - .25f && segment3b.point.y <= segment3b.collider.bounds.max.y + .25f)
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
+
+        return false;
+    }
+
+    public enum JumpDirection
+    {
+        Up,
+        Down,
+        LastChance
     }
 
     public void EngagementCountDown ()
@@ -701,6 +1219,27 @@ public class Scorpion1 : MonoBehaviour
         enemyAnimationController.enabled = false;
     }
     
+    //Check to see if we are close enough to enter attack mode.
+    public bool InAttackRange () //CHANGE RAY LENGTH
+    {
+        float directionX = controller.collisions.faceDir;
+        float rayLength = 10f;
+        float rayOriginX = enemyCollider.bounds.center.x;
+        float rayOriginY = enemyCollider.bounds.center.y;
+        Vector2 rayOrigin = new Vector2(rayOriginX, rayOriginY);
+
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, attackingLayer);
+        
+        if (hit)
+        {
+            if (hit.collider.gameObject.layer == 9)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //I think I will need to pass the collider being hit to the attacking function.
     public void Attack()
     {
@@ -714,7 +1253,7 @@ public class Scorpion1 : MonoBehaviour
         //Layer 14 is currently the enemies layer.
         if (hit)
         {
-            if (hit.collider.gameObject.layer == 14)
+            if (hit.collider.gameObject.layer == 9)
             {
                 CombatEngine.combatEngine.AttackingEnemies(hit.collider);
             }
