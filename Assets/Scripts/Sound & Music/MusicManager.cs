@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class MusicManager : MonoBehaviour {
 
+    public static MusicManager musicManager;
+
 	public int currentTrack = 0;
 
 	public AudioClip[] levelMusicChangeArray;
@@ -14,6 +16,7 @@ public class MusicManager : MonoBehaviour {
 	
 	void Start () {
 		audioSource = GetComponent<AudioSource>();
+        musicManager = GetComponent<MusicManager>();
 	}
 	
 	void Update () {
@@ -32,6 +35,14 @@ public class MusicManager : MonoBehaviour {
 		}
 		
 	}
+
+    public void LevelVictoryMusic ()
+    {
+        //fade out the level music before playing the victory music.
+        audioSource.clip = levelMusicChangeArray[5];
+        audioSource.loop = false;
+        audioSource.Play();
+    }
 	
 	public int LevelTrack () {
 		if (SceneManager.GetActiveScene().name == "Start" || SceneManager.GetActiveScene().name == "Main Menu" ||

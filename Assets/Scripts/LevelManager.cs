@@ -31,5 +31,11 @@ public class LevelManager : MonoBehaviour {
         int sceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(sceneBuildIndex + 1);
     }
+
+    public void EndOfLevel ()
+    {
+        GameControl.gameControl.playerHasControl = false;
+        MusicManager.musicManager.LevelVictoryMusic();
+    }
 }
 

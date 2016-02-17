@@ -27,6 +27,8 @@ public class GameControl : MonoBehaviour {
 	public ClassesDatabase classesDatabase;	
 	
 	public MainMenuControl mainMenuControl;
+
+    public bool playerHasControl;
 	
 	//Player Data//
 	
@@ -91,6 +93,8 @@ public class GameControl : MonoBehaviour {
 	
 	void Start () {
 		gameControl = GetComponent<GameControl>();
+
+        playerHasControl = true;
 	
 		equipmentMenuLevel = 0;
 		weaponEvolutionMenuLevel = 0;
@@ -115,86 +119,105 @@ public class GameControl : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (Input.GetButtonDown("Open Pause Menu")) {
-			//makes opening pause menu impossible from the listed scenes, need to add a few for the world/region menus and cutscenes....might be easier to say when instead of when cant.
-			if (SceneManager.GetActiveScene().name == "_Splash" || SceneManager.GetActiveScene().name == "Start" || 
-				SceneManager.GetActiveScene().name == "Main Menu" || SceneManager.GetActiveScene().name == "01b Options" || SceneManager.GetActiveScene().name == "Extras") {
-			} else {
-				if (GameObject.FindGameObjectWithTag("Pause Menu")) {
-					ClosePauseMenu();
-					pauseMenuLevel = 0;
-				} else {
-					OpenPauseMenu();
-					pauseMenuLevel = 1;
-				}
-			}
-		}
+        if (playerHasControl)
+        {
+            if (Input.GetButtonDown("Open Pause Menu"))
+            {
+                //makes opening pause menu impossible from the listed scenes, need to add a few for the world/region menus and cutscenes....might be easier to say when instead of when cant.
+                if (SceneManager.GetActiveScene().name == "_Splash" || SceneManager.GetActiveScene().name == "Start" ||
+                    SceneManager.GetActiveScene().name == "Main Menu" || SceneManager.GetActiveScene().name == "01b Options" || SceneManager.GetActiveScene().name == "Extras")
+                {
+                }
+                else {
+                    if (GameObject.FindGameObjectWithTag("Pause Menu"))
+                    {
+                        ClosePauseMenu();
+                        pauseMenuLevel = 0;
+                    }
+                    else {
+                        OpenPauseMenu();
+                        pauseMenuLevel = 1;
+                    }
+                }
+            }
 
-        if (Input.GetButtonDown("Item Cycle")) {
-            //Inventory.inventory.CycleActiveItems(Input.GetAxisRaw("Item Cycle"));
+            if (Input.GetButtonDown("Item Cycle"))
+            {
+                //Inventory.inventory.CycleActiveItems(Input.GetAxisRaw("Item Cycle"));
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                //temp way to add info to the weapons list.
+                weaponsList.Add(equipmentDatabase.equipment[10]);
+                weaponsList.Add(equipmentDatabase.equipment[20]);
+                weaponsList.Add(equipmentDatabase.equipment[30]);
+                weaponsList.Add(equipmentDatabase.equipment[40]);
+                weaponsList.Add(equipmentDatabase.equipment[50]);
+                weaponsList.Add(equipmentDatabase.equipment[60]);
+                weaponsList.Add(equipmentDatabase.equipment[70]);
+                equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
+                itemInventory.GetComponent<Inventory>().AddTempData();
+            }
+
+
+            //"Back" function.
+            if (Input.GetButtonDown("Cancel"))
+            {
+                //Main Menu.
+                if (mainMenuLevel > 0)
+                {
+                    mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousMainMenu(mainMenuLevel);
+                    mainMenuLevel--;
+                }
+                //Copy Branch
+                if (mainMenuCopyLevel > 0)
+                {
+                    mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousCopyMenu(mainMenuCopyLevel);
+                    mainMenuCopyLevel--;
+                }
+                //Delete Branch
+                if (mainMenuDeleteLevel > 0)
+                {
+                    mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousDeleteMenu(mainMenuDeleteLevel);
+                    mainMenuDeleteLevel--;
+                }
+
+
+                //Pause Menu.
+                if (pauseMenuLevel > 0)
+                {
+                    ClosePauseMenu();
+                    pauseMenuLevel--;
+                }
+                //Items Menu.
+                if (itemsMenuLevel > 0)
+                {
+                    itemInventory.GetComponent<Inventory>().OpenPreviousWeaponMenu(itemsMenuLevel);
+                    itemsMenuLevel--;
+                }
+                //Equipment Menu.
+                if (equipmentMenuLevel > 0)
+                {
+                    equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousEquipmentMenu(equipmentMenuLevel);
+                    equipmentMenuLevel--;
+                }
+
+
+                //Weapon Evolution Menu.
+                if (weaponEvolutionMenuLevel > 0)
+                {
+                    equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousWeaponMenu(weaponEvolutionMenuLevel);
+                    weaponEvolutionMenuLevel--;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                equipmentInventory.GetComponent<EquipmentInventory>().OpenWeaponEvolutionMenu();
+            }
         }
-	
-		
-		if (Input.GetKeyDown(KeyCode.E)) {
-			//temp way to add info to the weapons list.
-			weaponsList.Add (equipmentDatabase.equipment[10]);
-			weaponsList.Add (equipmentDatabase.equipment[20]);
-			weaponsList.Add (equipmentDatabase.equipment[30]);
-			weaponsList.Add (equipmentDatabase.equipment[40]);
-			weaponsList.Add (equipmentDatabase.equipment[50]);
-			weaponsList.Add (equipmentDatabase.equipment[60]);
-			weaponsList.Add (equipmentDatabase.equipment[70]);
-			equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
-			itemInventory.GetComponent<Inventory>().AddTempData();
-		}
-	
-		
-		//"Back" function.
-		if (Input.GetButtonDown("Cancel")) {
-			//Main Menu.
-			if (mainMenuLevel > 0) {
-				mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousMainMenu(mainMenuLevel);
-				mainMenuLevel --;
-			}
-			//Copy Branch
-			if (mainMenuCopyLevel > 0) {
-				mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousCopyMenu(mainMenuCopyLevel);
-				mainMenuCopyLevel --;
-			}
-			//Delete Branch
-			if (mainMenuDeleteLevel > 0) {
-				mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousDeleteMenu(mainMenuDeleteLevel);
-				mainMenuDeleteLevel --;
-			}
-			
-			
-			//Pause Menu.
-			if (pauseMenuLevel > 0) {
-				ClosePauseMenu();
-				pauseMenuLevel --;
-			}
-			//Items Menu.
-			if (itemsMenuLevel > 0) {
-				itemInventory.GetComponent<Inventory>().OpenPreviousWeaponMenu(itemsMenuLevel);
-				itemsMenuLevel --;
-			}
-			//Equipment Menu.
-			if (equipmentMenuLevel > 0) {
-				equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousEquipmentMenu(equipmentMenuLevel);
-				equipmentMenuLevel --;
-			}
-			
-			
-			//Weapon Evolution Menu.
-			if (weaponEvolutionMenuLevel > 0) {
-				equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousWeaponMenu(weaponEvolutionMenuLevel);
-				weaponEvolutionMenuLevel --;
-			}
-		}
-		
-		if (Input.GetKeyDown(KeyCode.W)) {
-			equipmentInventory.GetComponent<EquipmentInventory>().OpenWeaponEvolutionMenu();
-		}
 	}
 	
 	public bool AnyOpenMenus () {
