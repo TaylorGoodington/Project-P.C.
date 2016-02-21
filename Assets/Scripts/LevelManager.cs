@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class LevelManager : MonoBehaviour {
@@ -36,6 +37,8 @@ public class LevelManager : MonoBehaviour {
     {
         GameControl.gameControl.playerHasControl = false;
         MusicManager.musicManager.LevelVictoryMusic();
+        Text clearText = GameObject.FindGameObjectWithTag("Level Clear Text").GetComponent<Text>();
+        clearText.enabled = true;
     }
 }
 

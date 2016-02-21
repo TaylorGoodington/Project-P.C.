@@ -23,6 +23,7 @@ public class Player : MonoBehaviour {
 	
 	[HideInInspector]
 	public bool isAttacking;
+    public bool attackLaunched;
 	public bool isJumping;
 	public bool isClimbable;
 	public bool climbing;
@@ -53,19 +54,110 @@ public class Player : MonoBehaviour {
         maxJumpVelocity = (Mathf.Abs(gravity) * (timeToJumpApex)) * ((Mathf.Pow(maxJumpHeight, -0.5221f)) * 0.1694f) * maxJumpHeight;
         minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
 		isAttacking = false;
+        attackLaunched = false;
 		isJumping = false;
 	}
-	
-	void Update() {
-		//if (GameControl.gameControl.AnyOpenMenus() == false) {
-        if (GameControl.gameControl.AnyOpenMenus() == false)
-        {
-            input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        } else
+
+    void Update()
+    {
+        //If a menu is open or the player doesn't have control.
+        if (GameControl.gameControl.AnyOpenMenus() == true || GameControl.gameControl.playerHasControl == false)
         {
             input = Vector2.zero;
         }
-		int wallDirX = (controller.collisions.left) ? -1 : 1;
+
+        else if (GameControl.gameControl.AnyOpenMenus() == false || GameControl.gameControl.playerHasControl == true)
+        {
+            input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            int wallDirX = (controller.collisions.left) ? -1 : 1;
+            bool wallSliding = false;
+            if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && controller.isWallJumpable == true)
+            {
+                wallSliding = true;
+
+                if (velocity.y < -wallSlideSpeedMax)
+                {
+                    velocity.y = -wallSlideSpeedMax;
+                }
+
+                if (timeToWallUnstick > 0)
+                {
+                    velocityXSmoothing = 0;
+                    velocity.x = 0;
+
+                    if (input.x != wallDirX && input.x != 0)
+                    {
+                        timeToWallUnstick -= Time.deltaTime;
+                    }
+                    else {
+                        timeToWallUnstick = wallStickTime;
+                    }
+                }
+                else {
+                    timeToWallUnstick = wallStickTime;
+                }
+            }
+
+            //Launching an attack.
+            if (Input.GetButtonDown("Attack") && !isAttacking)
+            {
+                attackLaunched = true;
+            }
+
+            //cant jump if attacking.
+                if (!isAttacking)
+            {
+                if (Input.GetButtonDown("Jump"))
+                {
+                    if (climbing)
+                    {
+                        velocity.x = controller.collisions.faceDir * wallJumpClimb.x;
+                        velocity.y = wallJumpOff.y;
+                        climbing = false;
+                    }
+
+                    if (wallSliding)
+                    {
+                        if (wallDirX == input.x)
+                        {
+                            velocity.x = -wallDirX * wallJumpClimb.x;
+                            velocity.y = wallJumpClimb.y;
+                        }
+                        else if (input.x == 0)
+                        {
+                            velocity.x = -wallDirX * wallJumpOff.x;
+                            velocity.y = wallJumpOff.y;
+                        }
+                        else {
+                            velocity.x = -wallDirX * wallLeap.x;
+                            velocity.y = wallLeap.y;
+                        }
+                    }
+                    if (controller.collisions.below)
+                    {
+                        velocity.y = maxJumpVelocity;
+                    }
+                }
+                if (Input.GetButtonUp("Jump"))
+                {
+                    if (velocity.y > minJumpVelocity)
+                    {
+                        velocity.y = minJumpVelocity;
+                    }
+                }
+            }
+
+            //climbing stuff
+            if (isClimbable)
+            {
+                if (Input.GetButtonDown("Interact"))
+                {
+                    climbing = true;
+                    velocity.y = 0;
+                }
+            }
+        }
+
 
         //flips sprite depending on direction facing.
         if (controller.collisions.faceDir == 1)
@@ -76,145 +168,85 @@ public class Player : MonoBehaviour {
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
         }
-			
-		//cant move if attacking.
-		if (isAttacking) {
-			input = Vector2.zero;
-		}
 
-        //Animation Call Section
-        if (climbingUp)
+        //cant move if attacking.
+        if (isAttacking)
         {
-            playerAnimationController.enabled = true;
-            playerAnimationController.Play("ClimbingUp");
-        }
-        if (Input.GetButtonDown("Attack") && !climbingUp)
-        {
-            playerAnimationController.enabled = true;
-            playerAnimationController.Play("SwordAttack1");
+            input = Vector2.zero;
         }
 
-        if (climbing && !isAttacking && !climbingUp)
-        {
-            playerAnimationController.enabled = true;
-            playerAnimationController.Play("Climbing");
-        }
-        if (climbing && (velocity.y == 0 && velocity.x == 0) && !isAttacking && !climbingUp)
-        {
-            Invoke("PauseAnimator", 0.1f);
-        }
+            //Animation Call Section
+            if (climbingUp)
+            {
+                playerAnimationController.enabled = true;
+                playerAnimationController.Play("ClimbingUp");
+            }
 
-        if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false && !climbing)
-        {
-            playerAnimationController.enabled = true;
-            playerAnimationController.Play("Jumping");
-        }
+            if (attackLaunched && !climbingUp)
+            {
+                playerAnimationController.enabled = true;
+                playerAnimationController.Play("SwordAttack1");
+            }
 
-        if (input.x != 0 && controller.collisions.below == true && !climbing && !climbingUp)
-        {
-            playerAnimationController.Play("Running");
-        }
+            if (climbing && !isAttacking && !climbingUp)
+            {
+                playerAnimationController.enabled = true;
+                playerAnimationController.Play("Climbing");
+            }
+            if (climbing && (velocity.y == 0 && velocity.x == 0) && !isAttacking && !climbingUp)
+            {
+                Invoke("PauseAnimator", 0.1f);
+            }
 
-        if (input.x == 0 && isAttacking == false && controller.collisions.below == true && !climbing && !climbingUp)
-        {
-            playerAnimationController.Play("Idle");
-        }
+            if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false && !climbing)
+            {
+                playerAnimationController.enabled = true;
+                playerAnimationController.Play("Jumping");
+            }
+
+            if (input.x != 0 && controller.collisions.below == true && !climbing && !climbingUp)
+            {
+                playerAnimationController.Play("Running");
+            }
+
+            if (input.x == 0 && isAttacking == false && controller.collisions.below == true && !climbing && !climbingUp)
+            {
+                playerAnimationController.Play("Idle");
+            }
 
 
         float targetVelocityX = input.x * moveSpeed;
-		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
-			
-		bool wallSliding = false;
-		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && controller.isWallJumpable == true) {
-			wallSliding = true;
-				
-			if (velocity.y < -wallSlideSpeedMax) {
-				velocity.y = -wallSlideSpeedMax;
-			}
-				
-			if (timeToWallUnstick > 0) {
-				velocityXSmoothing = 0;
-				velocity.x = 0;
-					
-				if (input.x != wallDirX && input.x != 0) {
-					timeToWallUnstick -= Time.deltaTime;
-				}
-				else {
-					timeToWallUnstick = wallStickTime;
-				}
-			}
-			else {
-				timeToWallUnstick = wallStickTime;
-			}
-		}
-			
-		//cant jump if attacking.
-		if (!isAttacking) {
-			if (Input.GetButtonDown ("Jump")) {
-				if (climbing) {
-					velocity.x = controller.collisions.faceDir * wallJumpClimb.x;
-					velocity.y = wallJumpOff.y;
-					climbing = false;
-				}
-					
-				if (wallSliding) {
-					if (wallDirX == input.x) {
-						velocity.x = -wallDirX * wallJumpClimb.x;
-						velocity.y = wallJumpClimb.y;
-					}
-					else if (input.x == 0) {
-						velocity.x = -wallDirX * wallJumpOff.x;
-						velocity.y = wallJumpOff.y;
-					}
-					else {
-						velocity.x = -wallDirX * wallLeap.x;
-						velocity.y = wallLeap.y;
-					}
-				}
-				if (controller.collisions.below) {
-					velocity.y = maxJumpVelocity;
-				}
-			}
-			if (Input.GetButtonUp ("Jump")) {
-				if (velocity.y > minJumpVelocity) {
-					velocity.y = minJumpVelocity;
-				}
-			}
-		}
-			
-		//climbing stuff
-		if (isClimbable) {
-			if (Input.GetButtonDown("Interact")) {
-				climbing = true;
-				velocity.y = 0;
-			}
-		}
-			
-		if (climbing) {
-			gravity = 0;
-			velocity.y = input.y * climbSpeed;
-			velocity.x = input.x * climbSpeed;
+        velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
-            if (climbingUp) {
+
+
+        if (climbing)
+        {
+            gravity = 0;
+            velocity.y = input.y * climbSpeed;
+            velocity.x = input.x * climbSpeed;
+
+            if (climbingUp)
+            {
                 velocity = Vector3.zero;
                 Invoke("MovePlayerWhenClimbingUp", 0.125f);
             }
-		} else {
-			gravity = -1000;
-			velocity.y += gravity * Time.deltaTime;
-		}
-			
+        }
+        else {
+            gravity = -1000;
+            velocity.y += gravity * Time.deltaTime;
+        }
 
- 		controller.Move (velocity * Time.deltaTime, input);
-			
-		if (controller.collisions.above || controller.collisions.below) {
-			velocity.y = 0;
-		}
-		//}
-	}
-	
-	//Triggers dictate climbing, interactables, level triggers, and other things.
-	public void OnTriggerEnter2D (Collider2D collider) {
+        controller.Move(velocity * Time.deltaTime, input);
+
+        if (controller.collisions.above || controller.collisions.below)
+        {
+            velocity.y = 0;
+        }
+    }
+
+    //Triggers dictate climbing, interactables, level triggers, and other things.
+    public void OnTriggerEnter2D (Collider2D collider) {
 		if (collider.gameObject.GetComponent<IsClimbable>()) {
 			isClimbable = true;
 		}
@@ -226,6 +258,7 @@ public class Player : MonoBehaviour {
         //Reaching the Goal
         if (collider.gameObject.layer == 18)
         {
+            velocity.x = 0;
             LevelManager.levelManager.EndOfLevel();
         }
 	}
@@ -249,6 +282,12 @@ public class Player : MonoBehaviour {
 		isAttacking = !isAttacking;
 	}
 
+    //Resets the ability to attack, called by the animation.
+    public void AttackLaunched ()
+    {
+        attackLaunched = false;
+    }
+ 
     //called by climbing up animation to stop animating.
     public void IsClimbingUp() {
         climbingUp = false;

@@ -9,6 +9,7 @@ public class MusicManager : MonoBehaviour {
 
 	public AudioClip[] levelMusicChangeArray;
 	private AudioSource audioSource;
+    public bool endOfLevel;
 
 	void Awake () {
 		//DontDestroyOnLoad (gameObject);
@@ -17,6 +18,7 @@ public class MusicManager : MonoBehaviour {
 	void Start () {
 		audioSource = GetComponent<AudioSource>();
         musicManager = GetComponent<MusicManager>();
+        endOfLevel = false;
 	}
 	
 	void Update () {
@@ -24,6 +26,11 @@ public class MusicManager : MonoBehaviour {
 			currentTrack = LevelTrack();
 			PlayMusic(currentTrack);
 		}
+
+        if (endOfLevel)
+        {
+            LevelVictoryMusic();
+        }
 	}
 	
 	public void PlayMusic (int track) {
@@ -38,10 +45,32 @@ public class MusicManager : MonoBehaviour {
 
     public void LevelVictoryMusic ()
     {
-        //fade out the level music before playing the victory music.
-        audioSource.clip = levelMusicChangeArray[5];
-        audioSource.loop = false;
-        audioSource.Play();
+        endOfLevel = true;
+        float currentVolume = PlayerPrefsManager.GetMasterMusicVolume();
+        float fadeOutTime = .75f;
+        bool fadeOut = true;
+        bool playVictory = false;
+        if(fadeOut)
+        {
+            audioSource.volume -= (currentVolume / fadeOutTime) * Time.deltaTime;
+            Debug.Log("fade");
+        }
+
+        if (audioSource.volume <= 0)
+        {
+            fadeOut = false;
+            playVictory = true;
+        }
+
+        if (playVictory)
+        {
+            audioSource.volume = currentVolume;
+            audioSource.clip = levelMusicChangeArray[5];
+            audioSource.loop = false;
+            audioSource.Play();
+            playVictory = false;
+            endOfLevel = false;
+        }
     }
 	
 	public int LevelTrack () {

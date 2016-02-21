@@ -15,24 +15,27 @@ public class UserInterface : MonoBehaviour {
     public Image activeSkillShade;
 
 
-    void Start () {
-        healthBar = transform.GetChild(1).GetComponent<Slider>();
+    void Start()
+    {
+        healthBar = transform.GetChild(3).GetComponent<Slider>();
         healthText = healthBar.transform.GetChild(2).GetComponent<Text>();
-        manaBar = transform.GetChild(2).GetComponent<Slider>();
+        manaBar = transform.GetChild(4).GetComponent<Slider>();
         manaText = manaBar.transform.GetChild(2).GetComponent<Text>();
         //activeSkillIcon = transform.GetChild(3).transform.GetChild(1).GetComponent<Image>();
-        activeSkillShade = transform.GetChild(3).transform.GetChild(3).GetComponent<Image>();
-        activeSkillCooldownTimer = transform.GetChild(3).transform.GetChild(3).GetComponent<Text>();
+        activeSkillShade = transform.GetChild(2).transform.GetChild(3).GetComponent<Image>();
+        activeSkillCooldownTimer = transform.GetChild(2).transform.GetChild(2).GetComponent<Text>();
 
         UpdateUIInfo();
     }
-	
-	void Update () {
+
+    void Update()
+    {
         //this will move away at some point, its just for testing right now.....Maybe it can stay.
         UpdateUIInfo();
     }
 
-    public void UpdateUIInfo() {
+    public void UpdateUIInfo()
+    {
         manaText.text = GameControl.gameControl.mp + " / " + GameControl.gameControl.currentMana;
         healthText.text = GameControl.gameControl.hp + " / " + GameControl.gameControl.currentHealth;
 
