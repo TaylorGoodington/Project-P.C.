@@ -6,6 +6,8 @@ public class CameraFollow : MonoBehaviour {
 	public static CameraFollow cameraFollow;
 	
 	public LayerMask levelBounds;
+
+    public RenderTexture texture;
 	
 //	[HideInInspector]
 	public Controller2D target;
@@ -48,17 +50,20 @@ public class CameraFollow : MonoBehaviour {
     private float minXCameraClamp;
 
     void Start() {
-		cameraFollow = GetComponent<CameraFollow>();
+        //these will be called by something else at some point....
+        UpdateTarget();
+
+        cameraFollow = GetComponent<CameraFollow>();
 		focusArea = new FocusArea (target.boxCollider.bounds, focusAreaSize);
-		//these will be called by something else at some point....
-		UpdateTarget();
-		parallaxScrolling = GameObject.FindObjectOfType<ParallaxScrolling>().GetComponent<ParallaxScrolling>();
+
+        //these will be called by something else at some point....
+        parallaxScrolling = GameObject.FindObjectOfType<ParallaxScrolling>().GetComponent<ParallaxScrolling>();
 		cameraHeight = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().orthographicSize;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 	
 	public void UpdateTarget () {
-		target = GameObject.FindGameObjectWithTag("Player").GetComponent<Controller2D>();
+        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Controller2D>();
 	}
 	
 	public void FindBounds () {
