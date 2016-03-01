@@ -2,7 +2,7 @@
 using System.Collections;
 
 [System.Serializable]
-public class Skills : MonoBehaviour {
+public class Skills {
 
     //I think I will handle cast times the way I have for the attacking animation. 
 

@@ -49,22 +49,26 @@ public class CameraFollow : MonoBehaviour {
     private float maxXCameraClamp;
     private float minXCameraClamp;
 
+
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.root.gameObject);
+    }
+
     void Start() {
-        //these will be called by something else at some point....
-        UpdateTarget();
-
         cameraFollow = GetComponent<CameraFollow>();
-		focusArea = new FocusArea (target.boxCollider.bounds, focusAreaSize);
+        cameraHeight = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().orthographicSize;
 
-        //these will be called by something else at some point....
-        parallaxScrolling = GameObject.FindObjectOfType<ParallaxScrolling>().GetComponent<ParallaxScrolling>();
-		cameraHeight = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().orthographicSize;
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        //REMOVE AT THE END OF THE DEVELOPMENT
+        UpdateTarget();
     }
 	
 	public void UpdateTarget () {
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Controller2D>();
-	}
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        parallaxScrolling = GameObject.FindObjectOfType<ParallaxScrolling>().GetComponent<ParallaxScrolling>();
+        focusArea = new FocusArea(target.boxCollider.bounds, focusAreaSize);
+    }
 	
 	public void FindBounds () {
 		Vector2 topRight = new Vector2 ((transform.position.x - 1 + (cameraHeight * 2)), (transform.position.y + cameraHeight));

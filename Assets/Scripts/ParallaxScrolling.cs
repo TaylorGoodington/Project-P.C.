@@ -52,7 +52,7 @@ public class ParallaxScrolling : MonoBehaviour {
 			backgrounds[i].position = Vector3.Lerp(
 				backgrounds[i].position, //from
 				new Vector3(backgroundTargetPositionX, Mathf.Clamp (backgroundTargetPositionY, 0, maxBackgroundPositionY), backgrounds[i].position.z), //to
-				smoothing * Time.deltaTime);
+				smoothing * Time.smoothDeltaTime);
 		}
 		cameraPosition = transform.position;
 	}

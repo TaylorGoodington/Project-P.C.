@@ -8,6 +8,7 @@ using System.Collections.Generic;
 public class GameControl : MonoBehaviour {
 
 	public static GameControl gameControl;
+    public static GameControl thisObject;
 	
 	//item inventory menu for instantiating.
 	public GameObject itemInventoryMenu;
@@ -59,8 +60,10 @@ public class GameControl : MonoBehaviour {
 	
 	public List<Items> itemInventoryList;
 	public List<Equipment> equipmentInventoryList;
-//	this needs to be saved.
+
+//	these need to be saved.
 	public List<Equipment> weaponsList;
+    public List<LevelScores> levelScores;
 
 	public int equippedHead;
 	public int equippedChest;
@@ -85,14 +88,21 @@ public class GameControl : MonoBehaviour {
 	//Next section is for profile selecting.
 	public int currentProfile;
 	
-	
+	public bool reSelectMapObject;
 
 	void Awake () {
+        if (thisObject != null)
+        {
+            DestroyImmediate(gameObject);
+            return;
+        }
+        thisObject = this;
 		DontDestroyOnLoad (transform.root.gameObject);
 	}
 	
 	void Start () {
 		gameControl = GetComponent<GameControl>();
+        reSelectMapObject = false;
 
         playerHasControl = true;
 	
@@ -113,9 +123,8 @@ public class GameControl : MonoBehaviour {
 		
 		playerSoundEffects.ChangeVolume(PlayerPrefsManager.GetMasterEffectsVolume());
 		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
-		
-		//this will be called by something else at some point....
-//		CameraFollow.cameraFollow.UpdateTarget();
+        //REMOVE AFTER TESTING.
+        //AddLevelScores();
 	}
 	
 	void Update () {
@@ -133,6 +142,10 @@ public class GameControl : MonoBehaviour {
                     {
                         ClosePauseMenu();
                         pauseMenuLevel = 0;
+                        if (LevelManager.levelManager.InMapScenes == true)
+                        {
+                            reSelectMapObject = true;
+                        }
                     }
                     else {
                         OpenPauseMenu();
@@ -190,6 +203,10 @@ public class GameControl : MonoBehaviour {
                 {
                     ClosePauseMenu();
                     pauseMenuLevel--;
+                    if (LevelManager.levelManager.InMapScenes == true)
+                    {
+                        reSelectMapObject = true;
+                    }
                 }
                 //Items Menu.
                 if (itemsMenuLevel > 0)
@@ -219,6 +236,16 @@ public class GameControl : MonoBehaviour {
             }
         }
 	}
+
+    //This is really only need for new games but for now we can call it at the begining of every game and just overwrite as needed.
+    void AddLevelScores ()
+    {
+        int numberOfGameLevels = 100;
+        for (int i = 0; i < numberOfGameLevels; i++)
+        {
+            levelScores.Add(LevelScoresDatabase.levelScoresDatabase.levelScores[i]);
+        }
+    }
 	
 	public bool AnyOpenMenus () {
 		int menuIndex = equipmentMenuLevel + weaponEvolutionMenuLevel + pauseMenuLevel + itemsMenuLevel + mainMenuLevel + mainMenuDeleteLevel + mainMenuCopyLevel;
@@ -431,6 +458,7 @@ public class GameControl : MonoBehaviour {
 		baseIntelligence = 4;
 		baseHealth = 5;
 		baseMana = 6;
+        AddLevelScores();
 		
 		SaveFile(fileNumber);
 	}

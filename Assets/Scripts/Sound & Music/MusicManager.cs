@@ -53,7 +53,6 @@ public class MusicManager : MonoBehaviour {
         if(fadeOut)
         {
             audioSource.volume -= (currentVolume / fadeOutTime) * Time.deltaTime;
-            Debug.Log("fade");
         }
 
         if (audioSource.volume <= 0)
@@ -77,7 +76,7 @@ public class MusicManager : MonoBehaviour {
 		if (SceneManager.GetActiveScene().name == "Start" || SceneManager.GetActiveScene().name == "Main Menu" ||
             SceneManager.GetActiveScene().name == "01b Options" || SceneManager.GetActiveScene().name == "Extras") {
 		return 1;
-		} else if (SceneManager.GetActiveScene().name == "Level 1-1" || SceneManager.GetActiveScene().name == "Test Level 2") {
+		} else if (SceneManager.GetActiveScene().name == "Level 01" || SceneManager.GetActiveScene().name == "Test Level 2") {
 			return 2;
         }
         else if (SceneManager.GetActiveScene().name == "Level 3-1")
@@ -87,6 +86,10 @@ public class MusicManager : MonoBehaviour {
         else if (SceneManager.GetActiveScene().name == "Level 4-1")
         {
             return 4;
+        }
+        else if (SceneManager.GetActiveScene().name == "World Map")
+        {
+            return 6;
         }
         else {
 			return 0;

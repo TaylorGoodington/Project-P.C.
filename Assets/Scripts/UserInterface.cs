@@ -60,4 +60,9 @@ public class UserInterface : MonoBehaviour {
             healthBar.value = GameControl.gameControl.currentHealth / GameControl.gameControl.hp;
         }
     }
+
+    public void CallBackToRegion ()
+    {
+        LevelManager.levelManager.BackToRegion();
+    }
 }
