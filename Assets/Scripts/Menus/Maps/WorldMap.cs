@@ -56,9 +56,44 @@ public class WorldMap : MonoBehaviour {
         }
         else if (LevelManager.levelManager.lastRegionLoaded == 1)
         {
-
+            EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 1"), null);
         }
-        EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("The Pit"), null);
+        else if (LevelManager.levelManager.lastRegionLoaded == 2)
+        {
+            EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 2"), null);
+        }
+        else if (LevelManager.levelManager.lastRegionLoaded == 3)
+        {
+            EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 3"), null);
+        }
+        else if (LevelManager.levelManager.lastRegionLoaded == 4)
+        {
+            EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 4"), null);
+        }
+        else if (LevelManager.levelManager.lastRegionLoaded == 5)
+        {
+            EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 5"), null);
+        }
+        else if (LevelManager.levelManager.lastRegionLoaded == 6)
+        {
+            EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 6"), null);
+        }
+        else if (LevelManager.levelManager.lastRegionLoaded == 7)
+        {
+            EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 7"), null);
+        }
+        else if (LevelManager.levelManager.lastRegionLoaded == 8)
+        {
+            EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 8"), null);
+        }
+        else if (LevelManager.levelManager.lastRegionLoaded == 9)
+        {
+            EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 9"), null);
+        }
+        else if (LevelManager.levelManager.lastRegionLoaded == 10)
+        {
+            EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 10"), null);
+        }
     }
 
     public void TransitionToWorldMap ()
@@ -72,7 +107,7 @@ public class WorldMap : MonoBehaviour {
         animator.Play("Transition Out");
     }
 
-    //needs to grab from the variable recording the selected object...
+    //Called from the end of the transition animation.
     public void SelectRegion ()
     {
         if (headingToTitleScene)

@@ -16,6 +16,8 @@ public class LevelManager : MonoBehaviour {
     private GameObject cameraManager;
 
     public bool InMapScenes;
+
+    int level01;
 	
 	void Start () {
 		levelManager = GetComponent<LevelManager>();
@@ -25,6 +27,7 @@ public class LevelManager : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "_Splash") {
             Invoke("LoadNextLevel", 3f);
         }
+        level01 = SceneManager.GetSceneByName("Level 01").buildIndex;
 	}
 
 	public void LoadLevel (string name) {
@@ -58,55 +61,135 @@ public class LevelManager : MonoBehaviour {
 
     public void LastRegionLoaded ()
     {
-        //Once I add all the scenes to the build I will make a list here to reference.
-        int sceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
-
-        //Dont add the world map to this list.
-        if (sceneBuildIndex == 5)
+        if (SceneManager.GetActiveScene().name == "Main Menu")
         {
             lastRegionLoaded = 0;
         }
+        else if (SceneManager.GetActiveScene().name == "Region 1")
+        {
+            lastRegionLoaded = 1;
+        }
+        else if (SceneManager.GetActiveScene().name == "Region 2")
+        {
+            lastRegionLoaded = 2;
+        }
+        else if (SceneManager.GetActiveScene().name == "Region 3")
+        {
+            lastRegionLoaded = 3;
+        }
+        else if (SceneManager.GetActiveScene().name == "Region 4")
+        {
+            lastRegionLoaded = 4;
+        }
+        else if (SceneManager.GetActiveScene().name == "Region 5")
+        {
+            lastRegionLoaded = 5;
+        }
+        else if (SceneManager.GetActiveScene().name == "Region 6")
+        {
+            lastRegionLoaded = 6;
+        }
+        else if (SceneManager.GetActiveScene().name == "Region 7")
+        {
+            lastRegionLoaded = 7;
+        }
+        else if (SceneManager.GetActiveScene().name == "Region 8")
+        {
+            lastRegionLoaded = 8;
+        }
+        else if (SceneManager.GetActiveScene().name == "Region 9")
+        {
+            lastRegionLoaded = 9;
+        }
+        else if (SceneManager.GetActiveScene().name == "Region 10")
+        {
+            lastRegionLoaded = 10;
+        }
     }
 
-
     //Used for game levels only.
-    public void InitializeLevel ()
+    public void InitializeLevel (int level)
     {
         Animator initializationAnimator = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<Animator>();
         //run script to re calculate stats for the begining of a level.
+        
         //If the level hasn't been played Get the animator to play the "story intro animation". Else, play the "normal intro animation". In GameControl.gameControl.levelScores I can check the bool if its been played.
+        if (GameControl.gameControl.levelScores[level].hasLevelBeenPlayed == false)
+        {
+            //play story animation.
+        }
+        
+        //play regular fade in transition.
+        
+        
         //Reset enemies defeated counter at the end of intro animations.
         //start time counter at the end of intro animation.
     }
 
-
     //Checks which level should be selected based on what the last level played was.
-    public void BackToRegion ()
+    public string BackToRegion ()
     {
-        if (lastLevelPlayed >= 10 && lastLevelPlayed < 20)
+        int region1FirstLevel = level01;
+        if (lastLevelPlayed >= region1FirstLevel && lastLevelPlayed < (region1FirstLevel + 10))
         {
-            LoadLevel("Region 1");
+            return "Region 1";
+        }
+        else if (lastLevelPlayed >= (region1FirstLevel + 10) && lastLevelPlayed < (region1FirstLevel + 20))
+        {
+            return "Region 2";
+        }
+        else if (lastLevelPlayed >= (region1FirstLevel + 20) && lastLevelPlayed < (region1FirstLevel + 30))
+        {
+            return "Region 3";
+        }
+        else if (lastLevelPlayed >= (region1FirstLevel + 30) && lastLevelPlayed < (region1FirstLevel + 40))
+        {
+            return "Region 4";
+        }
+        else if (lastLevelPlayed >= (region1FirstLevel + 40) && lastLevelPlayed < (region1FirstLevel + 50))
+        {
+            return "Region 5";
+        }
+        else if (lastLevelPlayed >= (region1FirstLevel + 50) && lastLevelPlayed < (region1FirstLevel + 60))
+        {
+            return "Region 6";
+        }
+        else if (lastLevelPlayed >= (region1FirstLevel + 60) && lastLevelPlayed < (region1FirstLevel + 70))
+        {
+            return "Region 7";
+        }
+        else if (lastLevelPlayed >= (region1FirstLevel + 70) && lastLevelPlayed < (region1FirstLevel + 80))
+        {
+            return "Region 8";
+        }
+        else if (lastLevelPlayed >= (region1FirstLevel + 80) && lastLevelPlayed < (region1FirstLevel + 90))
+        {
+            return "Region 9";
+        }
+        else
+        {
+            return "Region 10";
         }
     }
 
-
+    //This should be done now.
     void OnLevelWasLoaded (int level)
     {
-        LastRegionLoaded();
-
         //Playable levels.
-        if (level > 6)
+        if (level >= level01)
         {
-            InitializeLevel();
             lastLevelPlayed = level;
             InMapScenes = false;
             cameraManager.transform.GetChild(0).gameObject.SetActive(true);
             cameraManager.transform.GetChild(1).gameObject.SetActive(false);
+            InitializeLevel(level);
+            GameControl.gameControl.levelScores[level].hasLevelBeenPlayed = true;
         }
 
         //Maps and Menus.
         else
         {
+            LastRegionLoaded();
             cameraManager.transform.GetChild(0).gameObject.SetActive(false);
             cameraManager.transform.GetChild(1).gameObject.SetActive(true);
             InMapScenes = true;

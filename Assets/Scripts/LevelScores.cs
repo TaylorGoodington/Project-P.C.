@@ -3,14 +3,14 @@
 [System.Serializable]
 public class LevelScores {
 
-    public int levelNumber;
+    public string levelName;
     public bool hasLevelBeenPlayed;
     public float fastestLevelClearTime;
     public int enemiesDefeated;
 
-    public LevelScores (int level, bool levelPlayed, float fastestTime, int enemies)
+    public LevelScores (string level, bool levelPlayed, float fastestTime, int enemies)
     {
-        levelNumber = level;
+        levelName = level;
         hasLevelBeenPlayed = levelPlayed;
         fastestLevelClearTime = fastestTime;
         enemiesDefeated = enemies;

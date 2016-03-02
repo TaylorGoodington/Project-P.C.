@@ -61,8 +61,9 @@ public class GameControl : MonoBehaviour {
 	public List<Items> itemInventoryList;
 	public List<Equipment> equipmentInventoryList;
 
-//	these need to be saved.
+//	this needs to be saved.
 	public List<Equipment> weaponsList;
+
     public List<LevelScores> levelScores;
 
 	public int equippedHead;
@@ -240,7 +241,7 @@ public class GameControl : MonoBehaviour {
     //This is really only need for new games but for now we can call it at the begining of every game and just overwrite as needed.
     void AddLevelScores ()
     {
-        int numberOfGameLevels = 100;
+        int numberOfGameLevels = 101;
         for (int i = 0; i < numberOfGameLevels; i++)
         {
             levelScores.Add(LevelScoresDatabase.levelScoresDatabase.levelScores[i]);
@@ -334,6 +335,8 @@ public class GameControl : MonoBehaviour {
 		playerData.equippedFeet = equippedFeet;
 		
 		playerData.equippedWeapon = equippedWeapon;
+
+        playerData.levelScores = levelScores;
 		
 		
 		binaryFormatter.Serialize (saveFile, playerData);
@@ -399,8 +402,8 @@ public class GameControl : MonoBehaviour {
 			equippedFeet = playerData.equippedFeet;
 			
 			equippedWeapon = playerData.equippedWeapon;
-			
-			
+
+            levelScores = playerData.levelScores;
 			
 			saveFile.Close(); //I wonder if this should go at the end of the method...
 		}
@@ -576,7 +579,8 @@ class PlayerData {
 	
 	public List<Items> itemInventoryList;
 	public List<Equipment> equipmentInventoryList;
-	//	public List<Weapons> weaponInventoryList;
+    //	public List<Weapons> weaponInventoryList;
+    public List<LevelScores> levelScores;
 
 	public int currentStrength;
 	public int currentDefense;
