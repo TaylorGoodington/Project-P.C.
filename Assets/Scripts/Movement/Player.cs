@@ -259,7 +259,8 @@ public class Player : MonoBehaviour {
         if (collider.gameObject.layer == 18)
         {
             velocity.x = 0;
-            LevelManager.levelManager.EndOfLevel();
+            UserInterface uI = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>();
+            uI.EndOfLevel();
         }
 	}
 	

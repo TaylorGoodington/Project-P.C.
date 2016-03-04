@@ -1220,7 +1220,7 @@ public class Scorpion1 : MonoBehaviour
     }
     
     //Check to see if we are close enough to enter attack mode.
-    public bool InAttackRange () //CHANGE RAY LENGTH
+    public bool InAttackRange () //CHANGE RAY LENGTH 
     {
         float directionX = controller.collisions.faceDir;
         float rayLength = 10f;
@@ -1258,5 +1258,11 @@ public class Scorpion1 : MonoBehaviour
                 CombatEngine.combatEngine.AttackingEnemies(hit.collider);
             }
         }
+    }
+
+    //When the enemy dies.
+    public void EnemyDefeated () //NEEDS WORK
+    {
+        LevelManager.levelManager.enemiesDefeated += 1;
     }
 }

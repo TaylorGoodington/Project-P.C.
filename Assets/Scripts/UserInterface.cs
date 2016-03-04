@@ -14,6 +14,8 @@ public class UserInterface : MonoBehaviour {
     public Text activeSkillCooldownTimer;
     public Image activeSkillShade;
 
+    public Animator animator;
+
 
     void Start()
     {
@@ -25,6 +27,8 @@ public class UserInterface : MonoBehaviour {
         activeSkillShade = transform.GetChild(2).transform.GetChild(3).GetComponent<Image>();
         activeSkillCooldownTimer = transform.GetChild(2).transform.GetChild(2).GetComponent<Text>();
 
+        animator = GetComponent<Animator>();
+
         UpdateUIInfo();
     }
 
@@ -32,6 +36,12 @@ public class UserInterface : MonoBehaviour {
     {
         //this will move away at some point, its just for testing right now.....Maybe it can stay.
         UpdateUIInfo();
+
+        //Level Timer.
+        if (GameControl.gameControl.playerHasControl)
+        {
+            RunTheClock();
+        }
     }
 
     public void UpdateUIInfo()
@@ -61,8 +71,57 @@ public class UserInterface : MonoBehaviour {
         }
     }
 
-    public void CallBackToRegion ()
+    public void EndOfLevel ()
+    {
+        GameControl.gameControl.playerHasControl = false;
+        animator.Play("EndOfLevel");
+
+        //Level Clear Time.
+        if (GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime > LevelManager.levelManager.levelTime)
+        {
+            GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime = LevelManager.levelManager.levelTime;
+        }
+
+        //Enemies Defeated.
+        if (GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].enemiesDefeated < LevelManager.levelManager.enemiesDefeated)
+        {
+            GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].enemiesDefeated = LevelManager.levelManager.enemiesDefeated;
+        }
+    }
+
+    //Used by the end of level animation to play Victory Music.
+    public void LevelVictoryMusic ()
+    {
+        MusicManager.musicManager.LevelVictoryMusic();
+    }
+
+    //Used by the end of level animation to load the Region Map.
+    public void BackToRegion ()
     {
         LevelManager.levelManager.BackToRegion();
+    }
+
+    //Called by the animator
+    public void FadeMusicOut()
+    {
+        MusicManager.musicManager.fadeMusicOut = true;
+    }
+
+    //Called by the animator
+    public void FadeMusicIn()
+    {
+        MusicManager.musicManager.fadeMusicIn = true;
+    }
+
+    //Called from the end of the level intro animation.
+    public void GiveThePlayerControl ()
+    {
+        GameControl.gameControl.playerHasControl = true;
+    }
+
+    //used in update to keep track of time.
+    public void RunTheClock ()
+    {
+        LevelManager.levelManager.levelTime += Time.deltaTime;
     }
 }

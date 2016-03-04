@@ -7,7 +7,7 @@ using System.IO;
 public class WorldMap : MonoBehaviour {
 
     Animator animator;
-    GameObject currentSelected;
+    public GameObject currentSelected;
     public GameObject quitDialogue;
     bool headingToTitleScene;
 
@@ -19,6 +19,17 @@ public class WorldMap : MonoBehaviour {
 
     void Update ()
     {
+        //Find some way to use the cancel button to close the quit dialogue.
+        if (quitDialogue.activeSelf == true)
+        {
+            if (Input.GetButtonDown("Cancel"))
+            {
+                headingToTitleScene = false;
+                CloseQuitDialogue();
+                Debug.Log("what");
+            }
+        }
+
         if (GameControl.gameControl.reSelectMapObject == true)
         {
             EventSystem.current.SetSelectedGameObject(GameObject.Find(currentSelected.name.ToString()));
@@ -34,17 +45,18 @@ public class WorldMap : MonoBehaviour {
                 OpenQuitDialogue();
             }
         }
+    }
 
-        //Find some way to use the cancel button to close the quit dialogue.
-        if (1 == 2)
-        {
-            if (Input.GetButtonDown("Cancel"))
-            {
-                headingToTitleScene = false;
-                CloseQuitDialogue();
-                Debug.Log("what");
-            }
-        }
+    //Called by the animator
+    public void FadeMusicOut ()
+    {
+        MusicManager.musicManager.fadeMusicOut = true;
+    }
+
+    //Called by the animator
+    public void FadeMusicIn ()
+    {
+        MusicManager.musicManager.fadeMusicIn = true;
     }
 
     //Call landing zone at the end of the transition animation.
@@ -94,6 +106,7 @@ public class WorldMap : MonoBehaviour {
         {
             EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 10"), null);
         }
+        GameControl.gameControl.playerHasControl = true;
     }
 
     public void TransitionToWorldMap ()
@@ -103,6 +116,7 @@ public class WorldMap : MonoBehaviour {
 
     public void TransitionFromWorldMap ()
     {
+        GameControl.gameControl.playerHasControl = false;
         quitDialogue.SetActive(false);
         animator.Play("Transition Out");
     }

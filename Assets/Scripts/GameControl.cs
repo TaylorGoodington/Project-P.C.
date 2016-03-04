@@ -124,9 +124,10 @@ public class GameControl : MonoBehaviour {
 		
 		playerSoundEffects.ChangeVolume(PlayerPrefsManager.GetMasterEffectsVolume());
 		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
+
         //REMOVE AFTER TESTING.
-        //AddLevelScores();
-	}
+        AddLevelScores();
+    }
 	
 	void Update () {
         if (playerHasControl)
@@ -135,13 +136,18 @@ public class GameControl : MonoBehaviour {
             {
                 //makes opening pause menu impossible from the listed scenes, need to add a few for the world/region menus and cutscenes....might be easier to say when instead of when cant.
                 if (SceneManager.GetActiveScene().name == "_Splash" || SceneManager.GetActiveScene().name == "Start" ||
-                    SceneManager.GetActiveScene().name == "Main Menu" || SceneManager.GetActiveScene().name == "01b Options" || SceneManager.GetActiveScene().name == "Extras")
+                    SceneManager.GetActiveScene().name == "Main Menu" || SceneManager.GetActiveScene().name == "01b Options" || SceneManager.GetActiveScene().name == "Extras"
+                    || GameObject.FindGameObjectWithTag("Back Dialogue"))
                 {
+
                 }
-                else {
-                    if (GameObject.FindGameObjectWithTag("Pause Menu"))
+                else
+                {
+                    //if (GameObject.FindGameObjectWithTag("Pause Menu"))
+                    if (AnyOpenMenus())
                     {
                         ClosePauseMenu();
+                        //MAKE A WAY TO CLOSE ALL MENUS.
                         pauseMenuLevel = 0;
                         if (LevelManager.levelManager.InMapScenes == true)
                         {
@@ -158,6 +164,7 @@ public class GameControl : MonoBehaviour {
             if (Input.GetButtonDown("Item Cycle"))
             {
                 //Inventory.inventory.CycleActiveItems(Input.GetAxisRaw("Item Cycle"));
+                
             }
 
 

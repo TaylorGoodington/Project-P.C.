@@ -7,6 +7,8 @@ public class EquipmentInventory : MonoBehaviour {
 
 	//access to gamecontrol, muy importante.
 	private GameControl gameControl;
+
+    public static EquipmentInventory equipmentInventory;
 	
 	//items that populate the inventory menu.
 	public GameObject equipmentItem;
@@ -77,6 +79,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	void Start () {
 		gameControl = GameObject.FindObjectOfType<GameControl>();
+        equipmentInventory = GetComponent<EquipmentInventory>();
 		equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
 		equipmentList = gameControl.equipmentInventoryList;
 	}

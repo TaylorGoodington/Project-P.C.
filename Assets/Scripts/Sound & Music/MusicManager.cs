@@ -10,8 +10,10 @@ public class MusicManager : MonoBehaviour {
 	public AudioClip[] levelMusicChangeArray;
 	private AudioSource audioSource;
     public bool endOfLevel;
+    public bool fadeMusicOut;
+    public bool fadeMusicIn;
 
-	void Awake () {
+    void Awake () {
 		//DontDestroyOnLoad (gameObject);
 	}
 	
@@ -19,7 +21,10 @@ public class MusicManager : MonoBehaviour {
 		audioSource = GetComponent<AudioSource>();
         musicManager = GetComponent<MusicManager>();
         endOfLevel = false;
-	}
+        fadeMusicOut = false;
+        fadeMusicIn = false;
+
+    }
 	
 	void Update () {
 		if (LevelTrack() != currentTrack) {
@@ -30,6 +35,16 @@ public class MusicManager : MonoBehaviour {
         if (endOfLevel)
         {
             LevelVictoryMusic();
+        }
+
+        if (fadeMusicOut)
+        {
+            FadeMusicOut();
+        }
+
+        if (fadeMusicIn)
+        {
+            FadeMusicIn();
         }
 	}
 	
@@ -71,8 +86,43 @@ public class MusicManager : MonoBehaviour {
             endOfLevel = false;
         }
     }
-	
-	public int LevelTrack () {
+
+    public void FadeMusicIn ()
+    {
+        float currentVolume = PlayerPrefsManager.GetMasterMusicVolume();
+        float fadeTime = .75f;
+        bool fadeIn = true;
+        if (fadeIn)
+        {
+            audioSource.volume += (currentVolume / fadeTime) * Time.deltaTime;
+        }
+
+        if (audioSource.volume >= currentVolume)
+        {
+            audioSource.volume = currentVolume;
+            fadeIn = false;
+            fadeMusicIn = false;
+        }
+    }
+
+    public void FadeMusicOut()
+    {
+        float currentVolume = PlayerPrefsManager.GetMasterMusicVolume();
+        float fadeOutTime = .75f;
+        bool fadeOut = true;
+        if (fadeOut)
+        {
+            audioSource.volume -= (currentVolume / fadeOutTime) * Time.deltaTime;
+        }
+
+        if (audioSource.volume <= 0)
+        {
+            fadeOut = false;
+            fadeMusicOut = false;
+        }
+    }
+
+    public int LevelTrack () {
 		if (SceneManager.GetActiveScene().name == "Start" || SceneManager.GetActiveScene().name == "Main Menu" ||
             SceneManager.GetActiveScene().name == "01b Options" || SceneManager.GetActiveScene().name == "Extras") {
 		return 1;
@@ -99,5 +149,4 @@ public class MusicManager : MonoBehaviour {
 	public void ChangeVolume (float volume) {
 		audioSource.volume = volume;
 	}
-	
 }

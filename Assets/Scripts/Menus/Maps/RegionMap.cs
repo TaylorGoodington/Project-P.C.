@@ -8,7 +8,8 @@ public class RegionMap : MonoBehaviour {
 
     Animator animator;
     public GameObject currentSelected;
-    bool headingToWorldMap;
+    public GameObject quitDialogue;
+    public bool headingToWorldMap;
 
     void Start()
     {
@@ -25,16 +26,14 @@ public class RegionMap : MonoBehaviour {
             GameControl.gameControl.reSelectMapObject = false;
         }
 
-        if (!GameControl.gameControl.AnyOpenMenus())
+        if (!GameControl.gameControl.AnyOpenMenus() && quitDialogue.activeSelf == false)
         {
             currentSelected = EventSystem.current.currentSelectedGameObject;
 
             if (Input.GetButtonDown("Cancel"))
             {
+                OpenQuitDialogue();
                 headingToWorldMap = true;
-
-                //There needs to be an are you sure you want to quit dialogue.
-                TransitionFromRegionMap();
             }
         }
     }
@@ -51,6 +50,7 @@ public class RegionMap : MonoBehaviour {
 
         }
         EventSystem.current.SetSelectedGameObject(GameObject.Find("Level 01"), null);
+        GameControl.gameControl.playerHasControl = true;
     }
 
     public void TransitionToRegionMap()
@@ -60,7 +60,21 @@ public class RegionMap : MonoBehaviour {
 
     public void TransitionFromRegionMap()
     {
+        GameControl.gameControl.playerHasControl = false;
+        CloseQuitDialogue();
         animator.Play("Transition Out");
+    }
+
+    //Called by the animator
+    public void FadeMusicOut()
+    {
+        MusicManager.musicManager.fadeMusicOut = true;
+    }
+
+    //Called by the animator
+    public void FadeMusicIn()
+    {
+        MusicManager.musicManager.fadeMusicIn = true;
     }
 
     public void SelectLevel()
@@ -72,6 +86,20 @@ public class RegionMap : MonoBehaviour {
         else
         {
             LevelManager.levelManager.LoadLevel(currentSelected.name.ToString());
+
         }
+    }
+
+    public void OpenQuitDialogue()
+    {
+        quitDialogue.SetActive(true);
+        headingToWorldMap = false;
+        EventSystem.current.SetSelectedGameObject(quitDialogue.transform.GetChild(4).gameObject);
+    }
+
+    public void CloseQuitDialogue()
+    {
+        quitDialogue.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(GameObject.Find(currentSelected.name.ToString()));
     }
 }

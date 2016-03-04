@@ -29,5 +29,12 @@ public class StartMenuControl : MonoBehaviour {
     public void SelectGameobject ()
     {
         EventSystem.current.SetSelectedGameObject(GameObject.Find("Start"), null);
+        GameControl.gameControl.playerHasControl = true;
+    }
+
+    //Called by the animator
+    public void FadeMusicIn()
+    {
+        MusicManager.musicManager.fadeMusicIn = true;
     }
 }

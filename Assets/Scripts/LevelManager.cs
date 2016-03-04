@@ -17,7 +17,12 @@ public class LevelManager : MonoBehaviour {
 
     public bool InMapScenes;
 
-    int level01;
+    //end of level info.
+    public float levelTime;
+    public int enemiesDefeated;
+    public int BonusXP;
+
+    public int level01;
 	
 	void Start () {
 		levelManager = GetComponent<LevelManager>();
@@ -27,7 +32,8 @@ public class LevelManager : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "_Splash") {
             Invoke("LoadNextLevel", 3f);
         }
-        level01 = SceneManager.GetSceneByName("Level 01").buildIndex;
+        //THIS NEEDS TO BE UPDATED MANUALLY
+        level01 = 16;
 	}
 
 	public void LoadLevel (string name) {
@@ -46,18 +52,6 @@ public class LevelManager : MonoBehaviour {
         int sceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(sceneBuildIndex + 1);
     }
-
-    public void EndOfLevel ()
-    {
-        Animator initializationAnimator = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<Animator>();
-        GameControl.gameControl.playerHasControl = false;
-        MusicManager.musicManager.LevelVictoryMusic();
-        Text clearText = GameObject.FindGameObjectWithTag("Level Clear Text").GetComponent<Text>();
-        clearText.enabled = true;
-        //have animator play "exit level transition". The end of the animation should call "CallBackToRegion".
-        //set level score in GameControl.gameControl.levelScores, remember to reference the fact that there are more scenes in the build than just the playable levels.
-    }
-
 
     public void LastRegionLoaded ()
     {
@@ -111,64 +105,64 @@ public class LevelManager : MonoBehaviour {
     public void InitializeLevel (int level)
     {
         Animator initializationAnimator = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<Animator>();
-        //run script to re calculate stats for the begining of a level.
-        
-        //If the level hasn't been played Get the animator to play the "story intro animation". Else, play the "normal intro animation". In GameControl.gameControl.levelScores I can check the bool if its been played.
-        if (GameControl.gameControl.levelScores[level].hasLevelBeenPlayed == false)
+        EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+        enemiesDefeated = 0;
+        levelTime = 0;
+
+        if (GameControl.gameControl.levelScores[level - level01 + 1].hasLevelBeenPlayed == false)
         {
             //play story animation.
+            //Maybe this is a different scene that loads the movie textures?.
         }
-        
-        //play regular fade in transition.
-        
-        
-        //Reset enemies defeated counter at the end of intro animations.
-        //start time counter at the end of intro animation.
+        else
+        {
+            initializationAnimator.Play("LevelIntroTransition");
+        }
     }
 
     //Checks which level should be selected based on what the last level played was.
-    public string BackToRegion ()
+    public void BackToRegion ()
     {
         int region1FirstLevel = level01;
         if (lastLevelPlayed >= region1FirstLevel && lastLevelPlayed < (region1FirstLevel + 10))
         {
-            return "Region 1";
+            SceneManager.LoadScene("Region 1");
         }
         else if (lastLevelPlayed >= (region1FirstLevel + 10) && lastLevelPlayed < (region1FirstLevel + 20))
         {
-            return "Region 2";
+            SceneManager.LoadScene("Region 2");
         }
         else if (lastLevelPlayed >= (region1FirstLevel + 20) && lastLevelPlayed < (region1FirstLevel + 30))
         {
-            return "Region 3";
+            SceneManager.LoadScene("Region 3");
         }
         else if (lastLevelPlayed >= (region1FirstLevel + 30) && lastLevelPlayed < (region1FirstLevel + 40))
         {
-            return "Region 4";
+            SceneManager.LoadScene("Region 4");
         }
         else if (lastLevelPlayed >= (region1FirstLevel + 40) && lastLevelPlayed < (region1FirstLevel + 50))
         {
-            return "Region 5";
+            SceneManager.LoadScene("Region 5");
         }
         else if (lastLevelPlayed >= (region1FirstLevel + 50) && lastLevelPlayed < (region1FirstLevel + 60))
         {
-            return "Region 6";
+            SceneManager.LoadScene("Region 6");
         }
         else if (lastLevelPlayed >= (region1FirstLevel + 60) && lastLevelPlayed < (region1FirstLevel + 70))
         {
-            return "Region 7";
+            SceneManager.LoadScene("Region 7");
         }
         else if (lastLevelPlayed >= (region1FirstLevel + 70) && lastLevelPlayed < (region1FirstLevel + 80))
         {
-            return "Region 8";
+            SceneManager.LoadScene("Region 8");
         }
         else if (lastLevelPlayed >= (region1FirstLevel + 80) && lastLevelPlayed < (region1FirstLevel + 90))
         {
-            return "Region 9";
+            SceneManager.LoadScene("Region 9");
         }
         else
         {
-            return "Region 10";
+            SceneManager.LoadScene("Region 10");
         }
     }
 
@@ -183,7 +177,7 @@ public class LevelManager : MonoBehaviour {
             cameraManager.transform.GetChild(0).gameObject.SetActive(true);
             cameraManager.transform.GetChild(1).gameObject.SetActive(false);
             InitializeLevel(level);
-            GameControl.gameControl.levelScores[level].hasLevelBeenPlayed = true;
+            GameControl.gameControl.levelScores[level - level01 + 1].hasLevelBeenPlayed = true;
         }
 
         //Maps and Menus.
@@ -196,4 +190,3 @@ public class LevelManager : MonoBehaviour {
         }
     }
 }
-
