@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour {
 
@@ -13,16 +14,19 @@ public class PauseMenu : MonoBehaviour {
 	
 	// equipment inventory script access.
 	public GameObject equipmentInventory;
+
+    private GameObject exitObject;
+    private Text exitText;
 	
-	// Use this for initialization
 	void Start () {
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Menu"),null);
+        //ASSIGN EXIT OBJECT
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    void Update ()
+    {
+        //adjust exitText based on where the pause menu is being opened from.
+    }
 	
 	public void OpenEquipmentMenu () {
 		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
@@ -38,7 +42,24 @@ public class PauseMenu : MonoBehaviour {
 		itemInventory.GetComponent<Inventory>().OpenItemMenu();
 		Destroy (gameObject);
 	}
-	
-	
 
+    public void AdjustExitFunctionality ()
+    {
+        //Change listeners to have the correct exit button.
+    }
+
+    public void OpenExitDialogue ()
+    {
+        //Turn on exit object
+        //set new selected object
+        //need to do something with pause menu levels to make sure back works.
+        AdjustExitFunctionality();
+    }
+
+    public void CloseExitDialogue ()
+    {
+        //turn off exit object
+        //set exit to selected object
+        //need to do something with pause menu levels to make sure back works.
+    }
 }

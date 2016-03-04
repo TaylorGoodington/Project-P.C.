@@ -90,7 +90,7 @@ public class MusicManager : MonoBehaviour {
     public void FadeMusicIn ()
     {
         float currentVolume = PlayerPrefsManager.GetMasterMusicVolume();
-        float fadeTime = .75f;
+        float fadeTime = .01f;
         bool fadeIn = true;
         if (fadeIn)
         {

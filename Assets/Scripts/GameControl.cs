@@ -85,7 +85,7 @@ public class GameControl : MonoBehaviour {
 	public int mainMenuDeleteLevel = 0;
 	public int mainMenuCopyLevel = 0;
 	
-//		this needs to be saved.
+    //this needs to be saved.
 	//Next section is for profile selecting.
 	public int currentProfile;
 	

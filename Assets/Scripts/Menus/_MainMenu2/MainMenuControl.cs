@@ -13,27 +13,22 @@ public class MainMenuControl : MonoBehaviour {
 	public GameObject overwriteNewGameVerification;
 	public GameObject overwriteSlots;
 	
-	//Need to be found at the begining.
 	public GameControl gameControl;
 	public PlayerSoundEffects playerSoundEffects;
 
-	// Use this for initialization
+    private Animator animator;
+
 	void Start () {
 		mainMenuCanvas = GameObject.FindGameObjectWithTag("Main Menu");
 		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
 		gameControl = GameObject.FindObjectOfType<GameControl>();
+        animator = GetComponent<Animator>();
 		
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Game 1"),null);
 		
-		//I think I will have the system check for new display info here and after copy and delete.
 		RefreshGameLabels ();
 		
 		gameControl.mainMenuLevel = 1;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	public void RefreshGameLabels () {
@@ -228,14 +223,22 @@ public class MainMenuControl : MonoBehaviour {
 	
 	public void PlayGame (int fileNumber) {
 		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
-		
+        GameControl.gameControl.playerHasControl = false;
+
 		if(File.Exists(Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat")) {
 			gameControl.LoadFile(fileNumber);
+            animator.Play("TransitionOut");
 		} else {
 			gameControl.NewGame(fileNumber);
+            //Play intro cinematic.
 		}
 	}
-	
+
+    //Called after transition out animation.
+    public void LoadWorldMap ()
+    {
+        SceneManager.LoadScene("World Map");
+    }
 	
 	public void CopyGame (int fileNumber) {
 		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();

@@ -7,7 +7,6 @@ public class StartMenuControl : MonoBehaviour {
 	public GameControl gameControl;
     Animator animator;
 
-	// Use this for initialization
 	void Start () {
         animator = GetComponent<Animator>();
 		gameControl.mainMenuLevel = 0;

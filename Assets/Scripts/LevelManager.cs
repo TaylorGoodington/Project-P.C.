@@ -120,53 +120,92 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    //Checks which level should be selected based on what the last level played was.
+    //Checks which region should be selected based on what the last region loaded was.
     public void BackToRegion ()
     {
-        int region1FirstLevel = level01;
-        if (lastLevelPlayed >= region1FirstLevel && lastLevelPlayed < (region1FirstLevel + 10))
+        if (lastRegionLoaded == 1)
         {
             SceneManager.LoadScene("Region 1");
         }
-        else if (lastLevelPlayed >= (region1FirstLevel + 10) && lastLevelPlayed < (region1FirstLevel + 20))
+        else if (lastRegionLoaded == 2)
         {
             SceneManager.LoadScene("Region 2");
         }
-        else if (lastLevelPlayed >= (region1FirstLevel + 20) && lastLevelPlayed < (region1FirstLevel + 30))
+        else if (lastRegionLoaded == 3)
         {
             SceneManager.LoadScene("Region 3");
         }
-        else if (lastLevelPlayed >= (region1FirstLevel + 30) && lastLevelPlayed < (region1FirstLevel + 40))
+        else if (lastRegionLoaded == 4)
         {
             SceneManager.LoadScene("Region 4");
         }
-        else if (lastLevelPlayed >= (region1FirstLevel + 40) && lastLevelPlayed < (region1FirstLevel + 50))
+        else if (lastRegionLoaded == 5)
         {
             SceneManager.LoadScene("Region 5");
         }
-        else if (lastLevelPlayed >= (region1FirstLevel + 50) && lastLevelPlayed < (region1FirstLevel + 60))
+        else if (lastRegionLoaded == 6)
         {
             SceneManager.LoadScene("Region 6");
         }
-        else if (lastLevelPlayed >= (region1FirstLevel + 60) && lastLevelPlayed < (region1FirstLevel + 70))
+        else if (lastRegionLoaded == 7)
         {
             SceneManager.LoadScene("Region 7");
         }
-        else if (lastLevelPlayed >= (region1FirstLevel + 70) && lastLevelPlayed < (region1FirstLevel + 80))
+        else if (lastRegionLoaded == 8)
         {
             SceneManager.LoadScene("Region 8");
         }
-        else if (lastLevelPlayed >= (region1FirstLevel + 80) && lastLevelPlayed < (region1FirstLevel + 90))
+        else if (lastRegionLoaded == 9)
         {
             SceneManager.LoadScene("Region 9");
         }
-        else
+        else if (lastRegionLoaded == 10)
         {
             SceneManager.LoadScene("Region 10");
         }
+        //int region1FirstLevel = level01;
+        //if (lastLevelPlayed >= region1FirstLevel && lastLevelPlayed < (region1FirstLevel + 10))
+        //{
+        //    SceneManager.LoadScene("Region 1");
+        //}
+        //else if (lastLevelPlayed >= (region1FirstLevel + 10) && lastLevelPlayed < (region1FirstLevel + 20))
+        //{
+        //    SceneManager.LoadScene("Region 2");
+        //}
+        //else if (lastLevelPlayed >= (region1FirstLevel + 20) && lastLevelPlayed < (region1FirstLevel + 30))
+        //{
+        //    SceneManager.LoadScene("Region 3");
+        //}
+        //else if (lastLevelPlayed >= (region1FirstLevel + 30) && lastLevelPlayed < (region1FirstLevel + 40))
+        //{
+        //    SceneManager.LoadScene("Region 4");
+        //}
+        //else if (lastLevelPlayed >= (region1FirstLevel + 40) && lastLevelPlayed < (region1FirstLevel + 50))
+        //{
+        //    SceneManager.LoadScene("Region 5");
+        //}
+        //else if (lastLevelPlayed >= (region1FirstLevel + 50) && lastLevelPlayed < (region1FirstLevel + 60))
+        //{
+        //    SceneManager.LoadScene("Region 6");
+        //}
+        //else if (lastLevelPlayed >= (region1FirstLevel + 60) && lastLevelPlayed < (region1FirstLevel + 70))
+        //{
+        //    SceneManager.LoadScene("Region 7");
+        //}
+        //else if (lastLevelPlayed >= (region1FirstLevel + 70) && lastLevelPlayed < (region1FirstLevel + 80))
+        //{
+        //    SceneManager.LoadScene("Region 8");
+        //}
+        //else if (lastLevelPlayed >= (region1FirstLevel + 80) && lastLevelPlayed < (region1FirstLevel + 90))
+        //{
+        //    SceneManager.LoadScene("Region 9");
+        //}
+        //else
+        //{
+        //    SceneManager.LoadScene("Region 10");
+        //}
     }
 
-    //This should be done now.
     void OnLevelWasLoaded (int level)
     {
         //Playable levels.
