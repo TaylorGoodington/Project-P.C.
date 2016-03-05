@@ -16,6 +16,10 @@ public class UserInterface : MonoBehaviour {
 
     public Animator animator;
 
+    public Text timeText;
+    public Text enemiesDefeatedText;
+    public Text bonusXPText;
+
 
     void Start()
     {
@@ -76,8 +80,22 @@ public class UserInterface : MonoBehaviour {
         GameControl.gameControl.playerHasControl = false;
         animator.Play("EndOfLevel");
 
+        float minutesOriginal = Mathf.Floor(LevelManager.levelManager.levelTime / 60);
+        string minutes = Mathf.Floor(LevelManager.levelManager.levelTime / 60).ToString("00");
+        float secondsOriginal = Mathf.Floor(LevelManager.levelManager.levelTime % 60);
+        string seconds = Mathf.Floor(LevelManager.levelManager.levelTime % 60).ToString("00");
+        string milliSeconds = Mathf.Floor((LevelManager.levelManager.levelTime - (minutesOriginal + secondsOriginal)) * 1000).ToString("000");
+
+        timeText.text = minutes + ":" + seconds + "." + milliSeconds;
+        enemiesDefeatedText.text = LevelManager.levelManager.enemiesDefeated.ToString();
+        bonusXPText.text = (LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1).ToString();
+
         //Level Clear Time.
-        if (GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime > LevelManager.levelManager.levelTime)
+        if (GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime == 0)
+        {
+            GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime = LevelManager.levelManager.levelTime;
+        }
+        else if (GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime > LevelManager.levelManager.levelTime)
         {
             GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime = LevelManager.levelManager.levelTime;
         }
@@ -99,6 +117,12 @@ public class UserInterface : MonoBehaviour {
     public void BackToRegion ()
     {
         LevelManager.levelManager.BackToRegion();
+    }
+
+    //Called by the animator
+    public void SetCameraTarget ()
+    {
+        CameraFollow.cameraFollow.UpdateTarget();
     }
 
     //Called by the animator

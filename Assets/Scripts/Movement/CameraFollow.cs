@@ -48,19 +48,14 @@ public class CameraFollow : MonoBehaviour {
     private float minYCameraClamp;
     private float maxXCameraClamp;
     private float minXCameraClamp;
-
-
-    void Awake()
-    {
-        DontDestroyOnLoad(transform.root.gameObject);
-    }
+    
 
     void Start() {
         cameraFollow = GetComponent<CameraFollow>();
         cameraHeight = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().orthographicSize;
 
         //REMOVE AT THE END OF THE DEVELOPMENT
-        UpdateTarget();
+        //UpdateTarget();
     }
 	
 	public void UpdateTarget () {

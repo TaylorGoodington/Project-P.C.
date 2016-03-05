@@ -39,8 +39,8 @@ public class RegionMap : MonoBehaviour {
     //Call landing zone at the end of the transition in animation.
     public void LandingZone()
     {
-        int lastLevelPlayed = LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1;
-        string lastLevel =(lastLevelPlayed < 10)? "level 0" + lastLevelPlayed : "level " + lastLevelPlayed;
+        int lastLevelPlayed = (LevelManager.levelManager.lastLevelPlayed != 0) ? LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1 : 1;
+        string lastLevel = (lastLevelPlayed < 10)? "Level 0" + lastLevelPlayed : "Level " + lastLevelPlayed;
         
         if (SceneManager.GetActiveScene().name == "Region 1")
         {

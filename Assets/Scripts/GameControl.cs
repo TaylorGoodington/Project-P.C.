@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class GameControl : MonoBehaviour {
 
 	public static GameControl gameControl;
-    public static GameControl thisObject;
+    static GameControl thisObject;
 	
 	//item inventory menu for instantiating.
 	public GameObject itemInventoryMenu;
@@ -124,9 +124,6 @@ public class GameControl : MonoBehaviour {
 		
 		playerSoundEffects.ChangeVolume(PlayerPrefsManager.GetMasterEffectsVolume());
 		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
-
-        //REMOVE AFTER TESTING.
-        AddLevelScores();
     }
 	
 	void Update () {
@@ -246,7 +243,7 @@ public class GameControl : MonoBehaviour {
 	}
 
     //This is really only need for new games but for now we can call it at the begining of every game and just overwrite as needed.
-    void AddLevelScores ()
+    public void AddLevelScores ()
     {
         int numberOfGameLevels = 101;
         for (int i = 0; i < numberOfGameLevels; i++)
@@ -456,10 +453,11 @@ public class GameControl : MonoBehaviour {
 	//**************************************************************************************
 	
 	public void NewGame (int fileNumber) {
-		//do some stuff about initializing here
+        //do some stuff about initializing here
+        ResetNewGameData();
 		
 		//remove this stuff at some point.
-		playerName = "Taylor";
+		playerName = "Taylor" + fileNumber;
 		gameProgress = 27;
 		playerLevel = 27;
 		baseStrength = 1;
@@ -468,10 +466,16 @@ public class GameControl : MonoBehaviour {
 		baseIntelligence = 4;
 		baseHealth = 5;
 		baseMana = 6;
+
         AddLevelScores();
 		
 		SaveFile(fileNumber);
 	}
+
+    public void ResetNewGameData ()
+    {
+        levelScores.Clear();
+    }
 	
 	
 //	public void NewGame1 () {	

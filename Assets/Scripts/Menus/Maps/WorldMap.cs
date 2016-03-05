@@ -35,7 +35,7 @@ public class WorldMap : MonoBehaviour {
             EventSystem.current.SetSelectedGameObject(GameObject.Find(currentSelected.name.ToString()));
             GameControl.gameControl.reSelectMapObject = false;
         }
-
+        
         if (!GameControl.gameControl.AnyOpenMenus() && quitDialogue.activeSelf == false)
         {
             currentSelected = EventSystem.current.currentSelectedGameObject;
@@ -126,6 +126,7 @@ public class WorldMap : MonoBehaviour {
     {
         if (headingToTitleScene)
         {
+            GameControl.gameControl.Save();
             LevelManager.levelManager.LoadLevel("Start");
         }
         else

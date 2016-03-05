@@ -13,10 +13,6 @@ public class PlayerSoundEffects : MonoBehaviour {
 	private bool hasVerticalAxisReset;
 	private bool hasHorizontalAxisReset;
 	
-	void Awake () {
-		//DontDestroyOnLoad (gameObject);
-	}
-	
 	void Start () {
 		playerSoundEffects = GetComponent<PlayerSoundEffects>();
 		audioSource = GetComponent<AudioSource>();

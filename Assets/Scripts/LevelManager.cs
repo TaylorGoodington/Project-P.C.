@@ -123,6 +123,7 @@ public class LevelManager : MonoBehaviour {
     //Checks which region should be selected based on what the last region loaded was.
     public void BackToRegion ()
     {
+        GameControl.gameControl.Save();
         if (lastRegionLoaded == 1)
         {
             SceneManager.LoadScene("Region 1");
