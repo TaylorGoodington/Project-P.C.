@@ -50,10 +50,14 @@ public class ParallaxScrolling : MonoBehaviour {
 			var backgroundTargetPositionY = ((cameraPosition.y - cameraWidth / 4) + (rateOfMovementY * (cameraWidth / 4))) - (cameraPosition.y * (rateOfMovementY));
 			
 			backgrounds[i].position = Vector3.Lerp(
-				backgrounds[i].position, //from
-				new Vector3(backgroundTargetPositionX, Mathf.Clamp (backgroundTargetPositionY, 0, maxBackgroundPositionY), backgrounds[i].position.z), //to
-				smoothing * Time.smoothDeltaTime);
-		}
+                //From:
+				backgrounds[i].position,
+                //To:
+				new Vector3(backgroundTargetPositionX, Mathf.Clamp (backgroundTargetPositionY, 0, maxBackgroundPositionY), backgrounds[i].position.z),
+                //Smoothing:
+				//smoothing * Time.smoothDeltaTime);
+                1);
+    }
 		cameraPosition = transform.position;
 	}
 }

@@ -62,4 +62,10 @@ public class PauseMenu : MonoBehaviour {
         //set exit to selected object
         //need to do something with pause menu levels to make sure back works.
     }
+
+    //Calls navigation sound effect from PlayerSoundEffects.
+    public void PlayNavigationSound ()
+    {
+        PlayerSoundEffects.playerSoundEffects.PlayNavigationSound();
+    }
 }

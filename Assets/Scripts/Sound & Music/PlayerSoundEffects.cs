@@ -9,58 +9,58 @@ public class PlayerSoundEffects : MonoBehaviour {
 	
 	public AudioClip[] soundEffects;
 	private AudioSource audioSource;
-	public string lastObjectName;
-	private bool hasVerticalAxisReset;
-	private bool hasHorizontalAxisReset;
+	//public string lastObjectName;
+	//private bool hasVerticalAxisReset;
+	//private bool hasHorizontalAxisReset;
 	
 	void Start () {
 		playerSoundEffects = GetComponent<PlayerSoundEffects>();
 		audioSource = GetComponent<AudioSource>();
-		lastObjectName = "Start";
-		hasVerticalAxisReset = true;
-		hasHorizontalAxisReset = true;
+		//lastObjectName = "Start";
+		//hasVerticalAxisReset = true;
+		//hasHorizontalAxisReset = true;
 	}
 	
-	void Update () {
-		if (SceneManager.GetActiveScene().buildIndex > 0) {
-			HasDirectionalAxisReset ();
+	//void Update () {
+	//	if (SceneManager.GetActiveScene().buildIndex > 0) {
+	//		HasDirectionalAxisReset ();
 
-			//I will handle all naviagtion noises here so I don't double noise.
-			if (GameControl.gameControl.AnyOpenMenus() == true) {
-				if (Input.GetButtonDown("Cancel")) {
-					PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
-				}
+	//		//I will handle all naviagtion noises here so I don't double noise.
+	//		//if (GameControl.gameControl.AnyOpenMenus() == true) {
+	//		//	if (Input.GetButtonDown("Cancel")) {
+	//		//		PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
+	//		//	}
 				
-				if (IsSelectedObjectDifferent() == true && HasDirectionalInputBeenReceived() == true) {
-					hasVerticalAxisReset = false;
-					hasHorizontalAxisReset = false;
-					PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
-				}
-			}
-		}	
-	}
+	//		//	if (IsSelectedObjectDifferent() == true && HasDirectionalInputBeenReceived() == true) {
+	//		//		hasVerticalAxisReset = false;
+	//		//		hasHorizontalAxisReset = false;
+	//		//		PlaySoundEffect(SoundEffectToArrayInt(SoundEffect.MenuNavigation));
+	//		//	}
+	//		//}
+	//	}	
+	//}
 
-	//Partners with HasDirectionalInputBeenReceived
-	void HasDirectionalAxisReset () {
-		if (Input.GetAxisRaw ("Vertical") < 0.2 && Input.GetAxisRaw ("Vertical") > -0.2 && hasVerticalAxisReset == false) {
-			hasVerticalAxisReset = true;
-		}
-		if (Input.GetAxisRaw ("Horizontal") < 0.2 && Input.GetAxisRaw ("Horizontal") > -0.2 && hasHorizontalAxisReset == false) {
-			hasHorizontalAxisReset = true;
-		}
-	}
+	////Partners with HasDirectionalInputBeenReceived
+	//void HasDirectionalAxisReset () {
+	//	if (Input.GetAxisRaw ("Vertical") < 0.2 && Input.GetAxisRaw ("Vertical") > -0.2 && hasVerticalAxisReset == false) {
+	//		hasVerticalAxisReset = true;
+	//	}
+	//	if (Input.GetAxisRaw ("Horizontal") < 0.2 && Input.GetAxisRaw ("Horizontal") > -0.2 && hasHorizontalAxisReset == false) {
+	//		hasHorizontalAxisReset = true;
+	//	}
+	//}
 	
-	//Strong way to test if there was joystick movement.
-	public bool HasDirectionalInputBeenReceived () {
-		if ((Input.GetButtonDown("Vertical") || ((Input.GetAxisRaw("Vertical") > 0.2 && hasVerticalAxisReset == true) || 
-		                                         (Input.GetAxisRaw("Vertical") < -0.2 && hasVerticalAxisReset == true))) || 
-		    (Input.GetButtonDown("Horizontal") || ((Input.GetAxisRaw("Horizontal") > 0.2 && hasHorizontalAxisReset == true) || 
-												   (Input.GetAxisRaw("Horizontal") < -0.2 && hasHorizontalAxisReset == true)))) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	////Strong way to test if there was joystick movement.
+	//public bool HasDirectionalInputBeenReceived () {
+	//	if ((Input.GetButtonDown("Vertical") || ((Input.GetAxisRaw("Vertical") > 0.2 && hasVerticalAxisReset == true) || 
+	//	                                         (Input.GetAxisRaw("Vertical") < -0.2 && hasVerticalAxisReset == true))) || 
+	//	    (Input.GetButtonDown("Horizontal") || ((Input.GetAxisRaw("Horizontal") > 0.2 && hasHorizontalAxisReset == true) || 
+	//											   (Input.GetAxisRaw("Horizontal") < -0.2 && hasHorizontalAxisReset == true)))) {
+	//		return true;
+	//	} else {
+	//		return false;
+	//	}
+	//}
 	
 	public enum SoundEffect {
 		MenuNavigation,
@@ -95,13 +95,17 @@ public class PlayerSoundEffects : MonoBehaviour {
 	}
 	
 	
-	public bool IsSelectedObjectDifferent () {
-		if (lastObjectName == EventSystem.current.currentSelectedGameObject.name) {
-			return false;
-		} else {
-			lastObjectName = EventSystem.current.currentSelectedGameObject.name;
-			return true;
-		}
-	}
+	//public bool IsSelectedObjectDifferent () {
+	//	if (lastObjectName == EventSystem.current.currentSelectedGameObject.name) {
+	//		return false;
+	//	} else {
+	//		lastObjectName = EventSystem.current.currentSelectedGameObject.name;
+	//		return true;
+	//	}
+	//}
 	
+    public void PlayNavigationSound ()
+    {
+        PlaySoundEffect(1);
+    }
 }
