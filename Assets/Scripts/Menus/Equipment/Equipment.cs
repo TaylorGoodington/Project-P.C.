@@ -7,7 +7,6 @@ public class Equipment {
 	public string equipmentName;
 	public int equipmentID;
 	public string equipmentDescription;
-	public Sprite equipmentIcon;
 	public EquipmentType equipmentType;
 	public EquipmentMaterial equipmentMaterial;
 	public EquipmentSlot equipmentSlot;
@@ -68,7 +67,6 @@ public class Equipment {
 		equipmentID = id;
 		equipmentName = name;
 		equipmentDescription = description;
-		equipmentIcon = Resources.Load<Sprite>("Equipment Icons/" + name);
 		equipmentType = type;
 		equipmentMaterial = material;
 		equipmentSlot = slot;

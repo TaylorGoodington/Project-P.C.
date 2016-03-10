@@ -106,6 +106,7 @@ public class LevelManager : MonoBehaviour {
     {
         Animator initializationAnimator = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<Animator>();
         EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+        GameControl.gameControl.CalculateHealthAndMana(false);
         enemiesDefeated = 0;
         levelTime = 0;
 

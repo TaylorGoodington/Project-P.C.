@@ -60,120 +60,128 @@ public class Player : MonoBehaviour {
 
     void Update()
     {
-        //If a menu is open or the player doesn't have control.
-        if (GameControl.gameControl.AnyOpenMenus() == true || GameControl.gameControl.playerHasControl == false)
+        if (GameControl.gameControl.hp <= 0)
         {
             input = Vector2.zero;
+            GameControl.gameControl.playerHasControl = false;
+            //ToDo Play Death Animation.
         }
-
-        else if (GameControl.gameControl.AnyOpenMenus() == false || GameControl.gameControl.playerHasControl == true)
+        else
         {
-            input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-            int wallDirX = (controller.collisions.left) ? -1 : 1;
-            bool wallSliding = false;
-            if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && controller.isWallJumpable == true)
+            //If a menu is open or the player doesn't have control.
+            if (GameControl.gameControl.AnyOpenMenus() == true || GameControl.gameControl.playerHasControl == false)
             {
-                wallSliding = true;
+                input = Vector2.zero;
+            }
 
-                if (velocity.y < -wallSlideSpeedMax)
+            else if (GameControl.gameControl.AnyOpenMenus() == false || GameControl.gameControl.playerHasControl == true)
+            {
+                input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+                int wallDirX = (controller.collisions.left) ? -1 : 1;
+                bool wallSliding = false;
+                if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && controller.isWallJumpable == true)
                 {
-                    velocity.y = -wallSlideSpeedMax;
-                }
+                    wallSliding = true;
 
-                if (timeToWallUnstick > 0)
-                {
-                    velocityXSmoothing = 0;
-                    velocity.x = 0;
-
-                    if (input.x != wallDirX && input.x != 0)
+                    if (velocity.y < -wallSlideSpeedMax)
                     {
-                        timeToWallUnstick -= Time.deltaTime;
+                        velocity.y = -wallSlideSpeedMax;
+                    }
+
+                    if (timeToWallUnstick > 0)
+                    {
+                        velocityXSmoothing = 0;
+                        velocity.x = 0;
+
+                        if (input.x != wallDirX && input.x != 0)
+                        {
+                            timeToWallUnstick -= Time.deltaTime;
+                        }
+                        else {
+                            timeToWallUnstick = wallStickTime;
+                        }
                     }
                     else {
                         timeToWallUnstick = wallStickTime;
                     }
                 }
-                else {
-                    timeToWallUnstick = wallStickTime;
+
+                //Launching an attack.
+                if (Input.GetButtonDown("Attack") && !isAttacking)
+                {
+                    attackLaunched = true;
                 }
-            }
 
-            //Launching an attack.
-            if (Input.GetButtonDown("Attack") && !isAttacking)
-            {
-                attackLaunched = true;
-            }
-
-            //cant jump if attacking.
+                //cant jump if attacking.
                 if (!isAttacking)
-            {
-                if (Input.GetButtonDown("Jump"))
                 {
-                    if (climbing)
+                    if (Input.GetButtonDown("Jump"))
                     {
-                        velocity.x = controller.collisions.faceDir * wallJumpClimb.x;
-                        velocity.y = wallJumpOff.y;
-                        climbing = false;
-                    }
-
-                    if (wallSliding)
-                    {
-                        if (wallDirX == input.x)
+                        if (climbing)
                         {
-                            velocity.x = -wallDirX * wallJumpClimb.x;
-                            velocity.y = wallJumpClimb.y;
-                        }
-                        else if (input.x == 0)
-                        {
-                            velocity.x = -wallDirX * wallJumpOff.x;
+                            velocity.x = controller.collisions.faceDir * wallJumpClimb.x;
                             velocity.y = wallJumpOff.y;
+                            climbing = false;
                         }
-                        else {
-                            velocity.x = -wallDirX * wallLeap.x;
-                            velocity.y = wallLeap.y;
+
+                        if (wallSliding)
+                        {
+                            if (wallDirX == input.x)
+                            {
+                                velocity.x = -wallDirX * wallJumpClimb.x;
+                                velocity.y = wallJumpClimb.y;
+                            }
+                            else if (input.x == 0)
+                            {
+                                velocity.x = -wallDirX * wallJumpOff.x;
+                                velocity.y = wallJumpOff.y;
+                            }
+                            else {
+                                velocity.x = -wallDirX * wallLeap.x;
+                                velocity.y = wallLeap.y;
+                            }
+                        }
+                        if (controller.collisions.below)
+                        {
+                            velocity.y = maxJumpVelocity;
                         }
                     }
-                    if (controller.collisions.below)
+                    if (Input.GetButtonUp("Jump"))
                     {
-                        velocity.y = maxJumpVelocity;
+                        if (velocity.y > minJumpVelocity)
+                        {
+                            velocity.y = minJumpVelocity;
+                        }
                     }
                 }
-                if (Input.GetButtonUp("Jump"))
+
+                //climbing stuff
+                if (isClimbable)
                 {
-                    if (velocity.y > minJumpVelocity)
+                    if (Input.GetButtonDown("Interact"))
                     {
-                        velocity.y = minJumpVelocity;
+                        climbing = true;
+                        velocity.y = 0;
                     }
                 }
             }
 
-            //climbing stuff
-            if (isClimbable)
+
+            //flips sprite depending on direction facing.
+            if (controller.collisions.faceDir == 1)
             {
-                if (Input.GetButtonDown("Interact"))
-                {
-                    climbing = true;
-                    velocity.y = 0;
-                }
+                gameObject.GetComponent<SpriteRenderer>().flipX = false;
             }
-        }
+            else
+            {
+                gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            }
 
-
-        //flips sprite depending on direction facing.
-        if (controller.collisions.faceDir == 1)
-        {
-            gameObject.GetComponent<SpriteRenderer>().flipX = false;
-        }
-        else
-        {
-            gameObject.GetComponent<SpriteRenderer>().flipX = true;
-        }
-
-        //cant move if attacking.
-        if (isAttacking)
-        {
-            input = Vector2.zero;
-        }
+            //cant move if attacking.
+            if (isAttacking)
+            {
+                input = Vector2.zero;
+            }
 
             //Animation Call Section
             if (climbingUp)
@@ -215,33 +223,34 @@ public class Player : MonoBehaviour {
             }
 
 
-        float targetVelocityX = input.x * moveSpeed;
-        velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+            float targetVelocityX = input.x * moveSpeed;
+            velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
 
 
-        if (climbing)
-        {
-            gravity = 0;
-            velocity.y = input.y * climbSpeed;
-            velocity.x = input.x * climbSpeed;
-
-            if (climbingUp)
+            if (climbing)
             {
-                velocity = Vector3.zero;
-                Invoke("MovePlayerWhenClimbingUp", 0.125f);
+                gravity = 0;
+                velocity.y = input.y * climbSpeed;
+                velocity.x = input.x * climbSpeed;
+
+                if (climbingUp)
+                {
+                    velocity = Vector3.zero;
+                    Invoke("MovePlayerWhenClimbingUp", 0.125f);
+                }
             }
-        }
-        else {
-            gravity = -1000;
-            velocity.y += gravity * Time.deltaTime;
-        }
+            else {
+                gravity = -1000;
+                velocity.y += gravity * Time.deltaTime;
+            }
 
-        controller.Move(velocity * Time.deltaTime, input);
+            controller.Move(velocity * Time.deltaTime, input);
 
-        if (controller.collisions.above || controller.collisions.below)
-        {
-            velocity.y = 0;
+            if (controller.collisions.above || controller.collisions.below)
+            {
+                velocity.y = 0;
+            }
         }
     }
 
@@ -309,7 +318,7 @@ public class Player : MonoBehaviour {
     //I think I will need to pass the collider being hit to the attacking function.
 	public void Attack () {
 		float directionX = controller.collisions.faceDir;
-		float rayLength = 100f; //make each weapon have a length component?
+		float rayLength = 50f; //make each weapon have a length component?
 		float rayOriginX = playerCollider.bounds.max.x + 0.01f; //defined as the edge of the collider.
 		float rayOriginY = playerCollider.bounds.center.y; //defined as the center of the collider.
 		Vector2 rayOrigin = new Vector2 (rayOriginX, rayOriginY);

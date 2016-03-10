@@ -91,6 +91,9 @@ public class GameControl : MonoBehaviour {
 	
 	public bool reSelectMapObject;
 
+    public float hpRatio;
+    public float mpRatio;
+
 	void Awake () {
         if (thisObject != null)
         {
@@ -114,13 +117,6 @@ public class GameControl : MonoBehaviour {
 		mainMenuLevel = 0;
 		mainMenuDeleteLevel = 0;
 		mainMenuCopyLevel = 0;
-		
-		playerClass = 7;
-		equippedWeapon = 80;
-		equippedHead = 5;
-		equippedChest = 6;
-		equippedPants = 7;
-		equippedFeet = 8;
 		
 		playerSoundEffects.ChangeVolume(PlayerPrefsManager.GetMasterEffectsVolume());
 		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
@@ -299,6 +295,21 @@ public class GameControl : MonoBehaviour {
 			playerClass = classIndex;
 		}
 	}
+
+    //HP & MP
+    public void CalculateHealthAndMana (bool resetFromEquipment)
+    {
+        if (resetFromEquipment)
+        {
+            hp = Mathf.FloorToInt(currentHealth * hpRatio);
+            mp = Mathf.FloorToInt(currentMana * mpRatio);
+        }
+        else
+        {
+            hp = currentHealth;
+            mp = currentMana;
+        }
+    }
 	
 	
 	//**************************************************************************************//
@@ -308,7 +319,7 @@ public class GameControl : MonoBehaviour {
 	
 	public void Save () {
 		BinaryFormatter binaryFormatter = new BinaryFormatter ();
-		FileStream saveFile = File.Create (Application.persistentDataPath + "/playerInfo" + PlayerPrefsManager.GetGameFile() + ".dat"); //Its possible gameNumber might need to be pased to the mehod.
+		FileStream saveFile = File.Create (Application.persistentDataPath + "/playerInfo" + PlayerPrefsManager.GetGameFile() + ".dat");
 		
 		PlayerData playerData = new PlayerData ();
 		
@@ -460,12 +471,26 @@ public class GameControl : MonoBehaviour {
 		playerName = "Taylor" + fileNumber;
 		gameProgress = 27;
 		playerLevel = 27;
-		baseStrength = 1;
+		baseStrength = 20;
 		baseDefense = 2;
 		baseSpeed = 3;
 		baseIntelligence = 4;
 		baseHealth = 5;
 		baseMana = 6;
+
+        currentStrength = 5;
+        currentDefense = 5;
+        currentSpeed = 5;
+        currentIntelligence = 5;
+        currentHealth = 5;
+        currentMana = 5;
+
+        playerClass = 7;
+        equippedWeapon = 80;
+        equippedHead = 5;
+        equippedChest = 6;
+        equippedPants = 7;
+        equippedFeet = 8;
 
         AddLevelScores();
 		
@@ -475,6 +500,8 @@ public class GameControl : MonoBehaviour {
     public void ResetNewGameData ()
     {
         levelScores.Clear();
+        itemInventoryList.Clear();
+        equipmentInventoryList.Clear();
     }
 	
 	
@@ -590,7 +617,7 @@ class PlayerData {
 	
 	public List<Items> itemInventoryList;
 	public List<Equipment> equipmentInventoryList;
-    //	public List<Weapons> weaponInventoryList;
+    //public List<Weapons> weaponInventoryList;
     public List<LevelScores> levelScores;
 
 	public int currentStrength;

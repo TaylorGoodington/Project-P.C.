@@ -14,9 +14,6 @@ public class SkillsController : MonoBehaviour {
         skillsDatabase = GetComponent<SkillsDatabase>();
     }
 
-    void Update() {
-    }
-
     //this is for sorting any list by group number....Not sure if it will work.
     static int SortByGroupNumber(Skills skill1, Skills skill2) {
         return skill1.groupNumber.CompareTo(skill2.groupNumber);
@@ -34,7 +31,7 @@ public class SkillsController : MonoBehaviour {
         }
     }
 
-    public void ActivateCurrentPhaseAbilities(Skills.TriggerPhase triggerPhase)
+    public void ActivatePlayerAbilities(Skills.TriggerPhase triggerPhase)
     {
         int currentGroupNumber = 0;
         int triggeringSkill = 0;
@@ -102,11 +99,71 @@ public class SkillsController : MonoBehaviour {
         }
     }
 
-    public void ActivatePassiveAbility() { }
+    public void ActivatePassiveAbility()
+    {
 
-    //I think skills should have another key that allows me to add skills of the same together in the active skills list. So an example could be
-    // dodge 1, 2, & 3 which have different names and different IDs, but the same group number. So the method will check if a skill in that group
-    // exists and the trigger rates.
+    }
 
-    //I need to have a few different damage methods. The first will be a damage that can be avoided, the second will be a damage that cant be avoided.
+    public void ActivateEnemyAbilities (Skills.TriggerPhase trigger, Collider2D collider)
+    {
+        int currentGroupNumber = 0;
+        int triggeringSkill = 0;
+        float triggeringSkillRate = 0;
+        List<Skills> acquiredSkillsList = collider.GetComponent<EnemyStats>().acquiredSkillsList;
+        List<Skills> activeSkillsList = collider.GetComponent<EnemyStats>().activeSkillsList;
+
+        acquiredSkillsList.Sort(SortByGroupNumber);
+        foreach (Skills skill in acquiredSkillsList)
+        {
+            if (skill.triggerPhase == trigger)
+            {
+                //the first if statement needs to check if the ability is the last in the list. If it is check the if below.
+                if (skill.skillID == activeSkillsList.Last().skillID)
+                {
+                    //New skill, new group number.
+                    if (!activeSkillsList.Contains(skill) && skill.groupNumber != currentGroupNumber)
+                    {
+                        CheckIfSkillTriggers(triggeringSkill, triggeringSkillRate);
+
+                        currentGroupNumber = skill.groupNumber;
+                        triggeringSkill = skill.skillID;
+                        triggeringSkillRate = skill.triggerRate;
+
+                        CheckIfSkillTriggers(triggeringSkill, triggeringSkillRate);
+                    }
+                    //New skill, same group number.
+                    else if (!activeSkillsList.Contains(skill) && skill.groupNumber == currentGroupNumber)
+                    {
+                        triggeringSkillRate += skill.triggerRate;
+                        CheckIfSkillTriggers(triggeringSkill, triggeringSkillRate);
+                    }
+                }
+                else {
+
+                    //New skill, new group number.
+                    if (!activeSkillsList.Contains(skill) && skill.groupNumber != currentGroupNumber)
+                    {
+                        CheckIfSkillTriggers(triggeringSkill, triggeringSkillRate);
+
+                        currentGroupNumber = skill.groupNumber;
+                        triggeringSkill = skill.skillID;
+                        triggeringSkillRate = skill.triggerRate;
+                    }
+                    //New skill, same group number.
+                    else if (!activeSkillsList.Contains(skill) && skill.groupNumber == currentGroupNumber)
+                    {
+                        triggeringSkillRate += skill.triggerRate;
+                    }
+                    else
+                    {
+                        CheckIfSkillTriggers(triggeringSkill, triggeringSkillRate);
+
+                        currentGroupNumber = 0;
+                        triggeringSkill = 0;
+                        triggeringSkillRate = 0;
+                    }
+                }
+            }
+        }
+    }
 }

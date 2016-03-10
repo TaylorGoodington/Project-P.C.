@@ -114,7 +114,7 @@ public class WorldMap : MonoBehaviour {
         animator.Play("Transition In");
     }
 
-    public void TransitionFromWorldMap ()
+    public void TransitionFromWorldMap () //ADD NOT BEING ABLE TO IF LEVELS ARENT UNLOCKED....PLAY CONFIRM/DENIED SOUNDS HERE....
     {
         GameControl.gameControl.playerHasControl = false;
         quitDialogue.SetActive(false);

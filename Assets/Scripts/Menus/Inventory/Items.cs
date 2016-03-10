@@ -7,7 +7,6 @@ public class Items {
 	public string itemName;
 	public int itemID;
 	public string itemDescription;
-	public Sprite itemIcon;
 	public ItemType itemType;
 	public ItemTarget itemTarget;
 	public ItemUseOcassion itemUseOcassion;
@@ -41,7 +40,6 @@ public class Items {
 		itemID = id;
 		itemName = name;
 		itemDescription = description;
-		itemIcon = Resources.Load<Sprite>("Item Icons/" + name);
 		itemType = type;
 		itemTarget = target;
 		itemUseOcassion = useOcassion;

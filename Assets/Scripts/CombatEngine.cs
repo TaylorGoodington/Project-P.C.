@@ -10,7 +10,7 @@ public class CombatEngine : MonoBehaviour {
     public int maxCombos;
     public int comboCount;
 
-    private float maxIntelligence = 100;
+    private float maxIntelligence = 100; //ToDo UPDATE AT SOME POINT
     private float maxNakedCritRate = 25;
     //private float maxAgility = 100;
     //private float maxNakedDodgeRate = 25;
@@ -19,10 +19,6 @@ public class CombatEngine : MonoBehaviour {
 
     void Start () {
 		combatEngine = GetComponent<CombatEngine>();
-	}
-	
-	void Update () {
-	
 	}
 
     public void CalculateSecondaryStats() {
@@ -60,22 +56,42 @@ public class CombatEngine : MonoBehaviour {
         }
     }
 
-    public bool AttackingPhase (Collider2D collider) {
-        //float playerMissRate = 0; //We aren't using this right now.
-        //float enemyDodgeRate = 0; //We aren't using this right now.
-        SkillsController.skillsController.ActivateCurrentPhaseAbilities(Skills.TriggerPhase.Attacking);
+    public bool AttackingPhase (Collider2D collider, Attacker attacker) {
+        if (attacker == Attacker.Player)
+        {
+            SkillsController.skillsController.ActivatePlayerAbilities(Skills.TriggerPhase.Attacking);
+            SkillsController.skillsController.ActivateEnemyAbilities(Skills.TriggerPhase.BeingAttacked, collider);
+        }
+        else
+        {
+            SkillsController.skillsController.ActivatePlayerAbilities(Skills.TriggerPhase.BeingAttacked);
+            SkillsController.skillsController.ActivateEnemyAbilities(Skills.TriggerPhase.Attacking, collider);
+        }
         return true;
     }
 
-    public bool HittingPhase(Collider2D collider) {
-        SkillsController.skillsController.ActivateCurrentPhaseAbilities(Skills.TriggerPhase.Hitting);
-        return true;
-    }
-
-    public bool DealingDamagePhase(Collider2D collider)
+    public bool HittingPhase(Collider2D collider, Attacker attacker)
     {
-        float enemyDefense = 0; //Initialize after enemy defense is understood.
-        SkillsController.skillsController.ActivateCurrentPhaseAbilities(Skills.TriggerPhase.DealingDamage);
+        if (attacker == Attacker.Player)
+        {
+            SkillsController.skillsController.ActivatePlayerAbilities(Skills.TriggerPhase.Hitting);
+            SkillsController.skillsController.ActivateEnemyAbilities(Skills.TriggerPhase.BeingHit, collider);
+        }
+        else
+        {
+            SkillsController.skillsController.ActivatePlayerAbilities(Skills.TriggerPhase.BeingHit);
+            SkillsController.skillsController.ActivateEnemyAbilities(Skills.TriggerPhase.Hitting, collider);
+        }
+        return true;
+    }
+
+    public bool DealingDamageToEnemyPhase(Collider2D collider)
+    {
+        int enemyDefense = collider.gameObject.GetComponent<EnemyStats>().defense;
+
+        SkillsController.skillsController.ActivatePlayerAbilities(Skills.TriggerPhase.DealingDamage);
+        SkillsController.skillsController.ActivateEnemyAbilities(Skills.TriggerPhase.BeingDamaged, collider);
+
         CalculateAttackDamage();
         CalculateSecondaryStats();
 
@@ -89,7 +105,26 @@ public class CombatEngine : MonoBehaviour {
 
         if ((attackDamage - enemyDefense) > 0)
         {
-            //Change the enemies HP.
+            collider.gameObject.GetComponent<EnemyStats>().hP -= (attackDamage - enemyDefense);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool DealingDamageToPlayerPhase (Collider2D collider)
+    {
+        int playerDefense = GameControl.gameControl.currentDefense;
+        int enemyAttackDamage = collider.gameObject.GetComponent<EnemyStats>().attackDamage;
+
+        SkillsController.skillsController.ActivatePlayerAbilities(Skills.TriggerPhase.BeingDamaged);
+        SkillsController.skillsController.ActivateEnemyAbilities(Skills.TriggerPhase.DealingDamage, collider);
+
+        if ((enemyAttackDamage - playerDefense) > 0)
+        {
+            GameControl.gameControl.hp -= (enemyAttackDamage - playerDefense);
             return true;
         }
         else
@@ -99,13 +134,13 @@ public class CombatEngine : MonoBehaviour {
     }
 	
 	public void AttackingEnemies (Collider2D collider) {
-        if (AttackingPhase(collider))
+        if (AttackingPhase(collider, Attacker.Player))
         {
             Debug.Log("The Attack Has Hit!");
-            if (HittingPhase(collider))
+            if (HittingPhase(collider, Attacker.Player))
             {
                 Debug.Log("The Hit Can Deal Damage!");
-                if (DealingDamagePhase(collider))
+                if (DealingDamageToEnemyPhase(collider))
                 {
                     Debug.Log("Damage Delt!");
                 }
@@ -118,4 +153,27 @@ public class CombatEngine : MonoBehaviour {
             SkillsController.skillsController.ClearAttackingCombatTriggeredAbilitiesFromList();
         }
 	}
+
+    //The collider being passed here is actually the enemy attacker, since we would have no other way of knowing which one it was.
+    public void AttackingPlayer (Collider2D collider)
+    {
+        if (AttackingPhase(collider, Attacker.Enemy))
+        {
+            Debug.Log("The Attack Has Hit!");
+            if (HittingPhase(collider, Attacker.Enemy))
+            {
+                Debug.Log("The Hit Can Deal Damage!");
+                if (DealingDamageToPlayerPhase(collider))
+                {
+                    Debug.Log("Damage Delt!");
+                }
+            }
+        }
+    }
+
+    public enum Attacker
+    {
+        Player,
+        Enemy
+    }
 }

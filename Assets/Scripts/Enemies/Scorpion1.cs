@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(Controller2D))]
 [RequireComponent(typeof(EnemyStats))]
@@ -90,6 +89,7 @@ public class Scorpion1 : MonoBehaviour
         chaseTime = stats.chaseTime;
         jumpHeight = stats.jumpHeight;
         pivotTime = stats.pivotTime;
+        AddSkills();
 
         controller = GetComponent<Controller2D>();
         enemyAnimationController = GetComponent<Animator>();
@@ -129,101 +129,120 @@ public class Scorpion1 : MonoBehaviour
         CalculateJumpCollders();
     }
 
+    //Add Skills Here
+    private void AddSkills ()
+    {
+        stats.acquiredSkillsList.Add(SkillsDatabase.skillsDatabase.skills[0]);
+    }
+
     void Update()
     {
-        Vector2 input = new Vector2(0, 0);
-        
-        //flips sprite depending on direction facing.
-        if (controller.collisions.faceDir == -1)
+        //Checks for death.
+        if (stats.hP <= 0)
         {
-            gameObject.GetComponent<SpriteRenderer>().flipX = false;
-            eyePositionLeft = new Vector2(transform.position.x - eyePositionModifierX, transform.position.y + eyePositionModifierY);
-            eyePosition = eyePositionLeft;
-            jumpPoints.transform.localScale = new Vector3(1, 1, 1);
-            freeFallPoints.transform.localScale = new Vector3(1, 1, 1);
+            velocity.x = 0;
+            enemyAnimationController.Play("Scorpion1Death");
         }
+        //not dead!
         else
         {
-            gameObject.GetComponent<SpriteRenderer>().flipX = true;
-            eyePositionRight = new Vector2(transform.position.x + eyePositionModifierX, transform.position.y + eyePositionModifierY);
-            eyePosition = eyePositionRight;
-            jumpPoints.transform.localScale = new Vector3(-1, 1, 1);
-            freeFallPoints.transform.localScale = new Vector3(-1, 1, 1);
-        }
+            Vector2 input = new Vector2(0, 0);
 
-        //cant move if attacking.
-        if (isAttacking)
-        {
-            input = Vector2.zero;
-        }
-
-        //Creates a patrol path when we are on the ground.
-        if(velocity.y == 0)
-        {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, (enemyCollider.size.y / 2) + 5, patrolMask);
-            if (hit)
+            //flips sprite depending on direction facing.
+            if (controller.collisions.faceDir == -1)
             {
-                CreatePatrolPath();
+                gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                eyePositionLeft = new Vector2(transform.position.x - eyePositionModifierX, transform.position.y + eyePositionModifierY);
+                eyePosition = eyePositionLeft;
+                jumpPoints.transform.localScale = new Vector3(1, 1, 1);
+                freeFallPoints.transform.localScale = new Vector3(1, 1, 1);
             }
-        }
-
-        //trigger for entering chase mode.
-        if(playerDetection.playerInRadius && state == EnemyState.Patroling)
-        {
-            if (OriginalLineOfSight())
+            else
             {
-                state = EnemyState.Chasing;
-                ResetEngagementCountDown();
+                gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                eyePositionRight = new Vector2(transform.position.x + eyePositionModifierX, transform.position.y + eyePositionModifierY);
+                eyePosition = eyePositionRight;
+                jumpPoints.transform.localScale = new Vector3(-1, 1, 1);
+                freeFallPoints.transform.localScale = new Vector3(-1, 1, 1);
             }
-        }
 
-        //Attacking
-        if (state == EnemyState.Attacking)
-        {
-            //This is where we would call the animator to attack.
-
-            if (!InAttackRange())
+            //cant move if attacking.
+            if (isAttacking)
             {
-                state = EnemyState.Chasing;
+                input = Vector2.zero;
             }
-        }
 
-        //Chasing
-        if (state == EnemyState.Chasing)
-        {
-            Chasing ();
+            //Creates a patrol path when we are on the ground.
+            if (velocity.y == 0)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, (enemyCollider.size.y / 2) + 5, patrolMask);
+                if (hit)
+                {
+                    CreatePatrolPath();
+                }
+            }
 
-            gravity = -1000;
-            velocity.y += gravity * Time.deltaTime;
-            controller.Move(velocity * Time.deltaTime, input);
-        }
+            //trigger for entering chase mode.
+            if (playerDetection.playerInRadius && state == EnemyState.Patroling)
+            {
+                if (OriginalLineOfSight())
+                {
+                    state = EnemyState.Chasing;
+                    ResetEngagementCountDown();
+                }
+            }
+
+            //Attacking
+            if (state == EnemyState.Attacking)
+            {
+                //This is where we would call the animator to attack.
+                if (!InAttackRange())
+                {
+                    state = EnemyState.Chasing;
+                }
+                else
+                {
+                    //Play attack animation....
+                }
+            }
+
+            //Chasing
+            if (state == EnemyState.Chasing)
+            {
+                Chasing();
+
+                gravity = -1000;
+                velocity.y += gravity * Time.deltaTime;
+                controller.Move(velocity * Time.deltaTime, input);
+            }
 
 
-        //Investigating
-        if (state == EnemyState.Investigating)
-        {
-            Investigating();
+            //Investigating
+            if (state == EnemyState.Investigating)
+            {
+                Investigating();
 
-            gravity = -1000;
-            velocity.y += gravity * Time.deltaTime;
-            controller.Move(velocity * Time.deltaTime, input);
-        }
-
-
-        //Patroling
-        if (state == EnemyState.Patroling)
-        {
-            Patrolling();
-
-            gravity = -1000;
-            velocity.y += gravity * Time.deltaTime;
-            controller.Move(velocity * Time.deltaTime, input);
-        }
+                gravity = -1000;
+                velocity.y += gravity * Time.deltaTime;
+                controller.Move(velocity * Time.deltaTime, input);
+            }
 
 
-        if (controller.collisions.above || controller.collisions.below)
-        {
-            velocity.y = 0;
+            //Patroling
+            if (state == EnemyState.Patroling)
+            {
+                Patrolling();
+
+                gravity = -1000;
+                velocity.y += gravity * Time.deltaTime;
+                controller.Move(velocity * Time.deltaTime, input);
+            }
+
+
+            if (controller.collisions.above || controller.collisions.below)
+            {
+                velocity.y = 0;
+            }
         }
     }
 
@@ -1220,10 +1239,10 @@ public class Scorpion1 : MonoBehaviour
     }
     
     //Check to see if we are close enough to enter attack mode.
-    public bool InAttackRange () //CHANGE RAY LENGTH 
+    public bool InAttackRange () 
     {
         float directionX = controller.collisions.faceDir;
-        float rayLength = 10f;
+        float rayLength = stats.attackRange;
         float rayOriginX = enemyCollider.bounds.center.x;
         float rayOriginY = enemyCollider.bounds.center.y;
         Vector2 rayOrigin = new Vector2(rayOriginX, rayOriginY);
@@ -1240,29 +1259,30 @@ public class Scorpion1 : MonoBehaviour
         return false;
     }
 
-    //I think I will need to pass the collider being hit to the attacking function.
+    //Called from the animator.
     public void Attack()
     {
         float directionX = controller.collisions.faceDir;
-        float rayLength = 100f; //make each weapon have a length component?
-        float rayOriginX = enemyCollider.bounds.max.x + 0.01f; //defined as the edge of the collider.
-        float rayOriginY = enemyCollider.bounds.center.y; //defined as the center of the collider.
+        float rayLength = stats.attackRange;
+        float rayOriginX = (directionX == 1) ? enemyCollider.bounds.max.x + 0.01f : enemyCollider.bounds.min.x - 0.01f;
+        float rayOriginY = enemyCollider.bounds.center.y;
         Vector2 rayOrigin = new Vector2(rayOriginX, rayOriginY);
 
         RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, attackingLayer);
-        //Layer 14 is currently the enemies layer.
+        //Layer 9 is currently the players layer.
         if (hit)
         {
             if (hit.collider.gameObject.layer == 9)
             {
-                CombatEngine.combatEngine.AttackingEnemies(hit.collider);
+                CombatEngine.combatEngine.AttackingPlayer(this.GetComponent<Collider2D>());
             }
         }
     }
 
     //When the enemy dies.
-    public void EnemyDefeated () //NEEDS WORK
+    public void EnemyDefeated () //ToDo NEEDS WORK
     {
         LevelManager.levelManager.enemiesDefeated += 1;
+        Destroy(this.gameObject);
     }
 }

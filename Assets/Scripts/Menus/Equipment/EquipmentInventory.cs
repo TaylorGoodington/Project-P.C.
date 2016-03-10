@@ -395,7 +395,7 @@ public class EquipmentInventory : MonoBehaviour {
 		displayEquipmentName.text = equipmentDatabase.equipment [newEquipmentID].equipmentName;
 		displayEquipmentDescription.text = equipmentDatabase.equipment [newEquipmentID].equipmentDescription;
 		displayEquipmentIcon.color = Color.white;
-		displayEquipmentIcon.sprite = equipmentDatabase.equipment [newEquipmentID].equipmentIcon;
+		displayEquipmentIcon.sprite = Resources.Load<Sprite>("Equipment Icons/" + equipmentDatabase.equipment [newEquipmentID].equipmentName);
 		displayEquipmentType.text = equipmentDatabase.equipment [newEquipmentID].equipmentType.ToString();
 		displayEquipmentMaterial.text = equipmentDatabase.equipment [newEquipmentID].equipmentMaterial.ToString();
 			
@@ -567,8 +567,8 @@ public class EquipmentInventory : MonoBehaviour {
 			
 			displayEquipmentDescription.text = equipmentDatabase.equipment [newEquipmentID].equipmentDescription;
 			displayEquipmentIcon.color = Color.white;
-			displayEquipmentIcon.sprite = equipmentDatabase.equipment [newEquipmentID].equipmentIcon;
-			displayEquipmentType.text = equipmentDatabase.equipment [newEquipmentID].equipmentType.ToString();
+			displayEquipmentIcon.sprite = Resources.Load<Sprite>("Equipment Icons/" + equipmentDatabase.equipment[newEquipmentID].equipmentName);
+            displayEquipmentType.text = equipmentDatabase.equipment [newEquipmentID].equipmentType.ToString();
 			displayEquipmentMaterial.text = equipmentDatabase.equipment [newEquipmentID].equipmentMaterial.ToString();
 			
 			//Stat Info Change Section 
@@ -756,7 +756,10 @@ public class EquipmentInventory : MonoBehaviour {
 	}
 	
 	public void UpdateEquippedStats () {
-		gameControl.currentStrength = gameControl.baseStrength + equipmentDatabase.equipment[gameControl.equippedHead].equipmentStrength +
+        GameControl.gameControl.hpRatio = GameControl.gameControl.hp / GameControl.gameControl.currentHealth;
+        GameControl.gameControl.mpRatio = GameControl.gameControl.mp / GameControl.gameControl.currentMana;
+
+        gameControl.currentStrength = gameControl.baseStrength + equipmentDatabase.equipment[gameControl.equippedHead].equipmentStrength +
 																 equipmentDatabase.equipment[gameControl.equippedChest].equipmentStrength +
 																 equipmentDatabase.equipment[gameControl.equippedWeapon].equipmentStrength +
 																 equipmentDatabase.equipment[gameControl.equippedPants].equipmentStrength +
@@ -786,6 +789,8 @@ public class EquipmentInventory : MonoBehaviour {
 														 equipmentDatabase.equipment[gameControl.equippedWeapon].equipmentMana +
 														 equipmentDatabase.equipment[gameControl.equippedPants].equipmentMana +
 														 equipmentDatabase.equipment[gameControl.equippedFeet].equipmentMana;
+
+        GameControl.gameControl.CalculateHealthAndMana(true);
 	}
 	
 	

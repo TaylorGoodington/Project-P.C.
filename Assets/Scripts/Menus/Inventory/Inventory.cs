@@ -48,11 +48,6 @@ public class Inventory : MonoBehaviour {
 	private GameObject useItemVerificationCanvas;
 	private GameObject destroyItemVerificationCanvas;
 	
-	
-	void Awake () {
-		//DontDestroyOnLoad (gameObject);
-	}
-	
 	void Start () {
         inventory = GetComponent<Inventory>();
 		gameControl = GameObject.FindObjectOfType<GameControl>();
@@ -242,7 +237,7 @@ public class Inventory : MonoBehaviour {
 				
 			displayItemDescription.text = itemDatabase.items [newItemID].itemDescription;
 			displayItemIcon.color = Color.white;
-			displayItemIcon.sprite = itemDatabase.items [newItemID].itemIcon;
+			displayItemIcon.sprite = Resources.Load<Sprite>("Item Icons/" + itemDatabase.items [newItemID].itemName);
 			displayItemType.text = itemDatabase.items [newItemID].itemType.ToString();
 		}
 	}

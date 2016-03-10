@@ -163,7 +163,7 @@ public class RegionMap : MonoBehaviour {
     }
 
     //Called by the animator
-    public void TransitionFromRegionMap()
+    public void TransitionFromRegionMap() //ADD NOT BEING ABLE TO IF LEVELS ARENT UNLOCKED....PLAY CONFIRM/DENIED SOUNDS HERE....
     {
         GameControl.gameControl.playerHasControl = false;
         CloseQuitDialogue();

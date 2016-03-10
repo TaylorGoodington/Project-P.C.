@@ -39,7 +39,7 @@ public class Skills {
         DealingDamage,
         BeingAttacked,
         BeingHit,
-        BeginDamaged,
+        BeingDamaged,
         OnCast
     }
 
