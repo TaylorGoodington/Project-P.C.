@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -19,6 +20,8 @@ public class UserInterface : MonoBehaviour {
     public Text timeText;
     public Text enemiesDefeatedText;
     public Text bonusXPText;
+
+    public List<Equipment> receivedEquipment;
 
 
     void Start()
@@ -61,7 +64,7 @@ public class UserInterface : MonoBehaviour {
         }
         else
         {
-            manaBar.value = GameControl.gameControl.currentMana / GameControl.gameControl.mp;
+            manaBar.value = (GameControl.gameControl.mp * 1f) / (GameControl.gameControl.currentMana * 1f);
         }
 
         //Health Bar
@@ -71,7 +74,7 @@ public class UserInterface : MonoBehaviour {
         }
         else
         {
-            healthBar.value = GameControl.gameControl.currentHealth / GameControl.gameControl.hp;
+            healthBar.value = (GameControl.gameControl.hp * 1f) / (GameControl.gameControl.currentHealth * 1f);
         }
     }
 
@@ -147,5 +150,36 @@ public class UserInterface : MonoBehaviour {
     public void RunTheClock ()
     {
         LevelManager.levelManager.levelTime += Time.deltaTime;
+    }
+
+    //Called when enemies are defeated.
+    public void ReceiveXP (int xp)
+    {
+        //play animation for receiving xp.
+    }
+
+    public void CallReceiveEquipment()
+    {
+        StartCoroutine(ReceiveEquipment());
+    }
+
+    //Called when enemies are defeated.
+    public IEnumerator ReceiveEquipment ()
+    {
+        foreach (Equipment equipment in receivedEquipment)
+        {
+            //Change UI equipment info.
+            //play animation for receiving items and equipment.
+            if (GameControl.gameControl.equipmentInventoryList.Contains(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]))
+            {
+                int index = GameControl.gameControl.equipmentInventoryList.IndexOf(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]);
+                GameControl.gameControl.equipmentInventoryList[index].quantity++;
+            }
+            else {
+                GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]);
+            }
+            Debug.Log(equipment.equipmentName);
+            yield return new WaitForSeconds(1);
+        }
     }
 }

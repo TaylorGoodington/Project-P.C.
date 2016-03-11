@@ -63,6 +63,7 @@ public class Player : MonoBehaviour {
         if (GameControl.gameControl.hp <= 0)
         {
             input = Vector2.zero;
+            //gravity = 0;
             GameControl.gameControl.playerHasControl = false;
             //ToDo Play Death Animation.
         }
@@ -271,7 +272,13 @@ public class Player : MonoBehaviour {
             UserInterface uI = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>();
             uI.EndOfLevel();
         }
-	}
+
+        //Falling off the world
+        if (collider.gameObject.layer == 19)
+        {
+            GameControl.gameControl.hp = 0;
+        }
+    }
 	
 	//this will be used to gauge interactions...I might need to do these things in the climbable script.
 	public void OnTriggerExit2D (Collider2D collider) {
@@ -285,7 +292,6 @@ public class Player : MonoBehaviour {
         climbingUpPosition = collider.bounds.max.y;
         climbingUp = true;
     }
-	
 	
 	//called from attacking animation at the begining and end.
 	public void IsAttacking () {
@@ -314,8 +320,6 @@ public class Player : MonoBehaviour {
     }
 	
 	//called from the animations for attacking.
-    
-    //I think I will need to pass the collider being hit to the attacking function.
 	public void Attack () {
 		float directionX = controller.collisions.faceDir;
 		float rayLength = 50f; //make each weapon have a length component?

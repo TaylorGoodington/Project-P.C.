@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 
 public class CombatEngine : MonoBehaviour {
+
+    //ToDo Talk about players having dodge & parry type skills. Add the reduction in taking damage to the engine.
 	
 	public static CombatEngine combatEngine;
     public int attackDamage;

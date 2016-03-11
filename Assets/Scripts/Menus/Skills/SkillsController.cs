@@ -93,7 +93,7 @@ public class SkillsController : MonoBehaviour {
     }
 
     public void CheckIfSkillTriggers(int skillID, float triggerRate) {
-        int randomNumber = Random.Range(0, 100);
+        int randomNumber = Random.Range(0, 101);
         if (randomNumber > triggerRate) {
             activeSkills.Add(skillsDatabase.skills[skillID]);
         }

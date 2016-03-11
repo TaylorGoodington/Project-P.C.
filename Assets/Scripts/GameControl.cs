@@ -50,6 +50,7 @@ public class GameControl : MonoBehaviour {
 //	this needs to be saved.
 	public int hp;
 	public int mp;
+    public int xp;
 	
 	public int currentStrength;
 	public int currentDefense;

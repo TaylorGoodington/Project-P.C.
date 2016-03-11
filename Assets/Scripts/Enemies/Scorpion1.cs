@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Controller2D))]
 [RequireComponent(typeof(EnemyStats))]
@@ -90,6 +91,7 @@ public class Scorpion1 : MonoBehaviour
         jumpHeight = stats.jumpHeight;
         pivotTime = stats.pivotTime;
         AddSkills();
+        AddItemsAndEquipmentDrops();
 
         controller = GetComponent<Controller2D>();
         enemyAnimationController = GetComponent<Animator>();
@@ -133,6 +135,21 @@ public class Scorpion1 : MonoBehaviour
     private void AddSkills ()
     {
         stats.acquiredSkillsList.Add(SkillsDatabase.skillsDatabase.skills[0]);
+    }
+
+    //Add Items and Equipment Drops here...
+    public void AddItemsAndEquipmentDrops ()
+    {
+        //stats.itemsDropped.Add(ItemDatabase.itemDatabase.items[0]);
+
+        stats.equipmentDropped.Add(EquipmentDatabase.equipmentDatabase.equipment[0]);
+        stats.equipmentDropped[0].dropRate = 100;
+
+        stats.equipmentDropped.Add(EquipmentDatabase.equipmentDatabase.equipment[1]);
+        stats.equipmentDropped[1].dropRate = 100;
+
+        stats.equipmentDropped.Add(EquipmentDatabase.equipmentDatabase.equipment[1]);
+        stats.equipmentDropped[2].dropRate = 100;
     }
 
     void Update()
@@ -1283,6 +1300,34 @@ public class Scorpion1 : MonoBehaviour
     public void EnemyDefeated () //ToDo NEEDS WORK
     {
         LevelManager.levelManager.enemiesDefeated += 1;
+
+        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().ReceiveXP(stats.expGranted);
+        GameControl.gameControl.xp += stats.expGranted;
+
+        EquipmentDrops();
+        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().CallReceiveEquipment();
+
+        ItemDrops();
+
         Destroy(this.gameObject);
+    }
+
+    //Add Equipment drops to player list
+    public void EquipmentDrops ()
+    {
+        foreach (Equipment equipment in stats.equipmentDropped)
+        {
+            int randomNumber = Random.Range(0, 101);
+            if (randomNumber <= equipment.dropRate)
+            {
+                GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().receivedEquipment.Add(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]);
+            }
+        }
+    }
+
+    //Add Item drops to player list
+    public void ItemDrops ()
+    {
+
     }
 }

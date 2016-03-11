@@ -20,6 +20,7 @@ public class Equipment {
 	public int equipmentSkill;
 	public int buyPrice;
 	public int quantity;
+    public int dropRate;
 
 	
 	public enum EquipmentType { 
@@ -63,7 +64,7 @@ public class Equipment {
 	
 	public Equipment (int id, string name, string description, EquipmentType type, EquipmentMaterial material, EquipmentSlot slot, 
 					  int strength, int defense, int speed, int intelligence, int health, int mana,
-					  float atkMod, int skill, int price, int qty) {
+					  float atkMod, int skill, int price, int qty, int drop) {
 		equipmentID = id;
 		equipmentName = name;
 		equipmentDescription = description;
@@ -80,6 +81,7 @@ public class Equipment {
 		equipmentSkill = skill;
 		buyPrice = price;
 		quantity = qty;
+        dropRate = drop;
 	}
 	
 	public Equipment () {

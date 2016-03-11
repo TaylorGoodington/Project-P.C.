@@ -10,8 +10,8 @@ public class EnemyStats : MonoBehaviour {
     public int attackRange;
     public List<Skills> acquiredSkillsList;
     public List<Skills> activeSkillsList;
-    //public List<Items> itemsDropped;
-    //public List<Equipment> equipmentDropped;
+    public List<Items> itemsDropped;
+    public List<Equipment> equipmentDropped;
     public float jumpHeight;
     public float patrolSpeed;
     public float chaseSpeed;
