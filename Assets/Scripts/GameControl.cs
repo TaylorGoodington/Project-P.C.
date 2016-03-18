@@ -51,6 +51,7 @@ public class GameControl : MonoBehaviour {
 	public int hp;
 	public int mp;
     public int xp;
+    public int xpToLevel;
 	
 	public int currentStrength;
 	public int currentDefense;
@@ -76,24 +77,28 @@ public class GameControl : MonoBehaviour {
     //	this needs to be saved.
     public int activeItem;
 	public int availableEvolutions;
-	
-	//Menu Levels are incremented by functions that dive deeper into the respective menu and are decremented by the back function.
-	public int equipmentMenuLevel = 0;
+
+    #region Menu Levels
+    //Menu Levels are incremented by functions that dive deeper into the respective menu and are decremented by the back function.
+    public int equipmentMenuLevel = 0;
 	public int weaponEvolutionMenuLevel = 0;
 	public int pauseMenuLevel = 0;
 	public int itemsMenuLevel = 0;
 	public int mainMenuLevel = 0;
 	public int mainMenuDeleteLevel = 0;
 	public int mainMenuCopyLevel = 0;
-	
+    #endregion
+
     //this needs to be saved.
-	//Next section is for profile selecting.
-	public int currentProfile;
+    //Next section is for profile selecting.
+    public int currentProfile;
 	
 	public bool reSelectMapObject;
 
     public float hpRatio;
     public float mpRatio;
+
+    public int levelCap = 40;
 
 	void Awake () {
         if (thisObject != null)
@@ -266,6 +271,19 @@ public class GameControl : MonoBehaviour {
 		Destroy(GameObject.FindGameObjectWithTag("Pause Menu"));
 	}
 
+    public void LevelUpStats ()
+    {
+        baseStrength += ClassesDatabase.classDatabase.classes[playerClass].strengthLevelBonus;
+        baseDefense += ClassesDatabase.classDatabase.classes[playerClass].defenseLevelBonus;
+        baseSpeed += ClassesDatabase.classDatabase.classes[playerClass].speedLevelBonus;
+        baseIntelligence += ClassesDatabase.classDatabase.classes[playerClass].intelligenceLevelBonus;
+        baseHealth += ClassesDatabase.classDatabase.classes[playerClass].healthLevelBonus;
+        baseMana += ClassesDatabase.classDatabase.classes[playerClass].manaLevelBonus;
+
+        EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+
+        CalculateHealthAndMana(false);
+    }
 	
 	//I dont like the way this works, I would rather do a find based on the equipped weapon material...
 	public void CurrentClass () {
@@ -471,27 +489,30 @@ public class GameControl : MonoBehaviour {
 		//remove this stuff at some point.
 		playerName = "Taylor" + fileNumber;
 		gameProgress = 27;
-		playerLevel = 27;
-		baseStrength = 20;
-		baseDefense = 2;
-		baseSpeed = 3;
-		baseIntelligence = 4;
-		baseHealth = 5;
-		baseMana = 6;
 
-        currentStrength = 5;
-        currentDefense = 5;
-        currentSpeed = 5;
-        currentIntelligence = 5;
-        currentHealth = 5;
-        currentMana = 5;
+		playerLevel = 0;
+		baseStrength = 1;
+		baseDefense = 1;
+		baseSpeed = 1;
+		baseIntelligence = 1;
+		baseHealth = 1;
+		baseMana = 1;
 
-        playerClass = 7;
-        equippedWeapon = 80;
-        equippedHead = 5;
-        equippedChest = 6;
-        equippedPants = 7;
-        equippedFeet = 8;
+        currentStrength = 1;
+        currentDefense = 1;
+        currentSpeed = 1;
+        currentIntelligence = 1;
+        currentHealth = 1;
+        currentMana = 1;
+
+        playerClass = 6;
+        equippedWeapon = 0;
+        equippedHead = 1;
+        equippedChest = 2;
+        equippedPants = 3;
+        equippedFeet = 4;
+
+        xpToLevel = ExperienceToLevel.experienceToLevel.levels[playerLevel].experienceToLevel;
 
         AddLevelScores();
 		
@@ -561,7 +582,6 @@ public class GameControl : MonoBehaviour {
 //	}
 
 	public void DeleteGame (int fileNumber) {
-		//add pop up for making sure....
 		File.Delete (Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat");
 	
 		if (fileNumber == 1) {
@@ -578,30 +598,6 @@ public class GameControl : MonoBehaviour {
 			File.Delete (Application.persistentDataPath + "/playerInfo3.dat");
 		}
 	}
-	
-//	public void DeleteGame1 () {
-//		//add pop up for making sure....
-//		File.Delete (Application.persistentDataPath + "/playerInfo1.dat");
-//		PlayerPrefsManager.SetFile1PlayerName("");
-//		PlayerPrefsManager.SetFile1LevelProgress(0);
-//	}
-//	
-//	public void DeleteGame2 () {
-//		//add pop up for making sure....
-//		File.Delete (Application.persistentDataPath + "/playerInfo2.dat");
-//		PlayerPrefsManager.SetFile2PlayerName("");
-//		PlayerPrefsManager.SetFile2LevelProgress(0);
-//	}
-//	
-//	public void DeleteGame3 () {
-//		//add pop up for making sure....
-//		File.Delete (Application.persistentDataPath + "/playerInfo3.dat");
-//		PlayerPrefsManager.SetFile3PlayerName("");
-//		PlayerPrefsManager.SetFile3LevelProgress(0);
-//	}
-	
-	
-	
 }
 
 [Serializable]

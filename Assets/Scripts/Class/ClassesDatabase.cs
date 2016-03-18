@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 
 public class ClassesDatabase : MonoBehaviour {
-	
+
+    public static ClassesDatabase classDatabase;
 	public List<Classes> classes; 
 	
-	void Awake () {
-		//DontDestroyOnLoad (gameObject);
-	}
 	//Just before stats is the material equipment index, 1 = cloth, 2 = leather, 3 = chainmail, 4 = platemail.
 	//the order for stats is: strength, defense, speed, intelligence, health, mana.
 	void Start () {
+        classDatabase = GetComponent<ClassesDatabase>();
+
 		classes.Add (new Classes (0, "Soldier", "The way of the sword", 3, 5, 4, 3, 2, 6 , 1));
 		classes.Add (new Classes (1, "Berserker", "The way of the axe", 3, 6, 4, 4, 1, 3, 3));
 		classes.Add (new Classes (2, "Rogue", "The way of the dagger", 2, 4, 1, 6, 4, 4, 2));

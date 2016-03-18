@@ -5,37 +5,39 @@ using UnityEngine.UI;
 
 public class UserInterface : MonoBehaviour {
 
-    private Slider healthBar;
-    private Text healthText;
-
-    private Slider manaBar;
-    private Text manaText;
-
+    //HUD
+    public Slider healthBar;
+    public Text healthText;
+    public Slider manaBar;
+    public Text manaText;
     //private Image activeSkillIcon;
     public Text activeSkillCooldownTimer;
     public Image activeSkillShade;
 
-    public Animator animator;
-
+    //Level End Components
     public Text timeText;
     public Text enemiesDefeatedText;
     public Text bonusXPText;
+    
+    //Combat Related
+    public Text xpGained;
+    public Image equipmentGainedIcon;
+    public Text equipmentGainedText;
+    public Text levelUpCount;
 
+    [HideInInspector]
     public List<Equipment> receivedEquipment;
+    [HideInInspector]
+    public List<Items> receivedItems;
+    [HideInInspector]
+    public bool tallyingSpoils;
+    private Animator animator;
 
 
     void Start()
     {
-        healthBar = transform.GetChild(3).GetComponent<Slider>();
-        healthText = healthBar.transform.GetChild(2).GetComponent<Text>();
-        manaBar = transform.GetChild(4).GetComponent<Slider>();
-        manaText = manaBar.transform.GetChild(2).GetComponent<Text>();
-        //activeSkillIcon = transform.GetChild(3).transform.GetChild(1).GetComponent<Image>();
-        activeSkillShade = transform.GetChild(2).transform.GetChild(3).GetComponent<Image>();
-        activeSkillCooldownTimer = transform.GetChild(2).transform.GetChild(2).GetComponent<Text>();
-
         animator = GetComponent<Animator>();
-
+        tallyingSpoils = false;
         UpdateUIInfo();
     }
 
@@ -48,6 +50,11 @@ public class UserInterface : MonoBehaviour {
         if (GameControl.gameControl.playerHasControl)
         {
             RunTheClock();
+        }
+
+        if (GameControl.gameControl.xp >= GameControl.gameControl.xpToLevel)
+        {
+            LevelUp();
         }
     }
 
@@ -155,7 +162,11 @@ public class UserInterface : MonoBehaviour {
     //Called when enemies are defeated.
     public void ReceiveXP (int xp)
     {
-        //play animation for receiving xp.
+        if (GameControl.gameControl.playerLevel < GameControl.gameControl.levelCap)
+        {
+            xpGained.text = "+" + xp + " xp";
+            XPGained.xpGained.XPGainedAnimation();
+        }
     }
 
     public void CallReceiveEquipment()
@@ -168,8 +179,9 @@ public class UserInterface : MonoBehaviour {
     {
         foreach (Equipment equipment in receivedEquipment)
         {
-            //Change UI equipment info.
-            //play animation for receiving items and equipment.
+            equipmentGainedIcon.sprite = Resources.Load<Sprite>("Equipment Icons/" + EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID].equipmentName);
+            equipmentGainedText.text = EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID].equipmentName;
+            EquipmentGained.equipmentGained.EquipmentGainedAnimation();
             if (GameControl.gameControl.equipmentInventoryList.Contains(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]))
             {
                 int index = GameControl.gameControl.equipmentInventoryList.IndexOf(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]);
@@ -178,8 +190,51 @@ public class UserInterface : MonoBehaviour {
             else {
                 GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]);
             }
-            Debug.Log(equipment.equipmentName);
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1.1f);
+        }
+
+        foreach (Items item in receivedItems)
+        {
+            equipmentGainedIcon.sprite = Resources.Load<Sprite>("Item Icons/" + ItemDatabase.itemDatabase.items[item.itemID].itemName);
+            equipmentGainedText.text = ItemDatabase.itemDatabase.items[item.itemID].itemName;
+            EquipmentGained.equipmentGained.EquipmentGainedAnimation();
+            if (GameControl.gameControl.itemInventoryList.Contains(ItemDatabase.itemDatabase.items[item.itemID]))
+            {
+                int index = GameControl.gameControl.itemInventoryList.IndexOf(ItemDatabase.itemDatabase.items[item.itemID]);
+                GameControl.gameControl.itemInventoryList[index].quantity++;
+            }
+            else {
+                GameControl.gameControl.itemInventoryList.Add(ItemDatabase.itemDatabase.items[item.itemID]);
+            }
+            yield return new WaitForSeconds(1.1f);
+        }
+
+        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().receivedEquipment.Clear();
+        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().receivedItems.Clear();
+        tallyingSpoils = false;
+    }
+
+    public void LevelUp ()
+    {
+        if (GameControl.gameControl.playerLevel < GameControl.gameControl.levelCap) {
+            int remainder = GameControl.gameControl.xp - GameControl.gameControl.xpToLevel;
+            GameControl.gameControl.xp = remainder;
+            GameControl.gameControl.playerLevel++;
+            GameControl.gameControl.LevelUpStats();
+            GameControl.gameControl.xpToLevel = ExperienceToLevel.experienceToLevel.levels[GameControl.gameControl.playerLevel].experienceToLevel;
+            int levelUpCounter = 1;
+
+            while (remainder >= ExperienceToLevel.experienceToLevel.levels[GameControl.gameControl.playerLevel].experienceToLevel)
+            {
+                remainder = GameControl.gameControl.xp - GameControl.gameControl.xpToLevel;
+                GameControl.gameControl.xp = remainder;
+                GameControl.gameControl.playerLevel++;
+                GameControl.gameControl.LevelUpStats();
+                levelUpCounter++;
+                GameControl.gameControl.xpToLevel = ExperienceToLevel.experienceToLevel.levels[GameControl.gameControl.playerLevel].experienceToLevel;
+            }
+            levelUpCount.text = "+ " + levelUpCounter + " Level!";
+            LevelsGained.levelsGained.LevelsGainedAnimation();
         }
     }
 }

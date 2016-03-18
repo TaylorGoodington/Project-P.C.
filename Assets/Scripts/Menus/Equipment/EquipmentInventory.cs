@@ -5,8 +5,9 @@ using UnityEngine.EventSystems;
 
 public class EquipmentInventory : MonoBehaviour {
 
-	//access to gamecontrol, muy importante.
-	private GameControl gameControl;
+    #region Variables
+    //access to gamecontrol, muy importante.
+    private GameControl gameControl;
 
     public static EquipmentInventory equipmentInventory;
 	
@@ -71,11 +72,7 @@ public class EquipmentInventory : MonoBehaviour {
 	
 	private int selectedEquipmentID;
 	private int selectedEquipmentMaterialIndex;
-		
-	
-	void Awake () {
-		//DontDestroyOnLoad (gameObject);
-	}
+    #endregion
 	
 	void Start () {
 		gameControl = GameObject.FindObjectOfType<GameControl>();

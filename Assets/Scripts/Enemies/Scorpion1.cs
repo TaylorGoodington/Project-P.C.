@@ -6,6 +6,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(EnemyStats))]
 public class Scorpion1 : MonoBehaviour
 {
+    #region Variables
     [HideInInspector]
     public EnemyStats stats;
 
@@ -81,6 +82,7 @@ public class Scorpion1 : MonoBehaviour
     private BoxCollider2D jumpPoint2;
     private BoxCollider2D jumpPoint3;
     private BoxCollider2D jumpPoint4;
+    #endregion
 
     void Start()
     {
@@ -140,16 +142,17 @@ public class Scorpion1 : MonoBehaviour
     //Add Items and Equipment Drops here...
     public void AddItemsAndEquipmentDrops ()
     {
-        //stats.itemsDropped.Add(ItemDatabase.itemDatabase.items[0]);
+        stats.itemsDropped.Add(ItemDatabase.itemDatabase.items[2]);
+        stats.itemsDropped[0].dropRate = 50;
 
         stats.equipmentDropped.Add(EquipmentDatabase.equipmentDatabase.equipment[0]);
-        stats.equipmentDropped[0].dropRate = 100;
+        stats.equipmentDropped[0].dropRate = 50;
 
         stats.equipmentDropped.Add(EquipmentDatabase.equipmentDatabase.equipment[1]);
-        stats.equipmentDropped[1].dropRate = 100;
+        stats.equipmentDropped[1].dropRate = 50;
 
         stats.equipmentDropped.Add(EquipmentDatabase.equipmentDatabase.equipment[1]);
-        stats.equipmentDropped[2].dropRate = 100;
+        stats.equipmentDropped[2].dropRate = 50;
     }
 
     void Update()
@@ -1296,19 +1299,28 @@ public class Scorpion1 : MonoBehaviour
         }
     }
 
-    //When the enemy dies.
-    public void EnemyDefeated () //ToDo NEEDS WORK
+    public void CallEnemyDefeated ()
     {
+        StartCoroutine("EnemyDefeated");
+    }
+    //When the enemy dies.
+    public IEnumerator EnemyDefeated () 
+    {
+        while (GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().tallyingSpoils == true)
+        {
+            yield return null;
+        }
+
+        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().tallyingSpoils = true;
         LevelManager.levelManager.enemiesDefeated += 1;
 
         GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().ReceiveXP(stats.expGranted);
         GameControl.gameControl.xp += stats.expGranted;
 
         EquipmentDrops();
-        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().CallReceiveEquipment();
-
         ItemDrops();
-
+        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().CallReceiveEquipment();
+        
         Destroy(this.gameObject);
     }
 
@@ -1328,6 +1340,13 @@ public class Scorpion1 : MonoBehaviour
     //Add Item drops to player list
     public void ItemDrops ()
     {
-
+        foreach (Items item in stats.itemsDropped)
+        {
+            int randomNumber = Random.Range(0, 101);
+            if (randomNumber <= item.dropRate)
+            {
+                GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().receivedItems.Add(ItemDatabase.itemDatabase.items[item.itemID]);
+            }
+        }
     }
 }

@@ -167,6 +167,7 @@ public class CombatEngine : MonoBehaviour {
                 Debug.Log("The Hit Can Deal Damage!");
                 if (DealingDamageToPlayerPhase(collider))
                 {
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
                     Debug.Log("Damage Delt!");
                 }
             }

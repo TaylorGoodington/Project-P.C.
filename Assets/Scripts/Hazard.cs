@@ -16,6 +16,7 @@ public class Hazard : MonoBehaviour {
         while(causingDamage)
         {
             GameControl.gameControl.hp -= damagePerSecond;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
             yield return new WaitForSeconds(1);
         }
     }

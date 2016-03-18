@@ -44,6 +44,8 @@ public class Player : MonoBehaviour {
 	Controller2D controller;
 
     private BoxCollider2D playerCollider;
+    [HideInInspector]
+    public bool flinching;
 	
 	void Start() {
 		controller = GetComponent<Controller2D> ();
@@ -56,6 +58,7 @@ public class Player : MonoBehaviour {
 		isAttacking = false;
         attackLaunched = false;
 		isJumping = false;
+        flinching = false;
 	}
 
     void Update()
@@ -66,6 +69,9 @@ public class Player : MonoBehaviour {
             //gravity = 0;
             GameControl.gameControl.playerHasControl = false;
             //ToDo Play Death Animation.
+        }
+        else if (flinching) {
+            playerAnimationController.Play("Flinch");
         }
         else
         {
@@ -307,6 +313,12 @@ public class Player : MonoBehaviour {
     //called by climbing up animation to stop animating.
     public void IsClimbingUp() {
         climbingUp = false;
+    }
+
+    //called by animator.
+    public void FlinchRecovered ()
+    {
+        flinching = false;
     }
 
     //used as an invoke to move the player

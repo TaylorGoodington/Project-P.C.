@@ -16,6 +16,7 @@ public class Items {
 	public int skillIndex;
 	public int buyPrice;
 	public int quantity;
+    public int dropRate;
 	
 	
 	public enum ItemType { 
@@ -36,7 +37,7 @@ public class Items {
 		OutOfCombat
 	}
 	
-	public Items (int id, string name, string description, ItemType type, ItemTarget target, ItemUseOcassion useOcassion, float successRate, int skill, int price, int qty) {
+	public Items (int id, string name, string description, ItemType type, ItemTarget target, ItemUseOcassion useOcassion, float successRate, int skill, int price, int qty, int drop) {
 		itemID = id;
 		itemName = name;
 		itemDescription = description;
@@ -47,6 +48,7 @@ public class Items {
 		skillIndex = skill;
 		buyPrice = price;
 		quantity = qty;
+        dropRate = drop;
 	}
 	
 	public Items () {
