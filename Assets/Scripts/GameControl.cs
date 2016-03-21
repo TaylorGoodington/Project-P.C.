@@ -87,6 +87,7 @@ public class GameControl : MonoBehaviour {
 	public int mainMenuLevel = 0;
 	public int mainMenuDeleteLevel = 0;
 	public int mainMenuCopyLevel = 0;
+    public int ladyDeathMenu = 0;
     #endregion
 
     //this needs to be saved.
@@ -100,7 +101,10 @@ public class GameControl : MonoBehaviour {
 
     public int levelCap = 40;
 
-	void Awake () {
+    [HideInInspector]
+    public bool endOfLevel;
+
+    void Awake () {
         if (thisObject != null)
         {
             DestroyImmediate(gameObject);
@@ -123,6 +127,8 @@ public class GameControl : MonoBehaviour {
 		mainMenuLevel = 0;
 		mainMenuDeleteLevel = 0;
 		mainMenuCopyLevel = 0;
+        ladyDeathMenu = 0;
+        endOfLevel = false;
 		
 		playerSoundEffects.ChangeVolume(PlayerPrefsManager.GetMasterEffectsVolume());
 		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
@@ -227,8 +233,12 @@ public class GameControl : MonoBehaviour {
                     equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousEquipmentMenu(equipmentMenuLevel);
                     equipmentMenuLevel--;
                 }
-
-
+                //Lady Death Menu.
+                if (ladyDeathMenu > 0)
+                {
+                    //previous menu function...
+                    ladyDeathMenu--;
+                }
                 //Weapon Evolution Menu.
                 if (weaponEvolutionMenuLevel > 0)
                 {
@@ -255,7 +265,7 @@ public class GameControl : MonoBehaviour {
     }
 	
 	public bool AnyOpenMenus () {
-		int menuIndex = equipmentMenuLevel + weaponEvolutionMenuLevel + pauseMenuLevel + itemsMenuLevel + mainMenuLevel + mainMenuDeleteLevel + mainMenuCopyLevel;
+		int menuIndex = equipmentMenuLevel + weaponEvolutionMenuLevel + pauseMenuLevel + itemsMenuLevel + mainMenuLevel + mainMenuDeleteLevel + mainMenuCopyLevel + ladyDeathMenu;
 		if (menuIndex > 0) {
 			return true;
 		} else {
@@ -404,7 +414,7 @@ public class GameControl : MonoBehaviour {
 	
 	public void LoadFile (int fileNumber) {	
 		if(File.Exists(Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat")) {
-			BinaryFormatter binaryFormatter = new BinaryFormatter();
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
 			FileStream saveFile = File.Open (Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat", FileMode.Open);
 			PlayerData playerData = (PlayerData) binaryFormatter.Deserialize(saveFile);
 			
@@ -438,8 +448,11 @@ public class GameControl : MonoBehaviour {
 			equippedWeapon = playerData.equippedWeapon;
 
             levelScores = playerData.levelScores;
-			
-			saveFile.Close(); //I wonder if this should go at the end of the method...
+
+            EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+            xpToLevel = ExperienceToLevel.experienceToLevel.levels[playerLevel].experienceToLevel;
+
+            saveFile.Close(); //I wonder if this should go at the end of the method...
 		}
 		if (fileNumber == 1) {
 			PlayerPrefsManager.SetGameFile(1);
@@ -458,24 +471,6 @@ public class GameControl : MonoBehaviour {
 			Save ();
 		}
 	}
-	
-//	public void LoadFile1 () {
-//		PlayerPrefsManager.SetGameFile(1);
-//		Load ();
-//		//Need to add code here for loading the appropriate region scene.
-//	}
-//	
-//	public void LoadFile2 () {
-//		PlayerPrefsManager.SetGameFile(2);
-//		Load ();
-//		//Need to add code here for loading the appropriate region scene.
-//	}
-//	
-//	public void LoadFile3 () {
-//		PlayerPrefsManager.SetGameFile(3);
-//		Load ();
-//		//Need to add code here for loading the appropriate region scene.
-//	}
 	
 	
 	//**************************************************************************************
@@ -506,13 +501,22 @@ public class GameControl : MonoBehaviour {
         currentMana = 1;
 
         playerClass = 6;
-        equippedWeapon = 0;
+        equippedWeapon = 50;
         equippedHead = 1;
         equippedChest = 2;
         equippedPants = 3;
         equippedFeet = 4;
 
         xpToLevel = ExperienceToLevel.experienceToLevel.levels[playerLevel].experienceToLevel;
+        EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+        //ToDo move this to after intro story stuff...
+        weaponsList.Add(equipmentDatabase.equipment[10]);
+        weaponsList.Add(equipmentDatabase.equipment[20]);
+        weaponsList.Add(equipmentDatabase.equipment[30]);
+        weaponsList.Add(equipmentDatabase.equipment[40]);
+        weaponsList.Add(equipmentDatabase.equipment[80]);
+        weaponsList.Add(equipmentDatabase.equipment[60]);
+        weaponsList.Add(equipmentDatabase.equipment[70]);
 
         AddLevelScores();
 		
@@ -527,59 +531,10 @@ public class GameControl : MonoBehaviour {
     }
 	
 	
-//	public void NewGame1 () {	
-//		//do some stuff about initializing here
-//		playerName = "Taylor";
-//		gameProgress = 27;
-//		playerLevel = 27;
-//		baseStrength = 1;
-//		baseDefense = 2;
-//		baseSpeed = 3;
-//		baseIntelligence = 4;
-//		baseHealth = 5;
-//		baseMana = 6;
-//		
-//		SaveFile1 ();
-//	}
-//	
-//	public void NewGame2 () {
-//		//do some stuff about initializing here
-//		playerName = "Lee";
-//		gameProgress = 9;
-//		playerLevel = 9;
-//		baseStrength = 5;
-//		baseDefense = 5;
-//		baseSpeed = 5;
-//		baseIntelligence = 5;
-//		baseHealth = 5;
-//		baseMana = 5;
-//		
-//		SaveFile2 ();
-//	}
-//	
-//	public void NewGame3 () {
-//		//do some stuff about initializing here
-//		playerName = "Katelyn";
-//		gameProgress = 24;
-//		playerLevel = 24;
-//		baseStrength = 7;
-//		baseDefense = 7;
-//		baseSpeed = 7;
-//		baseIntelligence = 7;
-//		baseHealth = 7;
-//		baseMana = 7;
-//		
-//		SaveFile3 ();
-//	}
-	
-	
 	//**************************************************************************************
 	//Delete Game Section
 	//**************************************************************************************
 	
-//	public void ToDeleteMenu () {
-//		PlayerPrefsManager.SetDeleteEntryPoint (Application.loadedLevelName);
-//	}
 
 	public void DeleteGame (int fileNumber) {
 		File.Delete (Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat");

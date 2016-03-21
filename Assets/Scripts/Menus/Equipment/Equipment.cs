@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-
-
-[System.Serializable]
+﻿[System.Serializable]
 public class Equipment {
 	
 	public string equipmentName;

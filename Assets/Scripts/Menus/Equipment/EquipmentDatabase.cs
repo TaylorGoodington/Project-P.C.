@@ -6,10 +6,7 @@ public class EquipmentDatabase : MonoBehaviour {
 	public List<Equipment> equipment;
 
     public static EquipmentDatabase equipmentDatabase;
-    	
-	void Awake () {
-		//DontDestroyOnLoad (gameObject);
-	}
+
 	//the order for stats is: strength, defense, speed, intelligence, health, mana.
 	void Start () {
         equipmentDatabase = GetComponent<EquipmentDatabase>();

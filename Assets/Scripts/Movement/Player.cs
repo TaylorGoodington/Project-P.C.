@@ -66,9 +66,23 @@ public class Player : MonoBehaviour {
         if (GameControl.gameControl.hp <= 0)
         {
             input = Vector2.zero;
-            //gravity = 0;
             GameControl.gameControl.playerHasControl = false;
             //ToDo Play Death Animation.
+        }
+        else if (GameControl.gameControl.endOfLevel)
+        {
+            gravity = -1000;
+            velocity.y += gravity * Time.deltaTime;
+            velocity.x = moveSpeed;
+            controller.Move(velocity * Time.deltaTime, new Vector2(1,0));
+            if (controller.collisions.below == false)
+            {
+                playerAnimationController.Play("Jumping");
+            }
+            else
+            {
+                playerAnimationController.Play("Running");
+            }
         }
         else if (flinching) {
             playerAnimationController.Play("Flinch");
@@ -219,12 +233,12 @@ public class Player : MonoBehaviour {
                 playerAnimationController.Play("Jumping");
             }
 
-            if (input.x != 0 && controller.collisions.below == true && !climbing && !climbingUp)
+            if ((input.x != 0 && controller.collisions.below == true && !climbing && !climbingUp) || GameControl.gameControl.endOfLevel == true)
             {
                 playerAnimationController.Play("Running");
             }
 
-            if (input.x == 0 && isAttacking == false && controller.collisions.below == true && !climbing && !climbingUp)
+            if (input.x == 0 && isAttacking == false && controller.collisions.below == true && !climbing && !climbingUp && GameControl.gameControl.endOfLevel == false)
             {
                 playerAnimationController.Play("Idle");
             }
@@ -274,7 +288,8 @@ public class Player : MonoBehaviour {
         //Reaching the Goal
         if (collider.gameObject.layer == 18)
         {
-            velocity.x = 0;
+           GameControl.gameControl.endOfLevel = true;
+            velocity.x = 1 * moveSpeed;
             UserInterface uI = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>();
             uI.EndOfLevel();
         }

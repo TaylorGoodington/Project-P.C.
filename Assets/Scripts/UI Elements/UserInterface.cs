@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UserInterface : MonoBehaviour {
 
@@ -32,12 +33,15 @@ public class UserInterface : MonoBehaviour {
     [HideInInspector]
     public bool tallyingSpoils;
     private Animator animator;
-
+    [HideInInspector]
+    public bool showInteractableDisplay;
+    
 
     void Start()
     {
         animator = GetComponent<Animator>();
         tallyingSpoils = false;
+        showInteractableDisplay = false;
         UpdateUIInfo();
     }
 
@@ -55,6 +59,11 @@ public class UserInterface : MonoBehaviour {
         if (GameControl.gameControl.xp >= GameControl.gameControl.xpToLevel)
         {
             LevelUp();
+        }
+        
+        if (showInteractableDisplay)
+        {
+            //make the icon visable...
         }
     }
 
@@ -88,33 +97,46 @@ public class UserInterface : MonoBehaviour {
     public void EndOfLevel ()
     {
         GameControl.gameControl.playerHasControl = false;
-        animator.Play("EndOfLevel");
-
-        float minutesOriginal = Mathf.Floor(LevelManager.levelManager.levelTime / 60);
-        string minutes = Mathf.Floor(LevelManager.levelManager.levelTime / 60).ToString("00");
-        float secondsOriginal = Mathf.Floor(LevelManager.levelManager.levelTime % 60);
-        string seconds = Mathf.Floor(LevelManager.levelManager.levelTime % 60).ToString("00");
-        string milliSeconds = Mathf.Floor((LevelManager.levelManager.levelTime - (minutesOriginal + secondsOriginal)) * 1000).ToString("000");
-
-        timeText.text = minutes + ":" + seconds + "." + milliSeconds;
-        enemiesDefeatedText.text = LevelManager.levelManager.enemiesDefeated.ToString();
-        bonusXPText.text = (LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1).ToString();
-
-        //Level Clear Time.
-        if (GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime == 0)
+        if (SceneManager.GetActiveScene().name == "The Pit" || SceneManager.GetActiveScene().name == "The Pit Intro")
         {
-            GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime = LevelManager.levelManager.levelTime;
+            animator.Play("PitEndOfLevel");
         }
-        else if (GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime > LevelManager.levelManager.levelTime)
+        else
         {
-            GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime = LevelManager.levelManager.levelTime;
-        }
+            animator.Play("EndOfLevel");
 
-        //Enemies Defeated.
-        if (GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].enemiesDefeated < LevelManager.levelManager.enemiesDefeated)
-        {
-            GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].enemiesDefeated = LevelManager.levelManager.enemiesDefeated;
+            float minutesOriginal = Mathf.Floor(LevelManager.levelManager.levelTime / 60);
+            string minutes = Mathf.Floor(LevelManager.levelManager.levelTime / 60).ToString("00");
+            float secondsOriginal = Mathf.Floor(LevelManager.levelManager.levelTime % 60);
+            string seconds = Mathf.Floor(LevelManager.levelManager.levelTime % 60).ToString("00");
+            string milliSeconds = Mathf.Floor((LevelManager.levelManager.levelTime - (minutesOriginal + secondsOriginal)) * 1000).ToString("000");
+
+            timeText.text = minutes + ":" + seconds + "." + milliSeconds;
+            enemiesDefeatedText.text = LevelManager.levelManager.enemiesDefeated.ToString();
+            bonusXPText.text = (LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1).ToString();
+
+            //Level Clear Time.
+            if (GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime == 0)
+            {
+                GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime = LevelManager.levelManager.levelTime;
+            }
+            else if (GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime > LevelManager.levelManager.levelTime)
+            {
+                GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].fastestLevelClearTime = LevelManager.levelManager.levelTime;
+            }
+
+            //Enemies Defeated.
+            if (GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].enemiesDefeated < LevelManager.levelManager.enemiesDefeated)
+            {
+                GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].enemiesDefeated = LevelManager.levelManager.enemiesDefeated;
+            }
         }
+    }
+
+    //Used by the end of level animation to reset bool in player.
+    public void ResetPlayerEndOfLevel ()
+    {
+        GameControl.gameControl.endOfLevel = false;
     }
 
     //Used by the end of level animation to play Victory Music.
@@ -129,10 +151,21 @@ public class UserInterface : MonoBehaviour {
         LevelManager.levelManager.BackToRegion();
     }
 
+    public void ToWorldMap ()
+    {
+        LevelManager.levelManager.lastRegionLoaded = 0;
+        SceneManager.LoadScene("World Map");
+    }
+
     //Called by the animator
     public void SetCameraTarget ()
     {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
         CameraFollow.cameraFollow.UpdateTarget();
+        camera.transform.position = new Vector3 (player.transform.position.x, camera.transform.position.y, -10);
+        CameraFollow.cameraFollow.UpdateTarget();
+
     }
 
     //Called by the animator

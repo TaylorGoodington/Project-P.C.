@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 
 public class LevelManager : MonoBehaviour {
@@ -33,7 +32,7 @@ public class LevelManager : MonoBehaviour {
             Invoke("LoadNextLevel", 3f);
         }
         //THIS NEEDS TO BE UPDATED MANUALLY
-        level01 = 16;
+        level01 = 18;
 	}
 
 	public void LoadLevel (string name) {
@@ -112,6 +111,8 @@ public class LevelManager : MonoBehaviour {
 
         if (GameControl.gameControl.levelScores[level - level01 + 1].hasLevelBeenPlayed == false)
         {
+            Debug.Log("First Time");
+            GameControl.gameControl.levelScores[level - level01 + 1].hasLevelBeenPlayed = true;
             //play story animation.
             //Maybe this is a different scene that loads the movie textures?.
         }
@@ -210,15 +211,31 @@ public class LevelManager : MonoBehaviour {
 
     void OnLevelWasLoaded (int level)
     {
+        //The Pit & Intro Pit
+        if (level == level01 - 2 || level == level01 - 1)
+        {
+            lastLevelPlayed = level;
+            InMapScenes = false;
+            cameraManager.transform.GetChild(0).gameObject.SetActive(true);
+            cameraManager.transform.GetChild(1).gameObject.SetActive(false);
+
+            Animator initializationAnimator = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<Animator>();
+            EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+            GameControl.gameControl.CalculateHealthAndMana(false);
+            enemiesDefeated = 0;
+            levelTime = 0;
+            initializationAnimator.Play("LevelIntroTransition");
+            Debug.Log("pit");
+        }
         //Playable levels.
-        if (level >= level01)
+        else if (level >= level01)
         {
             lastLevelPlayed = level;
             InMapScenes = false;
             cameraManager.transform.GetChild(0).gameObject.SetActive(true);
             cameraManager.transform.GetChild(1).gameObject.SetActive(false);
             InitializeLevel(level);
-            GameControl.gameControl.levelScores[level - level01 + 1].hasLevelBeenPlayed = true;
+            Debug.Log("playable");
         }
 
         //Maps and Menus.
@@ -228,6 +245,7 @@ public class LevelManager : MonoBehaviour {
             cameraManager.transform.GetChild(0).gameObject.SetActive(false);
             cameraManager.transform.GetChild(1).gameObject.SetActive(true);
             InMapScenes = true;
+            Debug.Log("maps");
         }
     }
 }

@@ -26,7 +26,6 @@ public class WorldMap : MonoBehaviour {
             {
                 headingToTitleScene = false;
                 CloseQuitDialogue();
-                Debug.Log("what");
             }
         }
 
