@@ -31,7 +31,8 @@ public class Player : MonoBehaviour {
     private float climbingUpPosition;
     private bool climbingUp;
 
-    private Animator playerAnimationController;
+    //private Animator playerAnimationController;
+    PlayerAnimationController animator;
 
     float timeToWallUnstick;
 	
@@ -49,7 +50,8 @@ public class Player : MonoBehaviour {
 	
 	void Start() {
 		controller = GetComponent<Controller2D> ();
-        playerAnimationController = GetComponent<Animator>();
+        //playerAnimationController = GetComponent<Animator>();
+        animator = GetComponent<PlayerAnimationController>();
         playerCollider = GetComponent<BoxCollider2D>();
 
         gravity = -1000;
@@ -77,15 +79,18 @@ public class Player : MonoBehaviour {
             controller.Move(velocity * Time.deltaTime, new Vector2(1,0));
             if (controller.collisions.below == false)
             {
-                playerAnimationController.Play("Jumping");
+                //playerAnimationController.Play("Jumping");
+                animator.PlayAnimation(PlayerAnimationController.Animations.Jumping);
             }
             else
             {
-                playerAnimationController.Play("Running");
+                //playerAnimationController.Play("Running");
+                animator.PlayAnimation(PlayerAnimationController.Animations.Running);
             }
         }
         else if (flinching) {
-            playerAnimationController.Play("Flinch");
+            //playerAnimationController.Play("Flinch");
+            animator.PlayAnimation(PlayerAnimationController.Animations.Flinching);
         }
         else
         {
@@ -191,11 +196,19 @@ public class Player : MonoBehaviour {
             //flips sprite depending on direction facing.
             if (controller.collisions.faceDir == 1)
             {
-                gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                //gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                animator.hairAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                animator.bodyAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                animator.equipmentAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                animator.weaponAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
             }
             else
             {
-                gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                //gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                animator.hairAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                animator.bodyAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                animator.equipmentAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                animator.weaponAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
             }
 
             //cant move if attacking.
@@ -207,40 +220,52 @@ public class Player : MonoBehaviour {
             //Animation Call Section
             if (climbingUp)
             {
-                playerAnimationController.enabled = true;
-                playerAnimationController.Play("ClimbingUp");
+                //playerAnimationController.enabled = true;
+                //playerAnimationController.Play("ClimbingUp");
+                UnPauseAnimators();
+                animator.PlayAnimation(PlayerAnimationController.Animations.ClimbingUp);
             }
 
             if (attackLaunched && !climbingUp)
             {
-                playerAnimationController.enabled = true;
-                playerAnimationController.Play("SwordAttack1");
+                //playerAnimationController.enabled = true;
+                //playerAnimationController.Play("SwordAttack1");
+                UnPauseAnimators();
+                animator.PlayAnimation(PlayerAnimationController.Animations.Attacking1);
             }
 
             if (climbing && !isAttacking && !climbingUp)
             {
-                playerAnimationController.enabled = true;
-                playerAnimationController.Play("Climbing");
+                //playerAnimationController.enabled = true;
+                //playerAnimationController.Play("Climbing");
+                UnPauseAnimators();
+                animator.PlayAnimation(PlayerAnimationController.Animations.Climbing);
             }
             if (climbing && (velocity.y == 0 && velocity.x == 0) && !isAttacking && !climbingUp)
             {
-                Invoke("PauseAnimator", 0.1f);
+                Invoke("PauseAnimators", 0.1f);
             }
 
             if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false && !climbing)
             {
-                playerAnimationController.enabled = true;
-                playerAnimationController.Play("Jumping");
+                //playerAnimationController.enabled = true;
+                //playerAnimationController.Play("Jumping");
+                UnPauseAnimators();
+                animator.PlayAnimation(PlayerAnimationController.Animations.Jumping);
             }
 
             if ((input.x != 0 && controller.collisions.below == true && !climbing && !climbingUp) || GameControl.gameControl.endOfLevel == true)
             {
-                playerAnimationController.Play("Running");
+                //playerAnimationController.Play("Running");
+                //UnPauseAnimators();
+                animator.PlayAnimation(PlayerAnimationController.Animations.Running);
             }
 
             if (input.x == 0 && isAttacking == false && controller.collisions.below == true && !climbing && !climbingUp && GameControl.gameControl.endOfLevel == false)
             {
-                playerAnimationController.Play("Idle");
+                //playerAnimationController.Play("Idle");
+                UnPauseAnimators();
+                animator.PlayAnimation(PlayerAnimationController.Animations.Idle);
             }
 
 
@@ -341,9 +366,20 @@ public class Player : MonoBehaviour {
         this.gameObject.transform.position = new Vector3(transform.position.x, climbingUpPosition);
     }
 
-    //used to pause the animator
-    public void PauseAnimator() {
-        playerAnimationController.enabled = false;
+    public void PauseAnimators() {
+        //playerAnimationController.enabled = false;
+        animator.hairAnimator.gameObject.SetActive(false);
+        animator.bodyAnimator.gameObject.SetActive(false);
+        animator.equipmentAnimator.gameObject.SetActive(false);
+        animator.weaponAnimator.gameObject.SetActive(false);
+    }
+
+    public void UnPauseAnimators ()
+    {
+        animator.hairAnimator.gameObject.SetActive(true);
+        animator.bodyAnimator.gameObject.SetActive(true);
+        animator.equipmentAnimator.gameObject.SetActive(true);
+        animator.weaponAnimator.gameObject.SetActive(true);
     }
 	
 	//called from the animations for attacking.

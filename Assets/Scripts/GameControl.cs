@@ -52,6 +52,9 @@ public class GameControl : MonoBehaviour {
 	public int mp;
     public int xp;
     public int xpToLevel;
+    public int hairIndex;
+    public int skinColorIndex;
+    public int equippedEquipmentIndex;
 	
 	public int currentStrength;
 	public int currentDefense;
@@ -444,8 +447,13 @@ public class GameControl : MonoBehaviour {
 			equippedChest = playerData.equippedChest;
 			equippedPants = playerData.equippedPants;
 			equippedFeet = playerData.equippedFeet;
-			
-			equippedWeapon = playerData.equippedWeapon;
+
+            //ToDo needs to be saved
+            equippedEquipmentIndex = 1;
+            skinColorIndex = 1;
+            hairIndex = 1;
+
+            equippedWeapon = playerData.equippedWeapon;
 
             levelScores = playerData.levelScores;
 
@@ -501,16 +509,21 @@ public class GameControl : MonoBehaviour {
         currentMana = 1;
 
         playerClass = 6;
-        equippedWeapon = 50;
+        equippedWeapon = 10;
         equippedHead = 1;
         equippedChest = 2;
         equippedPants = 3;
         equippedFeet = 4;
 
+        //ToDo needs to be saved
+        equippedEquipmentIndex = 1;
+        skinColorIndex = 1;
+        hairIndex = 1;
+
         xpToLevel = ExperienceToLevel.experienceToLevel.levels[playerLevel].experienceToLevel;
         EquipmentInventory.equipmentInventory.UpdateEquippedStats();
         //ToDo move this to after intro story stuff...
-        weaponsList.Add(equipmentDatabase.equipment[10]);
+        weaponsList.Add(equipmentDatabase.equipment[50]);
         weaponsList.Add(equipmentDatabase.equipment[20]);
         weaponsList.Add(equipmentDatabase.equipment[30]);
         weaponsList.Add(equipmentDatabase.equipment[40]);
