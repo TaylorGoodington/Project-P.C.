@@ -225,7 +225,6 @@ public class LevelManager : MonoBehaviour {
             enemiesDefeated = 0;
             levelTime = 0;
             initializationAnimator.Play("LevelIntroTransition");
-            Debug.Log("pit");
         }
         //Playable levels.
         else if (level >= level01)
@@ -235,7 +234,6 @@ public class LevelManager : MonoBehaviour {
             cameraManager.transform.GetChild(0).gameObject.SetActive(true);
             cameraManager.transform.GetChild(1).gameObject.SetActive(false);
             InitializeLevel(level);
-            Debug.Log("playable");
         }
 
         //Maps and Menus.
@@ -245,7 +243,6 @@ public class LevelManager : MonoBehaviour {
             cameraManager.transform.GetChild(0).gameObject.SetActive(false);
             cameraManager.transform.GetChild(1).gameObject.SetActive(true);
             InMapScenes = true;
-            Debug.Log("maps");
         }
     }
 }

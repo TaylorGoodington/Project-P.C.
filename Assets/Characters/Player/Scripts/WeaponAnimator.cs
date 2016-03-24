@@ -17,6 +17,16 @@ public class WeaponAnimator : MonoBehaviour {
 
     public void AttackLaunched ()
     {
-        player.AttackLaunched();
+        player.EndOfAttack();
+    }
+
+    public void IsClimbingUp ()
+    {
+        player.IsClimbingUp();
+    }
+
+    public void FlinchRecovered ()
+    {
+        player.FlinchRecovered();
     }
 }

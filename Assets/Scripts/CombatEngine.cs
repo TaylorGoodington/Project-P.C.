@@ -11,6 +11,9 @@ public class CombatEngine : MonoBehaviour {
     //public float counterRate;
     public int maxCombos;
     public int comboCount;
+    public bool runComboClock;
+    public float comboWindow;
+    public float comboCountDown;
 
     private float maxIntelligence = 100; //ToDo UPDATE AT SOME POINT
     private float maxNakedCritRate = 25;
@@ -21,7 +24,39 @@ public class CombatEngine : MonoBehaviour {
 
     void Start () {
 		combatEngine = GetComponent<CombatEngine>();
-	}
+        comboCount = 1;
+        runComboClock = false;
+
+        //Set from weapon attribute?
+        comboWindow = 0.5f;
+        comboCountDown = comboWindow;
+    }
+
+    //Update used to increment combos.
+    void Update ()
+    {
+        //comboWindow = somethingOffTheWeapon?
+        maxCombos = GameControl.gameControl.maxCombos;
+
+        if (runComboClock)
+        {
+            RunComboClock();
+        }
+    }
+
+    public void RunComboClock ()
+    {
+        if (comboCountDown > 0)
+        {
+            comboCountDown -= Time.deltaTime;
+        }
+        else if (GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().attackLaunched == false)
+        {
+            runComboClock = false;
+            comboCountDown = comboWindow;
+            comboCount = 1;
+        }
+    }
 
     public void CalculateSecondaryStats() {
         float critModifier = 0;

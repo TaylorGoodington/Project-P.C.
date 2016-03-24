@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 103a6bcc046620848b58b15b9217d03a
-timeCreated: 1458688688
+timeCreated: 1458747922
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -73,17 +73,17 @@ TextureImporter:
         y: 120
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -15, y: -2}
-        - {x: -19, y: -5}
-        - {x: -19, y: -12}
-        - {x: -18, y: -20}
-        - {x: 1, y: -20}
-        - {x: 1, y: -6}
-        - {x: -6, y: -2}
+      - - {x: 5.039999, y: -3}
+        - {x: 2.039999, y: -1}
+        - {x: -5.960001, y: -1}
+        - {x: -10.960001, y: -4}
+        - {x: -10.960001, y: -20}
+        - {x: 9.039999, y: -20}
+        - {x: 9.039999, y: -8}
     - name: Pit Rags Sheet_1
       rect:
         serializedVersion: 2
@@ -91,17 +91,18 @@ TextureImporter:
         y: 120
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -18, y: -20}
-        - {x: 5, y: -20}
-        - {x: 5, y: -18}
-        - {x: 3, y: -6}
-        - {x: -2, y: -3}
-        - {x: -14, y: -3}
-        - {x: -18, y: -5}
+      - - {x: 6.040001, y: -2}
+        - {x: -3.959999, y: -2}
+        - {x: -9.959999, y: -5}
+        - {x: -9.959999, y: -19}
+        - {x: -8.959999, y: -20}
+        - {x: 13.040001, y: -20}
+        - {x: 13.040001, y: -12}
+        - {x: 10.040001, y: -4}
     - name: Pit Rags Sheet_2
       rect:
         serializedVersion: 2
@@ -109,19 +110,18 @@ TextureImporter:
         y: 120
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -8, y: -2}
-        - {x: -11, y: -2}
-        - {x: -15, y: -5}
-        - {x: -15, y: -19}
-        - {x: -13, y: -20}
-        - {x: 1, y: -20}
-        - {x: 2, y: -14}
-        - {x: 2, y: -4}
-        - {x: 0, y: -3}
+      - - {x: -4.959999, y: -1}
+        - {x: -6.959999, y: -3}
+        - {x: -6.959999, y: -18}
+        - {x: -3.959999, y: -20}
+        - {x: 9.040001, y: -20}
+        - {x: 10.040001, y: -16}
+        - {x: 10.040001, y: -3}
+        - {x: 4.040001, y: -1}
     - name: Pit Rags Sheet_3
       rect:
         serializedVersion: 2
@@ -129,18 +129,17 @@ TextureImporter:
         y: 120
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -13, y: -1}
-        - {x: -19, y: -5}
-        - {x: -19, y: -18}
-        - {x: -14, y: -20}
-        - {x: 5, y: -20}
-        - {x: 7, y: -16}
-        - {x: 7, y: -4}
-        - {x: 0, y: -1}
+      - - {x: -6.9600067, y: 0}
+        - {x: -9.960007, y: -5}
+        - {x: -10.960007, y: -12}
+        - {x: -10.960007, y: -20}
+        - {x: 15.039993, y: -20}
+        - {x: 15.039993, y: -4}
+        - {x: 8.039993, y: 0}
     - name: Pit Rags Sheet_4
       rect:
         serializedVersion: 2
@@ -148,19 +147,19 @@ TextureImporter:
         y: 80
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -17, y: 7}
-        - {x: -20, y: 4}
-        - {x: -20, y: -6}
-        - {x: -16, y: -20}
-        - {x: -9, y: -20}
-        - {x: -5, y: -18}
-        - {x: 3, y: -13}
-        - {x: 3, y: -1}
-        - {x: 2, y: 7}
+      - - {x: -9.960001, y: 8}
+        - {x: -12.960001, y: 5}
+        - {x: -12.960001, y: -2}
+        - {x: -9.960001, y: -18}
+        - {x: -6.960001, y: -19}
+        - {x: 1.039999, y: -19}
+        - {x: 11.039999, y: -12}
+        - {x: 11.039999, y: -1}
+        - {x: 10.039999, y: 8}
     - name: Pit Rags Sheet_5
       rect:
         serializedVersion: 2
@@ -168,16 +167,16 @@ TextureImporter:
         y: 80
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -20, y: -16}
-        - {x: -19, y: -20}
-        - {x: 2, y: -20}
-        - {x: 2, y: -2}
-        - {x: -17, y: -2}
-        - {x: -20, y: -8}
+      - - {x: -10.959999, y: -1}
+        - {x: -11.959999, y: -2}
+        - {x: -11.959999, y: -20}
+        - {x: 10.040001, y: -20}
+        - {x: 10.040001, y: -4}
+        - {x: 5.040001, y: -1}
     - name: Pit Rags Sheet_6
       rect:
         serializedVersion: 2
@@ -185,18 +184,19 @@ TextureImporter:
         y: 80
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -7, y: -2}
-        - {x: -11, y: -2}
-        - {x: -14, y: -7}
-        - {x: -18, y: -18}
-        - {x: -18, y: -20}
-        - {x: 3, y: -20}
-        - {x: 3, y: -15}
-        - {x: -1, y: -3}
+      - - {x: 6.040001, y: -3}
+        - {x: -0.9599991, y: -1}
+        - {x: -2.959999, y: -1}
+        - {x: -5.959999, y: -6}
+        - {x: -9.959999, y: -15}
+        - {x: -9.959999, y: -20}
+        - {x: 11.040001, y: -20}
+        - {x: 11.040001, y: -15}
+        - {x: 8.040001, y: -5}
     - name: Pit Rags Sheet_7
       rect:
         serializedVersion: 2
@@ -204,18 +204,19 @@ TextureImporter:
         y: 80
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -7, y: -2}
-        - {x: -11, y: -2}
-        - {x: -14, y: -7}
-        - {x: -18, y: -18}
-        - {x: -18, y: -20}
-        - {x: 3, y: -20}
-        - {x: 3, y: -15}
-        - {x: -1, y: -3}
+      - - {x: 6.0399933, y: -3}
+        - {x: -0.9600067, y: -1}
+        - {x: -2.9600067, y: -1}
+        - {x: -5.9600067, y: -6}
+        - {x: -9.960007, y: -15}
+        - {x: -9.960007, y: -20}
+        - {x: 11.039993, y: -20}
+        - {x: 11.039993, y: -15}
+        - {x: 8.039993, y: -5}
     - name: Pit Rags Sheet_8
       rect:
         serializedVersion: 2
@@ -223,19 +224,17 @@ TextureImporter:
         y: 40
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -8, y: -2}
-        - {x: -15, y: -2}
-        - {x: -20, y: -4}
-        - {x: -20, y: -10}
-        - {x: -18, y: -12}
-        - {x: -18, y: -20}
-        - {x: 1, y: -20}
-        - {x: 1, y: -6}
-        - {x: -3, y: -4}
+      - - {x: -7.960001, y: -1}
+        - {x: -11.960001, y: -3}
+        - {x: -11.960001, y: -9}
+        - {x: -9.960001, y: -20}
+        - {x: 9.039999, y: -20}
+        - {x: 9.039999, y: -5}
+        - {x: 2.039999, y: -1}
     - name: Pit Rags Sheet_9
       rect:
         serializedVersion: 2
@@ -243,18 +242,16 @@ TextureImporter:
         y: 40
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -16, y: 9}
-        - {x: -18, y: 8}
-        - {x: -18, y: -12}
-        - {x: -12, y: -20}
-        - {x: 1, y: -20}
-        - {x: 2, y: -19}
-        - {x: 2, y: 4}
-        - {x: -8, y: 9}
+      - - {x: -9.959999, y: 10}
+        - {x: -9.959999, y: -19}
+        - {x: 7.040001, y: -19}
+        - {x: 10.040001, y: -16}
+        - {x: 10.040001, y: 4}
+        - {x: 5.040001, y: 10}
     - name: Pit Rags Sheet_10
       rect:
         serializedVersion: 2
@@ -262,18 +259,18 @@ TextureImporter:
         y: 40
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -9, y: 9}
-        - {x: -19, y: 0}
-        - {x: -19, y: -16}
-        - {x: -16, y: -20}
-        - {x: -3, y: -20}
-        - {x: 1, y: -14}
-        - {x: 1, y: 8}
-        - {x: -1, y: 9}
+      - - {x: -10.959999, y: -13}
+        - {x: -8.959999, y: -17}
+        - {x: -4.959999, y: -19}
+        - {x: 2.040001, y: -19}
+        - {x: 9.040001, y: -14}
+        - {x: 9.040001, y: 10}
+        - {x: -4.959999, y: 10}
+        - {x: -10.959999, y: 7}
     - name: Pit Rags Sheet_11
       rect:
         serializedVersion: 2
@@ -281,15 +278,18 @@ TextureImporter:
         y: 40
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -19, y: 3}
-        - {x: -19, y: -20}
-        - {x: -6, y: -20}
-        - {x: 1, y: -17}
-        - {x: 1, y: 3}
+      - - {x: -6.9600067, y: 4}
+        - {x: -10.960007, y: 3}
+        - {x: -10.960007, y: -14}
+        - {x: -8.960007, y: -19}
+        - {x: 2.0399933, y: -19}
+        - {x: 9.039993, y: -16}
+        - {x: 9.039993, y: 2}
+        - {x: 8.039993, y: 4}
     - name: Pit Rags Sheet_12
       rect:
         serializedVersion: 2
@@ -297,16 +297,16 @@ TextureImporter:
         y: 0
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -15, y: -2}
-        - {x: -18, y: -9}
-        - {x: -18, y: -20}
-        - {x: 3, y: -20}
-        - {x: 3, y: -5}
-        - {x: -4, y: -2}
+      - - {x: -6.960001, y: -1}
+        - {x: -9.960001, y: -8}
+        - {x: -9.960001, y: -20}
+        - {x: 11.039999, y: -20}
+        - {x: 11.039999, y: -3}
+        - {x: 4.039999, y: -1}
     - name: Pit Rags Sheet_13
       rect:
         serializedVersion: 2
@@ -314,16 +314,16 @@ TextureImporter:
         y: 0
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -15, y: -2}
-        - {x: -18, y: -9}
-        - {x: -18, y: -20}
-        - {x: 3, y: -20}
-        - {x: 3, y: -5}
-        - {x: -4, y: -2}
+      - - {x: -6.959999, y: -1}
+        - {x: -9.959999, y: -8}
+        - {x: -9.959999, y: -20}
+        - {x: 11.040001, y: -20}
+        - {x: 11.040001, y: -3}
+        - {x: 4.040001, y: -1}
     - name: Pit Rags Sheet_14
       rect:
         serializedVersion: 2
@@ -331,17 +331,17 @@ TextureImporter:
         y: 0
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -15, y: -3}
-        - {x: -17, y: -5}
-        - {x: -18, y: -18}
-        - {x: -18, y: -20}
-        - {x: 1, y: -20}
-        - {x: 1, y: -5}
-        - {x: -3, y: -3}
+      - - {x: 6.040001, y: -2}
+        - {x: -3.959999, y: -2}
+        - {x: -6.959999, y: -5}
+        - {x: -9.959999, y: -13}
+        - {x: -9.959999, y: -20}
+        - {x: 9.040001, y: -20}
+        - {x: 9.040001, y: -3}
     - name: Pit Rags Sheet_15
       rect:
         serializedVersion: 2
@@ -349,17 +349,17 @@ TextureImporter:
         y: 0
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -15, y: -3}
-        - {x: -17, y: -5}
-        - {x: -18, y: -18}
-        - {x: -18, y: -20}
-        - {x: 1, y: -20}
-        - {x: 1, y: -5}
-        - {x: -3, y: -3}
+      - - {x: 6.0399933, y: -2}
+        - {x: -3.9600067, y: -2}
+        - {x: -6.9600067, y: -5}
+        - {x: -9.960007, y: -13}
+        - {x: -9.960007, y: -20}
+        - {x: 9.039993, y: -20}
+        - {x: 9.039993, y: -3}
     outline: []
   spritePackingTag: 
   userData: 

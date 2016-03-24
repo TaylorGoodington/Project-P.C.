@@ -55,6 +55,7 @@ public class GameControl : MonoBehaviour {
     public int hairIndex;
     public int skinColorIndex;
     public int equippedEquipmentIndex;
+    public int maxCombos;
 	
 	public int currentStrength;
 	public int currentDefense;
@@ -179,15 +180,24 @@ public class GameControl : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.E))
             {
                 //temp way to add info to the weapons list.
-                weaponsList.Add(equipmentDatabase.equipment[10]);
-                weaponsList.Add(equipmentDatabase.equipment[20]);
-                weaponsList.Add(equipmentDatabase.equipment[30]);
-                weaponsList.Add(equipmentDatabase.equipment[40]);
-                weaponsList.Add(equipmentDatabase.equipment[50]);
-                weaponsList.Add(equipmentDatabase.equipment[60]);
-                weaponsList.Add(equipmentDatabase.equipment[70]);
-                equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
-                itemInventory.GetComponent<Inventory>().AddTempData();
+                if (equippedEquipmentIndex == 1)
+                {
+                    equippedEquipmentIndex = 2;
+                } 
+                else
+                {
+                    equippedEquipmentIndex = 1;
+                }
+
+                //weaponsList.Add(equipmentDatabase.equipment[10]);
+                //weaponsList.Add(equipmentDatabase.equipment[20]);
+                //weaponsList.Add(equipmentDatabase.equipment[30]);
+                //weaponsList.Add(equipmentDatabase.equipment[40]);
+                //weaponsList.Add(equipmentDatabase.equipment[50]);
+                //weaponsList.Add(equipmentDatabase.equipment[60]);
+                //weaponsList.Add(equipmentDatabase.equipment[70]);
+                //equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
+                //itemInventory.GetComponent<Inventory>().AddTempData();
             }
 
 
@@ -250,10 +260,10 @@ public class GameControl : MonoBehaviour {
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                equipmentInventory.GetComponent<EquipmentInventory>().OpenWeaponEvolutionMenu();
-            }
+            //if (Input.GetKeyDown(KeyCode.W))
+            //{
+            //    equipmentInventory.GetComponent<EquipmentInventory>().OpenWeaponEvolutionMenu();
+            //}
         }
 	}
 
@@ -519,6 +529,7 @@ public class GameControl : MonoBehaviour {
         equippedEquipmentIndex = 1;
         skinColorIndex = 1;
         hairIndex = 1;
+        maxCombos = 3;
 
         xpToLevel = ExperienceToLevel.experienceToLevel.levels[playerLevel].experienceToLevel;
         EquipmentInventory.equipmentInventory.UpdateEquippedStats();

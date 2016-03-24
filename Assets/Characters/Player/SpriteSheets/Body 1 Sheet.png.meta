@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c406818b11fd73344996d47213149b22
-timeCreated: 1458688555
+timeCreated: 1458748072
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -69,17 +69,17 @@ TextureImporter:
         y: 80
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -4, y: 4}
-        - {x: -10, y: 4}
-        - {x: -19, y: -4}
-        - {x: -19, y: -20}
-        - {x: 1, y: -20}
-        - {x: 2, y: -19}
-        - {x: 2, y: 1}
+      - - {x: 8.039999, y: 5}
+        - {x: -3.960001, y: 5}
+        - {x: -10.960001, y: 1}
+        - {x: -10.960001, y: -18}
+        - {x: -9.960001, y: -20}
+        - {x: 10.039999, y: -20}
+        - {x: 10.039999, y: 2}
     - name: Body 1 Sheet_1
       rect:
         serializedVersion: 2
@@ -87,16 +87,16 @@ TextureImporter:
         y: 80
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -8, y: 3}
-        - {x: -18, y: -5}
-        - {x: -18, y: -20}
-        - {x: 5, y: -20}
-        - {x: 5, y: -4}
-        - {x: 1, y: 3}
+      - - {x: 7.040001, y: 4}
+        - {x: -2.959999, y: 4}
+        - {x: -9.959999, y: -4}
+        - {x: -9.959999, y: -20}
+        - {x: 13.040001, y: -20}
+        - {x: 13.040001, y: 1}
     - name: Body 1 Sheet_2
       rect:
         serializedVersion: 2
@@ -104,19 +104,17 @@ TextureImporter:
         y: 80
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -7, y: 4}
-        - {x: -15, y: -5}
-        - {x: -15, y: -10}
-        - {x: -13, y: -18}
-        - {x: -11, y: -20}
-        - {x: 0, y: -20}
-        - {x: 4, y: -16}
-        - {x: 4, y: -2}
-        - {x: 2, y: 4}
+      - - {x: -0.9599991, y: 5}
+        - {x: -6.959999, y: -2}
+        - {x: -6.959999, y: -12}
+        - {x: -3.959999, y: -20}
+        - {x: 11.040001, y: -20}
+        - {x: 12.040001, y: -17}
+        - {x: 12.040001, y: 5}
     - name: Body 1 Sheet_3
       rect:
         serializedVersion: 2
@@ -124,18 +122,19 @@ TextureImporter:
         y: 80
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 3, y: 3}
-        - {x: -7, y: 3}
-        - {x: -19, y: -3}
-        - {x: -19, y: -17}
-        - {x: -17, y: -20}
-        - {x: 4, y: -20}
-        - {x: 8, y: -9}
-        - {x: 8, y: -4}
+      - - {x: 2.0399933, y: 4}
+        - {x: -6.9600067, y: 0}
+        - {x: -10.960007, y: -4}
+        - {x: -10.960007, y: -17}
+        - {x: -4.9600067, y: -20}
+        - {x: 12.039993, y: -20}
+        - {x: 16.039993, y: -10}
+        - {x: 16.039993, y: -2}
+        - {x: 11.039993, y: 4}
     - name: Body 1 Sheet_4
       rect:
         serializedVersion: 2
@@ -143,19 +142,21 @@ TextureImporter:
         y: 40
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -16, y: 11}
-        - {x: -20, y: 3}
-        - {x: -20, y: -11}
-        - {x: -16, y: -20}
-        - {x: -9, y: -20}
-        - {x: -5, y: -18}
-        - {x: 3, y: -13}
-        - {x: 3, y: 9}
-        - {x: -2, y: 11}
+      - - {x: 7.039999, y: 11}
+        - {x: 5.039999, y: 12}
+        - {x: -6.960001, y: 12}
+        - {x: -12.960001, y: 3}
+        - {x: -12.960001, y: -10}
+        - {x: -9.960001, y: -17}
+        - {x: -5.960001, y: -19}
+        - {x: 1.039999, y: -19}
+        - {x: 11.039999, y: -12}
+        - {x: 11.039999, y: -1}
+        - {x: 10.039999, y: 8}
     - name: Body 1 Sheet_5
       rect:
         serializedVersion: 2
@@ -163,19 +164,18 @@ TextureImporter:
         y: 40
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -15, y: 4}
-        - {x: -17, y: 3}
-        - {x: -20, y: -7}
-        - {x: -20, y: -17}
-        - {x: -18, y: -20}
-        - {x: 2, y: -20}
-        - {x: 3, y: -19}
-        - {x: 3, y: -3}
-        - {x: -2, y: 4}
+      - - {x: -2.959999, y: 5}
+        - {x: -7.959999, y: 3}
+        - {x: -11.959999, y: -5}
+        - {x: -11.959999, y: -15}
+        - {x: -9.959999, y: -20}
+        - {x: 11.040001, y: -20}
+        - {x: 11.040001, y: -7}
+        - {x: 6.040001, y: 5}
     - name: Body 1 Sheet_6
       rect:
         serializedVersion: 2
@@ -183,16 +183,16 @@ TextureImporter:
         y: 40
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -11, y: 4}
-        - {x: -18, y: -11}
-        - {x: -18, y: -20}
-        - {x: 3, y: -20}
-        - {x: 3, y: 3}
-        - {x: 1, y: 4}
+      - - {x: -3.959999, y: 5}
+        - {x: -9.959999, y: -10}
+        - {x: -9.959999, y: -20}
+        - {x: 11.040001, y: -20}
+        - {x: 11.040001, y: -1}
+        - {x: 8.040001, y: 5}
     - name: Body 1 Sheet_7
       rect:
         serializedVersion: 2
@@ -200,16 +200,16 @@ TextureImporter:
         y: 40
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -11, y: 4}
-        - {x: -18, y: -11}
-        - {x: -18, y: -20}
-        - {x: 3, y: -20}
-        - {x: 3, y: 3}
-        - {x: 1, y: 4}
+      - - {x: -3.9600067, y: 5}
+        - {x: -9.960007, y: -10}
+        - {x: -9.960007, y: -20}
+        - {x: 11.039993, y: -20}
+        - {x: 11.039993, y: -1}
+        - {x: 8.039993, y: 5}
     - name: Body 1 Sheet_8
       rect:
         serializedVersion: 2
@@ -217,17 +217,18 @@ TextureImporter:
         y: 0
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -5, y: 4}
-        - {x: -13, y: 4}
-        - {x: -20, y: -2}
-        - {x: -20, y: -20}
-        - {x: 1, y: -20}
-        - {x: 2, y: -17}
-        - {x: 2, y: 2}
+      - - {x: 5.039999, y: 5}
+        - {x: -8.960001, y: 5}
+        - {x: -11.960001, y: -5}
+        - {x: -11.960001, y: -17}
+        - {x: -10.960001, y: -20}
+        - {x: 10.039999, y: -20}
+        - {x: 10.039999, y: -8}
+        - {x: 7.039999, y: 1}
     - name: Body 1 Sheet_9
       rect:
         serializedVersion: 2
@@ -235,19 +236,18 @@ TextureImporter:
         y: 0
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -14, y: 12}
-        - {x: -18, y: 10}
-        - {x: -18, y: -12}
-        - {x: -11, y: -20}
-        - {x: -3, y: -20}
-        - {x: 1, y: -18}
-        - {x: 2, y: -10}
-        - {x: 2, y: 4}
-        - {x: -7, y: 12}
+      - - {x: -7.959999, y: 13}
+        - {x: -9.959999, y: 12}
+        - {x: -9.959999, y: -16}
+        - {x: -8.959999, y: -19}
+        - {x: 6.040001, y: -19}
+        - {x: 10.040001, y: -8}
+        - {x: 10.040001, y: 4}
+        - {x: 0.040000916, y: 13}
     - name: Body 1 Sheet_10
       rect:
         serializedVersion: 2
@@ -255,18 +255,18 @@ TextureImporter:
         y: 0
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -19, y: -12}
-        - {x: -18, y: -18}
-        - {x: -17, y: -20}
-        - {x: -7, y: -20}
-        - {x: 1, y: -16}
-        - {x: 1, y: 12}
-        - {x: -8, y: 12}
-        - {x: -19, y: 4}
+      - - {x: -1.9599991, y: 13}
+        - {x: -10.959999, y: 5}
+        - {x: -10.959999, y: -11}
+        - {x: -9.959999, y: -18}
+        - {x: -4.959999, y: -19}
+        - {x: 8.040001, y: -19}
+        - {x: 9.040001, y: -17}
+        - {x: 9.040001, y: 13}
     - name: Body 1 Sheet_11
       rect:
         serializedVersion: 2
@@ -274,19 +274,19 @@ TextureImporter:
         y: 0
         width: 40
         height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.374, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 1, y: 0}
-        - {x: -2, y: 5}
-        - {x: -12, y: 5}
-        - {x: -19, y: 2}
-        - {x: -19, y: -12}
-        - {x: -17, y: -18}
-        - {x: -13, y: -20}
-        - {x: -7, y: -20}
-        - {x: 1, y: -12}
+      - - {x: -6.9600067, y: 6}
+        - {x: -10.960007, y: 1}
+        - {x: -10.960007, y: -12}
+        - {x: -8.960007, y: -17}
+        - {x: -4.9600067, y: -19}
+        - {x: 2.0399933, y: -19}
+        - {x: 9.039993, y: -13}
+        - {x: 9.039993, y: 1}
+        - {x: 3.0399933, y: 6}
     outline: []
   spritePackingTag: 
   userData: 
