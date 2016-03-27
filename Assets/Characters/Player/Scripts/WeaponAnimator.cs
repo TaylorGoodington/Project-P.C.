@@ -29,4 +29,14 @@ public class WeaponAnimator : MonoBehaviour {
     {
         player.FlinchRecovered();
     }
+
+    public void FullyRevived ()
+    {
+        player.FullyRevived();
+    }
+
+    public void TransitionToPit ()
+    {
+        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<Animator>().Play("DeathToPit");
+    }
 }

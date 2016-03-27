@@ -43,7 +43,7 @@ public class LadyDeath : MonoBehaviour {
 
     void OpenLadyDeathMenu ()
     {
-        //GameControl.gameControl.ladyDeathMenu = 1;
+        GameControl.gameControl.ladyDeathMenu = 1;
         //Instantiate(ladyDeathMenu);
     }
 
@@ -53,13 +53,22 @@ public class LadyDeath : MonoBehaviour {
         StartCoroutine("HurlInsults");
     }
 
+    public void OpenPreviousMenu ()
+    {
+        if (GameControl.gameControl.ladyDeathMenu == 1)
+        {
+            CloseLadyDeathMenu();
+        }
+    }
+
     void AddInsulstsToList()
     {
         insultsList = new List<string> {
-            "fuck",
-            "shit",
-            "asshole",
-            "gaylord" };
+            "back  so  soon",
+            "Don't  feel  bad,  you  are  easily  replaced.",
+            "Maybe  the  next  one  will  be  more  attractive...",
+            "I  expect  you  to  give  up,  don't  make  me  wait.",
+            "Have  you  been  working  out,  didn't  think  so."};
     }
 
     void ShuffleInsultList ()
@@ -83,14 +92,14 @@ public class LadyDeath : MonoBehaviour {
                 {
                     insultText.text = insultsList[i];
                     headAnimator.Play("Insults");
-                    yield return new WaitForSeconds(3);
+                    yield return new WaitForSeconds(4);
                     ShuffleInsultList();
                 }
                 else
                 {
                     insultText.text = insultsList[i];
                     headAnimator.Play("Insults");
-                    yield return new WaitForSeconds(3);
+                    yield return new WaitForSeconds(4);
                 }
             }
         }

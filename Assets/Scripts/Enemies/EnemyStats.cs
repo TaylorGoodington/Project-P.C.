@@ -15,6 +15,7 @@ public class EnemyStats : MonoBehaviour {
     public float jumpHeight;
     public float patrolSpeed;
     public float chaseSpeed;
+    public int knockbackForce;
     [Tooltip("The amount of time an enemy will remain engaged after losing the line of sight.")]
     public float chaseTime;
     [Tooltip("The length of time in seconds it takes for the enemy to change directions.")]

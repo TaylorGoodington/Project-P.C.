@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 
 public class LevelManager : MonoBehaviour {
@@ -225,6 +226,13 @@ public class LevelManager : MonoBehaviour {
             enemiesDefeated = 0;
             levelTime = 0;
             initializationAnimator.Play("LevelIntroTransition");
+
+            //recovering from death.
+            if (GameControl.gameControl.dying == true)
+            {
+                StartCoroutine("DeathStanding");
+                GameControl.gameControl.dying = false;
+            }
         }
         //Playable levels.
         else if (level >= level01)
@@ -244,5 +252,11 @@ public class LevelManager : MonoBehaviour {
             cameraManager.transform.GetChild(1).gameObject.SetActive(true);
             InMapScenes = true;
         }
+    }
+
+    IEnumerator DeathStanding ()
+    {
+        yield return new WaitForSeconds(0.1f);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().deathStanding = true;
     }
 }

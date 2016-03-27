@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(Controller2D))]
 [RequireComponent(typeof(EnemyStats))]
-public class Scorpion1 : MonoBehaviour
+public class BoneMarauder1 : MonoBehaviour
 {
     #region Variables
     [HideInInspector]
     public EnemyStats stats;
+
+    string enemyType = "BoneMarauder1";
 
     [Tooltip("This field is used to specify which layers block the attacking and abilities raycasts.")]
     public LayerMask attackingLayer;
@@ -38,8 +40,10 @@ public class Scorpion1 : MonoBehaviour
     //[HideInInspector]
     public EnemyState state;
 
-    [HideInInspector]
+    //[HideInInspector]
     public bool isAttacking;
+
+    bool beingAttacked;
 
     private Animator enemyAnimationController;
 
@@ -110,6 +114,7 @@ public class Scorpion1 : MonoBehaviour
         changingDirection = false;
         patrolPathCreated = false;
         investigating = false;
+        beingAttacked = false;
 
         engagementCounter = chaseTime + pivotTime;
 
@@ -161,7 +166,25 @@ public class Scorpion1 : MonoBehaviour
         if (stats.hP <= 0)
         {
             velocity.x = 0;
-            enemyAnimationController.Play("Scorpion1Death");
+            enemyAnimationController.Play(enemyType + "Death");
+        }
+
+        //player is dead.
+        else if (GameControl.gameControl.hp == 0)
+        {
+            Patrolling();
+
+            gravity = -1000;
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime, new Vector2(0,0));
+        }
+
+        else if (beingAttacked)
+        {
+            isAttacking = false;
+            state = EnemyState.Attacking;
+            enemyAnimationController.Play(enemyType + "Flinching");
+            velocity.x = 0;
         }
         //not dead!
         else
@@ -184,6 +207,11 @@ public class Scorpion1 : MonoBehaviour
                 eyePosition = eyePositionRight;
                 jumpPoints.transform.localScale = new Vector3(-1, 1, 1);
                 freeFallPoints.transform.localScale = new Vector3(-1, 1, 1);
+            }
+
+            if (controller.collisions.below == false)
+            {
+                enemyAnimationController.Play(enemyType + "Jumping");
             }
 
             //cant move if attacking.
@@ -218,11 +246,16 @@ public class Scorpion1 : MonoBehaviour
                 //This is where we would call the animator to attack.
                 if (!InAttackRange())
                 {
+                    isAttacking = false;
                     state = EnemyState.Chasing;
                 }
                 else
                 {
-                    //Play attack animation....
+                    if (!isAttacking && controller.collisions.below == true)
+                    {
+                        isAttacking = true;
+                        enemyAnimationController.Play(enemyType + "Attacking");
+                    }
                 }
             }
 
@@ -234,6 +267,14 @@ public class Scorpion1 : MonoBehaviour
                 gravity = -1000;
                 velocity.y += gravity * Time.deltaTime;
                 controller.Move(velocity * Time.deltaTime, input);
+                if (velocity.x != 0)
+                {
+                    enemyAnimationController.Play(enemyType + "Running");
+                }
+                else
+                {
+                    enemyAnimationController.Play(enemyType + "Idle");
+                }
             }
 
 
@@ -245,6 +286,14 @@ public class Scorpion1 : MonoBehaviour
                 gravity = -1000;
                 velocity.y += gravity * Time.deltaTime;
                 controller.Move(velocity * Time.deltaTime, input);
+                if (velocity.x != 0)
+                {
+                    enemyAnimationController.Play(enemyType + "Running");
+                }
+                else
+                {
+                    enemyAnimationController.Play(enemyType + "Idle");
+                }
             }
 
 
@@ -256,6 +305,14 @@ public class Scorpion1 : MonoBehaviour
                 gravity = -1000;
                 velocity.y += gravity * Time.deltaTime;
                 controller.Move(velocity * Time.deltaTime, input);
+                if (velocity.x != 0)
+                {
+                    enemyAnimationController.Play(enemyType + "Walking");
+                }
+                else
+                {
+                    enemyAnimationController.Play(enemyType + "Idle");
+                }
             }
 
 
@@ -286,8 +343,8 @@ public class Scorpion1 : MonoBehaviour
         float jumpFactor = 0.7f;
         float airborneAdjustment = timeAirborn / 2 * jumpFactor;
 
-        jumpPoint1.transform.localPosition = new Vector2((timeAirborn / 2) * jumpFactor * chaseSpeed * -1, (((maxJumpVelocity * airborneAdjustment) -
-                                                    (Mathf.Abs(gravity) * 0.5f * (Mathf.Pow(airborneAdjustment, 2)))) - jumpHeight * 0.1f) + enemyCollider.offset.y);
+        jumpPoint1.transform.localPosition = new Vector2((timeAirborn / 2) * jumpFactor * chaseSpeed * -1, (((maxJumpVelocity * airborneAdjustment) - 
+                                                    (Mathf.Abs(gravity) * 0.5f * (Mathf.Pow(airborneAdjustment,2)))) - jumpHeight * 0.1f) + enemyCollider.offset.y);
         jumpPoint2.transform.localPosition = new Vector2(maxJumpDistance / 2 * -1, jumpHeight + enemyCollider.offset.y);
 
         jumpPoint3.transform.localPosition = new Vector2((timeAirborn / 2) * (1 - jumpFactor + 1) * chaseSpeed * -1, (((maxJumpVelocity * airborneAdjustment) -
@@ -575,6 +632,16 @@ public class Scorpion1 : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void BeingAttacked ()
+    {
+        beingAttacked = true;
+    }
+
+    public void FlinchRecovered ()
+    {
+        beingAttacked = false;
     }
 
     public bool AtNearestPatrolPointToTarget ()
@@ -1244,11 +1311,6 @@ public class Scorpion1 : MonoBehaviour
     public void OnTriggerExit2D(Collider2D collider)
     {
 
-    }
-
-    public void BeingAttacked ()
-    {
-        //not used for this enemy.
     }
 
     //called from attacking animation at the begining and end.

@@ -28,7 +28,7 @@ public class CombatEngine : MonoBehaviour {
         runComboClock = false;
 
         //Set from weapon attribute?
-        comboWindow = 0.5f;
+        comboWindow = 0.2f;
         comboCountDown = comboWindow;
     }
 
@@ -143,6 +143,7 @@ public class CombatEngine : MonoBehaviour {
         if ((attackDamage - enemyDefense) > 0)
         {
             collider.gameObject.GetComponent<EnemyStats>().hP -= (attackDamage - enemyDefense);
+            collider.gameObject.SendMessage("BeingAttacked");
             return true;
         }
         else
@@ -170,7 +171,8 @@ public class CombatEngine : MonoBehaviour {
         }
     }
 	
-	public void AttackingEnemies (Collider2D collider) {
+	public void AttackingEnemies (Collider2D collider)
+    {
         if (AttackingPhase(collider, Attacker.Player))
         {
             Debug.Log("The Attack Has Hit!");
@@ -203,6 +205,7 @@ public class CombatEngine : MonoBehaviour {
                 if (DealingDamageToPlayerPhase(collider))
                 {
                     GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
+                    GameObject.FindGameObjectWithTag("Player").SendMessage("Knockback", collider.gameObject.GetComponent<EnemyStats>().knockbackForce);
                     Debug.Log("Damage Delt!");
                 }
             }

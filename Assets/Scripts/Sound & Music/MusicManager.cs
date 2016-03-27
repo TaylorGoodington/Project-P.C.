@@ -29,7 +29,7 @@ public class MusicManager : MonoBehaviour {
 	void Update () {
 		if (LevelTrack() != currentTrack) {
 			currentTrack = LevelTrack();
-			PlayMusic(currentTrack);
+			PlayMusic(currentTrack, true);
 		}
 
         if (endOfLevel)
@@ -48,12 +48,19 @@ public class MusicManager : MonoBehaviour {
         }
 	}
 	
-	public void PlayMusic (int track) {
+	public void PlayMusic (int track, bool loop) {
 		AudioClip thisLevelMusic = levelMusicChangeArray[track];
 		if (thisLevelMusic) {
 			audioSource.clip = thisLevelMusic;
-			audioSource.loop = true;
-			audioSource.Play();
+            if (loop)
+            {
+                audioSource.loop = true;
+            } 
+            else
+            {
+                audioSource.loop = false;
+            }
+            audioSource.Play();
 		}
 		
 	}

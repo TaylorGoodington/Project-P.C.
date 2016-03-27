@@ -4,6 +4,7 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class GameControl : MonoBehaviour {
 
@@ -108,6 +109,8 @@ public class GameControl : MonoBehaviour {
     [HideInInspector]
     public bool endOfLevel;
 
+    public bool dying;
+
     void Awake () {
         if (thisObject != null)
         {
@@ -133,6 +136,7 @@ public class GameControl : MonoBehaviour {
 		mainMenuCopyLevel = 0;
         ladyDeathMenu = 0;
         endOfLevel = false;
+        dying = false;
 		
 		playerSoundEffects.ChangeVolume(PlayerPrefsManager.GetMasterEffectsVolume());
 		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
@@ -141,6 +145,7 @@ public class GameControl : MonoBehaviour {
 	void Update () {
         if (playerHasControl)
         {
+            //GameObject.FindGameObjectWithTag("EventSystem").gameObject.GetComponent<StandaloneInputModule>().enabled = true;
             if (Input.GetButtonDown("Open Pause Menu"))
             {
                 //makes opening pause menu impossible from the listed scenes, need to add a few for the world/region menus and cutscenes....might be easier to say when instead of when cant.
@@ -249,7 +254,7 @@ public class GameControl : MonoBehaviour {
                 //Lady Death Menu.
                 if (ladyDeathMenu > 0)
                 {
-                    //previous menu function...
+                    GameObject.FindGameObjectWithTag("Lady Death").GetComponent<LadyDeath>().OpenPreviousMenu();
                     ladyDeathMenu--;
                 }
                 //Weapon Evolution Menu.
@@ -264,6 +269,14 @@ public class GameControl : MonoBehaviour {
             //{
             //    equipmentInventory.GetComponent<EquipmentInventory>().OpenWeaponEvolutionMenu();
             //}
+        }
+        else
+        {
+            //GameObject.FindGameObjectWithTag("EventSystem").gameObject.GetComponent<StandaloneInputModule>().enabled = false;
+        }
+        if (hp < 0)
+        {
+            hp = 0;
         }
 	}
 

@@ -46,6 +46,7 @@ public class Player : MonoBehaviour {
     private BoxCollider2D playerCollider;
     [HideInInspector]
     public bool flinching;
+    public bool deathStanding;
 	
 	void Start() {
 		controller = GetComponent<Controller2D> ();
@@ -59,15 +60,33 @@ public class Player : MonoBehaviour {
         attackLaunched = false;
 		isJumping = false;
         flinching = false;
+        deathStanding = false;
 	}
 
     void Update()
     {
-        if (GameControl.gameControl.hp <= 0)
+        if (deathStanding)
         {
-            input = Vector2.zero;
-            GameControl.gameControl.playerHasControl = false;
-            //ToDo Play Death Animation.
+            animator.PlayAnimation(PlayerAnimationController.Animations.DeathStanding);
+        }
+        else if (GameControl.gameControl.hp <= 0)
+        {
+            GameControl.gameControl.dying = true;
+            if (controller.collisions.below)
+            {
+                input = Vector2.zero;
+                GameControl.gameControl.playerHasControl = false;
+                UnPauseAnimators();
+                animator.PlayAnimation(PlayerAnimationController.Animations.DeathFalling);
+                MusicManager.musicManager.PlayMusic(7, false);
+            }
+            //Player needs to hit the ground before the animation plays.
+            else
+            {
+                gravity = -1000;
+                velocity.y += gravity * Time.deltaTime;
+                controller.Move(velocity * Time.deltaTime, new Vector2(1, 0));
+            }
         }
         else if (GameControl.gameControl.endOfLevel)
         {
@@ -85,7 +104,9 @@ public class Player : MonoBehaviour {
             }
         }
         else if (flinching) {
+            CombatEngine.combatEngine.comboCount = 1;
             animator.PlayAnimation(PlayerAnimationController.Animations.Flinching);
+            PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
         }
         else
         {
@@ -234,7 +255,7 @@ public class Player : MonoBehaviour {
                 Invoke("PauseAnimators", 0.1f);
             }
 
-            if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false && !climbing)
+            if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false && !climbing && !climbingUp)
             {
                 UnPauseAnimators();
                 animator.PlayAnimation(PlayerAnimationController.Animations.Jumping);
@@ -284,6 +305,12 @@ public class Player : MonoBehaviour {
         }
     }
 
+    //Knockback
+    public void Knockback (int knockback)
+    {
+        transform.Translate(knockback * controller.collisions.faceDir * -1, 0, 0, Space.Self);
+    }
+
     //Triggers dictate climbing, interactables, level triggers, and other things.
     public void OnTriggerEnter2D (Collider2D collider) {
 		if (collider.gameObject.GetComponent<IsClimbable>()) {
@@ -308,6 +335,12 @@ public class Player : MonoBehaviour {
         {
             GameControl.gameControl.hp = 0;
         }
+
+        //Interactable Objects
+        if (collider.gameObject.layer == 21)
+        {
+            GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().showInteractableDisplay = true;
+        }
     }
 	
 	//this will be used to gauge interactions...I might need to do these things in the climbable script.
@@ -316,6 +349,12 @@ public class Player : MonoBehaviour {
 			isClimbable = false;
 			climbing = false;
 		}
+
+        //Interactable Objects
+        if (collider.gameObject.layer == 21)
+        {
+            GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().showInteractableDisplay = false;
+        }
     }
 
     public void ClimbingTransition(Collider2D collider) {
@@ -375,6 +414,12 @@ public class Player : MonoBehaviour {
         animator.bodyAnimator.gameObject.GetComponent<Animator>().enabled = true;
         animator.equipmentAnimator.gameObject.GetComponent<Animator>().enabled = true;
         animator.weaponAnimator.gameObject.GetComponent<Animator>().enabled = true;
+    }
+
+    //called by the animator.
+    public void FullyRevived ()
+    {
+        deathStanding = false;
     }
 	
 	//called from the animations for attacking.

@@ -14,6 +14,7 @@ public class UserInterface : MonoBehaviour {
     //private Image activeSkillIcon;
     public Text activeSkillCooldownTimer;
     public Image activeSkillShade;
+    public Image interactionIndicator;
 
     //Level End Components
     public Text timeText;
@@ -63,7 +64,11 @@ public class UserInterface : MonoBehaviour {
         
         if (showInteractableDisplay)
         {
-            //make the icon visable...
+            interactionIndicator.enabled = true;
+        }
+        else
+        {
+            interactionIndicator.enabled = false;
         }
     }
 
@@ -269,5 +274,10 @@ public class UserInterface : MonoBehaviour {
             levelUpCount.text = "+ " + levelUpCounter + " Level!";
             LevelsGained.levelsGained.LevelsGainedAnimation();
         }
+    }
+
+    public void DeathToPit ()
+    {
+        LevelManager.levelManager.LoadLevel("The Pit");
     }
 }
