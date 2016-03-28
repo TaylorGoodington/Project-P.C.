@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
@@ -27,6 +28,8 @@ public class Player : MonoBehaviour {
 	public bool isJumping;
 	public bool isClimbable;
 	public bool climbing;
+    bool climbingUpMovement;
+    public int knockBackForce;
 
     private float climbingUpPosition;
     public bool climbingUp;
@@ -47,6 +50,7 @@ public class Player : MonoBehaviour {
     [HideInInspector]
     public bool flinching;
     public bool deathStanding;
+    bool knockBack;
 	
 	void Start() {
 		controller = GetComponent<Controller2D> ();
@@ -61,6 +65,8 @@ public class Player : MonoBehaviour {
 		isJumping = false;
         flinching = false;
         deathStanding = false;
+        knockBack = false;
+        climbingUpMovement = false;
 	}
 
     void Update()
@@ -107,6 +113,11 @@ public class Player : MonoBehaviour {
             CombatEngine.combatEngine.comboCount = 1;
             animator.PlayAnimation(PlayerAnimationController.Animations.Flinching);
             PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
+            if (knockBack)
+            {
+                float flinchTime = .1f;
+                transform.Translate((CombatEngine.combatEngine.enemyKnockBackForce / flinchTime) * CombatEngine.combatEngine.enemyFaceDirection * Time.deltaTime, 0, 0, Space.Self);
+            }
         }
         else
         {
@@ -208,6 +219,12 @@ public class Player : MonoBehaviour {
                 }
             }
 
+            ////climbingupmovement
+            //if (controller.collisions.below)
+            //{
+            //    climbingUpMovement = false;
+            //}
+
 
             //flips sprite depending on direction facing.
             if (controller.collisions.faceDir == 1)
@@ -235,6 +252,7 @@ public class Player : MonoBehaviour {
             if (climbingUp)
             {
                 UnPauseAnimators();
+                climbingUpMovement = true;
                 animator.PlayAnimation(PlayerAnimationController.Animations.ClimbingUp);
             }
 
@@ -255,7 +273,7 @@ public class Player : MonoBehaviour {
                 Invoke("PauseAnimators", 0.1f);
             }
 
-            if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false && !climbing && !climbingUp)
+            if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false && !climbing && !climbingUp && !climbingUpMovement)
             {
                 UnPauseAnimators();
                 animator.PlayAnimation(PlayerAnimationController.Animations.Jumping);
@@ -305,10 +323,10 @@ public class Player : MonoBehaviour {
         }
     }
 
-    //Knockback
-    public void Knockback (int knockback)
+    //Called from combat engine.
+    public void Knockback ()
     {
-        transform.Translate(knockback * controller.collisions.faceDir * -1, 0, 0, Space.Self);
+        knockBack = true;
     }
 
     //Triggers dictate climbing, interactables, level triggers, and other things.
@@ -393,11 +411,13 @@ public class Player : MonoBehaviour {
     public void FlinchRecovered ()
     {
         flinching = false;
+        knockBack = false;
     }
 
     //used as an invoke to move the player
     public void MovePlayerWhenClimbingUp() {
         this.gameObject.transform.position = new Vector3(transform.position.x, climbingUpPosition);
+        climbingUpMovement = false;
     }
 
     public void PauseAnimators() {

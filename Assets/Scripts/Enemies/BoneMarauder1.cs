@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(Controller2D))]
 [RequireComponent(typeof(EnemyStats))]
@@ -176,7 +175,15 @@ public class BoneMarauder1 : MonoBehaviour
 
             gravity = -1000;
             velocity.y += gravity * Time.deltaTime;
-            controller.Move(velocity * Time.deltaTime, new Vector2(0,0));
+            controller.Move(velocity * Time.deltaTime, Vector2.zero);
+            if (velocity.x != 0)
+            {
+                enemyAnimationController.Play(enemyType + "Walking");
+            }
+            else
+            {
+                enemyAnimationController.Play(enemyType + "Idle");
+            }
         }
 
         else if (beingAttacked)
@@ -185,6 +192,9 @@ public class BoneMarauder1 : MonoBehaviour
             state = EnemyState.Attacking;
             enemyAnimationController.Play(enemyType + "Flinching");
             velocity.x = 0;
+            float flinchTime = .3f;
+            transform.Translate((player.GetComponent<Player>().knockBackForce / flinchTime) * player.GetComponent<Controller2D>().collisions.faceDir * 
+                                 Time.deltaTime, 0, 0, Space.Self);
         }
         //not dead!
         else

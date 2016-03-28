@@ -22,6 +22,9 @@ public class CombatEngine : MonoBehaviour {
     //private float maxDefense = 100;
     //private float maxNakedCounterRate = 25;
 
+    public int enemyFaceDirection;
+    public int enemyKnockBackForce;
+
     void Start () {
 		combatEngine = GetComponent<CombatEngine>();
         comboCount = 1;
@@ -204,8 +207,10 @@ public class CombatEngine : MonoBehaviour {
                 Debug.Log("The Hit Can Deal Damage!");
                 if (DealingDamageToPlayerPhase(collider))
                 {
+                    enemyFaceDirection = collider.GetComponent<Controller2D>().collisions.faceDir;
+                    enemyKnockBackForce = collider.GetComponent<EnemyStats>().knockbackForce;
                     GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
-                    GameObject.FindGameObjectWithTag("Player").SendMessage("Knockback", collider.gameObject.GetComponent<EnemyStats>().knockbackForce);
+                    GameObject.FindGameObjectWithTag("Player").SendMessage("Knockback");
                     Debug.Log("Damage Delt!");
                 }
             }
