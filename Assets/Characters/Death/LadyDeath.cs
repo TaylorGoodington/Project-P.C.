@@ -29,6 +29,11 @@ public class LadyDeath : MonoBehaviour {
                 OpenLadyDeathMenu();
                 interacting = true;
             }
+            else if (Input.GetButtonDown("Interact") && interacting == true)
+            {
+                interacting = false;
+                CloseLadyDeathMenu();
+            }
         }
 	}
 
@@ -36,8 +41,15 @@ public class LadyDeath : MonoBehaviour {
     {
         if (collider.gameObject.layer == 9)
         {
-            GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().showInteractableDisplay = true;
             interactable = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.gameObject.layer == 9)
+        {
+            interactable = false;
         }
     }
 
@@ -57,6 +69,7 @@ public class LadyDeath : MonoBehaviour {
     {
         if (GameControl.gameControl.ladyDeathMenu == 1)
         {
+            interacting = false;
             CloseLadyDeathMenu();
         }
     }
@@ -84,22 +97,34 @@ public class LadyDeath : MonoBehaviour {
 
     IEnumerator HurlInsults()
     {
-        while (!interacting)
+        if (interacting)
+        {
+            yield return null;
+        }
+        else
         {
             for (int i = 0; i < insultsList.Count; i++)
             {
-                if (i == insultsList.Count - 1)
+                if (interacting)
                 {
-                    insultText.text = insultsList[i];
-                    headAnimator.Play("Insults");
-                    yield return new WaitForSeconds(4);
+                    i = insultsList.Count;
                     ShuffleInsultList();
                 }
                 else
                 {
-                    insultText.text = insultsList[i];
-                    headAnimator.Play("Insults");
-                    yield return new WaitForSeconds(4);
+                    if (i == insultsList.Count - 1)
+                    {
+                        insultText.text = insultsList[i];
+                        headAnimator.Play("Insults");
+                        yield return new WaitForSeconds(4);
+                        ShuffleInsultList();
+                    }
+                    else
+                    {
+                        insultText.text = insultsList[i];
+                        headAnimator.Play("Insults");
+                        yield return new WaitForSeconds(4);
+                    }
                 }
             }
         }

@@ -155,10 +155,10 @@ public class CombatEngine : MonoBehaviour {
         }
     }
 
-    public bool DealingDamageToPlayerPhase (Collider2D collider)
+    public bool DealingDamageToPlayerPhase (Collider2D collider, int damage)
     {
         int playerDefense = GameControl.gameControl.currentDefense;
-        int enemyAttackDamage = collider.gameObject.GetComponent<EnemyStats>().attackDamage;
+        int enemyAttackDamage = damage;
 
         SkillsController.skillsController.ActivatePlayerAbilities(Skills.TriggerPhase.BeingDamaged);
         SkillsController.skillsController.ActivateEnemyAbilities(Skills.TriggerPhase.DealingDamage, collider);
@@ -170,7 +170,8 @@ public class CombatEngine : MonoBehaviour {
         }
         else
         {
-            return false;
+            GameControl.gameControl.hp -= collider.GetComponent<EnemyStats>().minimumDamage;
+            return true;
         }
     }
 	
@@ -197,7 +198,7 @@ public class CombatEngine : MonoBehaviour {
 	}
 
     //The collider being passed here is actually the enemy attacker, since we would have no other way of knowing which one it was.
-    public void AttackingPlayer (Collider2D collider)
+    public void AttackingPlayer (Collider2D collider, int damage)
     {
         if (AttackingPhase(collider, Attacker.Enemy))
         {
@@ -205,7 +206,7 @@ public class CombatEngine : MonoBehaviour {
             if (HittingPhase(collider, Attacker.Enemy))
             {
                 Debug.Log("The Hit Can Deal Damage!");
-                if (DealingDamageToPlayerPhase(collider))
+                if (DealingDamageToPlayerPhase(collider, damage))
                 {
                     enemyFaceDirection = collider.GetComponent<Controller2D>().collisions.faceDir;
                     enemyKnockBackForce = collider.GetComponent<EnemyStats>().knockbackForce;

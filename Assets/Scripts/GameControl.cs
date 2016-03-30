@@ -57,6 +57,7 @@ public class GameControl : MonoBehaviour {
     public int skinColorIndex;
     public int equippedEquipmentIndex;
     public int maxCombos;
+    public int playThroughNumber;
 	
 	public int currentStrength;
 	public int currentDefense;
@@ -175,9 +176,10 @@ public class GameControl : MonoBehaviour {
                 }
             }
 
-            if (Input.GetButtonDown("Item Cycle"))
+            //for level testing...
+            if (Input.GetKeyDown(KeyCode.L))
             {
-                //Inventory.inventory.CycleActiveItems(Input.GetAxisRaw("Item Cycle"));
+                LevelManager.levelManager.LoadLevel("Level 30");
                 
             }
 

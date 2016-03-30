@@ -4,8 +4,10 @@ using System.Collections.Generic;
 public class EnemyStats : MonoBehaviour {
 
     public int hP;
+    public int maxHP;
     public int expGranted;
     public int attackDamage;
+    public int minimumDamage;
     public int defense;
     public int attackRange;
     public List<Skills> acquiredSkillsList;
