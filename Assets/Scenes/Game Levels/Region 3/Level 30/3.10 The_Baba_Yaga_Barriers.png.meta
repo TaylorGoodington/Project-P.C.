@@ -1,9 +1,12 @@
 fileFormatVersion: 2
 guid: 3d18e0f50299e5f4d99ebac7d5b04de8
-timeCreated: 1459289934
+timeCreated: 1459386175
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: 3.10 The_Baba_Yaga_Barriers_0
+    21300002: 3.10 The_Baba_Yaga_Barriers_1
+    21300004: 3.10 The_Baba_Yaga_Barriers_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,10 +41,10 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 8
+  alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
@@ -49,7 +52,72 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: 3.10 The_Baba_Yaga_Barriers_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 400
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -200, y: 24}
+        - {x: -200, y: 6}
+        - {x: -190, y: 6}
+        - {x: -183, y: 8}
+        - {x: -183, y: 24}
+      - - {x: 186, y: 24}
+        - {x: 183, y: 20}
+        - {x: 183, y: 9}
+        - {x: 186, y: 6}
+        - {x: 200, y: 6}
+        - {x: 200, y: 24}
+    - name: 3.10 The_Baba_Yaga_Barriers_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 400
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -200, y: 24}
+        - {x: -200, y: -10}
+        - {x: -187, y: -10}
+        - {x: -183, y: -4}
+        - {x: -183, y: 24}
+      - - {x: 185, y: 24}
+        - {x: 183, y: 20}
+        - {x: 183, y: -6}
+        - {x: 186, y: -10}
+        - {x: 200, y: -10}
+        - {x: 200, y: 24}
+    - name: 3.10 The_Baba_Yaga_Barriers_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 400
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -200, y: 24}
+        - {x: -200, y: -24}
+        - {x: -186, y: -24}
+        - {x: -183, y: -19}
+        - {x: -183, y: 24}
+      - - {x: 186, y: 24}
+        - {x: 183, y: 19}
+        - {x: 183, y: -24}
+        - {x: 200, y: -24}
+        - {x: 200, y: 24}
     outline: []
   spritePackingTag: 
   userData: 

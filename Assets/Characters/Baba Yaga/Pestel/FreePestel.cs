@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(EnemyStats))]
+[RequireComponent(typeof(Hazard))]
 public class FreePestel : MonoBehaviour {
 
     int maxPestelStrikes;
-    public int pestelStrikes;
-    public int strikeDamage;
-    public int strikeSpeed;
-    public float targetHeight;
-    public float floor;
+    int pestelStrikes;
+    int strikeSpeed = 100;
+    float targetHeight = 164;
+    float floor = 64;
     float pestelStrikeIntervals;
-    public float intervalTimer;
+    float intervalTimer;
     GameObject babaYaga;
     bool returning;
-    public int returnSpeed = 3;
-    public AttackPhase attackPhase;
+    int returnSpeed = 100;
+    AttackPhase attackPhase;
     Animator animator;
 
 	void Start () {
@@ -21,8 +22,7 @@ public class FreePestel : MonoBehaviour {
         maxPestelStrikes = 2 + babaYaga.GetComponent<BabaYaga>().aggressionPhase;
         pestelStrikeIntervals = 10 - (babaYaga.GetComponent<BabaYaga>().aggressionPhase * 2);
         returning = false;
-        strikeDamage = strikeDamage * GameControl.gameControl.playThroughNumber;
-        strikeSpeed = strikeSpeed + babaYaga.GetComponent<BabaYaga>().aggressionPhase;
+        strikeSpeed = strikeSpeed + (babaYaga.GetComponent<BabaYaga>().aggressionPhase * 50);
         animator = GetComponent<Animator>();
         attackPhase = AttackPhase.Rising;
         pestelStrikes = 1;
@@ -80,17 +80,20 @@ public class FreePestel : MonoBehaviour {
                 }
                 else
                 {
-                    if (GameObject.FindGameObjectWithTag("Player").transform.position.x < transform.position.x)
+                    float playerPositionX = GameObject.FindGameObjectWithTag("Player").transform.position.x;
+                    int fudgeFactor = 1;
+
+                    if (transform.position.x >= playerPositionX - fudgeFactor && transform.position.x <= playerPositionX + fudgeFactor)
+                    {
+                        //do nothing.
+                    }
+                    else if (playerPositionX < transform.position.x)
                     {
                         transform.Translate(new Vector3(-1, 0) * Time.deltaTime * strikeSpeed, Space.World);
                     }
-                    else if (GameObject.FindGameObjectWithTag("Player").transform.position.x > transform.position.x)
+                    else if (playerPositionX > transform.position.x)
                     {
                         transform.Translate(new Vector3(1, 0) * Time.deltaTime * strikeSpeed, Space.World);
-                    }
-                    else
-                    {
-                        transform.Translate(new Vector3(0, 0) * Time.deltaTime * strikeSpeed, Space.World);
                     }
                 }
             }
@@ -109,24 +112,47 @@ public class FreePestel : MonoBehaviour {
 
     void ReturnToBaba ()
     {
-        if (transform.position != babaYaga.GetComponent<BabaYaga>().freePestelPosition)
+        float babaPositionX = babaYaga.GetComponent<BabaYaga>().freePestelPosition.x;
+        float babaPositionY = babaYaga.GetComponent<BabaYaga>().freePestelPosition.y;
+        int fudgeFactor = 1;
+        if ((transform.position.x >= babaPositionX - fudgeFactor && transform.position.x <= babaPositionX + fudgeFactor) &&
+            (transform.position.y >= babaPositionY - fudgeFactor && transform.position.y <= babaPositionY + fudgeFactor))
         {
-            float targetX = (transform.position.x > babaYaga.GetComponent<BabaYaga>().freePestelPosition.x) ? -1 : 1;
-            float targetY = (transform.position.y > babaYaga.GetComponent<BabaYaga>().freePestelPosition.y) ? -1 : 1;
-            transform.Translate(new Vector3(targetX, targetY) * Time.deltaTime * returnSpeed);
+            babaYaga.GetComponent<BabaYaga>().pestelIsFree = false;
+            babaYaga.GetComponent<BabaYaga>().pestel.Play("PestelFalling");
+            Destroy(this.gameObject);
         }
+
+        //On the move.
         else
         {
-            babaYaga.GetComponent<BabaYaga>().pestel.Play("PestelFalling");
-            Destroy(this);
-        }
-    }
+            //X movement.
+            if (transform.position.x >= babaPositionX - 1 && transform.position.x <= babaPositionX + 1)
+            {
+                //Do Nothing.
+            }
+            else if (transform.position.x > babaPositionX)
+            {
+                transform.Translate(new Vector3(-1, 0) * Time.deltaTime * returnSpeed);
+            }
+            else
+            {
+                transform.Translate(new Vector3(1, 0) * Time.deltaTime * returnSpeed);
+            }
 
-    void OnTriggerEnter2D (Collider2D collider)
-    {
-        if (collider.gameObject.layer == 9)
-        {
-            CombatEngine.combatEngine.AttackingPlayer(babaYaga.GetComponent<Collider2D>(), strikeDamage);
+            //Y movement.
+            if (transform.position.y >= babaPositionY - 1 && transform.position.y <= babaPositionY + 1)
+            {
+                //Do Nothing.
+            }
+            else if (transform.position.y > babaPositionY)
+            {
+                transform.Translate(new Vector3(0, -1) * Time.deltaTime * returnSpeed);
+            }
+            else
+            {
+                transform.Translate(new Vector3(0, 1) * Time.deltaTime * returnSpeed);
+            }
         }
     }
 

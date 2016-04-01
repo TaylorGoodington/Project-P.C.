@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: e78e9234d423235439e74d0d705b0f8f
-timeCreated: 1459275650
+timeCreated: 1459469606
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -69,10 +69,10 @@ TextureImporter:
     - name: Baba_Yaga_Sheet_0
       rect:
         serializedVersion: 2
-        x: 14
-        y: 213
-        width: 13
-        height: 13
+        x: 10
+        y: 210
+        width: 20
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -80,10 +80,10 @@ TextureImporter:
     - name: Baba_Yaga_Sheet_1
       rect:
         serializedVersion: 2
-        x: 54
-        y: 213
-        width: 13
-        height: 13
+        x: 50
+        y: 206
+        width: 20
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -91,10 +91,10 @@ TextureImporter:
     - name: Baba_Yaga_Sheet_2
       rect:
         serializedVersion: 2
-        x: 94
+        x: 90
         y: 213
-        width: 13
-        height: 13
+        width: 20
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -102,10 +102,10 @@ TextureImporter:
     - name: Baba_Yaga_Sheet_3
       rect:
         serializedVersion: 2
-        x: 133
-        y: 213
-        width: 14
-        height: 13
+        x: 130
+        y: 210
+        width: 20
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

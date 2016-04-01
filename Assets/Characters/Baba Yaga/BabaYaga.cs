@@ -23,10 +23,17 @@ public class BabaYaga : MonoBehaviour {
     public GameObject freePestel;
     [HideInInspector]
     public Vector3 freePestelPosition;
+    public bool pestelIsFree;
     public float swapTimer;
     public float initialSwapTime;
-    int attackNumber;
+    public int attackNumber;
     public int aggressionPhase;
+    bool damagedTimerIsOn;
+    float beingAttackedTimer;
+
+    public GameObject skullFormation1;
+    public GameObject skullFormation2;
+    public GameObject skullFormation3;
     #endregion
 
     void Start()
@@ -41,9 +48,11 @@ public class BabaYaga : MonoBehaviour {
         changingLocations = false;
         beingAttacked = false;
         state = EnemyState.Idle;
-        swapTimer = initialSwapTime - (aggressionPhase * 5);
+        swapTimer = initialSwapTime - aggressionPhase;
         aggressionPhase = 1;
         freePestelPosition = new Vector3(1535, 153);
+        pestelIsFree = false;
+        damagedTimerIsOn = false;
     }
 
     //Add Skills Here
@@ -86,9 +95,25 @@ public class BabaYaga : MonoBehaviour {
 
         else if (beingAttacked)
         {
-            //flinching?
-            //once enough damage or time has passed....
-            //StartChangingLocations();
+            //Play Flinch Animation.
+            if (!damagedTimerIsOn)
+            {
+                beingAttackedTimer = 2f;
+                damagedTimerIsOn = true;
+            }
+            
+            else if (damagedTimerIsOn)
+            {
+                if (beingAttackedTimer > 0)
+                {
+                    beingAttackedTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    damagedTimerIsOn = false;
+                    StartChangingLocations();
+                }
+            }
         }
 
         //not dead!
@@ -119,7 +144,6 @@ public class BabaYaga : MonoBehaviour {
             {
                 Attack();
             }
-
         }
     }
 
@@ -129,11 +153,11 @@ public class BabaYaga : MonoBehaviour {
         {
             aggressionPhase = 1;
         }
-        else if (stats.hP < (stats.maxHP * .75) && stats.hP < (stats.maxHP * .5))
+        else if (stats.hP < (stats.maxHP * .75) && stats.hP > (stats.maxHP * .5))
         {
             aggressionPhase = 2;
         }
-        else if (stats.hP < (stats.maxHP * .5) && stats.hP < (stats.maxHP * .25))
+        else if (stats.hP < (stats.maxHP * .5) && stats.hP > (stats.maxHP * .25))
         {
             aggressionPhase = 3;
         }
@@ -156,9 +180,12 @@ public class BabaYaga : MonoBehaviour {
     void StartChangingLocations ()
     {
         changingLocations = true;
-        swapTimer = initialSwapTime - (aggressionPhase * 5);
+        swapTimer = initialSwapTime - aggressionPhase;
         animationController.Play("FadeOut");
-        pestel.Play("PestelFadeOut");
+        if (!pestelIsFree)
+        {
+            pestel.Play("PestelFadeOut");
+        }
     }
 
     //called from the animator.
@@ -172,10 +199,16 @@ public class BabaYaga : MonoBehaviour {
         else
         {
             transform.position = leftPosition;
-            freePestelPosition = new Vector3(1272, 153);
+            freePestelPosition = new Vector3(1265, 153);
         }
+
+        FlinchRecovered();
         animationController.Play("FadeIn");
-        pestel.Play("PestelFadeIn");
+
+        if (!pestelIsFree)
+        {
+            pestel.Play("PestelFadeIn");
+        }
     }
 
     //called from the animator
@@ -213,25 +246,15 @@ public class BabaYaga : MonoBehaviour {
     public void Attack()
     {
         isAttacking = true;
-        attackNumber = Random.Range(0, 5);
+        //attackNumber = Random.Range(0, 5);
+        attackNumber = 2;
         if (attackNumber == 1)
         {
             PestelAttack();
         }
-        else if (attackNumber == 2)
+        else 
         {
-            //Skull Attack 1
-            PestelAttack();
-        }
-        else if (attackNumber == 3)
-        {
-            //Skull Attack 2
-            PestelAttack();
-        }
-        else
-        {
-            //Skull Attack 3
-            PestelAttack();
+            animationController.Play("Casting");
         }
     }
 
@@ -246,10 +269,21 @@ public class BabaYaga : MonoBehaviour {
         if (attackNumber == 1)
         {
             Instantiate(freePestel, freePestelPosition, Quaternion.identity);
+            pestelIsFree = true;
+        }
+        else if (attackNumber == 2)
+        {
+            Vector3 targetPosition = (transform.position == leftPosition) ? leftPosition : rightPosition;
+            targetPosition.y += 80;
+            Instantiate(skullFormation1, targetPosition, Quaternion.identity);
+        }
+        else if (attackNumber == 3)
+        {
+            Instantiate(skullFormation2);
         }
         else
         {
-            Instantiate(freePestel, freePestelPosition, Quaternion.identity);
+            Instantiate(skullFormation3);
         }
     }
 

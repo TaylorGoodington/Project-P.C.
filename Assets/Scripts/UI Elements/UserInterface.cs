@@ -168,9 +168,8 @@ public class UserInterface : MonoBehaviour {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
         CameraFollow.cameraFollow.UpdateTarget();
-        camera.transform.position = new Vector3 (player.transform.position.x, camera.transform.position.y, -10);
+        camera.transform.position = new Vector3 (200, 100, -10);
         CameraFollow.cameraFollow.UpdateTarget();
-
     }
 
     //Called by the animator

@@ -208,11 +208,21 @@ public class CombatEngine : MonoBehaviour {
                 Debug.Log("The Hit Can Deal Damage!");
                 if (DealingDamageToPlayerPhase(collider, damage))
                 {
-                    enemyFaceDirection = collider.GetComponent<Controller2D>().collisions.faceDir;
-                    enemyKnockBackForce = collider.GetComponent<EnemyStats>().knockbackForce;
-                    GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
-                    GameObject.FindGameObjectWithTag("Player").SendMessage("Knockback");
-                    Debug.Log("Damage Delt!");
+                    //Hazard Response.
+                    if (collider.GetComponent<Hazard>())
+                    {
+                        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
+                        collider.GetComponent<Hazard>().SendMessage("KnockBack");
+                    }
+
+                    //Conventional Enemy.
+                    else
+                    {
+                        enemyFaceDirection = collider.GetComponent<Controller2D>().collisions.faceDir;
+                        enemyKnockBackForce = collider.GetComponent<EnemyStats>().knockbackForce;
+                        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
+                        GameObject.FindGameObjectWithTag("Player").SendMessage("Knockback");
+                    }
                 }
             }
         }

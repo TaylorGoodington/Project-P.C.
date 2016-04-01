@@ -6,7 +6,7 @@ public class EnemyStats : MonoBehaviour {
     public int hP;
     public int maxHP;
     public int expGranted;
-    public int attackDamage;
+    public int maximumDamage;
     public int minimumDamage;
     public int defense;
     public int attackRange;
@@ -22,4 +22,10 @@ public class EnemyStats : MonoBehaviour {
     public float chaseTime;
     [Tooltip("The length of time in seconds it takes for the enemy to change directions.")]
     public float pivotTime;
+
+    //Add Plathrough modifier for the stats!!!
+    void Start ()
+    {
+
+    }
 }

@@ -1371,7 +1371,7 @@ public class BoneMarauder1 : MonoBehaviour
         {
             if (hit.collider.gameObject.layer == 9)
             {
-                CombatEngine.combatEngine.AttackingPlayer(this.GetComponent<Collider2D>(), stats.attackDamage);
+                CombatEngine.combatEngine.AttackingPlayer(this.GetComponent<Collider2D>(), stats.maximumDamage);
             }
         }
     }

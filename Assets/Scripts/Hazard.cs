@@ -1,22 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(EnemyStats))]
 public class Hazard : MonoBehaviour {
 
-    public int damagePerSecond;
-    public bool causingDamage;
+    int damagePerSecond;
+    bool causingDamage;
+    EnemyStats stats;
+    Collider2D hitCollider;
 
 	void Start ()
     {
+        stats = GetComponent<EnemyStats>();
+        hitCollider = GetComponent<Collider2D>();
+        stats.acquiredSkillsList.Add(SkillsDatabase.skillsDatabase.skills[0]);
         causingDamage = false;
+        damagePerSecond = stats.maximumDamage;
 	}
 
     public IEnumerator TakeDamageOverTime ()
     {
         while(causingDamage)
         {
-            GameControl.gameControl.hp -= damagePerSecond;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
+            CombatEngine.combatEngine.AttackingPlayer(hitCollider, damagePerSecond);
             yield return new WaitForSeconds(1);
         }
     }
@@ -36,5 +42,15 @@ public class Hazard : MonoBehaviour {
         {
             causingDamage = false;
         }
+    }
+
+    public void KnockBack ()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        CombatEngine.combatEngine.enemyKnockBackForce = stats.knockbackForce;
+        int direction = (transform.position.x > player.transform.position.x) ? -1 : 1;
+        CombatEngine.combatEngine.enemyFaceDirection = direction;
+        player.GetComponent<Player>().Knockback();
     }
 }
