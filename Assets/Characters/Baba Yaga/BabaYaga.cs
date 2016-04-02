@@ -8,7 +8,6 @@ public class BabaYaga : MonoBehaviour {
     [HideInInspector]
     public EnemyStats stats;
     string enemyType = "BabaYaga";
-    public EnemyState state;
     public bool isAttacking;
     bool beingAttacked;
     public bool changingLocations;
@@ -47,7 +46,6 @@ public class BabaYaga : MonoBehaviour {
         isAttacking = false;
         changingLocations = false;
         beingAttacked = false;
-        state = EnemyState.Idle;
         swapTimer = initialSwapTime - aggressionPhase;
         aggressionPhase = 1;
         freePestelPosition = new Vector3(1535, 153);
@@ -81,68 +79,75 @@ public class BabaYaga : MonoBehaviour {
     {
         AggressionPhase();
 
-        //Checks for death.
-        if (stats.hP <= 0)
+        if (animationController.GetCurrentAnimatorStateInfo(0).IsName("FadeOut"))
         {
-            animationController.Play(enemyType + "Death");
-        }
 
-        //player is dead.
-        else if (GameControl.gameControl.hp == 0)
-        {
-            //laughing maybe??
         }
-
-        else if (beingAttacked)
-        {
-            //Play Flinch Animation.
-            if (!damagedTimerIsOn)
+        else
+        { 
+            //Checks for death.
+            if (stats.hP <= 0)
             {
-                beingAttackedTimer = 2f;
-                damagedTimerIsOn = true;
+                animationController.Play(enemyType + "Death");
             }
-            
-            else if (damagedTimerIsOn)
+
+            //player is dead.
+            else if (GameControl.gameControl.hp == 0)
             {
-                if (beingAttackedTimer > 0)
+                //laughing maybe??
+            }
+
+            else if (beingAttacked)
+            {
+                //Play Flinch Animation.
+                if (!damagedTimerIsOn)
                 {
-                    beingAttackedTimer -= Time.deltaTime;
+                    beingAttackedTimer = 1.5f;
+                    damagedTimerIsOn = true;
+                }
+
+                else if (damagedTimerIsOn)
+                {
+                    if (beingAttackedTimer > 0)
+                    {
+                        beingAttackedTimer -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        damagedTimerIsOn = false;
+                        StartChangingLocations();
+                    }
+                }
+            }
+
+            //not dead!
+            else
+            {
+                //flips sprite depending on location on screen.
+                if (transform.position == rightPosition)
+                {
+                    gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                    pestel.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                    hitBox.offset = new Vector2(-21.5f, 41);
                 }
                 else
                 {
-                    damagedTimerIsOn = false;
-                    StartChangingLocations();
+                    gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                    pestel.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                    hitBox.offset = new Vector2(21.5f, 41);
                 }
-            }
-        }
 
-        //not dead!
-        else
-        {
-            //flips sprite depending on location on screen.
-            if (transform.position == rightPosition)
-            {
-                gameObject.GetComponent<SpriteRenderer>().flipX = false;
-                pestel.gameObject.GetComponent<SpriteRenderer>().flipX = false;
-                hitBox.offset = new Vector2(-21.5f, 41);
-            }
-            else
-            {
-                gameObject.GetComponent<SpriteRenderer>().flipX = true;
-                pestel.gameObject.GetComponent<SpriteRenderer>().flipX = true;
-                hitBox.offset = new Vector2(21.5f, 41);
-            }
+                //Movement
+                if (!changingLocations)
+                {
+                    PositionSwapCounter();
+                }
 
-            //Movement
-            if (!changingLocations)
-            {
-                PositionSwapCounter();
-            }
-
-            //Attack!
-            if (!isAttacking)
-            {
-                Attack();
+                //Attack!
+                if (!isAttacking)
+                {
+                    StartCoroutine("Attack");
+                }
             }
         }
     }
@@ -173,7 +178,10 @@ public class BabaYaga : MonoBehaviour {
 
         if (swapTimer <= 0)
         {
-            StartChangingLocations();
+            if (animationController.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            {
+                StartChangingLocations();
+            }
         }
     }
 
@@ -227,15 +235,6 @@ public class BabaYaga : MonoBehaviour {
         beingAttacked = false;
     }
 
-    public enum EnemyState
-    {
-        Idle,
-        PestelAttack,
-        SkullAttack1,
-        SkullAttack2,
-        SkullAttack3
-    }
-
     //called from attacking animation at the begining and end.
     public void IsAttacking()
     {
@@ -243,11 +242,12 @@ public class BabaYaga : MonoBehaviour {
     }
 
     //Called from the animator.
-    public void Attack()
+    IEnumerator Attack()
     {
         isAttacking = true;
-        //attackNumber = Random.Range(0, 5);
-        attackNumber = 2;
+        attackNumber = Random.Range(0, 5);
+        yield return new WaitForSeconds(5 - aggressionPhase);
+
         if (attackNumber == 1)
         {
             PestelAttack();

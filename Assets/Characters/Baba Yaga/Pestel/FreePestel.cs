@@ -6,21 +6,21 @@ public class FreePestel : MonoBehaviour {
 
     int maxPestelStrikes;
     int pestelStrikes;
-    int strikeSpeed = 100;
+    int strikeSpeed = 150;
     float targetHeight = 164;
     float floor = 64;
     float pestelStrikeIntervals;
     float intervalTimer;
     GameObject babaYaga;
     bool returning;
-    int returnSpeed = 100;
+    int returnSpeed = 180;
     AttackPhase attackPhase;
     Animator animator;
 
 	void Start () {
         babaYaga = GameObject.FindGameObjectWithTag("BabaYaga");
         maxPestelStrikes = 2 + babaYaga.GetComponent<BabaYaga>().aggressionPhase;
-        pestelStrikeIntervals = 10 - (babaYaga.GetComponent<BabaYaga>().aggressionPhase * 2);
+        pestelStrikeIntervals = 9 - (babaYaga.GetComponent<BabaYaga>().aggressionPhase * 2);
         returning = false;
         strikeSpeed = strikeSpeed + (babaYaga.GetComponent<BabaYaga>().aggressionPhase * 50);
         animator = GetComponent<Animator>();
@@ -89,11 +89,11 @@ public class FreePestel : MonoBehaviour {
                     }
                     else if (playerPositionX < transform.position.x)
                     {
-                        transform.Translate(new Vector3(-1, 0) * Time.deltaTime * strikeSpeed, Space.World);
+                        transform.Translate(new Vector3(-1, 0) * Time.deltaTime * 180, Space.World);
                     }
                     else if (playerPositionX > transform.position.x)
                     {
-                        transform.Translate(new Vector3(1, 0) * Time.deltaTime * strikeSpeed, Space.World);
+                        transform.Translate(new Vector3(1, 0) * Time.deltaTime * 180, Space.World);
                     }
                 }
             }
@@ -114,13 +114,14 @@ public class FreePestel : MonoBehaviour {
     {
         float babaPositionX = babaYaga.GetComponent<BabaYaga>().freePestelPosition.x;
         float babaPositionY = babaYaga.GetComponent<BabaYaga>().freePestelPosition.y;
-        int fudgeFactor = 1;
+        int fudgeFactor = 5;
         if ((transform.position.x >= babaPositionX - fudgeFactor && transform.position.x <= babaPositionX + fudgeFactor) &&
             (transform.position.y >= babaPositionY - fudgeFactor && transform.position.y <= babaPositionY + fudgeFactor))
         {
             babaYaga.GetComponent<BabaYaga>().pestelIsFree = false;
             babaYaga.GetComponent<BabaYaga>().pestel.Play("PestelFalling");
             Destroy(this.gameObject);
+            babaYaga.GetComponent<BabaYaga>().isAttacking = false;
         }
 
         //On the move.

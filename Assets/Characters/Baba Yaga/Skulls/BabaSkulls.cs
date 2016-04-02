@@ -8,19 +8,23 @@ public class BabaSkulls : MonoBehaviour {
     GameObject player;
     SpriteRenderer sprite;
     Animator animationController;
-    float moveSpeed;
     float strikeSpeed;
     bool launched;
-    Vector3 targetPosition;
+    Vector2 playerTargetPosition;
+    Vector2 targetStrikePosiion;
+    Vector2 currentPosition;
+    BabaYaga babaYaga;
+    public LayerMask skullTargets;
 
-	void Start ()
+
+    void Start ()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         sprite = GetComponent<SpriteRenderer>();
         stats = GetComponent<EnemyStats>();
         animationController = GetComponent<Animator>();
-        moveSpeed = stats.patrolSpeed;
-        strikeSpeed = stats.chaseSpeed;
+        babaYaga = GameObject.FindGameObjectWithTag("BabaYaga").GetComponent<BabaYaga>();
+        strikeSpeed = stats.chaseSpeed + (babaYaga.GetComponent<BabaYaga>().aggressionPhase * 50);
         launched = false;
 	}
 	
@@ -39,8 +43,7 @@ public class BabaSkulls : MonoBehaviour {
         }
         else
         {
-            //need to fix this.
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, strikeSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetStrikePosiion, strikeSpeed * Time.deltaTime);
         }
 
         if (!sprite.isVisible)
@@ -52,6 +55,17 @@ public class BabaSkulls : MonoBehaviour {
     public void Strike ()
     {
         launched = true;
-        targetPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+        animationController.Play("Idle");
+        playerTargetPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+        currentPosition = transform.position;
+        playerTargetPosition = playerTargetPosition - currentPosition;
+        RaycastHit2D hit = Physics2D.Raycast(currentPosition, playerTargetPosition, 500, skullTargets);
+        if (hit)
+        {
+            if (hit.collider.gameObject.layer == 23)
+            {
+                targetStrikePosiion = hit.point;
+            }
+        }
     }
 }

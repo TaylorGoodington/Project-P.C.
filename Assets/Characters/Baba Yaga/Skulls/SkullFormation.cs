@@ -7,14 +7,23 @@ public class SkullFormation : MonoBehaviour {
     int skullStrikeInterval;
     public GameObject[] skullPoints;
     BabaYaga babaYaga;
+    bool checkTheClip;
 
     void Start ()
     {
         StartCoroutine("LoadTheGun");
         babaYaga = GameObject.FindGameObjectWithTag("BabaYaga").GetComponent<BabaYaga>();
         skullStrikeInterval = 5 - (babaYaga.aggressionPhase);
+        checkTheClip = false;
+        Invoke("PullBackTheHammer", skullStrikeInterval + 1);
+    }
 
-        Invoke("PullBackTheHammer", skullStrikeInterval);
+    void Update ()
+    {
+        if (checkTheClip)
+        {
+            EmptyClip();
+        }
     }
 
     IEnumerator LoadTheGun ()
@@ -42,6 +51,7 @@ public class SkullFormation : MonoBehaviour {
     {
         SpinTheBarrel();
         StartCoroutine("Fire");
+        checkTheClip = true;
     }
 
     IEnumerator Fire ()
@@ -49,7 +59,6 @@ public class SkullFormation : MonoBehaviour {
         foreach (GameObject point in skullPoints)
         {
             point.transform.GetChild(0).gameObject.SendMessage("Strike");
-            EmptyClip();
             yield return new WaitForSeconds(skullStrikeInterval);
         }
     }
