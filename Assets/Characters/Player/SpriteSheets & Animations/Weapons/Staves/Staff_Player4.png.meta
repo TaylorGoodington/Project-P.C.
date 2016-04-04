@@ -1,0 +1,432 @@
+fileFormatVersion: 2
+guid: 35c36612614a85a4f92fd4fc972bdd95
+timeCreated: 1459697921
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Staff_Player4_0
+    21300002: Staff_Player4_1
+    21300004: Staff_Player4_2
+    21300006: Staff_Player4_3
+    21300008: Staff_Player4_4
+    21300010: Staff_Player4_5
+    21300012: Staff_Player4_6
+    21300014: Staff_Player4_7
+    21300016: Staff_Player4_8
+    21300018: Staff_Player4_9
+    21300020: Staff_Player4_10
+    21300022: Staff_Player4_11
+    21300024: Staff_Player4_12
+    21300026: Staff_Player4_13
+    21300028: Staff_Player4_14
+    21300030: Staff_Player4_15
+    21300032: Staff_Player4_16
+    21300034: Staff_Player4_17
+    21300036: Staff_Player4_18
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Staff_Player4_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7.999999, y: 5}
+        - {x: -4.000001, y: 5}
+        - {x: -11.000001, y: 1}
+        - {x: -11.000001, y: -18}
+        - {x: -10.000001, y: -20}
+        - {x: 9.999999, y: -20}
+        - {x: 9.999999, y: 2}
+    - name: Staff_Player4_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 4}
+        - {x: -3, y: 4}
+        - {x: -10, y: -4}
+        - {x: -10, y: -20}
+        - {x: 13, y: -20}
+        - {x: 13, y: 1}
+    - name: Staff_Player4_2
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -1, y: 5}
+        - {x: -7, y: -2}
+        - {x: -7, y: -12}
+        - {x: -4, y: -20}
+        - {x: 11, y: -20}
+        - {x: 12, y: -17}
+        - {x: 12, y: 5}
+    - name: Staff_Player4_3
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 2, y: 4}
+        - {x: -7, y: 0}
+        - {x: -11, y: -4}
+        - {x: -11, y: -17}
+        - {x: -5, y: -20}
+        - {x: 12, y: -20}
+        - {x: 16, y: -10}
+        - {x: 16, y: -2}
+        - {x: 11, y: 4}
+    - name: Staff_Player4_4
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 11}
+        - {x: 5, y: 12}
+        - {x: -7, y: 12}
+        - {x: -13, y: 3}
+        - {x: -13, y: -10}
+        - {x: -10, y: -17}
+        - {x: -6, y: -19}
+        - {x: 1, y: -19}
+        - {x: 11, y: -12}
+        - {x: 11, y: -1}
+        - {x: 10, y: 8}
+    - name: Staff_Player4_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4.999999, y: 5}
+        - {x: -9.000001, y: 5}
+        - {x: -12.000001, y: -5}
+        - {x: -12.000001, y: -17}
+        - {x: -11.000001, y: -20}
+        - {x: 9.999999, y: -20}
+        - {x: 9.999999, y: -8}
+        - {x: 6.999999, y: 1}
+    - name: Staff_Player4_6
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 13}
+        - {x: -10, y: 12}
+        - {x: -10, y: -16}
+        - {x: -9, y: -19}
+        - {x: 6, y: -19}
+        - {x: 10, y: -8}
+        - {x: 10, y: 4}
+        - {x: 0, y: 13}
+    - name: Staff_Player4_7
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 13}
+        - {x: -11, y: 5}
+        - {x: -11, y: -11}
+        - {x: -10, y: -18}
+        - {x: -5, y: -19}
+        - {x: 8, y: -19}
+        - {x: 9, y: -17}
+        - {x: 9, y: 13}
+    - name: Staff_Player4_8
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 6}
+        - {x: -11, y: 1}
+        - {x: -11, y: -12}
+        - {x: -9, y: -17}
+        - {x: -5, y: -19}
+        - {x: 2, y: -19}
+        - {x: 9, y: -13}
+        - {x: 9, y: 1}
+        - {x: 3, y: 6}
+    - name: Staff_Player4_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4.999999, y: 5}
+        - {x: -9.000001, y: 5}
+        - {x: -12.000001, y: -5}
+        - {x: -12.000001, y: -17}
+        - {x: -11.000001, y: -20}
+        - {x: 9.999999, y: -20}
+        - {x: 9.999999, y: -8}
+        - {x: 6.999999, y: 1}
+    - name: Staff_Player4_10
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 2}
+        - {x: -8, y: -7}
+        - {x: -8, y: -19}
+        - {x: -7, y: -20}
+        - {x: 10, y: -20}
+        - {x: 10, y: 0}
+        - {x: 7, y: 2}
+    - name: Staff_Player4_11
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: -1}
+        - {x: -8, y: -12}
+        - {x: -8, y: -20}
+        - {x: 17, y: -20}
+        - {x: 17, y: -5}
+        - {x: 16, y: -1}
+    - name: Staff_Player4_12
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 8, y: -7}
+        - {x: -5, y: -10}
+        - {x: -9, y: -15}
+        - {x: -9, y: -18}
+        - {x: -8, y: -20}
+        - {x: 21, y: -20}
+        - {x: 22, y: -19}
+        - {x: 22, y: -11}
+        - {x: 20, y: -7}
+    - name: Staff_Player4_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7.000001, y: 5}
+        - {x: -12.000001, y: -6}
+        - {x: -12.000001, y: -20}
+        - {x: 9.999999, y: -20}
+        - {x: 9.999999, y: 3}
+        - {x: 6.999999, y: 5}
+    - name: Staff_Player4_14
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 5}
+        - {x: -8, y: -4}
+        - {x: -10, y: -15}
+        - {x: -10, y: -20}
+        - {x: 11, y: -20}
+        - {x: 11, y: -2}
+        - {x: 7, y: 5}
+    - name: Staff_Player4_15
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 5}
+        - {x: -8, y: -4}
+        - {x: -10, y: -15}
+        - {x: -10, y: -20}
+        - {x: 11, y: -20}
+        - {x: 11, y: -2}
+        - {x: 7, y: 5}
+    - name: Staff_Player4_16
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 5}
+        - {x: -8, y: -4}
+        - {x: -10, y: -15}
+        - {x: -10, y: -20}
+        - {x: 11, y: -20}
+        - {x: 11, y: -2}
+        - {x: 7, y: 5}
+    - name: Staff_Player4_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3.000001, y: 5}
+        - {x: -11.000001, y: -5}
+        - {x: -11.000001, y: -14}
+        - {x: -10.000001, y: -19}
+        - {x: -10.000001, y: -20}
+        - {x: 11.999999, y: -20}
+        - {x: 13.999999, y: -13}
+        - {x: 13.999999, y: -2}
+        - {x: 6.999999, y: 5}
+    - name: Staff_Player4_18
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5, y: 4}
+        - {x: -5, y: 4}
+        - {x: -11, y: -2}
+        - {x: -11, y: -20}
+        - {x: 10, y: -20}
+        - {x: 11, y: -16}
+        - {x: 11, y: -1}
+        - {x: 10, y: 2}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

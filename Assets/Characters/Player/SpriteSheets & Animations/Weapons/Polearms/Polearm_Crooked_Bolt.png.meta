@@ -1,0 +1,474 @@
+fileFormatVersion: 2
+guid: a6a2b4297bd5f1c4c8e477ed0561b430
+timeCreated: 1459697565
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Polearm_Crooked_Bolt_0
+    21300002: Polearm_Crooked_Bolt_1
+    21300004: Polearm_Crooked_Bolt_2
+    21300006: Polearm_Crooked_Bolt_3
+    21300008: Polearm_Crooked_Bolt_4
+    21300010: Polearm_Crooked_Bolt_5
+    21300012: Polearm_Crooked_Bolt_6
+    21300014: Polearm_Crooked_Bolt_7
+    21300016: Polearm_Crooked_Bolt_8
+    21300018: Polearm_Crooked_Bolt_9
+    21300020: Polearm_Crooked_Bolt_10
+    21300022: Polearm_Crooked_Bolt_11
+    21300024: Polearm_Crooked_Bolt_12
+    21300026: Polearm_Crooked_Bolt_13
+    21300028: Polearm_Crooked_Bolt_14
+    21300030: Polearm_Crooked_Bolt_15
+    21300032: Polearm_Crooked_Bolt_16
+    21300034: Polearm_Crooked_Bolt_17
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Polearm_Crooked_Bolt_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5.000001, y: -8}
+        - {x: -6.000001, y: -11}
+        - {x: -5.000001, y: -14}
+        - {x: 0.99999905, y: -15}
+        - {x: 18, y: -15}
+        - {x: 20, y: -12}
+        - {x: 19, y: -9}
+        - {x: 17, y: -8}
+      - - {x: -13.000001, y: -11}
+        - {x: -12.000001, y: -14}
+        - {x: -9.000001, y: -14}
+        - {x: -7.000001, y: -12}
+        - {x: -8.000001, y: -9}
+        - {x: -11.000001, y: -9}
+    - name: Polearm_Crooked_Bolt_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: -14}
+        - {x: 8, y: -16}
+        - {x: 11, y: -15}
+        - {x: 11, y: -12}
+        - {x: 9, y: -10}
+        - {x: 6, y: -11}
+      - - {x: 5, y: 17}
+        - {x: 5, y: -9}
+        - {x: 11, y: -9}
+        - {x: 12, y: -8}
+        - {x: 12, y: 14}
+        - {x: 9, y: 17}
+    - name: Polearm_Crooked_Bolt_2
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4, y: -14}
+        - {x: -3, y: -16}
+        - {x: 0, y: -16}
+        - {x: 2, y: -15}
+        - {x: 2, y: -12}
+        - {x: 1, y: -10}
+        - {x: -1, y: -10}
+        - {x: -4, y: -12}
+      - - {x: 21, y: 8}
+        - {x: 19, y: 9}
+        - {x: 17, y: 9}
+        - {x: 8, y: 3}
+        - {x: 1, y: -8}
+        - {x: 1, y: -11}
+        - {x: 7, y: -11}
+        - {x: 16, y: -4}
+        - {x: 21, y: 4}
+    - name: Polearm_Crooked_Bolt_3
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6, y: -7}
+        - {x: -7, y: -9}
+        - {x: -7, y: -11}
+        - {x: 4, y: -20}
+        - {x: 17, y: -20}
+        - {x: 17, y: -15}
+        - {x: 3, y: -7}
+      - - {x: -13, y: -7}
+        - {x: -10, y: -10}
+        - {x: -7, y: -9}
+        - {x: -7, y: -6}
+        - {x: -8, y: -4}
+        - {x: -11, y: -4}
+        - {x: -13, y: -5}
+    - name: Polearm_Crooked_Bolt_4
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: -5}
+        - {x: -8, y: -8}
+        - {x: -8, y: -9}
+        - {x: -6, y: -11}
+        - {x: -4, y: -11}
+        - {x: -2, y: -9}
+        - {x: -2, y: -7}
+        - {x: -4, y: -5}
+      - - {x: 11, y: 14}
+        - {x: -3, y: 1}
+        - {x: -3, y: -6}
+        - {x: 4, y: -6}
+        - {x: 15, y: -1}
+        - {x: 17, y: 7}
+        - {x: 17, y: 14}
+    - name: Polearm_Crooked_Bolt_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6.000001, y: -7}
+        - {x: -7.000001, y: -10}
+        - {x: -6.000001, y: -13}
+        - {x: -0.0000009536743, y: -14}
+        - {x: 17, y: -14}
+        - {x: 19, y: -11}
+        - {x: 18, y: -8}
+        - {x: 15.999999, y: -7}
+      - - {x: -14.000001, y: -10}
+        - {x: -13.000001, y: -13}
+        - {x: -10.000001, y: -13}
+        - {x: -8.000001, y: -11}
+        - {x: -9.000001, y: -8}
+        - {x: -12.000001, y: -8}
+    - name: Polearm_Crooked_Bolt_6
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -12, y: 10}
+        - {x: -12, y: 2}
+        - {x: 6, y: -15}
+        - {x: 11, y: -15}
+        - {x: 13, y: -13}
+        - {x: 11, y: -6}
+        - {x: -8, y: 10}
+    - name: Polearm_Crooked_Bolt_7
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -12, y: 10}
+        - {x: -12, y: 2}
+        - {x: 6, y: -15}
+        - {x: 11, y: -15}
+        - {x: 13, y: -13}
+        - {x: 11, y: -6}
+        - {x: -8, y: 10}
+    - name: Polearm_Crooked_Bolt_8
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 8}
+        - {x: -13, y: 8}
+        - {x: -13, y: 4}
+        - {x: 4, y: -8}
+        - {x: 10, y: -9}
+        - {x: 16, y: -9}
+        - {x: 17, y: -7}
+        - {x: 17, y: -4}
+        - {x: 10, y: 2}
+    - name: Polearm_Crooked_Bolt_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14.000001, y: -10}
+        - {x: -14.000001, y: -13}
+        - {x: -13.000001, y: -16}
+        - {x: -2.000001, y: -17}
+        - {x: 17, y: -17}
+        - {x: 19, y: -14}
+        - {x: 19, y: -10}
+    - name: Polearm_Crooked_Bolt_10
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: -14}
+        - {x: -14, y: -20}
+        - {x: 17, y: -20}
+        - {x: 19, y: -18}
+        - {x: 19, y: -14}
+    - name: Polearm_Crooked_Bolt_11
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: -19}
+        - {x: -13, y: -20}
+        - {x: 17, y: -20}
+        - {x: 19, y: -18}
+        - {x: 18, y: -15}
+        - {x: -14, y: -15}
+    - name: Polearm_Crooked_Bolt_12
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: -19}
+        - {x: -13, y: -20}
+        - {x: 17, y: -20}
+        - {x: 19, y: -18}
+        - {x: 18, y: -15}
+        - {x: -14, y: -15}
+    - name: Polearm_Crooked_Bolt_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6.000001, y: -8}
+        - {x: -7.000001, y: -11}
+        - {x: -6.000001, y: -14}
+        - {x: -0.0000009536743, y: -15}
+        - {x: 17, y: -15}
+        - {x: 19, y: -12}
+        - {x: 18, y: -9}
+        - {x: 15.999999, y: -8}
+      - - {x: -14.000001, y: -11}
+        - {x: -13.000001, y: -14}
+        - {x: -10.000001, y: -14}
+        - {x: -8.000001, y: -12}
+        - {x: -9.000001, y: -9}
+        - {x: -12.000001, y: -9}
+    - name: Polearm_Crooked_Bolt_14
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5, y: -6}
+        - {x: 5, y: -13}
+        - {x: 7, y: -15}
+        - {x: 30, y: -15}
+        - {x: 35, y: -13}
+        - {x: 35, y: -6}
+      - - {x: -1, y: -10}
+        - {x: 0, y: -13}
+        - {x: 3, y: -13}
+        - {x: 5, y: -11}
+        - {x: 4, y: -8}
+        - {x: 1, y: -8}
+    - name: Polearm_Crooked_Bolt_15
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: -7}
+        - {x: 5, y: -10}
+        - {x: 6, y: -13}
+        - {x: 13, y: -14}
+        - {x: 30, y: -14}
+        - {x: 32, y: -11}
+        - {x: 31, y: -8}
+        - {x: 29, y: -7}
+      - - {x: -1, y: -10}
+        - {x: 0, y: -13}
+        - {x: 3, y: -13}
+        - {x: 5, y: -11}
+        - {x: 4, y: -8}
+        - {x: 1, y: -8}
+    - name: Polearm_Crooked_Bolt_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5.000001, y: -8}
+        - {x: -6.000001, y: -11}
+        - {x: -5.000001, y: -14}
+        - {x: 0.99999905, y: -15}
+        - {x: 18, y: -15}
+        - {x: 20, y: -12}
+        - {x: 19, y: -9}
+        - {x: 17, y: -8}
+      - - {x: -13.000001, y: -11}
+        - {x: -12.000001, y: -14}
+        - {x: -9.000001, y: -14}
+        - {x: -7.000001, y: -12}
+        - {x: -8.000001, y: -9}
+        - {x: -11.000001, y: -9}
+    - name: Polearm_Crooked_Bolt_17
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: -8}
+        - {x: -6, y: -11}
+        - {x: -5, y: -14}
+        - {x: 1, y: -15}
+        - {x: 18, y: -15}
+        - {x: 20, y: -12}
+        - {x: 19, y: -9}
+        - {x: 17, y: -8}
+      - - {x: -13, y: -11}
+        - {x: -12, y: -14}
+        - {x: -9, y: -14}
+        - {x: -7, y: -12}
+        - {x: -8, y: -9}
+        - {x: -11, y: -9}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

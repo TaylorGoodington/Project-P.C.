@@ -1,0 +1,441 @@
+fileFormatVersion: 2
+guid: 033943a04e5f5b047bc817fcfb4c2e73
+timeCreated: 1459697909
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Staff_HairL_Black_0
+    21300002: Staff_HairL_Black_1
+    21300004: Staff_HairL_Black_2
+    21300006: Staff_HairL_Black_3
+    21300008: Staff_HairL_Black_4
+    21300010: Staff_HairL_Black_5
+    21300012: Staff_HairL_Black_6
+    21300014: Staff_HairL_Black_7
+    21300016: Staff_HairL_Black_8
+    21300018: Staff_HairL_Black_9
+    21300020: Staff_HairL_Black_10
+    21300022: Staff_HairL_Black_11
+    21300024: Staff_HairL_Black_12
+    21300026: Staff_HairL_Black_13
+    21300028: Staff_HairL_Black_14
+    21300030: Staff_HairL_Black_15
+    21300032: Staff_HairL_Black_16
+    21300034: Staff_HairL_Black_17
+    21300036: Staff_HairL_Black_18
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Staff_HairL_Black_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -0.0000009536743, y: 7}
+        - {x: -6.000001, y: 5}
+        - {x: -6.000001, y: -11}
+        - {x: -1.000001, y: -11}
+        - {x: 3.999999, y: -10}
+        - {x: 8.999999, y: -2}
+        - {x: 8.999999, y: 2}
+        - {x: 5.999999, y: 7}
+    - name: Staff_HairL_Black_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 3, y: 6}
+        - {x: -3, y: 4}
+        - {x: -3, y: -12}
+        - {x: 2, y: -12}
+        - {x: 7, y: -11}
+        - {x: 12, y: -3}
+        - {x: 12, y: 1}
+        - {x: 9, y: 6}
+    - name: Staff_HairL_Black_2
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 3, y: 7}
+        - {x: -3, y: 5}
+        - {x: -3, y: -11}
+        - {x: 2, y: -11}
+        - {x: 7, y: -10}
+        - {x: 12, y: -2}
+        - {x: 12, y: 2}
+        - {x: 9, y: 7}
+    - name: Staff_HairL_Black_3
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 3, y: 6}
+        - {x: -3, y: 4}
+        - {x: -3, y: -12}
+        - {x: 2, y: -12}
+        - {x: 7, y: -11}
+        - {x: 12, y: -3}
+        - {x: 12, y: 1}
+        - {x: 9, y: 6}
+    - name: Staff_HairL_Black_4
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: 14}
+        - {x: -8, y: 12}
+        - {x: -8, y: -4}
+        - {x: 0, y: -4}
+        - {x: 7, y: 4}
+        - {x: 7, y: 11}
+        - {x: 6, y: 14}
+    - name: Staff_HairL_Black_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4.999999, y: 7}
+        - {x: -1.000001, y: 7}
+        - {x: -7.000001, y: 5}
+        - {x: -7.000001, y: -11}
+        - {x: -0.0000009536743, y: -11}
+        - {x: 4.999999, y: -6}
+        - {x: 7.999999, y: -2}
+        - {x: 7.999999, y: 2}
+    - name: Staff_HairL_Black_6
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: 10}
+        - {x: -7, y: 7}
+        - {x: -7, y: -3}
+        - {x: -1, y: -8}
+        - {x: 4, y: -8}
+        - {x: 7, y: -5}
+        - {x: 7, y: 6}
+        - {x: 5, y: 10}
+    - name: Staff_HairL_Black_7
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: 10}
+        - {x: -7, y: 7}
+        - {x: -7, y: -3}
+        - {x: -1, y: -8}
+        - {x: 4, y: -8}
+        - {x: 7, y: -5}
+        - {x: 7, y: 6}
+        - {x: 5, y: 10}
+    - name: Staff_HairL_Black_8
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 3}
+        - {x: -7, y: 1}
+        - {x: -2, y: -5}
+        - {x: 2, y: -5}
+        - {x: 5, y: -2}
+        - {x: 5, y: 3}
+        - {x: 2, y: 6}
+        - {x: -4, y: 6}
+    - name: Staff_HairL_Black_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4.999999, y: 7}
+        - {x: -1.000001, y: 7}
+        - {x: -7.000001, y: 5}
+        - {x: -7.000001, y: -11}
+        - {x: -0.0000009536743, y: -11}
+        - {x: 4.999999, y: -6}
+        - {x: 7.999999, y: -2}
+        - {x: 7.999999, y: 2}
+    - name: Staff_HairL_Black_10
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 8, y: 4}
+        - {x: 2, y: 4}
+        - {x: -4, y: 2}
+        - {x: -4, y: -14}
+        - {x: 3, y: -14}
+        - {x: 8, y: -9}
+        - {x: 11, y: -5}
+        - {x: 11, y: -1}
+    - name: Staff_HairL_Black_11
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 15, y: 1}
+        - {x: 9, y: 1}
+        - {x: 3, y: -1}
+        - {x: 3, y: -17}
+        - {x: 10, y: -17}
+        - {x: 15, y: -12}
+        - {x: 18, y: -8}
+        - {x: 18, y: -4}
+    - name: Staff_HairL_Black_12
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 14, y: -5}
+        - {x: 8, y: -7}
+        - {x: 8, y: -19}
+        - {x: 9, y: -20}
+        - {x: 18, y: -20}
+        - {x: 23, y: -14}
+        - {x: 23, y: -10}
+        - {x: 20, y: -5}
+    - name: Staff_HairL_Black_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -0.0000009536743, y: 7}
+        - {x: -6.000001, y: 5}
+        - {x: -6.000001, y: -11}
+        - {x: -1.000001, y: -11}
+        - {x: 3.999999, y: -10}
+        - {x: 8.999999, y: -2}
+        - {x: 8.999999, y: 2}
+        - {x: 5.999999, y: 7}
+    - name: Staff_HairL_Black_14
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 7}
+        - {x: -5, y: 5}
+        - {x: -5, y: -11}
+        - {x: 0, y: -11}
+        - {x: 5, y: -10}
+        - {x: 10, y: -2}
+        - {x: 10, y: 2}
+        - {x: 7, y: 7}
+    - name: Staff_HairL_Black_15
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 7}
+        - {x: -5, y: 5}
+        - {x: -5, y: -11}
+        - {x: 0, y: -11}
+        - {x: 5, y: -10}
+        - {x: 10, y: -2}
+        - {x: 10, y: 2}
+        - {x: 7, y: 7}
+    - name: Staff_HairL_Black_16
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 7}
+        - {x: -5, y: 5}
+        - {x: -5, y: -11}
+        - {x: 0, y: -11}
+        - {x: 5, y: -10}
+        - {x: 10, y: -2}
+        - {x: 10, y: 2}
+        - {x: 7, y: 7}
+      - - {x: 8, y: 20}
+        - {x: 9, y: 17}
+        - {x: 13, y: 17}
+        - {x: 15, y: 19}
+        - {x: 15, y: 20}
+    - name: Staff_HairL_Black_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4.999999, y: 7}
+        - {x: -1.000001, y: 7}
+        - {x: -7.000001, y: 5}
+        - {x: -7.000001, y: -11}
+        - {x: -0.0000009536743, y: -11}
+        - {x: 4.999999, y: -6}
+        - {x: 7.999999, y: -2}
+        - {x: 7.999999, y: 2}
+    - name: Staff_HairL_Black_18
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 6}
+        - {x: -6, y: 4}
+        - {x: -6, y: -12}
+        - {x: -1, y: -12}
+        - {x: 4, y: -11}
+        - {x: 9, y: -3}
+        - {x: 9, y: 1}
+        - {x: 6, y: 6}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

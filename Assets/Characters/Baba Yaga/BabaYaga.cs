@@ -102,7 +102,7 @@ public class BabaYaga : MonoBehaviour {
                 //Play Flinch Animation.
                 if (!damagedTimerIsOn)
                 {
-                    beingAttackedTimer = 1.5f;
+                    beingAttackedTimer = 1f;
                     damagedTimerIsOn = true;
                 }
 

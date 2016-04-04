@@ -1,0 +1,532 @@
+fileFormatVersion: 2
+guid: 229ecf59e41ddb145853fb5949efe8e5
+timeCreated: 1459697455
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Sword_Sheet_Iron Sword_0
+    21300002: Sword_Sheet_Iron Sword_1
+    21300004: Sword_Sheet_Iron Sword_2
+    21300006: Sword_Sheet_Iron Sword_3
+    21300008: Sword_Sheet_Iron Sword_4
+    21300010: Sword_Sheet_Iron Sword_5
+    21300012: Sword_Sheet_Iron Sword_6
+    21300014: Sword_Sheet_Iron Sword_7
+    21300016: Sword_Sheet_Iron Sword_8
+    21300018: Sword_Sheet_Iron Sword_9
+    21300020: Sword_Sheet_Iron Sword_10
+    21300022: Sword_Sheet_Iron Sword_11
+    21300024: Sword_Sheet_Iron Sword_12
+    21300026: Sword_Sheet_Iron Sword_13
+    21300028: Sword_Sheet_Iron Sword_14
+    21300030: Sword_Sheet_Iron Sword_15
+    21300032: Sword_Sheet_Iron Sword_16
+    21300034: Sword_Sheet_Iron Sword_17
+    21300036: Sword_Sheet_Iron Sword_18
+    21300038: Sword_Sheet_Iron Sword_19
+    21300040: Sword_Sheet_Iron Sword_20
+    21300042: Sword_Sheet_Iron Sword_21
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Sword_Sheet_Iron Sword_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6.000001, y: -7}
+        - {x: -6.000001, y: -14}
+        - {x: -4.000001, y: -16}
+        - {x: 7.999999, y: -16}
+        - {x: 9.999999, y: -12}
+        - {x: 9.999999, y: -8}
+        - {x: 8.999999, y: -7}
+      - - {x: -10.000001, y: -14}
+        - {x: -7.000001, y: -13}
+        - {x: -7.000001, y: -10}
+        - {x: -10.000001, y: -9}
+        - {x: -12.000001, y: -11}
+    - name: Sword_Sheet_Iron Sword_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 8, y: -15}
+        - {x: 11, y: -14}
+        - {x: 11, y: -11}
+        - {x: 8, y: -10}
+        - {x: 6, y: -12}
+      - - {x: 9, y: 7}
+        - {x: 5, y: 7}
+        - {x: 4, y: 6}
+        - {x: 4, y: -9}
+        - {x: 11, y: -9}
+        - {x: 13, y: -7}
+        - {x: 13, y: 5}
+    - name: Sword_Sheet_Iron Sword_2
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -1, y: -15}
+        - {x: 2, y: -14}
+        - {x: 2, y: -11}
+        - {x: -1, y: -10}
+        - {x: -3, y: -12}
+      - - {x: 5, y: 1}
+        - {x: -1, y: -7}
+        - {x: -1, y: -10}
+        - {x: 4, y: -13}
+        - {x: 7, y: -12}
+        - {x: 13, y: -4}
+        - {x: 13, y: -1}
+        - {x: 11, y: 1}
+    - name: Sword_Sheet_Iron Sword_3
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6, y: -5}
+        - {x: -9, y: -10}
+        - {x: -9, y: -12}
+        - {x: -2, y: -19}
+        - {x: 3, y: -19}
+        - {x: 5, y: -18}
+        - {x: 5, y: -11}
+        - {x: -3, y: -5}
+      - - {x: -9, y: -8}
+        - {x: -6, y: -7}
+        - {x: -6, y: -4}
+        - {x: -9, y: -3}
+        - {x: -11, y: -5}
+    - name: Sword_Sheet_Iron Sword_4
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: -10}
+        - {x: -2, y: -9}
+        - {x: -2, y: -6}
+        - {x: -5, y: -5}
+        - {x: -7, y: -7}
+      - - {x: -5, y: -6}
+        - {x: -2, y: -8}
+        - {x: 1, y: -8}
+        - {x: 9, y: -2}
+        - {x: 9, y: 6}
+        - {x: 1, y: 6}
+        - {x: -5, y: -1}
+    - name: Sword_Sheet_Iron Sword_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7.000001, y: -6}
+        - {x: -7.000001, y: -13}
+        - {x: -5.000001, y: -15}
+        - {x: 6.999999, y: -15}
+        - {x: 8.999999, y: -11}
+        - {x: 8.999999, y: -7}
+        - {x: 7.999999, y: -6}
+      - - {x: -11.000001, y: -13}
+        - {x: -8.000001, y: -12}
+        - {x: -8.000001, y: -9}
+        - {x: -11.000001, y: -8}
+        - {x: -13.000001, y: -10}
+    - name: Sword_Sheet_Iron Sword_6
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4, y: 1}
+        - {x: -4, y: -10}
+        - {x: -2, y: -12}
+        - {x: 1, y: -12}
+        - {x: 5, y: -10}
+        - {x: 5, y: 0}
+        - {x: 1, y: 4}
+        - {x: 0, y: 4}
+    - name: Sword_Sheet_Iron Sword_7
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4, y: 1}
+        - {x: -4, y: -10}
+        - {x: -2, y: -12}
+        - {x: 1, y: -12}
+        - {x: 5, y: -10}
+        - {x: 5, y: 0}
+        - {x: 1, y: 4}
+        - {x: 0, y: 4}
+    - name: Sword_Sheet_Iron Sword_8
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4, y: 4}
+        - {x: -4, y: -7}
+        - {x: -2, y: -9}
+        - {x: 1, y: -9}
+        - {x: 5, y: -7}
+        - {x: 5, y: 3}
+        - {x: 1, y: 7}
+        - {x: 0, y: 7}
+    - name: Sword_Sheet_Iron Sword_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -12.000001, y: -8}
+        - {x: -13.000001, y: -12}
+        - {x: -12.000001, y: -15}
+        - {x: -5.000001, y: -17}
+        - {x: 6.999999, y: -17}
+        - {x: 8.999999, y: -13}
+        - {x: 8.999999, y: -10}
+        - {x: 7.999999, y: -8}
+    - name: Sword_Sheet_Iron Sword_10
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: -12}
+        - {x: -11, y: -14}
+        - {x: -13, y: -16}
+        - {x: -12, y: -19}
+        - {x: -8, y: -20}
+        - {x: 8, y: -20}
+        - {x: 9, y: -19}
+        - {x: 9, y: -14}
+        - {x: 2, y: -12}
+    - name: Sword_Sheet_Iron Sword_11
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13, y: -17}
+        - {x: -12, y: -20}
+        - {x: 7, y: -20}
+        - {x: 9, y: -18}
+        - {x: 8, y: -15}
+        - {x: -11, y: -15}
+    - name: Sword_Sheet_Iron Sword_12
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13, y: -17}
+        - {x: -12, y: -20}
+        - {x: 7, y: -20}
+        - {x: 9, y: -18}
+        - {x: 8, y: -15}
+        - {x: -11, y: -15}
+    - name: Sword_Sheet_Iron Sword_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7.000001, y: -7}
+        - {x: -7.000001, y: -14}
+        - {x: -5.000001, y: -16}
+        - {x: 6.999999, y: -16}
+        - {x: 8.999999, y: -12}
+        - {x: 8.999999, y: -8}
+        - {x: 7.999999, y: -7}
+      - - {x: -11.000001, y: -14}
+        - {x: -8.000001, y: -13}
+        - {x: -8.000001, y: -10}
+        - {x: -11.000001, y: -9}
+        - {x: -13.000001, y: -11}
+    - name: Sword_Sheet_Iron Sword_14
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 6}
+        - {x: 3, y: -4}
+        - {x: 3, y: -10}
+        - {x: 6, y: -16}
+        - {x: 21, y: -16}
+        - {x: 23, y: -13}
+        - {x: 23, y: 2}
+        - {x: 14, y: 6}
+    - name: Sword_Sheet_Iron Sword_15
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 6}
+        - {x: 4, y: -2}
+        - {x: 3, y: -4}
+        - {x: 3, y: -9}
+        - {x: 11, y: -9}
+        - {x: 13, y: -8}
+        - {x: 13, y: 5}
+        - {x: 11, y: 6}
+    - name: Sword_Sheet_Iron Sword_16
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 11, y: 0}
+        - {x: 9, y: -3}
+        - {x: -9, y: -6}
+        - {x: -15, y: -13}
+        - {x: -15, y: -20}
+        - {x: 16, y: -20}
+        - {x: 19, y: -12}
+        - {x: 19, y: -1}
+        - {x: 16, y: 0}
+    - name: Sword_Sheet_Iron Sword_17
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: -7}
+        - {x: -15, y: -13}
+        - {x: -15, y: -20}
+        - {x: -7, y: -20}
+        - {x: -2, y: -13}
+        - {x: -2, y: -10}
+        - {x: -7, y: -7}
+    - name: Sword_Sheet_Iron Sword_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 40
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5.999999, y: -3}
+        - {x: -8.000001, y: -13}
+        - {x: -8.000001, y: -17}
+        - {x: -7.000001, y: -19}
+        - {x: -6.000001, y: -20}
+        - {x: 12.999999, y: -20}
+        - {x: 22, y: -15}
+        - {x: 22, y: -5}
+        - {x: 20, y: -3}
+    - name: Sword_Sheet_Iron Sword_19
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 40
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: -3}
+        - {x: 6, y: -11}
+        - {x: 8, y: -12}
+        - {x: 19, y: -10}
+        - {x: 22, y: -8}
+        - {x: 22, y: -6}
+        - {x: 21, y: -3}
+    - name: Sword_Sheet_Iron Sword_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6.000001, y: -7}
+        - {x: -6.000001, y: -14}
+        - {x: -4.000001, y: -16}
+        - {x: 7.999999, y: -16}
+        - {x: 9.999999, y: -12}
+        - {x: 9.999999, y: -8}
+        - {x: 8.999999, y: -7}
+      - - {x: -10.000001, y: -14}
+        - {x: -7.000001, y: -13}
+        - {x: -7.000001, y: -10}
+        - {x: -10.000001, y: -9}
+        - {x: -12.000001, y: -11}
+    - name: Sword_Sheet_Iron Sword_21
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6, y: -7}
+        - {x: -6, y: -14}
+        - {x: -4, y: -16}
+        - {x: 8, y: -16}
+        - {x: 10, y: -12}
+        - {x: 10, y: -8}
+        - {x: 9, y: -7}
+      - - {x: -10, y: -14}
+        - {x: -7, y: -13}
+        - {x: -7, y: -10}
+        - {x: -10, y: -9}
+        - {x: -12, y: -11}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

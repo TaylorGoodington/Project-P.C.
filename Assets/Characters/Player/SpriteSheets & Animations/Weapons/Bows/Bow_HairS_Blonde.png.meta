@@ -1,0 +1,402 @@
+fileFormatVersion: 2
+guid: 60a4ef83159182c4ba4a1c5aa17b4486
+timeCreated: 1459697786
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Bow_HairS_Blonde_0
+    21300002: Bow_HairS_Blonde_1
+    21300004: Bow_HairS_Blonde_2
+    21300006: Bow_HairS_Blonde_3
+    21300008: Bow_HairS_Blonde_4
+    21300010: Bow_HairS_Blonde_5
+    21300012: Bow_HairS_Blonde_6
+    21300014: Bow_HairS_Blonde_7
+    21300016: Bow_HairS_Blonde_8
+    21300018: Bow_HairS_Blonde_9
+    21300020: Bow_HairS_Blonde_10
+    21300022: Bow_HairS_Blonde_11
+    21300024: Bow_HairS_Blonde_12
+    21300026: Bow_HairS_Blonde_13
+    21300028: Bow_HairS_Blonde_14
+    21300030: Bow_HairS_Blonde_15
+    21300032: Bow_HairS_Blonde_16
+    21300034: Bow_HairS_Blonde_17
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Bow_HairS_Blonde_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2.000001, y: 6}
+        - {x: -6.000001, y: 2}
+        - {x: -6.000001, y: -4}
+        - {x: 5.999999, y: -4}
+        - {x: 6.999999, y: -3}
+        - {x: 7.999999, y: 2}
+        - {x: 3.999999, y: 6}
+    - name: Bow_HairS_Blonde_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 5}
+        - {x: -3, y: 3}
+        - {x: -3, y: -5}
+        - {x: 9, y: -5}
+        - {x: 11, y: -2}
+        - {x: 11, y: 3}
+        - {x: 7, y: 5}
+    - name: Bow_HairS_Blonde_2
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 6}
+        - {x: -3, y: 4}
+        - {x: -3, y: -4}
+        - {x: 9, y: -4}
+        - {x: 11, y: -1}
+        - {x: 11, y: 4}
+        - {x: 7, y: 6}
+    - name: Bow_HairS_Blonde_3
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 5}
+        - {x: -3, y: 3}
+        - {x: -3, y: -5}
+        - {x: 9, y: -5}
+        - {x: 11, y: -2}
+        - {x: 11, y: 3}
+        - {x: 7, y: 5}
+    - name: Bow_HairS_Blonde_4
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4, y: 13}
+        - {x: -8, y: 9}
+        - {x: -8, y: 3}
+        - {x: 4, y: 3}
+        - {x: 6, y: 8}
+        - {x: 6, y: 10}
+        - {x: 2, y: 13}
+    - name: Bow_HairS_Blonde_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3.000001, y: 6}
+        - {x: -7.000001, y: 2}
+        - {x: -7.000001, y: -4}
+        - {x: 4.999999, y: -4}
+        - {x: 5.999999, y: -3}
+        - {x: 6.999999, y: 2}
+        - {x: 2.999999, y: 6}
+    - name: Bow_HairS_Blonde_6
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: 9}
+        - {x: -7, y: 5}
+        - {x: -7, y: 1}
+        - {x: -3, y: -3}
+        - {x: 3, y: -3}
+        - {x: 7, y: 1}
+        - {x: 7, y: 5}
+        - {x: 3, y: 9}
+    - name: Bow_HairS_Blonde_7
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: 9}
+        - {x: -7, y: 5}
+        - {x: -7, y: 1}
+        - {x: -3, y: -3}
+        - {x: 3, y: -3}
+        - {x: 7, y: 1}
+        - {x: 7, y: 5}
+        - {x: 3, y: 9}
+    - name: Bow_HairS_Blonde_8
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4, y: 6}
+        - {x: -7, y: 3}
+        - {x: -7, y: 2}
+        - {x: -5, y: 0}
+        - {x: 3, y: 0}
+        - {x: 5, y: 2}
+        - {x: 5, y: 3}
+        - {x: 2, y: 6}
+    - name: Bow_HairS_Blonde_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3.000001, y: 6}
+        - {x: -7.000001, y: 2}
+        - {x: -7.000001, y: -4}
+        - {x: 4.999999, y: -4}
+        - {x: 5.999999, y: -3}
+        - {x: 6.999999, y: 2}
+        - {x: 2.999999, y: 6}
+    - name: Bow_HairS_Blonde_10
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 3}
+        - {x: -4, y: 1}
+        - {x: -4, y: -7}
+        - {x: 8, y: -7}
+        - {x: 10, y: -4}
+        - {x: 10, y: 1}
+        - {x: 6, y: 3}
+    - name: Bow_HairS_Blonde_11
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 0}
+        - {x: 3, y: -2}
+        - {x: 3, y: -10}
+        - {x: 15, y: -10}
+        - {x: 17, y: -7}
+        - {x: 17, y: -2}
+        - {x: 13, y: 0}
+    - name: Bow_HairS_Blonde_12
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 12, y: -6}
+        - {x: 8, y: -10}
+        - {x: 8, y: -16}
+        - {x: 20, y: -16}
+        - {x: 22, y: -11}
+        - {x: 22, y: -9}
+        - {x: 18, y: -6}
+    - name: Bow_HairS_Blonde_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2.000001, y: 6}
+        - {x: -6.000001, y: 2}
+        - {x: -6.000001, y: -4}
+        - {x: 5.999999, y: -4}
+        - {x: 6.999999, y: -3}
+        - {x: 7.999999, y: 2}
+        - {x: 3.999999, y: 6}
+    - name: Bow_HairS_Blonde_14
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 6}
+        - {x: -6, y: 2}
+        - {x: -6, y: -4}
+        - {x: 6, y: -4}
+        - {x: 7, y: -3}
+        - {x: 8, y: 2}
+        - {x: 4, y: 6}
+    - name: Bow_HairS_Blonde_15
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 6}
+        - {x: -6, y: 2}
+        - {x: -6, y: -4}
+        - {x: 6, y: -4}
+        - {x: 7, y: -3}
+        - {x: 8, y: 2}
+        - {x: 4, y: 6}
+    - name: Bow_HairS_Blonde_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3.000001, y: 6}
+        - {x: -7.000001, y: 2}
+        - {x: -7.000001, y: -4}
+        - {x: 4.999999, y: -4}
+        - {x: 5.999999, y: -3}
+        - {x: 6.999999, y: 2}
+        - {x: 2.999999, y: 6}
+    - name: Bow_HairS_Blonde_17
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 5}
+        - {x: -6, y: 1}
+        - {x: -6, y: -5}
+        - {x: 6, y: -5}
+        - {x: 7, y: -4}
+        - {x: 8, y: 1}
+        - {x: 4, y: 5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

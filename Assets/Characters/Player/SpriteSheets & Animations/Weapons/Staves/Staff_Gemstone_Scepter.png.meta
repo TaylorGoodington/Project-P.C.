@@ -1,0 +1,526 @@
+fileFormatVersion: 2
+guid: 86e8d47346a8d4b40bcc88414163281c
+timeCreated: 1459697615
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Staff_Gemstone_Scepter_0
+    21300002: Staff_Gemstone_Scepter_1
+    21300004: Staff_Gemstone_Scepter_2
+    21300006: Staff_Gemstone_Scepter_3
+    21300008: Staff_Gemstone_Scepter_4
+    21300010: Staff_Gemstone_Scepter_5
+    21300012: Staff_Gemstone_Scepter_6
+    21300014: Staff_Gemstone_Scepter_7
+    21300016: Staff_Gemstone_Scepter_8
+    21300018: Staff_Gemstone_Scepter_9
+    21300020: Staff_Gemstone_Scepter_10
+    21300022: Staff_Gemstone_Scepter_11
+    21300024: Staff_Gemstone_Scepter_12
+    21300026: Staff_Gemstone_Scepter_13
+    21300028: Staff_Gemstone_Scepter_14
+    21300030: Staff_Gemstone_Scepter_15
+    21300032: Staff_Gemstone_Scepter_16
+    21300034: Staff_Gemstone_Scepter_17
+    21300036: Staff_Gemstone_Scepter_18
+    21300038: Staff_Gemstone_Scepter_19
+    21300040: Staff_Gemstone_Scepter_20
+    21300042: Staff_Gemstone_Scepter_21
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Staff_Gemstone_Scepter_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5.000001, y: -8}
+        - {x: -6.000001, y: -11}
+        - {x: -5.000001, y: -15}
+        - {x: 12.999999, y: -15}
+        - {x: 13.999999, y: -14}
+        - {x: 13.999999, y: -11}
+        - {x: 12.999999, y: -8}
+      - - {x: -10.000001, y: -14}
+        - {x: -7.000001, y: -13}
+        - {x: -7.000001, y: -10}
+        - {x: -10.000001, y: -9}
+        - {x: -12.000001, y: -11}
+    - name: Staff_Gemstone_Scepter_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 8, y: -15}
+        - {x: 11, y: -14}
+        - {x: 11, y: -11}
+        - {x: 8, y: -10}
+        - {x: 6, y: -12}
+      - - {x: 5, y: -8}
+        - {x: 6, y: -9}
+        - {x: 11, y: -9}
+        - {x: 12, y: -8}
+        - {x: 12, y: 8}
+        - {x: 11, y: 11}
+        - {x: 7, y: 11}
+        - {x: 5, y: 9}
+    - name: Staff_Gemstone_Scepter_2
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -1, y: -15}
+        - {x: 2, y: -14}
+        - {x: 2, y: -11}
+        - {x: -1, y: -10}
+        - {x: -3, y: -12}
+      - - {x: 9, y: 4}
+        - {x: 1, y: -5}
+        - {x: 1, y: -10}
+        - {x: 2, y: -11}
+        - {x: 4, y: -11}
+        - {x: 13, y: -6}
+        - {x: 15, y: -1}
+        - {x: 15, y: 4}
+    - name: Staff_Gemstone_Scepter_3
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6, y: -7}
+        - {x: -7, y: -9}
+        - {x: -7, y: -12}
+        - {x: 1, y: -20}
+        - {x: 8, y: -20}
+        - {x: 8, y: -15}
+        - {x: -2, y: -7}
+      - - {x: -9, y: -8}
+        - {x: -6, y: -7}
+        - {x: -6, y: -4}
+        - {x: -9, y: -3}
+        - {x: -11, y: -5}
+    - name: Staff_Gemstone_Scepter_4
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: -10}
+        - {x: -2, y: -9}
+        - {x: -2, y: -6}
+        - {x: -5, y: -5}
+        - {x: -7, y: -7}
+      - - {x: 6, y: 9}
+        - {x: -3, y: 0}
+        - {x: -3, y: -4}
+        - {x: -2, y: -6}
+        - {x: 0, y: -6}
+        - {x: 8, y: -1}
+        - {x: 11, y: 4}
+        - {x: 11, y: 9}
+    - name: Staff_Gemstone_Scepter_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6.000001, y: -7}
+        - {x: -7.000001, y: -10}
+        - {x: -6.000001, y: -14}
+        - {x: 11.999999, y: -14}
+        - {x: 12.999999, y: -13}
+        - {x: 12.999999, y: -10}
+        - {x: 11.999999, y: -7}
+      - - {x: -11.000001, y: -13}
+        - {x: -8.000001, y: -12}
+        - {x: -8.000001, y: -9}
+        - {x: -11.000001, y: -8}
+        - {x: -13.000001, y: -10}
+    - name: Staff_Gemstone_Scepter_6
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: -10}
+        - {x: -2, y: -11}
+        - {x: 1, y: -11}
+        - {x: 4, y: -10}
+        - {x: 4, y: 8}
+        - {x: 1, y: 9}
+        - {x: -3, y: 8}
+    - name: Staff_Gemstone_Scepter_7
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: -10}
+        - {x: -2, y: -11}
+        - {x: 1, y: -11}
+        - {x: 4, y: -10}
+        - {x: 4, y: 8}
+        - {x: 1, y: 9}
+        - {x: -3, y: 8}
+    - name: Staff_Gemstone_Scepter_8
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 7}
+        - {x: -3, y: 3}
+        - {x: -3, y: -9}
+        - {x: 0, y: -10}
+        - {x: 3, y: -10}
+        - {x: 4, y: -7}
+        - {x: 4, y: 3}
+        - {x: 1, y: 8}
+    - name: Staff_Gemstone_Scepter_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13.000001, y: -15}
+        - {x: -10.000001, y: -17}
+        - {x: 12.999999, y: -17}
+        - {x: 12.999999, y: -12}
+        - {x: 10.999999, y: -10}
+        - {x: -12.000001, y: -10}
+        - {x: -13.000001, y: -11}
+    - name: Staff_Gemstone_Scepter_10
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -12, y: -20}
+        - {x: 13, y: -20}
+        - {x: 13, y: -16}
+        - {x: 11, y: -14}
+        - {x: -12, y: -14}
+        - {x: -13, y: -17}
+    - name: Staff_Gemstone_Scepter_11
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13, y: -17}
+        - {x: -12, y: -20}
+        - {x: 11, y: -20}
+        - {x: 13, y: -18}
+        - {x: 12, y: -15}
+        - {x: -11, y: -15}
+    - name: Staff_Gemstone_Scepter_12
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13, y: -17}
+        - {x: -12, y: -20}
+        - {x: 11, y: -20}
+        - {x: 13, y: -18}
+        - {x: 12, y: -15}
+        - {x: -11, y: -15}
+    - name: Staff_Gemstone_Scepter_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6.000001, y: -8}
+        - {x: -7.000001, y: -11}
+        - {x: -6.000001, y: -15}
+        - {x: 11.999999, y: -15}
+        - {x: 12.999999, y: -14}
+        - {x: 12.999999, y: -11}
+        - {x: 11.999999, y: -8}
+      - - {x: -11.000001, y: -14}
+        - {x: -8.000001, y: -13}
+        - {x: -8.000001, y: -10}
+        - {x: -11.000001, y: -9}
+        - {x: -13.000001, y: -11}
+    - name: Staff_Gemstone_Scepter_14
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 13, y: 1}
+        - {x: 2, y: -3}
+        - {x: 2, y: -8}
+        - {x: 3, y: -11}
+        - {x: 8, y: -11}
+        - {x: 18, y: -10}
+        - {x: 25, y: -5}
+        - {x: 25, y: -1}
+        - {x: 24, y: 1}
+    - name: Staff_Gemstone_Scepter_15
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 25, y: 3}
+        - {x: 18, y: 3}
+        - {x: 14, y: 2}
+        - {x: 2, y: -7}
+        - {x: 2, y: -9}
+        - {x: 3, y: -11}
+        - {x: 6, y: -11}
+        - {x: 23, y: -8}
+        - {x: 27, y: -6}
+        - {x: 27, y: 0}
+    - name: Staff_Gemstone_Scepter_16
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 16, y: 1}
+        - {x: 4, y: -6}
+        - {x: 2, y: -8}
+        - {x: 3, y: -11}
+        - {x: 13, y: -11}
+        - {x: 25, y: -4}
+        - {x: 25, y: 0}
+        - {x: 23, y: 1}
+    - name: Staff_Gemstone_Scepter_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 40
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 27, y: -6}
+        - {x: 18, y: -8}
+        - {x: 14.999999, y: -10}
+        - {x: 14.999999, y: -20}
+        - {x: 35, y: -20}
+        - {x: 35, y: -10}
+        - {x: 32, y: -6}
+    - name: Staff_Gemstone_Scepter_18
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 40
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 24, y: -7}
+        - {x: 17, y: -12}
+        - {x: 17, y: -20}
+        - {x: 35, y: -20}
+        - {x: 35, y: -9}
+        - {x: 30, y: -7}
+    - name: Staff_Gemstone_Scepter_19
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 40
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 21, y: -9}
+        - {x: 19, y: -11}
+        - {x: 15, y: -18}
+        - {x: 17, y: -20}
+        - {x: 35, y: -20}
+        - {x: 35, y: -8}
+        - {x: 26, y: -7}
+    - name: Staff_Gemstone_Scepter_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5.000001, y: -8}
+        - {x: -6.000001, y: -11}
+        - {x: -5.000001, y: -15}
+        - {x: 12.999999, y: -15}
+        - {x: 13.999999, y: -14}
+        - {x: 13.999999, y: -11}
+        - {x: 12.999999, y: -8}
+      - - {x: -10.000001, y: -14}
+        - {x: -7.000001, y: -13}
+        - {x: -7.000001, y: -10}
+        - {x: -10.000001, y: -9}
+        - {x: -12.000001, y: -11}
+    - name: Staff_Gemstone_Scepter_21
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: -8}
+        - {x: -6, y: -11}
+        - {x: -5, y: -15}
+        - {x: 13, y: -15}
+        - {x: 14, y: -14}
+        - {x: 14, y: -11}
+        - {x: 13, y: -8}
+      - - {x: -10, y: -14}
+        - {x: -7, y: -13}
+        - {x: -7, y: -10}
+        - {x: -10, y: -9}
+        - {x: -12, y: -11}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

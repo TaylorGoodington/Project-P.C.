@@ -20,7 +20,7 @@ public class FreePestel : MonoBehaviour {
 	void Start () {
         babaYaga = GameObject.FindGameObjectWithTag("BabaYaga");
         maxPestelStrikes = 2 + babaYaga.GetComponent<BabaYaga>().aggressionPhase;
-        pestelStrikeIntervals = 9 - (babaYaga.GetComponent<BabaYaga>().aggressionPhase * 2);
+        pestelStrikeIntervals = 5 - (babaYaga.GetComponent<BabaYaga>().aggressionPhase);
         returning = false;
         strikeSpeed = strikeSpeed + (babaYaga.GetComponent<BabaYaga>().aggressionPhase * 50);
         animator = GetComponent<Animator>();

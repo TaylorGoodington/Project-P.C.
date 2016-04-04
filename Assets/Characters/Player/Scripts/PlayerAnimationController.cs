@@ -24,7 +24,11 @@ public class PlayerAnimationController : MonoBehaviour
         ClimbingUp,
         Attacking,
         DeathFalling,
-        DeathStanding
+        DeathStanding,
+        Buff,
+        Ability,
+        MovementAbility,
+        Ultimate
     }
 
     public void PlayAnimation (Animations animation)

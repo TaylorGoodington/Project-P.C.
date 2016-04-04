@@ -1,0 +1,483 @@
+fileFormatVersion: 2
+guid: 82be6c52de0c2cb4691f5fc53739838e
+timeCreated: 1459697960
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Sword_Pit_Rags_0
+    21300002: Sword_Pit_Rags_1
+    21300004: Sword_Pit_Rags_2
+    21300006: Sword_Pit_Rags_3
+    21300008: Sword_Pit_Rags_4
+    21300010: Sword_Pit_Rags_5
+    21300012: Sword_Pit_Rags_6
+    21300014: Sword_Pit_Rags_7
+    21300016: Sword_Pit_Rags_8
+    21300018: Sword_Pit_Rags_9
+    21300020: Sword_Pit_Rags_10
+    21300022: Sword_Pit_Rags_11
+    21300024: Sword_Pit_Rags_12
+    21300026: Sword_Pit_Rags_13
+    21300028: Sword_Pit_Rags_14
+    21300030: Sword_Pit_Rags_15
+    21300032: Sword_Pit_Rags_16
+    21300034: Sword_Pit_Rags_17
+    21300036: Sword_Pit_Rags_18
+    21300038: Sword_Pit_Rags_19
+    21300040: Sword_Pit_Rags_20
+    21300042: Sword_Pit_Rags_21
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Sword_Pit_Rags_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4.999999, y: -3}
+        - {x: 1.999999, y: -1}
+        - {x: -6.000001, y: -1}
+        - {x: -11.000001, y: -4}
+        - {x: -11.000001, y: -20}
+        - {x: 8.999999, y: -20}
+        - {x: 8.999999, y: -8}
+    - name: Sword_Pit_Rags_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: -2}
+        - {x: -4, y: -2}
+        - {x: -10, y: -5}
+        - {x: -10, y: -19}
+        - {x: -9, y: -20}
+        - {x: 13, y: -20}
+        - {x: 13, y: -12}
+        - {x: 10, y: -4}
+    - name: Sword_Pit_Rags_2
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: -1}
+        - {x: -7, y: -3}
+        - {x: -7, y: -18}
+        - {x: -4, y: -20}
+        - {x: 9, y: -20}
+        - {x: 10, y: -16}
+        - {x: 10, y: -3}
+        - {x: 4, y: -1}
+    - name: Sword_Pit_Rags_3
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 0}
+        - {x: -10, y: -5}
+        - {x: -11, y: -12}
+        - {x: -11, y: -20}
+        - {x: 15, y: -20}
+        - {x: 15, y: -4}
+        - {x: 8, y: 0}
+    - name: Sword_Pit_Rags_4
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 200
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 8}
+        - {x: -13, y: 5}
+        - {x: -13, y: -2}
+        - {x: -10, y: -18}
+        - {x: -7, y: -19}
+        - {x: 1, y: -19}
+        - {x: 11, y: -12}
+        - {x: 11, y: -1}
+        - {x: 10, y: 8}
+    - name: Sword_Pit_Rags_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8.000001, y: -1}
+        - {x: -12.000001, y: -3}
+        - {x: -12.000001, y: -9}
+        - {x: -10.000001, y: -20}
+        - {x: 8.999999, y: -20}
+        - {x: 8.999999, y: -5}
+        - {x: 1.999999, y: -1}
+    - name: Sword_Pit_Rags_6
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 10}
+        - {x: -10, y: -8}
+        - {x: -7, y: -17}
+        - {x: 0, y: -19}
+        - {x: 6, y: -19}
+        - {x: 10, y: -10}
+        - {x: 10, y: 5}
+        - {x: 5, y: 10}
+    - name: Sword_Pit_Rags_7
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 10}
+        - {x: -11, y: 6}
+        - {x: -11, y: -14}
+        - {x: -10, y: -18}
+        - {x: -5, y: -19}
+        - {x: 0, y: -19}
+        - {x: 9, y: -11}
+        - {x: 9, y: 10}
+    - name: Sword_Pit_Rags_8
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 160
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 4}
+        - {x: -11, y: 3}
+        - {x: -11, y: -14}
+        - {x: -9, y: -19}
+        - {x: 2, y: -19}
+        - {x: 9, y: -16}
+        - {x: 9, y: 2}
+        - {x: 8, y: 4}
+    - name: Sword_Pit_Rags_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8.000001, y: -1}
+        - {x: -12.000001, y: -3}
+        - {x: -12.000001, y: -9}
+        - {x: -10.000001, y: -20}
+        - {x: 8.999999, y: -20}
+        - {x: 8.999999, y: -5}
+        - {x: 1.999999, y: -1}
+    - name: Sword_Pit_Rags_10
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: -4}
+        - {x: -8, y: -7}
+        - {x: -8, y: -19}
+        - {x: -7, y: -20}
+        - {x: 10, y: -20}
+        - {x: 10, y: -9}
+        - {x: 4, y: -4}
+    - name: Sword_Pit_Rags_11
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 8, y: -6}
+        - {x: 0, y: -6}
+        - {x: -8, y: -9}
+        - {x: -8, y: -19}
+        - {x: -7, y: -20}
+        - {x: 8, y: -20}
+        - {x: 14, y: -19}
+        - {x: 15, y: -16}
+        - {x: 15, y: -13}
+    - name: Sword_Pit_Rags_12
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 120
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: -9}
+        - {x: -9, y: -11}
+        - {x: -9, y: -18}
+        - {x: -8, y: -20}
+        - {x: 18, y: -20}
+        - {x: 18, y: -11}
+        - {x: 11, y: -9}
+    - name: Sword_Pit_Rags_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11.000001, y: -1}
+        - {x: -12.000001, y: -2}
+        - {x: -12.000001, y: -20}
+        - {x: 9.999999, y: -20}
+        - {x: 9.999999, y: -4}
+        - {x: 4.999999, y: -1}
+    - name: Sword_Pit_Rags_14
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: -3}
+        - {x: -1, y: -1}
+        - {x: -3, y: -1}
+        - {x: -6, y: -6}
+        - {x: -10, y: -15}
+        - {x: -10, y: -20}
+        - {x: 11, y: -20}
+        - {x: 11, y: -15}
+        - {x: 8, y: -5}
+    - name: Sword_Pit_Rags_15
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: -3}
+        - {x: -1, y: -1}
+        - {x: -3, y: -1}
+        - {x: -6, y: -6}
+        - {x: -10, y: -15}
+        - {x: -10, y: -20}
+        - {x: 11, y: -20}
+        - {x: 11, y: -15}
+        - {x: 8, y: -5}
+    - name: Sword_Pit_Rags_16
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: -1}
+        - {x: -10, y: -8}
+        - {x: -10, y: -20}
+        - {x: 11, y: -20}
+        - {x: 11, y: -3}
+        - {x: 4, y: -1}
+    - name: Sword_Pit_Rags_17
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 80
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: -1}
+        - {x: -10, y: -8}
+        - {x: -10, y: -20}
+        - {x: 11, y: -20}
+        - {x: 11, y: -3}
+        - {x: 4, y: -1}
+    - name: Sword_Pit_Rags_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 40
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5.999999, y: -2}
+        - {x: -4.000001, y: -2}
+        - {x: -7.000001, y: -5}
+        - {x: -10.000001, y: -13}
+        - {x: -10.000001, y: -20}
+        - {x: 8.999999, y: -20}
+        - {x: 8.999999, y: -3}
+    - name: Sword_Pit_Rags_19
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 40
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: -2}
+        - {x: -4, y: -2}
+        - {x: -7, y: -5}
+        - {x: -10, y: -13}
+        - {x: -10, y: -20}
+        - {x: 9, y: -20}
+        - {x: 9, y: -3}
+    - name: Sword_Pit_Rags_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8.000001, y: -1}
+        - {x: -11.000001, y: -3}
+        - {x: -11.000001, y: -20}
+        - {x: 10.999999, y: -20}
+        - {x: 10.999999, y: -3}
+        - {x: -0.0000009536743, y: -1}
+    - name: Sword_Pit_Rags_21
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 0
+        width: 50
+        height: 40
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: -2}
+        - {x: -11, y: -3}
+        - {x: -11, y: -20}
+        - {x: 10, y: -20}
+        - {x: 10, y: -6}
+        - {x: 8, y: -2}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
