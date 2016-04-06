@@ -227,7 +227,8 @@ public class Player : MonoBehaviour {
 
 
             //flips sprite depending on direction facing.
-            if (controller.collisions.faceDir == 1)
+
+            if (Input.GetAxisRaw("Horizontal") >= 0)
             {
                 animator.hairAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
                 animator.bodyAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
@@ -241,6 +242,20 @@ public class Player : MonoBehaviour {
                 animator.equipmentAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
                 animator.weaponAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
             }
+            //if (controller.collisions.faceDir == 1)
+            //{
+            //    animator.hairAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            //    animator.bodyAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            //    animator.equipmentAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            //    animator.weaponAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            //}
+            //else
+            //{
+            //    animator.hairAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            //    animator.bodyAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            //    animator.equipmentAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            //    animator.weaponAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            //}
 
             //cant move if attacking.
             if (isAttacking)
@@ -444,21 +459,38 @@ public class Player : MonoBehaviour {
 	
 	//called from the animations for attacking.
 	public void Attack () {
-        //Combo Stuff
-
 		float directionX = controller.collisions.faceDir;
-		float rayLength = 50f; //make each weapon have a length component?
-		float rayOriginX = playerCollider.bounds.max.x + 0.01f; //defined as the edge of the collider.
-		float rayOriginY = playerCollider.bounds.center.y; //defined as the center of the collider.
+        float rayLength = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].attackRange;
+		float rayOriginX = playerCollider.bounds.max.x + 0.01f;
+		float rayOriginY = playerCollider.bounds.center.y;
 		Vector2 rayOrigin = new Vector2 (rayOriginX, rayOriginY);
 
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, attackingLayer);
-        //Layer 14 is currently the enemies layer.
-        if (hit)
+        //Wizards(4) and Rangers(3) fire a projectile that calls attack on contact.
+        if (GameControl.gameControl.playerClass == 3)
         {
-            if (hit.collider.gameObject.layer == 14)
+            int projectileNumber = GameControl.gameControl.equippedWeapon % 10;
+            //fire projectile.
+            Instantiate(ClassesDatabase.classDatabase.arrows[projectileNumber], transform.position, Quaternion.identity);
+
+        }
+        else if (GameControl.gameControl.playerClass == 3)
+        {
+            int projectileNumber = GameControl.gameControl.equippedWeapon % 10;
+            //fire projectile.
+            Instantiate(ClassesDatabase.classDatabase.magicMissles[projectileNumber], transform.position, Quaternion.identity);
+
+        }
+        // everyone else swings.
+        else
+        {
+            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, attackingLayer);
+            //Layer 14 is currently the enemies layer.
+            if (hit)
             {
-                CombatEngine.combatEngine.AttackingEnemies(hit.collider);
+                if (hit.collider.gameObject.layer == 14)
+                {
+                    CombatEngine.combatEngine.AttackingEnemies(hit.collider);
+                }
             }
         }
 	}

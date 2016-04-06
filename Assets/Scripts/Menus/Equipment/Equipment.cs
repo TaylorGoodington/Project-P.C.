@@ -7,13 +7,13 @@ public class Equipment {
 	public EquipmentType equipmentType;
 	public EquipmentMaterial equipmentMaterial;
 	public EquipmentSlot equipmentSlot;
+    public float attackRange;
 	public int equipmentStrength;
 	public int equipmentDefense;
 	public int equipmentSpeed;
 	public int equipmentIntelligence;
 	public int equipmentHealth;
 	public int equipmentMana;
-	public float attackSpeedModifier;
 	public int equipmentSkill;
 	public int buyPrice;
 	public int quantity;
@@ -59,22 +59,22 @@ public class Equipment {
 	}
 	
 	
-	public Equipment (int id, string name, string description, EquipmentType type, EquipmentMaterial material, EquipmentSlot slot, 
+	public Equipment (int id, string name, string description, EquipmentType type, EquipmentMaterial material, EquipmentSlot slot, float range,
 					  int strength, int defense, int speed, int intelligence, int health, int mana,
-					  float atkMod, int skill, int price, int qty, int drop) {
+					  int skill, int price, int qty, int drop) {
 		equipmentID = id;
 		equipmentName = name;
 		equipmentDescription = description;
 		equipmentType = type;
 		equipmentMaterial = material;
 		equipmentSlot = slot;
+        attackRange = range;
 		equipmentStrength = strength;
 		equipmentDefense = defense;
 		equipmentSpeed = speed;
 		equipmentIntelligence = intelligence;
 		equipmentHealth = health;
 		equipmentMana = mana;
-		attackSpeedModifier = atkMod;
 		equipmentSkill = skill;
 		buyPrice = price;
 		quantity = qty;

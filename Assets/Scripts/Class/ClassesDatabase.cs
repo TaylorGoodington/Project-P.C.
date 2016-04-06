@@ -4,7 +4,9 @@ using System.Collections.Generic;
 public class ClassesDatabase : MonoBehaviour {
 
     public static ClassesDatabase classDatabase;
-	public List<Classes> classes; 
+	public List<Classes> classes;
+    public GameObject[] arrows;
+    public GameObject[] magicMissles; 
 	
 	//Just before stats is the material equipment index, 1 = cloth, 2 = leather, 3 = chainmail, 4 = platemail.
 	//the order for stats is: strength, defense, speed, intelligence, health, mana.
