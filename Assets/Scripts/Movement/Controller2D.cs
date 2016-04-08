@@ -49,7 +49,6 @@ public class Controller2D : RaycastController {
 		
 		if (standingOnPlatform) {
 			collisions.below = true;
-			//add call to change variable for if grounded or not.
 		}
 	}
 	

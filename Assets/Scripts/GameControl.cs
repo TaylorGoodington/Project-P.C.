@@ -164,7 +164,7 @@ public class GameControl : MonoBehaviour {
                         ClosePauseMenu();
                         //MAKE A WAY TO CLOSE ALL MENUS.
                         pauseMenuLevel = 0;
-                        if (LevelManager.levelManager.InMapScenes == true)
+                        if (LevelManager.levelManager.inMapScenes == true)
                         {
                             reSelectMapObject = true;
                         }
@@ -195,16 +195,6 @@ public class GameControl : MonoBehaviour {
                 {
                     equippedEquipmentIndex = 1;
                 }
-
-                //weaponsList.Add(equipmentDatabase.equipment[10]);
-                //weaponsList.Add(equipmentDatabase.equipment[20]);
-                //weaponsList.Add(equipmentDatabase.equipment[30]);
-                //weaponsList.Add(equipmentDatabase.equipment[40]);
-                //weaponsList.Add(equipmentDatabase.equipment[50]);
-                //weaponsList.Add(equipmentDatabase.equipment[60]);
-                //weaponsList.Add(equipmentDatabase.equipment[70]);
-                //equipmentInventory.GetComponent<EquipmentInventory>().AddTempData();
-                //itemInventory.GetComponent<Inventory>().AddTempData();
             }
 
 
@@ -236,7 +226,7 @@ public class GameControl : MonoBehaviour {
                 {
                     ClosePauseMenu();
                     pauseMenuLevel--;
-                    if (LevelManager.levelManager.InMapScenes == true)
+                    if (LevelManager.levelManager.inMapScenes == true)
                     {
                         reSelectMapObject = true;
                     }
@@ -267,22 +257,90 @@ public class GameControl : MonoBehaviour {
                 }
             }
 
-            //if (Input.GetKeyDown(KeyCode.W))
-            //{
-            //    equipmentInventory.GetComponent<EquipmentInventory>().OpenWeaponEvolutionMenu();
-            //}
+            #region Equipment Switching for testing
+            //TODO TESTING FOR SWITCHING GEAR...REMOVE LATER.
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                //changinf the equipment.
+                if (equippedEquipmentIndex < 4)
+                {
+                    equippedEquipmentIndex++;
+                }
+                else
+                {
+                    equippedEquipmentIndex = 1;
+                }
+
+                //changes the rest of the stuff.
+                if (equippedEquipmentIndex == 1)
+                {
+                    playerClass = 1;
+                    equippedWeapon = 10;
+                    equippedEquipmentIndex = 1;
+                    skinColorIndex = 2;
+                    hairIndex = 2;
+                }
+                else if (equippedEquipmentIndex == 2)
+                {
+                    playerClass = 3;
+                    equippedWeapon = 40;
+                    equippedEquipmentIndex = 2;
+                    skinColorIndex = 1;
+                    hairIndex = 1;
+                }
+                else if (equippedEquipmentIndex == 3)
+                {
+                    playerClass = 2;
+                    equippedWeapon = 80;
+                    equippedEquipmentIndex = 3;
+                    skinColorIndex = 2;
+                    hairIndex = 3;
+                }
+                else if (equippedEquipmentIndex == 4)
+                {
+                    playerClass = 4;
+                    equippedWeapon = 70;
+                    equippedEquipmentIndex = 4;
+                    skinColorIndex = 3;
+                    hairIndex = 4;
+                }
+            }
+            #endregion
+
+            #region Camera Sweep
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                if (!LevelManager.levelManager.inMapScenes)
+                {
+                    GameObject levelCamera = GameObject.FindGameObjectWithTag("Cameras").transform.GetChild(0).gameObject;
+                    GameObject panCamera = GameObject.FindGameObjectWithTag("Level").transform.GetChild(0).gameObject;
+                    if (levelCamera.activeInHierarchy == true)
+                    {
+                        levelCamera.SetActive(false);
+                        panCamera.SetActive(true);
+                    }
+                    else
+                    {
+                        levelCamera.SetActive(true);
+                        panCamera.SetActive(false);
+                    }
+                }
+            }
+            #endregion
         }
         else
         {
             //GameObject.FindGameObjectWithTag("EventSystem").gameObject.GetComponent<StandaloneInputModule>().enabled = false;
         }
+
+        //HP adjuster...
         if (hp < 0)
         {
             hp = 0;
         }
 	}
 
-    //This is really only need for new games but for now we can call it at the begining of every game and just overwrite as needed.
+    //This is really only needed for new games but for now we can call it at the begining of every game and just overwrite as needed.
     public void AddLevelScores ()
     {
         int numberOfGameLevels = 101;
@@ -542,8 +600,8 @@ public class GameControl : MonoBehaviour {
 
         //ToDo needs to be saved
         equippedEquipmentIndex = 1;
-        skinColorIndex = 1;
-        hairIndex = 1;
+        skinColorIndex = 2;
+        hairIndex = 2;
         maxCombos = 3;
 
         xpToLevel = ExperienceToLevel.experienceToLevel.levels[playerLevel].experienceToLevel;

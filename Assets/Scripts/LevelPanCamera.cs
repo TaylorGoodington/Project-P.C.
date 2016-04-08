@@ -14,6 +14,7 @@ public class LevelPanCamera : RaycastController
     int fromWaypointIndex;
     float percentBetweenWaypoints;
     float nextMoveTime;
+    ParallaxScrolling parallaxScrolling;
 
     public override void Start()
     {
@@ -24,6 +25,7 @@ public class LevelPanCamera : RaycastController
         {
             globalWaypoints[i] = localWaypoints[i] + transform.position;
         }
+        parallaxScrolling = GameObject.FindObjectOfType<ParallaxScrolling>().GetComponent<ParallaxScrolling>();
     }
 
     void Update()
@@ -34,6 +36,8 @@ public class LevelPanCamera : RaycastController
         Vector3 velocity = CalculatePlatformMovement();
 
         transform.Translate(velocity);
+
+        parallaxScrolling.Scrolling();
     }
 
     float Ease(float x)

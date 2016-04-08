@@ -6,14 +6,16 @@ public class Projectile : MonoBehaviour {
     Controller2D player;
     SpriteRenderer sprite;
     Collider2D projectileCollider;
+    float initalXOffset;
+    float initalYOffset;
     Animator animationController;
-    public float projectileSpeed = 200;
-    bool hit;
+    public float projectileSpeed = 250;
+    public bool hit;
     Transform objectHit;
     ProjectileType projectileType;
     int direction;
     bool decaying;
-    float decayTimer = 0.5f;
+    float decayTimer = 3f;
     int projectileNumber;
 
 
@@ -23,6 +25,8 @@ public class Projectile : MonoBehaviour {
         sprite = GetComponent<SpriteRenderer>();
         animationController = GetComponent<Animator>();
         projectileCollider = GetComponent<Collider2D>();
+        initalXOffset = projectileCollider.offset.x;
+        initalYOffset = projectileCollider.offset.y;
         hit = false;
         decaying = false;
         projectileType = (GameControl.gameControl.playerClass == 3) ? ProjectileType.Arrow : ProjectileType.MagicMissle;
@@ -43,6 +47,7 @@ public class Projectile : MonoBehaviour {
         {
             //move with what was struck...child the projetile to the hit object?
             transform.SetParent(objectHit);
+            transform.localScale = Vector3.one;
             decaying = true;
         }
         else if (projectileType == ProjectileType.MagicMissle && hit)
@@ -73,17 +78,23 @@ public class Projectile : MonoBehaviour {
 
     private void UpdateDirection()
     {
+        float xOffset;
+        float yOffset;
         if (player.collisions.faceDir == 1) 
         {
             sprite.flipX = false;
             direction = 1;
-            projectileCollider.offset = new Vector2(15, -7.5f);
+            xOffset = initalXOffset;
+            yOffset = initalYOffset;
+            projectileCollider.offset = new Vector2(xOffset, yOffset);
         }
         else
         {
             sprite.flipX = true;
             direction = -1;
-            projectileCollider.offset = new Vector2(-15, -7.5f);
+            xOffset = initalXOffset * -1;
+            yOffset = initalYOffset;
+            projectileCollider.offset = new Vector2(xOffset, yOffset);
         }
     }
 
@@ -91,13 +102,14 @@ public class Projectile : MonoBehaviour {
     {
         if (collider.gameObject.layer == 14)
         {
-            CombatEngine.combatEngine.AttackingEnemies(collider);
             hit = true;
             objectHit = collider.transform;
+            this.transform.position = new Vector3(transform.position.x + (5 * direction), transform.position.y);
+            CombatEngine.combatEngine.AttackingEnemies(collider);
         }
 
         //Platforms
-        else if (collider.gameObject.layer == 10)
+        else if (collider.gameObject.layer == 10 || collider.tag == "ArrowBlocks")
         {
             hit = true;
             objectHit = collider.transform;

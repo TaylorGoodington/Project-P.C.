@@ -18,9 +18,6 @@ public class ParallaxScrolling : MonoBehaviour {
 	private float cameraWidth;
 	
 	private Vector2 cameraPosition;
-	
-	void Awake () {
-	}
 
 	void Start () {
 		parallaxScrolling = GetComponent<ParallaxScrolling>();

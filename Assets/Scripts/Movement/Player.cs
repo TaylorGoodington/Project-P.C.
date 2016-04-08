@@ -227,8 +227,7 @@ public class Player : MonoBehaviour {
 
 
             //flips sprite depending on direction facing.
-
-            if (Input.GetAxisRaw("Horizontal") >= 0)
+            if (controller.collisions.faceDir == 1)
             {
                 animator.hairAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
                 animator.bodyAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
@@ -242,20 +241,6 @@ public class Player : MonoBehaviour {
                 animator.equipmentAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
                 animator.weaponAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
             }
-            //if (controller.collisions.faceDir == 1)
-            //{
-            //    animator.hairAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
-            //    animator.bodyAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
-            //    animator.equipmentAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
-            //    animator.weaponAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
-            //}
-            //else
-            //{
-            //    animator.hairAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
-            //    animator.bodyAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
-            //    animator.equipmentAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
-            //    animator.weaponAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
-            //}
 
             //cant move if attacking.
             if (isAttacking)
@@ -461,7 +446,7 @@ public class Player : MonoBehaviour {
 	public void Attack () {
 		float directionX = controller.collisions.faceDir;
         float rayLength = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].attackRange;
-		float rayOriginX = playerCollider.bounds.max.x + 0.01f;
+		float rayOriginX = (directionX == 1) ? playerCollider.bounds.max.x + 0.01f : playerCollider.bounds.min.x - 0.01f;
 		float rayOriginY = playerCollider.bounds.center.y;
 		Vector2 rayOrigin = new Vector2 (rayOriginX, rayOriginY);
 
@@ -473,7 +458,7 @@ public class Player : MonoBehaviour {
             Instantiate(ClassesDatabase.classDatabase.arrows[projectileNumber], transform.position, Quaternion.identity);
 
         }
-        else if (GameControl.gameControl.playerClass == 3)
+        else if (GameControl.gameControl.playerClass == 4)
         {
             int projectileNumber = GameControl.gameControl.equippedWeapon % 10;
             //fire projectile.

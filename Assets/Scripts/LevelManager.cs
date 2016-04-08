@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour {
 
     private GameObject cameraManager;
 
-    public bool InMapScenes;
+    public bool inMapScenes;
 
     //end of level info.
     public float levelTime;
@@ -28,7 +28,7 @@ public class LevelManager : MonoBehaviour {
 		levelManager = GetComponent<LevelManager>();
         cameraManager = GameObject.FindGameObjectWithTag("Cameras");
         lastRegionLoaded = 0;
-        InMapScenes = false;
+        inMapScenes = false;
         if (SceneManager.GetActiveScene().name == "_Splash") {
             Invoke("LoadNextLevel", 3f);
         }
@@ -216,7 +216,7 @@ public class LevelManager : MonoBehaviour {
         if (level == level01 - 2 || level == level01 - 1)
         {
             lastLevelPlayed = level;
-            InMapScenes = false;
+            inMapScenes = false;
             cameraManager.transform.GetChild(0).gameObject.SetActive(true);
             cameraManager.transform.GetChild(1).gameObject.SetActive(false);
 
@@ -238,7 +238,7 @@ public class LevelManager : MonoBehaviour {
         else if (level >= level01)
         {
             lastLevelPlayed = level;
-            InMapScenes = false;
+            inMapScenes = false;
             cameraManager.transform.GetChild(0).gameObject.SetActive(true);
             cameraManager.transform.GetChild(1).gameObject.SetActive(false);
             InitializeLevel(level);
@@ -250,7 +250,7 @@ public class LevelManager : MonoBehaviour {
             LastRegionLoaded();
             cameraManager.transform.GetChild(0).gameObject.SetActive(false);
             cameraManager.transform.GetChild(1).gameObject.SetActive(true);
-            InMapScenes = true;
+            inMapScenes = true;
         }
     }
 
