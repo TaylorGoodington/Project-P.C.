@@ -257,6 +257,12 @@ public class GameControl : MonoBehaviour {
                 }
             }
 
+            //TODO TESTING THE PIT INTO LEVEL...
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                LevelManager.levelManager.LoadLevel("The Pit Intro");
+            }
+
             #region Equipment Switching for testing
             //TODO TESTING FOR SWITCHING GEAR...REMOVE LATER.
             if (Input.GetKeyDown(KeyCode.Tab))
@@ -330,6 +336,7 @@ public class GameControl : MonoBehaviour {
         }
         else
         {
+            EventSystem.current.SetSelectedGameObject(null);
             //GameObject.FindGameObjectWithTag("EventSystem").gameObject.GetComponent<StandaloneInputModule>().enabled = false;
         }
 

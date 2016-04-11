@@ -30,19 +30,37 @@ public class Controller2D : RaycastController {
 		collisions.velocityOld = velocity;
 		playerInput = input;
 
-			if (velocity.x != 0) {
-				collisions.faceDir = (int)Mathf.Sign(velocity.x);
-			}
+		if (velocity.x != 0)
+        {
+            //Code for the Player
+            if (this.gameObject.GetComponent<Player>())
+            {
+                if (PlayerInput() == 1)
+                {
+                    collisions.faceDir = 1;
+                    //collisions.faceDir = (int)Mathf.Sign(velocity.x);
+                }
+                else if (PlayerInput() == -1)
+                {
+                    collisions.faceDir = -1;
+                }
+            }
+            //Code for Enemies
+            else
+            {
+                collisions.faceDir = (int)Mathf.Sign(velocity.x);
+            }
+
+            HorizontalCollisions(ref velocity);
+        }
 			
-			HorizontalCollisions (ref velocity);
+		if (velocity.y < 0) {
+			DescendSlope(ref velocity);
+		}
 			
-			if (velocity.y < 0) {
-				DescendSlope(ref velocity);
-			}
-			
-			if (velocity.y != 0) {
-				VerticalCollisions (ref velocity);
-			}
+		if (velocity.y != 0) {
+			VerticalCollisions (ref velocity);
+        }
 		
 		
 		transform.Translate (velocity);
@@ -51,6 +69,22 @@ public class Controller2D : RaycastController {
 			collisions.below = true;
 		}
 	}
+
+    int PlayerInput ()
+    {
+        if (Input.GetAxisRaw("Horizontal") <= -0.1f)
+        {
+            return -1;
+        }
+        else if (Input.GetAxisRaw("Horizontal") >= 0.1f)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 	
 	void HorizontalCollisions(ref Vector3 velocity) {
 		float directionX = collisions.faceDir;

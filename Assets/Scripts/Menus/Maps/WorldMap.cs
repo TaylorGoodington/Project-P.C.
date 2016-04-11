@@ -9,6 +9,7 @@ public class WorldMap : MonoBehaviour {
     Animator animator;
     public GameObject currentSelected;
     public GameObject quitDialogue;
+    GameObject levelToLoad;
     bool headingToTitleScene;
 
 	void Start () {
@@ -115,6 +116,7 @@ public class WorldMap : MonoBehaviour {
 
     public void TransitionFromWorldMap () //ADD NOT BEING ABLE TO IF LEVELS ARENT UNLOCKED....PLAY CONFIRM/DENIED SOUNDS HERE....
     {
+        levelToLoad = currentSelected;
         GameControl.gameControl.playerHasControl = false;
         quitDialogue.SetActive(false);
         animator.Play("Transition Out");
@@ -130,7 +132,7 @@ public class WorldMap : MonoBehaviour {
         }
         else
         {
-            LevelManager.levelManager.LoadLevel(currentSelected.name.ToString());
+            LevelManager.levelManager.LoadLevel(levelToLoad.name.ToString());
         }
     }
 

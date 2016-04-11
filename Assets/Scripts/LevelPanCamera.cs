@@ -87,7 +87,7 @@ public class LevelPanCamera : RaycastController
         if (localWaypoints != null)
         {
             Gizmos.color = Color.red;
-            float size = .3f;
+            float size = 5f;
 
             for (int i = 0; i < localWaypoints.Length; i++)
             {

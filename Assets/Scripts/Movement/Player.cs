@@ -31,7 +31,7 @@ public class Player : MonoBehaviour {
     bool climbingUpMovement;
     public int knockBackForce;
 
-    private float climbingUpPosition;
+    public float climbingUpPosition;
     public bool climbingUp;
     
     PlayerAnimationController animator;
@@ -303,11 +303,13 @@ public class Player : MonoBehaviour {
                 velocity.y = input.y * climbSpeed;
                 velocity.x = input.x * climbSpeed;
 
-                if (climbingUp)
+                if (transform.position.y >= climbingUpPosition)
                 {
                     velocity = Vector3.zero;
+                    climbingUp = true;
                     Invoke("MovePlayerWhenClimbingUp", 0.125f);
                 }
+                
             }
             else {
                 gravity = -1000;
@@ -331,12 +333,14 @@ public class Player : MonoBehaviour {
 
     //Triggers dictate climbing, interactables, level triggers, and other things.
     public void OnTriggerEnter2D (Collider2D collider) {
-		if (collider.gameObject.GetComponent<IsClimbable>()) {
+		if (collider.gameObject.GetComponent<IsClimbable>())
+        {
 			isClimbable = true;
-		}
+            climbingUpPosition = collider.bounds.max.y + 20;
+        }
         //climbing up action
-        if (collider.gameObject.layer == 15 && climbing) {
-            ClimbingTransition(collider);
+        if (collider.gameObject.name == "ClimbingUp" && climbing) {
+            climbingUpPosition = collider.bounds.max.y;
         }
 
         //Reaching the Goal
@@ -366,6 +370,7 @@ public class Player : MonoBehaviour {
 		if (collider.gameObject.GetComponent<IsClimbable>()) {
 			isClimbable = false;
 			climbing = false;
+            climbingUp = false;
 		}
 
         //Interactable Objects
@@ -374,12 +379,6 @@ public class Player : MonoBehaviour {
             GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().showInteractableDisplay = false;
         }
     }
-
-    public void ClimbingTransition(Collider2D collider) {
-        climbingUpPosition = collider.bounds.max.y;
-        climbingUp = true;
-    }
-	
 	//called from attacking animation at the begining and end.
 	public void IsAttacking () {
 		isAttacking = !isAttacking;
@@ -416,7 +415,8 @@ public class Player : MonoBehaviour {
 
     //used as an invoke to move the player
     public void MovePlayerWhenClimbingUp() {
-        this.gameObject.transform.position = new Vector3(transform.position.x, climbingUpPosition);
+        float playerAdjustment = transform.position.y - playerCollider.bounds.min.y;
+        this.gameObject.transform.position = new Vector3(transform.position.x, climbingUpPosition + playerAdjustment);
         climbingUpMovement = false;
     }
 
@@ -449,6 +449,8 @@ public class Player : MonoBehaviour {
 		float rayOriginX = (directionX == 1) ? playerCollider.bounds.max.x + 0.01f : playerCollider.bounds.min.x - 0.01f;
 		float rayOriginY = playerCollider.bounds.center.y;
 		Vector2 rayOrigin = new Vector2 (rayOriginX, rayOriginY);
+
+        CombatEngine.combatEngine.enemyKnockBackDirection = controller.collisions.faceDir;
 
         //Wizards(4) and Rangers(3) fire a projectile that calls attack on contact.
         if (GameControl.gameControl.playerClass == 3)

@@ -24,6 +24,7 @@ public class CombatEngine : MonoBehaviour {
 
     public int enemyFaceDirection;
     public int enemyKnockBackForce;
+    public int enemyKnockBackDirection;
 
     void Start () {
 		combatEngine = GetComponent<CombatEngine>();

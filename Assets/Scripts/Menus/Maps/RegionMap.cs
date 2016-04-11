@@ -8,6 +8,7 @@ public class RegionMap : MonoBehaviour {
     public GameObject currentSelected;
     public GameObject quitDialogue;
     public bool headingToWorldMap;
+    GameObject levelToLoad;
 
     void Start()
     {
@@ -165,6 +166,7 @@ public class RegionMap : MonoBehaviour {
     //Called by the animator
     public void TransitionFromRegionMap() //ADD NOT BEING ABLE TO IF LEVELS ARENT UNLOCKED....PLAY CONFIRM/DENIED SOUNDS HERE....
     {
+        levelToLoad = currentSelected;
         GameControl.gameControl.playerHasControl = false;
         CloseQuitDialogue();
         animator.Play("Transition Out");
@@ -191,7 +193,7 @@ public class RegionMap : MonoBehaviour {
         }
         else
         {
-            LevelManager.levelManager.LoadLevel(currentSelected.name.ToString());
+            LevelManager.levelManager.LoadLevel(levelToLoad.name.ToString());
 
         }
     }

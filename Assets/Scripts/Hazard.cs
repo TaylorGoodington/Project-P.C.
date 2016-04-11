@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(EnemyStats))]
 public class Hazard : MonoBehaviour {
 
@@ -40,6 +41,7 @@ public class Hazard : MonoBehaviour {
     {
         if (collider.gameObject.layer == 9)
         {
+            StopAllCoroutines();
             causingDamage = false;
         }
     }

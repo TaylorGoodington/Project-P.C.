@@ -56,6 +56,7 @@ public class LadyDeath : MonoBehaviour {
     void OpenLadyDeathMenu ()
     {
         GameControl.gameControl.ladyDeathMenu = 1;
+        StopAllCoroutines();
         //Instantiate(ladyDeathMenu);
     }
 
