@@ -7,8 +7,7 @@ public class CombatEngine : MonoBehaviour {
 	public static CombatEngine combatEngine;
     public int attackDamage;
     public float critRate;
-    //public float dodgeRate;
-    //public float counterRate;
+    [HideInInspector]
     public int maxCombos;
     public int comboCount;
     public bool runComboClock;
@@ -17,10 +16,6 @@ public class CombatEngine : MonoBehaviour {
 
     private float maxIntelligence = 100; //ToDo UPDATE AT SOME POINT
     private float maxNakedCritRate = 25;
-    //private float maxAgility = 100;
-    //private float maxNakedDodgeRate = 25;
-    //private float maxDefense = 100;
-    //private float maxNakedCounterRate = 25;
 
     public int enemyFaceDirection;
     public int enemyKnockBackForce;
@@ -31,15 +26,13 @@ public class CombatEngine : MonoBehaviour {
         comboCount = 1;
         runComboClock = false;
 
-        //Set from weapon attribute?
-        comboWindow = 0.2f;
+        comboWindow = 0.25f;
         comboCountDown = comboWindow;
     }
 
     //Update used to increment combos.
     void Update ()
     {
-        //comboWindow = somethingOffTheWeapon?
         maxCombos = GameControl.gameControl.maxCombos;
 
         if (runComboClock)
@@ -64,17 +57,11 @@ public class CombatEngine : MonoBehaviour {
 
     public void CalculateSecondaryStats() {
         float critModifier = 0;
-        //float dodgeModifier = 0;
-        //float counterModifier = 0;
 
         foreach (Skills skill in SkillsController.skillsController.activeSkills) {
             critModifier += skill.critModifier;
-            //dodgeModifier += skill.dodgeModifier;
-            //counterModifier = skill.counterModifier;
         }
         critRate = ((GameControl.gameControl.currentIntelligence / maxIntelligence) * maxNakedCritRate) + (critModifier * 100);
-        //dodgeRate = ((GameControl.gameControl.currentSpeed / maxAgility) * maxNakedDodgeRate) + (dodgeModifier * 100);
-        //counterRate = ((GameControl.gameControl.currentDefense / maxDefense) * maxNakedCounterRate) + (counterModifier * 100);
     }
 
     public void CalculateAttackDamage() {
@@ -180,19 +167,15 @@ public class CombatEngine : MonoBehaviour {
     {
         if (AttackingPhase(collider, Attacker.Player))
         {
-            Debug.Log("The Attack Has Hit!");
             if (HittingPhase(collider, Attacker.Player))
             {
-                Debug.Log("The Hit Can Deal Damage!");
                 if (DealingDamageToEnemyPhase(collider))
                 {
-                    Debug.Log("Damage Delt!");
                 }
             }
         }
         else
         {
-            Debug.Log("We Missed!");
             //at the end we should clear the active skills list for anything the triggered, that doesnt have a duration.
             SkillsController.skillsController.ClearAttackingCombatTriggeredAbilitiesFromList();
         }
@@ -203,10 +186,8 @@ public class CombatEngine : MonoBehaviour {
     {
         if (AttackingPhase(collider, Attacker.Enemy))
         {
-            Debug.Log("The Attack Has Hit!");
             if (HittingPhase(collider, Attacker.Enemy))
             {
-                Debug.Log("The Hit Can Deal Damage!");
                 if (DealingDamageToPlayerPhase(collider, damage))
                 {
                     //Hazard Response.

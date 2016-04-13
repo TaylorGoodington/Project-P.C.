@@ -15,7 +15,8 @@ public class Equipment {
 	public int equipmentHealth;
 	public int equipmentMana;
 	public int equipmentSkill;
-	public int buyPrice;
+	public int knockbackForce;
+    public int maxCombos;
 	public int quantity;
     public int dropRate;
 
@@ -61,7 +62,7 @@ public class Equipment {
 	
 	public Equipment (int id, string name, string description, EquipmentType type, EquipmentMaterial material, EquipmentSlot slot, float range,
 					  int strength, int defense, int speed, int intelligence, int health, int mana,
-					  int skill, int price, int qty, int drop) {
+					  int skill, int knockback, int combos, int qty, int rate) {
 		equipmentID = id;
 		equipmentName = name;
 		equipmentDescription = description;
@@ -76,9 +77,10 @@ public class Equipment {
 		equipmentHealth = health;
 		equipmentMana = mana;
 		equipmentSkill = skill;
-		buyPrice = price;
+		knockbackForce = knockback;
+        maxCombos = combos;
 		quantity = qty;
-        dropRate = drop;
+        dropRate = rate;
 	}
 	
 	public Equipment () {

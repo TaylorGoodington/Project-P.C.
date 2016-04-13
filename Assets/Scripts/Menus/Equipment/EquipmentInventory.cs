@@ -642,7 +642,7 @@ public class EquipmentInventory : MonoBehaviour {
 			foreach (int equipment in equipmentNumber) {
 				if (gameControl.equipmentInventoryList.Contains(equipmentDatabase.equipment[equipment])) {
 					int index = gameControl.equipmentInventoryList.IndexOf(equipmentDatabase.equipment[equipment]);
-					gameControl.equipmentInventoryList[index].quantity ++;
+					gameControl.equipmentInventoryList[index].quantity++;
 				} else {
 					gameControl.equipmentInventoryList.Add (equipmentDatabase.equipment[equipment]);
 				}
@@ -728,7 +728,7 @@ public class EquipmentInventory : MonoBehaviour {
 			}
 			//updates quantity of equipped armor.
 			if (gameControl.equipmentInventoryList [PlayerPrefsManager.GetSelectItem()].quantity > 1) {
-				gameControl.equipmentInventoryList [PlayerPrefsManager.GetSelectItem()].quantity --;
+				gameControl.equipmentInventoryList [PlayerPrefsManager.GetSelectItem()].quantity--;
 			} else {
 				gameControl.equipmentInventoryList.RemoveAt (itemIndex);
 			}
@@ -753,8 +753,8 @@ public class EquipmentInventory : MonoBehaviour {
 	}
 	
 	public void UpdateEquippedStats () {
-        GameControl.gameControl.hpRatio = GameControl.gameControl.hp / GameControl.gameControl.currentHealth;
-        GameControl.gameControl.mpRatio = GameControl.gameControl.mp / GameControl.gameControl.currentMana;
+        GameControl.gameControl.hpRatio = (float)GameControl.gameControl.hp / GameControl.gameControl.currentHealth;
+        GameControl.gameControl.mpRatio = (float)GameControl.gameControl.mp / GameControl.gameControl.currentMana;
 
         gameControl.currentStrength = gameControl.baseStrength + equipmentDatabase.equipment[gameControl.equippedHead].equipmentStrength +
 																 equipmentDatabase.equipment[gameControl.equippedChest].equipmentStrength +

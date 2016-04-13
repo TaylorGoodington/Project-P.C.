@@ -1,16 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-[RequireComponent(typeof(Controller2D))]
-[RequireComponent(typeof(EnemyStats))]
-[RequireComponent(typeof(Hazard))]
+public class EnemyTest : EnemyBase {
 
-public class Scorpion1 : EnemyBase
-{
-    string enemyType = "Scorpion1";
+    string enemyType = "BoneMarauder1";
 
-    public override void Start()
-    {
+    public override void Start () {
         base.Start();
         AddSkills();
         AddItemsAndEquipmentDrops();
@@ -48,7 +42,7 @@ public class Scorpion1 : EnemyBase
         else if (beingAttacked && !enraged)
         {
             isAttacking = false;
-            state = EnemyState.Patroling;
+            state = EnemyState.Attacking;
             enemyAnimationController.Play(enemyType + "Flinching");
             velocity.x = 0;
             float flinchTime = .33f;
@@ -62,6 +56,78 @@ public class Scorpion1 : EnemyBase
 
         else
         {
+            if (controller.collisions.below == false)
+            {
+                enemyAnimationController.Play(enemyType + "Jumping");
+            }
+
+            //trigger for entering chase mode.
+            if (playerDetection.playerInRadius && state == EnemyState.Patroling)
+            {
+                if (OriginalLineOfSight())
+                {
+                    state = EnemyState.Chasing;
+                    ResetEngagementCountDown();
+                }
+            }
+
+            //Attacking
+            if (state == EnemyState.Attacking)
+            {
+                //This is where we would call the animator to attack.
+                if (!InAttackRange())
+                {
+                    isAttacking = false;
+                    state = EnemyState.Chasing;
+                }
+                else
+                {
+                    if (!isAttacking && controller.collisions.below == true)
+                    {
+                        isAttacking = true;
+                        enemyAnimationController.Play(enemyType + "Attacking");
+                    }
+                }
+            }
+
+            //Chasing
+            if (state == EnemyState.Chasing)
+            {
+                Chasing();
+
+                gravity = -1000;
+                velocity.y += gravity * Time.deltaTime;
+                controller.Move(velocity * Time.deltaTime, input);
+                if (velocity.x != 0)
+                {
+                    enemyAnimationController.Play(enemyType + "Running");
+                }
+                else
+                {
+                    enemyAnimationController.Play(enemyType + "Idle");
+                }
+            }
+
+
+            //Investigating
+            if (state == EnemyState.Investigating)
+            {
+                Investigating();
+
+                gravity = -1000;
+                velocity.y += gravity * Time.deltaTime;
+                controller.Move(velocity * Time.deltaTime, input);
+                if (velocity.x != 0)
+                {
+                    enemyAnimationController.Play(enemyType + "Running");
+                }
+                else
+                {
+                    enemyAnimationController.Play(enemyType + "Idle");
+                }
+            }
+
+
             //Patroling
             if (state == EnemyState.Patroling)
             {
@@ -113,6 +179,7 @@ public class Scorpion1 : EnemyBase
     //Called from the animator.
     public override void Attack()
     {
-        //Scorpions do not attack...
+        //Overwrite if neccesary.
+        base.Attack();
     }
 }

@@ -22,6 +22,10 @@ public class EnemyStats : MonoBehaviour {
     public float chaseTime;
     [Tooltip("The length of time in seconds it takes for the enemy to change directions.")]
     public float pivotTime;
+    [Tooltip("The length of time in seconds the enemy will need to build rage before it becomes enraged.")]
+    public float maxRageTimer;
+    [Tooltip("The length of time in seconds the enemy will be enraged. Set to Zero if the enemy does not Rage.")]
+    public float maxEnragedTimer;
 
     //Add Plathrough modifier for the stats!!!
     void Start ()

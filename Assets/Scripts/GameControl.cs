@@ -146,7 +146,7 @@ public class GameControl : MonoBehaviour {
 	void Update () {
         if (playerHasControl)
         {
-            //GameObject.FindGameObjectWithTag("EventSystem").gameObject.GetComponent<StandaloneInputModule>().enabled = true;
+            #region Pause
             if (Input.GetButtonDown("Open Pause Menu"))
             {
                 //makes opening pause menu impossible from the listed scenes, need to add a few for the world/region menus and cutscenes....might be easier to say when instead of when cant.
@@ -154,15 +154,14 @@ public class GameControl : MonoBehaviour {
                     SceneManager.GetActiveScene().name == "Main Menu" || SceneManager.GetActiveScene().name == "01b Options" || SceneManager.GetActiveScene().name == "Extras"
                     || GameObject.FindGameObjectWithTag("Back Dialogue"))
                 {
-
+                    //Don't open the pause menu.
                 }
                 else
                 {
-                    //if (GameObject.FindGameObjectWithTag("Pause Menu"))
                     if (AnyOpenMenus())
                     {
                         ClosePauseMenu();
-                        //MAKE A WAY TO CLOSE ALL MENUS.
+                        //MAKE A WAY TO CLOSE ALL PAUSE RELATED MENUS.
                         pauseMenuLevel = 0;
                         if (LevelManager.levelManager.inMapScenes == true)
                         {
@@ -175,6 +174,7 @@ public class GameControl : MonoBehaviour {
                     }
                 }
             }
+            #endregion
 
             //for level testing...
             if (Input.GetKeyDown(KeyCode.L))
@@ -183,21 +183,7 @@ public class GameControl : MonoBehaviour {
                 
             }
 
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                //temp way to add info to the weapons list.
-                if (equippedEquipmentIndex == 1)
-                {
-                    equippedEquipmentIndex = 2;
-                } 
-                else
-                {
-                    equippedEquipmentIndex = 1;
-                }
-            }
-
-
+            #region Back Button
             //"Back" function.
             if (Input.GetButtonDown("Cancel"))
             {
@@ -256,6 +242,7 @@ public class GameControl : MonoBehaviour {
                     weaponEvolutionMenuLevel--;
                 }
             }
+            #endregion
 
             //TODO TESTING THE PIT INTO LEVEL...
             if (Input.GetKeyDown(KeyCode.Z))
@@ -264,10 +251,10 @@ public class GameControl : MonoBehaviour {
             }
 
             #region Equipment Switching for testing
-            //TODO TESTING FOR SWITCHING GEAR...REMOVE LATER.
+            //TODO TESTING FOR SWITCHING GEAR...MODIFY FOR ACTUAL USE LATER.
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                //changinf the equipment.
+                //changing the equipment.
                 if (equippedEquipmentIndex < 4)
                 {
                     equippedEquipmentIndex++;
@@ -280,7 +267,7 @@ public class GameControl : MonoBehaviour {
                 //changes the rest of the stuff.
                 if (equippedEquipmentIndex == 1)
                 {
-                    playerClass = 1;
+                    //playerClass = 1;
                     equippedWeapon = 10;
                     equippedEquipmentIndex = 1;
                     skinColorIndex = 2;
@@ -288,7 +275,7 @@ public class GameControl : MonoBehaviour {
                 }
                 else if (equippedEquipmentIndex == 2)
                 {
-                    playerClass = 3;
+                    //playerClass = 3;
                     equippedWeapon = 40;
                     equippedEquipmentIndex = 2;
                     skinColorIndex = 1;
@@ -296,7 +283,7 @@ public class GameControl : MonoBehaviour {
                 }
                 else if (equippedEquipmentIndex == 3)
                 {
-                    playerClass = 2;
+                    //playerClass = 2;
                     equippedWeapon = 80;
                     equippedEquipmentIndex = 3;
                     skinColorIndex = 2;
@@ -304,12 +291,25 @@ public class GameControl : MonoBehaviour {
                 }
                 else if (equippedEquipmentIndex == 4)
                 {
-                    playerClass = 4;
+                    //playerClass = 4;
                     equippedWeapon = 70;
                     equippedEquipmentIndex = 4;
                     skinColorIndex = 3;
                     hairIndex = 4;
                 }
+
+                //Adjusts the max combo.
+                maxCombos = EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].maxCombos;
+
+                //Adjusts Current Class.
+                CurrentClass();
+
+                //Updates Equipment
+                EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+
+                //Update Perks
+
+                //Update Aquired Skills List
             }
             #endregion
 
@@ -337,7 +337,6 @@ public class GameControl : MonoBehaviour {
         else
         {
             EventSystem.current.SetSelectedGameObject(null);
-            //GameObject.FindGameObjectWithTag("EventSystem").gameObject.GetComponent<StandaloneInputModule>().enabled = false;
         }
 
         //HP adjuster...
@@ -423,8 +422,8 @@ public class GameControl : MonoBehaviour {
     {
         if (resetFromEquipment)
         {
-            hp = Mathf.FloorToInt(currentHealth * hpRatio);
-            mp = Mathf.FloorToInt(currentMana * mpRatio);
+            hp = Mathf.RoundToInt(currentHealth * hpRatio);
+            mp = Mathf.RoundToInt(currentMana * mpRatio);
         }
         else
         {

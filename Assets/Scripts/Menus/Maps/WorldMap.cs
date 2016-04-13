@@ -9,6 +9,7 @@ public class WorldMap : MonoBehaviour {
     Animator animator;
     public GameObject currentSelected;
     public GameObject quitDialogue;
+    public GameObject playerMapSprite;
     GameObject levelToLoad;
     bool headingToTitleScene;
 
@@ -39,6 +40,7 @@ public class WorldMap : MonoBehaviour {
         if (!GameControl.gameControl.AnyOpenMenus() && quitDialogue.activeSelf == false)
         {
             currentSelected = EventSystem.current.currentSelectedGameObject;
+            //playerMapSprite.GetComponent<PlayerMapSprite>().SetPosition(currentSelected.transform.position);
 
             if (Input.GetButtonDown("Cancel")) {
                 headingToTitleScene = true;

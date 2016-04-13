@@ -99,9 +99,9 @@ public class SkillsController : MonoBehaviour {
         }
     }
 
-    public void ActivatePassiveAbility()
+    public void PassiveAbilityIncrease ()
     {
-
+        //Look through the aquired skills list for Passives.
     }
 
     public void ActivateEnemyAbilities (Skills.TriggerPhase trigger, Collider2D collider)

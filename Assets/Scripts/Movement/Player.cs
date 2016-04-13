@@ -29,6 +29,7 @@ public class Player : MonoBehaviour {
 	public bool isClimbable;
 	public bool climbing;
     bool climbingUpMovement;
+    [HideInInspector]
     public int knockBackForce;
 
     public float climbingUpPosition;
@@ -110,6 +111,8 @@ public class Player : MonoBehaviour {
             }
         }
         else if (flinching) {
+            isAttacking = false;
+            attackLaunched = false;
             CombatEngine.combatEngine.comboCount = 1;
             animator.PlayAnimation(PlayerAnimationController.Animations.Flinching);
             PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
@@ -331,6 +334,11 @@ public class Player : MonoBehaviour {
         knockBack = true;
     }
 
+    public void Death ()
+    {
+        GameControl.gameControl.hp = 0;
+    }
+
     //Triggers dictate climbing, interactables, level triggers, and other things.
     public void OnTriggerEnter2D (Collider2D collider) {
 		if (collider.gameObject.GetComponent<IsClimbable>())
@@ -450,6 +458,7 @@ public class Player : MonoBehaviour {
 		float rayOriginY = playerCollider.bounds.center.y;
 		Vector2 rayOrigin = new Vector2 (rayOriginX, rayOriginY);
 
+        knockBackForce = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].knockbackForce;
         CombatEngine.combatEngine.enemyKnockBackDirection = controller.collisions.faceDir;
 
         //Wizards(4) and Rangers(3) fire a projectile that calls attack on contact.
