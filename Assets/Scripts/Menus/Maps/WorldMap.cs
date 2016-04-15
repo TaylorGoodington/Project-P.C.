@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System.IO;
 
 public class WorldMap : MonoBehaviour {
 
@@ -12,12 +9,15 @@ public class WorldMap : MonoBehaviour {
     public GameObject playerMapSprite;
     GameObject levelToLoad;
     bool headingToTitleScene;
+    bool playerSpriteIsUp;
 
 	void Start () {
         animator = GetComponent<Animator>();
         TransitionToWorldMap();
         headingToTitleScene = false;
-	}
+        playerSpriteIsUp = false;
+        playerMapSprite.SetActive(false);
+    }
 
     void Update ()
     {
@@ -40,8 +40,11 @@ public class WorldMap : MonoBehaviour {
         if (!GameControl.gameControl.AnyOpenMenus() && quitDialogue.activeSelf == false)
         {
             currentSelected = EventSystem.current.currentSelectedGameObject;
-            //playerMapSprite.GetComponent<PlayerMapSprite>().SetPosition(currentSelected.transform.position);
-
+            if (playerSpriteIsUp)
+            {
+                playerMapSprite.SetActive(true);
+                playerMapSprite.GetComponent<PlayerMapSprite>().SetPosition(currentSelected.transform.position);
+            }
             if (Input.GetButtonDown("Cancel")) {
                 headingToTitleScene = true;
                 OpenQuitDialogue();
@@ -109,6 +112,7 @@ public class WorldMap : MonoBehaviour {
             EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Region 10"), null);
         }
         GameControl.gameControl.playerHasControl = true;
+        playerSpriteIsUp = true;
     }
 
     public void TransitionToWorldMap ()
@@ -122,6 +126,7 @@ public class WorldMap : MonoBehaviour {
         GameControl.gameControl.playerHasControl = false;
         quitDialogue.SetActive(false);
         animator.Play("Transition Out");
+        playerSpriteIsUp = false;
     }
 
     //Called from the end of the transition animation.

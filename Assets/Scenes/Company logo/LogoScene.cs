@@ -1,11 +1,7 @@
 ﻿using UnityEngine;
 
-public class LogoScene : MonoBehaviour {
-
-	void Start () {
-	
-	}
-
+public class LogoScene : MonoBehaviour
+{
     public void LoadStartMenu ()
     {
         LevelManager.levelManager.LoadLevel("Start");

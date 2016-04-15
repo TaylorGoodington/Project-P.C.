@@ -15,6 +15,8 @@ public class EnemyBase : MonoBehaviour {
     [Tooltip("This field is used to specify which layers the enemy can move on.")]
     public LayerMask patrolMask;
 
+    public DamageReceived damageReceived;
+
     private float jumpHeight;
     private float timeToJumpApex = .3f;
     private float patrolSpeed;
@@ -1372,5 +1374,11 @@ public class EnemyBase : MonoBehaviour {
                 CombatEngine.combatEngine.AttackingPlayer(this.GetComponent<Collider2D>(), stats.maximumDamage);
             }
         }
+    }
+
+    //Triggered by the Combat Engine.
+    public void DisplayDamageReceived (int damage)
+    {
+        damageReceived.CalculateTheNumber(damage);
     }
 }

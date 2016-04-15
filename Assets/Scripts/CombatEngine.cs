@@ -128,13 +128,12 @@ public class CombatEngine : MonoBehaviour {
         if (randomNumber <= critRate)
         {
             attackDamage = attackDamage * 2;
-            Debug.Log("Critical Hit!");
         }
 
         if ((attackDamage - enemyDefense) > 0)
         {
             collider.gameObject.GetComponent<EnemyStats>().hP -= (attackDamage - enemyDefense);
-            collider.gameObject.SendMessage("BeingAttacked");
+            collider.GetComponent<EnemyBase>().DisplayDamageReceived(attackDamage);
             return true;
         }
         else
@@ -171,6 +170,7 @@ public class CombatEngine : MonoBehaviour {
             {
                 if (DealingDamageToEnemyPhase(collider))
                 {
+                    
                 }
             }
         }
