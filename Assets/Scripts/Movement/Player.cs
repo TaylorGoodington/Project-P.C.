@@ -121,6 +121,10 @@ public class Player : MonoBehaviour {
                 float flinchTime = .1f;
                 transform.Translate((CombatEngine.combatEngine.enemyKnockBackForce / flinchTime) * CombatEngine.combatEngine.enemyFaceDirection * Time.deltaTime, 0, 0, Space.Self);
             }
+            gravity = -1000;
+            velocity.y += gravity * Time.deltaTime;
+            velocity.x = 0;
+            controller.Move(velocity * Time.deltaTime, input);
         }
         else
         {
@@ -324,6 +328,12 @@ public class Player : MonoBehaviour {
             if (controller.collisions.above || controller.collisions.below)
             {
                 velocity.y = 0;
+            }
+
+            //TODO testing buffs
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                animator.PlayAnimation(PlayerAnimationController.Animations.Buff);
             }
         }
     }

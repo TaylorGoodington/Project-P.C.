@@ -99,8 +99,9 @@ public class Controller2D : RaycastController {
 			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);			
 			
 			Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength,Color.red);
-			
-			if (hit) {
+
+			if (hit)
+            {
                 //this section is for moving through the side of platforms that can be fallen through.
                 if (hit.collider.tag == "Through")
                 {

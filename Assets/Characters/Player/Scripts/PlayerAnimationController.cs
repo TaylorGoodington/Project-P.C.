@@ -6,6 +6,7 @@ public class PlayerAnimationController : MonoBehaviour
     public Animator bodyAnimator;
     public Animator weaponAnimator;
     public Animator equipmentAnimator;
+    public Animator backgroundEffectsAnimator;
 
     //Naming Convention for player animations are as follows:
     //For Attacking: Hair1SwordAttacking1, (animator type)(animator type index)(weapon type)(animation name)(combo count)
@@ -37,6 +38,10 @@ public class PlayerAnimationController : MonoBehaviour
         PlayBodyAnimation(animation);
         PlayEquipmentAnimation(animation);
         PlayWeaponAnimation(animation);
+        if (animation == Animations.Buff)
+        {
+            PlayBackgroundEffectsAnimation(animation);
+        }
     }
 
     public void PlayHairAnimation (Animations animation)
@@ -104,5 +109,11 @@ public class PlayerAnimationController : MonoBehaviour
         {
             equipmentAnimator.Play("Equipment" + GameControl.gameControl.equippedEquipmentIndex + animationName);
         }
+    }
+
+    public void PlayBackgroundEffectsAnimation (Animations animation)
+    {
+        //TODO change when skills are more complete.
+        backgroundEffectsAnimator.Play("Strength" + animation + "1");
     }
 }

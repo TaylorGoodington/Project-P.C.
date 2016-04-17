@@ -8,17 +8,17 @@ public class LadyDeath : MonoBehaviour {
     public bool interactable;
     public bool interacting;
     public GameObject ladyDeathMenu;
-    Animator headAnimator;
+    //Animator headAnimator;
     List<string> insultsList;
     public Text insultText;
 
     void Start () {
         interactable = false;
         interacting = false;
-        headAnimator = transform.GetChild(0).GetComponent<Animator>();
+        //headAnimator = transform.GetChild(0).GetComponent<Animator>();
         AddInsulstsToList();
         ShuffleInsultList();
-        StartCoroutine("HurlInsults");
+        //StartCoroutine("HurlInsults");
     }
 	
 	void Update () {
@@ -63,7 +63,7 @@ public class LadyDeath : MonoBehaviour {
     void CloseLadyDeathMenu ()
     {
         GameControl.gameControl.ladyDeathMenu = 0;
-        StartCoroutine("HurlInsults");
+        //StartCoroutine("HurlInsults");
     }
 
     public void OpenPreviousMenu ()
@@ -96,38 +96,38 @@ public class LadyDeath : MonoBehaviour {
         }
     }
 
-    IEnumerator HurlInsults()
-    {
-        if (interacting)
-        {
-            yield return null;
-        }
-        else
-        {
-            for (int i = 0; i < insultsList.Count; i++)
-            {
-                if (interacting)
-                {
-                    i = insultsList.Count;
-                    ShuffleInsultList();
-                }
-                else
-                {
-                    if (i == insultsList.Count - 1)
-                    {
-                        insultText.text = insultsList[i];
-                        headAnimator.Play("Insults");
-                        yield return new WaitForSeconds(4);
-                        ShuffleInsultList();
-                    }
-                    else
-                    {
-                        insultText.text = insultsList[i];
-                        headAnimator.Play("Insults");
-                        yield return new WaitForSeconds(4);
-                    }
-                }
-            }
-        }
-    }
+    //IEnumerator HurlInsults()
+    //{
+    //    if (interacting)
+    //    {
+    //        yield return null;
+    //    }
+    //    else
+    //    {
+    //        for (int i = 0; i < insultsList.Count; i++)
+    //        {
+    //            if (interacting)
+    //            {
+    //                i = insultsList.Count;
+    //                ShuffleInsultList();
+    //            }
+    //            else
+    //            {
+    //                if (i == insultsList.Count - 1)
+    //                {
+    //                    insultText.text = insultsList[i];
+    //                    headAnimator.Play("Insults");
+    //                    yield return new WaitForSeconds(4);
+    //                    ShuffleInsultList();
+    //                }
+    //                else
+    //                {
+    //                    insultText.text = insultsList[i];
+    //                    headAnimator.Play("Insults");
+    //                    yield return new WaitForSeconds(4);
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 }

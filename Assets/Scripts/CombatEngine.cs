@@ -14,7 +14,7 @@ public class CombatEngine : MonoBehaviour {
     public float comboWindow;
     public float comboCountDown;
 
-    private float maxIntelligence = 100; //ToDo UPDATE AT SOME POINT
+    private float maxIntelligence = 10000; //ToDo UPDATE AT SOME POINT
     private float maxNakedCritRate = 25;
 
     public int enemyFaceDirection;
@@ -134,6 +134,7 @@ public class CombatEngine : MonoBehaviour {
         {
             collider.gameObject.GetComponent<EnemyStats>().hP -= (attackDamage - enemyDefense);
             collider.GetComponent<EnemyBase>().DisplayDamageReceived(attackDamage);
+            collider.GetComponent<EnemyBase>().BeingAttacked();
             return true;
         }
         else

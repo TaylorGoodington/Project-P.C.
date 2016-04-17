@@ -7,7 +7,6 @@ using System.Collections;
 
 public class Boar1 : EnemyBase
 {
-
     string enemyType = "Boar1";
     public override void Start()
     {
@@ -96,12 +95,6 @@ public class Boar1 : EnemyBase
 
         stats.equipmentDropped.Add(EquipmentDatabase.equipmentDatabase.equipment[0]);
         stats.equipmentDropped[0].dropRate = 50;
-    }
-
-    //Called by Combat Engine.
-    public void BeingAttacked()
-    {
-        beingAttacked = true;
     }
 
     //Called by falling into a pit.

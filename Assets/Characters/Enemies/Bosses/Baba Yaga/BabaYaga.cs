@@ -1,18 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(EnemyStats))]
-public class BabaYaga : MonoBehaviour {
+public class BabaYaga : EnemyBase {
 
     #region Variables
-    [HideInInspector]
-    public EnemyStats stats;
-    string enemyType = "BabaYaga";
-    public bool isAttacking;
-    bool beingAttacked;
     public bool changingLocations;
-    Animator animationController;
-    //GameObject player;
 
     public Vector3 leftPosition;
     public Vector3 rightPosition;
@@ -28,22 +20,19 @@ public class BabaYaga : MonoBehaviour {
     public int attackNumber;
     public int aggressionPhase;
     bool damagedTimerIsOn;
-    float beingAttackedTimer;
+    public float beingAttackedTimer;
 
     public GameObject skullFormation1;
     public GameObject skullFormation2;
     public GameObject skullFormation3;
     #endregion
 
-    void Start()
+    public override void Start()
     {
-        stats = GetComponent<EnemyStats>();
+        base.Start();
         hitBox = GetComponent<BoxCollider2D>();
         AddSkills();
         AddItemsAndEquipmentDrops();
-        animationController = GetComponent<Animator>();
-        //player = FindObjectOfType<Player>().gameObject;
-        isAttacking = false;
         changingLocations = false;
         beingAttacked = false;
         swapTimer = initialSwapTime - aggressionPhase;
@@ -75,11 +64,14 @@ public class BabaYaga : MonoBehaviour {
         stats.equipmentDropped[2].dropRate = 50;
     }
 
-    void Update()
+    public override void Update()
     {
+        GameObject damageDisplay = transform.GetChild(5).gameObject;
+        damageDisplay.transform.position = new Vector3(transform.position.x, transform.position.y + 55);
+
         AggressionPhase();
 
-        if (animationController.GetCurrentAnimatorStateInfo(0).IsName("FadeOut"))
+        if (enemyAnimationController.GetCurrentAnimatorStateInfo(0).IsName("FadeOut"))
         {
 
         }
@@ -88,7 +80,7 @@ public class BabaYaga : MonoBehaviour {
             //Checks for death.
             if (stats.hP <= 0)
             {
-                animationController.Play(enemyType + "Death");
+                enemyAnimationController.Play("Death");
             }
 
             //player is dead.
@@ -99,10 +91,19 @@ public class BabaYaga : MonoBehaviour {
 
             else if (beingAttacked)
             {
-                //Play Flinch Animation.
+                if (enemyAnimationController.GetCurrentAnimatorStateInfo(0).IsName("Casting"))
+                {
+                    //continue the casting animation.
+                } 
+                else
+                {
+                    //Play Flinch Animation.
+                    enemyAnimationController.Play("Idle");
+                }
+
                 if (!damagedTimerIsOn)
                 {
-                    beingAttackedTimer = 1f;
+                    beingAttackedTimer = 1.5f;
                     damagedTimerIsOn = true;
                 }
 
@@ -115,7 +116,14 @@ public class BabaYaga : MonoBehaviour {
                     else
                     {
                         damagedTimerIsOn = false;
-                        StartChangingLocations();
+                        if (enemyAnimationController.GetCurrentAnimatorStateInfo(0).IsName("Casting"))
+                        {
+
+                        }
+                        else
+                        {
+                            StartChangingLocations();
+                        }
                     }
                 }
             }
@@ -178,7 +186,7 @@ public class BabaYaga : MonoBehaviour {
 
         if (swapTimer <= 0)
         {
-            if (animationController.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            if (enemyAnimationController.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
             {
                 StartChangingLocations();
             }
@@ -189,7 +197,7 @@ public class BabaYaga : MonoBehaviour {
     {
         changingLocations = true;
         swapTimer = initialSwapTime - aggressionPhase;
-        animationController.Play("FadeOut");
+        enemyAnimationController.Play("FadeOut");
         if (!pestelIsFree)
         {
             pestel.Play("PestelFadeOut");
@@ -211,7 +219,7 @@ public class BabaYaga : MonoBehaviour {
         }
 
         FlinchRecovered();
-        animationController.Play("FadeIn");
+        enemyAnimationController.Play("FadeIn");
 
         if (!pestelIsFree)
         {
@@ -225,24 +233,8 @@ public class BabaYaga : MonoBehaviour {
         changingLocations = false;
     }
 
-    public void BeingAttacked()
-    {
-        beingAttacked = true;
-    }
-
-    public void FlinchRecovered()
-    {
-        beingAttacked = false;
-    }
-
-    //called from attacking animation at the begining and end.
-    public void IsAttacking()
-    {
-        isAttacking = !isAttacking;
-    }
-
     //Called from the animator.
-    IEnumerator Attack()
+    new IEnumerator Attack()
     {
         isAttacking = true;
         attackNumber = Random.Range(0, 5);
@@ -254,13 +246,13 @@ public class BabaYaga : MonoBehaviour {
         }
         else 
         {
-            animationController.Play("Casting");
+            enemyAnimationController.Play("Casting");
         }
     }
 
     void PestelAttack ()
     {
-        animationController.Play("Casting");
+        enemyAnimationController.Play("Casting");
         pestel.Play("PestelRising");
     }
 
@@ -284,58 +276,6 @@ public class BabaYaga : MonoBehaviour {
         else
         {
             Instantiate(skullFormation3);
-        }
-    }
-
-    public void CallEnemyDefeated()
-    {
-        StartCoroutine("EnemyDefeated");
-    }
-
-    //When the enemy dies.
-    public IEnumerator EnemyDefeated()
-    {
-        while (GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().tallyingSpoils == true)
-        {
-            yield return null;
-        }
-
-        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().tallyingSpoils = true;
-        LevelManager.levelManager.enemiesDefeated += 1;
-
-        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().ReceiveXP(stats.expGranted);
-        GameControl.gameControl.xp += stats.expGranted;
-
-        EquipmentDrops();
-        ItemDrops();
-        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().CallReceiveEquipment();
-
-        Destroy(this.gameObject);
-    }
-
-    //Add Equipment drops to player list
-    public void EquipmentDrops()
-    {
-        foreach (Equipment equipment in stats.equipmentDropped)
-        {
-            int randomNumber = Random.Range(0, 101);
-            if (randomNumber <= equipment.dropRate)
-            {
-                GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().receivedEquipment.Add(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]);
-            }
-        }
-    }
-
-    //Add Item drops to player list
-    public void ItemDrops()
-    {
-        foreach (Items item in stats.itemsDropped)
-        {
-            int randomNumber = Random.Range(0, 101);
-            if (randomNumber <= item.dropRate)
-            {
-                GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().receivedItems.Add(ItemDatabase.itemDatabase.items[item.itemID]);
-            }
         }
     }
 }

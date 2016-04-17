@@ -245,7 +245,7 @@ public class GameControl : MonoBehaviour {
             #endregion
 
             //TODO TESTING THE PIT INTO LEVEL...
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetKeyDown(KeyCode.O))
             {
                 LevelManager.levelManager.LoadLevel("The Pit Intro");
             }

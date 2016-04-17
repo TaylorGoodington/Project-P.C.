@@ -1,20 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DamageReceived : MonoBehaviour
 {
-    
-    public Sprite[] Numbers;
+    public Sprite[] numbers;
     public GameObject oneDigitNumber;
     public GameObject twoDigitNumber;
     public GameObject threeDigitNumber;
     public GameObject fourDigitNumber;
-    GameObject number;
-    BoxCollider2D enemy;
 
     void Start()
     {
-        enemy = transform.parent.GetComponent<BoxCollider2D>();
+        BoxCollider2D enemy = transform.parent.GetComponent<BoxCollider2D>();
         transform.position = new Vector2(enemy.bounds.center.x, enemy.bounds.max.y + 5);
     }
 
@@ -23,45 +19,41 @@ public class DamageReceived : MonoBehaviour
         //Single Digit
         if (damage < 10)
         {
-            StartCoroutine("DisplayTheDamage", 1);
+            GameObject display = Instantiate(oneDigitNumber, transform.position, Quaternion.identity) as GameObject;
+            display.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = numbers[damage];
         }
         //Double Digit 
         else if (damage < 100)
         {
-            StartCoroutine("DisplayTheDamage", 2);
+            int onesPlace = damage % 10;
+            int tensPlace = Mathf.FloorToInt(damage / 10);
+            GameObject display = Instantiate(twoDigitNumber, transform.position, Quaternion.identity) as GameObject;
+            display.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = numbers[onesPlace];
+            display.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = numbers[tensPlace];
         }
         //Triple Digit
         else if (damage < 1000)
         {
-            StartCoroutine("DisplayTheDamage", 3);
+            int onesPlace = (damage % 100) % 10;
+            int tensPlace = Mathf.FloorToInt(damage / 10) % 10;
+            int hundredsPlace = Mathf.FloorToInt(damage / 100);
+            GameObject display = Instantiate(threeDigitNumber, transform.position, Quaternion.identity) as GameObject;
+            display.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = numbers[onesPlace];
+            display.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = numbers[tensPlace];
+            display.transform.GetChild(2).GetComponent<SpriteRenderer>().sprite = numbers[hundredsPlace];
         }
         //Quadruple Digit
         else
         {
-            StartCoroutine("DisplayTheDamage", 4);
+            int onesPlace = ((damage % 1000) % 100) % 10;
+            int tensPlace = (Mathf.FloorToInt(damage / 10) % 100) % 10;
+            int hundredsPlace = Mathf.FloorToInt(damage / 100) % 10;
+            int thousandsPlace = Mathf.FloorToInt(damage / 1000);
+            GameObject display = Instantiate(fourDigitNumber, transform.position, Quaternion.identity) as GameObject;
+            display.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = numbers[onesPlace];
+            display.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = numbers[tensPlace];
+            display.transform.GetChild(2).GetComponent<SpriteRenderer>().sprite = numbers[hundredsPlace];
+            display.transform.GetChild(3).GetComponent<SpriteRenderer>().sprite = numbers[thousandsPlace];
         }
-    }
-
-    IEnumerator DisplayTheDamage(int numberOfDigits)
-    {
-        if (numberOfDigits == 1)
-        {
-            number = oneDigitNumber;
-        }
-        else if (numberOfDigits == 2)
-        {
-            number = twoDigitNumber;
-        }
-        else if (numberOfDigits == 3)
-        {
-            number = threeDigitNumber;
-        }
-        else if (numberOfDigits == 4)
-        {
-            number = fourDigitNumber;
-        }
-        GameObject damage = Instantiate(number, transform.position, Quaternion.identity) as GameObject;
-        //TODO  Still need to change the numbers that make up the display.
-        yield return null;
     }
 }

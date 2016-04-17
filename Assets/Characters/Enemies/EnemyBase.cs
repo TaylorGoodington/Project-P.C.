@@ -17,13 +17,19 @@ public class EnemyBase : MonoBehaviour {
 
     public DamageReceived damageReceived;
 
-    private float jumpHeight;
-    private float timeToJumpApex = .3f;
-    private float patrolSpeed;
-    private float chaseSpeed;
-    private float chaseTime;
+    [HideInInspector]
+    public float jumpHeight;
+    [HideInInspector]
+    public float timeToJumpApex = .3f;
+    [HideInInspector]
+    public float patrolSpeed;
+    [HideInInspector]
+    public float chaseSpeed;
+    [HideInInspector]
+    public float chaseTime;
     //private float climbSpeed = 50;
-    private float pivotTime;
+    [HideInInspector]
+    public float pivotTime;
 
     [HideInInspector]
     public float engagementCounter;
@@ -35,8 +41,8 @@ public class EnemyBase : MonoBehaviour {
     public float maxPatrolX;
     [HideInInspector]
     public GameObject patrolPlatform;
-
-    private bool patrolPathCreated;
+    [HideInInspector]
+    public bool patrolPathCreated;
 
     //[HideInInspector]
     public EnemyState state;
@@ -47,8 +53,8 @@ public class EnemyBase : MonoBehaviour {
     public bool beingAttacked;
     [HideInInspector]
     public Animator enemyAnimationController;
-
-    Vector2 targetPosition;
+    [HideInInspector]
+    public Vector3 targetPosition;
     [HideInInspector]
     public Vector2 eyePositionLeft;
     [HideInInspector]
@@ -109,12 +115,16 @@ public class EnemyBase : MonoBehaviour {
     public bool enraged;
     [HideInInspector]
     public float enragedTimer;
-    float maxEnragedTimer;
-    bool buildingRage;
-    bool losingRage;
-    //[HideInInspector]
+    [HideInInspector]
+    public float maxEnragedTimer;
+    [HideInInspector]
+    public bool buildingRage;
+    [HideInInspector]
+    public bool losingRage;
+    [HideInInspector]
     public float rageTimer;
-    float maxRageTimer;
+    [HideInInspector]
+    public float maxRageTimer;
     #endregion
 
     public virtual void Start()
@@ -323,7 +333,7 @@ public class EnemyBase : MonoBehaviour {
         }
     }
 
-    public void Chasing()
+    public virtual void Chasing()
     {
         //If the enemy is in the air we dont want them loosing their directive and trying to make a path. So we make finishing the jump the priority.
         if (airborne)
@@ -432,7 +442,7 @@ public class EnemyBase : MonoBehaviour {
         }
     }
 
-    public void Patrolling()
+    public virtual void Patrolling()
     {
         if (!patrolPathCreated)
         {
@@ -461,7 +471,7 @@ public class EnemyBase : MonoBehaviour {
         }
     }
 
-    public void Investigating()
+    public virtual void Investigating()
     {
         if (airborne)
         {
@@ -1189,7 +1199,7 @@ public class EnemyBase : MonoBehaviour {
         return false;
     }
 
-    IEnumerator ChangeDirection(float moveSpeed)
+    public IEnumerator ChangeDirection(float moveSpeed)
     {
         yield return new WaitForSeconds(pivotTime);
         controller.collisions.faceDir = controller.collisions.faceDir * -1;
@@ -1380,5 +1390,11 @@ public class EnemyBase : MonoBehaviour {
     public void DisplayDamageReceived (int damage)
     {
         damageReceived.CalculateTheNumber(damage);
+    }
+
+    //Called by Combat Engine.
+    public void BeingAttacked()
+    {
+        beingAttacked = true;
     }
 }
