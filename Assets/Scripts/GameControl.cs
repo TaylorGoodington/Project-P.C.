@@ -28,6 +28,7 @@ public class GameControl : MonoBehaviour {
 	
 	public ClassesDatabase classesDatabase;	
 	
+    [HideInInspector]
 	public MainMenuControl mainMenuControl;
 
     public bool playerHasControl;
@@ -109,7 +110,7 @@ public class GameControl : MonoBehaviour {
 
     [HideInInspector]
     public bool endOfLevel;
-
+    public bool startFromLoad;
     public bool dying;
 
     void Awake () {
@@ -125,7 +126,7 @@ public class GameControl : MonoBehaviour {
 	void Start () {
 		gameControl = GetComponent<GameControl>();
         reSelectMapObject = false;
-
+        startFromLoad = true;
         playerHasControl = true;
 	
 		equipmentMenuLevel = 0;
@@ -179,7 +180,7 @@ public class GameControl : MonoBehaviour {
             //for level testing...
             if (Input.GetKeyDown(KeyCode.L))
             {
-                LevelManager.levelManager.LoadLevel("Level 30");
+                LevelManager.levelManager.LoadLevel("Level 55");
                 
             }
 

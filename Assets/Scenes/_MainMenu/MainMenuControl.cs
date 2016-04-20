@@ -7,33 +7,87 @@ using System.IO;
 public class MainMenuControl : MonoBehaviour {
 
 	public GameObject expandedGameSelection;
-	public GameObject mainMenuCanvas;
 	public GameObject deleteGameVerification;
 	public GameObject overwriteGameVerification;
 	public GameObject overwriteNewGameVerification;
 	public GameObject overwriteSlots;
-	
-	public GameControl gameControl;
-	public PlayerSoundEffects playerSoundEffects;
+    public GameObject blackScreen;
+    public GameObject startObjects;
+    public GameObject mainMenuObjects;
+    public GameObject optionsObjects;
+    public GameObject extrasObject;
+    
+    Animator menuAnimator;
+    Animator startAnimator;
+    Animator mainMenuAnimator;
+    Animator optionsAnimator;
+    Animator extrasAnimator;
 
-    private Animator animator;
+    void Start ()
+    {
+        GameControl.gameControl.mainMenuControl = this;
 
-	void Start () {
-		mainMenuCanvas = GameObject.FindGameObjectWithTag("Main Menu");
-		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-		gameControl = GameObject.FindObjectOfType<GameControl>();
-        animator = GetComponent<Animator>();
-		
-		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Game 1"),null);
-		
-		RefreshGameLabels ();
-		
-		gameControl.mainMenuLevel = 1;
+        startAnimator = startObjects.gameObject.GetComponent<Animator>();
+        mainMenuAnimator = mainMenuObjects.gameObject.GetComponent<Animator>();
+        optionsAnimator = optionsObjects.gameObject.GetComponent<Animator>();
+        extrasAnimator = extrasObject.gameObject.GetComponent<Animator>();
 
-        GameControl.gameControl.ResetNewGameData();
+        if (GameControl.gameControl.startFromLoad)
+        {
+            blackScreen.SetActive(true);
+            menuAnimator = GetComponent<Animator>();
+            startObjects.SetActive(true);
+            mainMenuObjects.SetActive(false);
+            menuAnimator.Play("Transition In");
+            startAnimator.Play("TitleInStart");
+            GameControl.gameControl.mainMenuLevel = -1;
+            GameControl.gameControl.startFromLoad = false;
+            GameControl.gameControl.ResetNewGameData();
+        }
     }
 
-	public void RefreshGameLabels () {
+    //Start Button
+    public void ToMainMenu ()
+    {
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
+        EventSystem.current.SetSelectedGameObject(null);
+        startAnimator.Play("TitleOut");
+    }
+
+    //called by the animator at the end of title out.
+    public void MainMenuSceneStart()
+    {
+        GameControl.gameControl.mainMenuLevel = 1;
+        startObjects.SetActive(false);
+        mainMenuObjects.SetActive(true);
+        RefreshGameLabels();
+        mainMenuAnimator.Play("ObjectsIn");
+    }
+
+    public void StartSceneStart ()
+    {
+        startObjects.SetActive(true);
+        mainMenuObjects.SetActive(false);
+        startAnimator.Play("TitleIn");
+    }
+
+    public void OptionsSceneStart ()
+    {
+
+    }
+
+    public void ExtrasSceneStart ()
+    {
+
+    }
+
+    public void QuitGame()
+    {
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
+        Application.Quit();
+    }
+
+    public void RefreshGameLabels () {
 		if (File.Exists (Application.persistentDataPath + "/playerInfo1.dat")) {
 			GameObject gameSlot = GameObject.FindGameObjectWithTag ("Game 1");
 			Text newGameText = gameSlot.transform.GetChild (1).GetComponent<Text> ();
@@ -52,7 +106,7 @@ public class MainMenuControl : MonoBehaviour {
 			if (PlayerPrefsManager.GetFile1LevelProgress() == 100) {
 				playerProgressText.text = "Clear!";
 			} else {
-				//Need to make this lookup the actual level name someday.
+				//TODO Need to make this lookup the actual level name someday.
 				playerProgressText.text = PlayerPrefsManager.GetFile1LevelProgress().ToString();
 			}
 		} else {
@@ -143,23 +197,27 @@ public class MainMenuControl : MonoBehaviour {
 		}
 	}
 	
-	public void OpenPreviousMainMenu (int mainMenuLevel) {
-		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
-		if (mainMenuLevel == 3) {
-			SceneManager.LoadScene("Main Menu");
-		} else if (mainMenuLevel == 2) {
+	public void OpenPreviousMainMenu (int mainMenuLevel)
+    {
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+		if (mainMenuLevel == 3)
+        {
+            MainMenuSceneStart();
+		}
+        else if (mainMenuLevel == 2)
+        {
 			Destroy(GameObject.FindGameObjectWithTag("Expanded Game Select"));
 			EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Game " + PlayerPrefsManager.GetGameFile()));
-		} else if (mainMenuLevel == 1) {
-            SceneManager.LoadScene("Start");
 		}
+        else if (mainMenuLevel == 1)
+        {
+            mainMenuAnimator.Play("ObjectsOutStart");
+        }
 	}
 	
 	public void OpenPreviousCopyMenu (int copyMenuLevel) {
-		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
-		if (copyMenuLevel == 2) {
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+        if (copyMenuLevel == 2) {
 			if (GameObject.FindGameObjectWithTag("Overwrite New Game Verify")) {
 				Destroy(GameObject.FindGameObjectWithTag("Overwrite New Game Verify"));
 			} else {
@@ -174,16 +232,15 @@ public class MainMenuControl : MonoBehaviour {
 	}
 	
 	public void OpenPreviousDeleteMenu (int deleteMenuLevel) {
-		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 
-		if (deleteMenuLevel == 1) {
+        if (deleteMenuLevel == 1) {
 			DeleteGameNo();
 		}
 	}
 	
 	public void ExpandGameSelection (int fileNumber) {
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
 		
 		PlayerPrefsManager.SetGameFile(fileNumber);
 		
@@ -215,29 +272,26 @@ public class MainMenuControl : MonoBehaviour {
         GameControl.gameControl.mainMenuLevel = 2;
 	}
 	
-	
 	public void PlayUnableNoise () {
-		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
-	}
-	
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
+    }
 	
 	public void PlayGame (int fileNumber) {
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
         GameControl.gameControl.playerHasControl = false;
 
         GameControl.gameControl.mainMenuLevel = 0;
 
         if (File.Exists(Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat")) {
             GameControl.gameControl.LoadFile(fileNumber);
-            animator.Play("TransitionOut");
+            menuAnimator.Play("TransitionOut");
 		} else {
             GameControl.gameControl.NewGame(fileNumber);
 
             //Play intro cinematic.
 
             //Remove after testing....
-            animator.Play("TransitionOut");
+            menuAnimator.Play("TransitionOut");
         }
 	}
 
@@ -248,11 +302,10 @@ public class MainMenuControl : MonoBehaviour {
     }
 	
 	public void CopyGame (int fileNumber) {
-		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
-		
-		
-		int lowNumber;
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
+
+
+        int lowNumber;
 		if (fileNumber >= 2) {
 			lowNumber = 1;
 		} else {
@@ -297,44 +350,42 @@ public class MainMenuControl : MonoBehaviour {
 				}
 			}
 		}
-		gameControl.mainMenuLevel = 0;
-		gameControl.mainMenuCopyLevel = 1;
+		GameControl.gameControl.mainMenuLevel = 0;
+        GameControl.gameControl.mainMenuCopyLevel = 1;
 	}
 	
 	public void OverwriteNewGame (int fileNumber) {
-		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
-		GameObject overwriteMenu = Instantiate(overwriteNewGameVerification);
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+        GameObject overwriteMenu = Instantiate(overwriteNewGameVerification);
 		overwriteMenu.transform.SetParent(GameObject.FindGameObjectWithTag("Main Menu").transform, false);
 		overwriteMenu.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().OverwriteNewGameYes(fileNumber));
 		EventSystem.current.SetSelectedGameObject(overwriteMenu.transform.GetChild(3).gameObject);
-		gameControl.mainMenuCopyLevel = 2;
+        GameControl.gameControl.mainMenuCopyLevel = 2;
 	}
 
 	void OverwriteNewGameYes (int fileNumber) {
 		int gameFile = PlayerPrefsManager.GetGameFile ();
-		gameControl.LoadFile (gameFile);
-		gameControl.SaveFile (fileNumber);
+        GameControl.gameControl.LoadFile (gameFile);
+        GameControl.gameControl.SaveFile (fileNumber);
 		RefreshGameLabels ();
 		
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite New Game Verify"));
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Slots"));
 		Debug.Log ("OverwriteNewGameYes");
-		gameControl.mainMenuLevel = 1;
-		gameControl.mainMenuCopyLevel = 0;
+        GameControl.gameControl.mainMenuLevel = 1;
+        GameControl.gameControl.mainMenuCopyLevel = 0;
 	}
 	
 	public void OverwriteNewGameNo () {
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite New Game Verify"));
 		Debug.Log ("OverwriteNewGameNo");
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("Overwrite Slots").transform.GetChild(1).gameObject, null);
-		gameControl.mainMenuCopyLevel = 1;
+        GameControl.gameControl.mainMenuCopyLevel = 1;
 	}
 	
 	public void OverwriteFile (int fileNumber) {
-		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
-		GameObject overwriteMenu = Instantiate(overwriteGameVerification);
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
+        GameObject overwriteMenu = Instantiate(overwriteGameVerification);
 		overwriteMenu.transform.SetParent(GameObject.FindGameObjectWithTag("Main Menu").transform, false);
 		
 		if (fileNumber == 1) {
@@ -349,27 +400,27 @@ public class MainMenuControl : MonoBehaviour {
 		}
 		overwriteMenu.transform.GetChild(4).GetComponent<Button>().onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().OverwriteFileYes(fileNumber));
 		EventSystem.current.SetSelectedGameObject(overwriteMenu.transform.GetChild(4).gameObject);
-		gameControl.mainMenuCopyLevel = 2;
+        GameControl.gameControl.mainMenuCopyLevel = 2;
 	}
 	
 	public void OverwriteFileYes (int fileNumber) {
 		int gameFile = PlayerPrefsManager.GetGameFile ();
-		gameControl.LoadFile (gameFile);
-		gameControl.SaveFile (fileNumber);
+        GameControl.gameControl.LoadFile (gameFile);
+        GameControl.gameControl.SaveFile (fileNumber);
 		RefreshGameLabels ();
 		
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Game Verify"));
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Slots"));
 		Debug.Log ("OverwriteFileYes");
-		gameControl.mainMenuLevel = 1;
-		gameControl.mainMenuCopyLevel = 0;
+        GameControl.gameControl.mainMenuLevel = 1;
+        GameControl.gameControl.mainMenuCopyLevel = 0;
 	}
 	
 	public void OverwriteFileNo () {
 		Destroy (GameObject.FindGameObjectWithTag ("Overwrite Game Verify"));
 		Debug.Log ("OverwriteFileNo");
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag ("Overwrite Slots").transform.GetChild(1).gameObject, null);
-		gameControl.mainMenuCopyLevel = 1;
+        GameControl.gameControl.mainMenuCopyLevel = 1;
 	}
 
     //Called by the animator
@@ -377,13 +428,18 @@ public class MainMenuControl : MonoBehaviour {
     {
         MusicManager.musicManager.fadeMusicOut = true;
     }
+    
+    //Called by the animator
+    public void FadeMusicIn()
+    {
+        MusicManager.musicManager.fadeMusicIn = true;
+    }
 
     public void DeleteGame (int fileNumber) {
-		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
-		Destroy(GameObject.FindGameObjectWithTag("Expanded Game Select"));
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
+        Destroy(GameObject.FindGameObjectWithTag("Expanded Game Select"));
 		GameObject deleteCanvas = Instantiate(deleteGameVerification);
-		deleteCanvas.transform.SetParent(mainMenuCanvas.transform, false);
+		//deleteCanvas.transform.SetParent(mainMenuCanvas.transform, false);
 		Text playerName = deleteCanvas.transform.GetChild(2).GetComponent<Text>();
 		if (fileNumber == 1) {
 			playerName.text = PlayerPrefsManager.GetFile1PlayerName();
@@ -406,8 +462,7 @@ public class MainMenuControl : MonoBehaviour {
 	}
 	
 	public void DeleteGameYes () {
-		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuConfirm));
         GameControl.gameControl.DeleteGame (PlayerPrefsManager.GetGameFile());
 		Destroy(GameObject.FindGameObjectWithTag("Delete Game Verify"));
 		Destroy(GameObject.FindGameObjectWithTag("Expanded Game Select"));
@@ -418,9 +473,8 @@ public class MainMenuControl : MonoBehaviour {
 	}
 	
 	public void DeleteGameNo () {
-		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
-		playerSoundEffects.PlaySoundEffect(playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
-		Destroy(GameObject.FindGameObjectWithTag("Delete Game Verify"));
+        PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
+        Destroy(GameObject.FindGameObjectWithTag("Delete Game Verify"));
 		Debug.Log("");
 		ExpandGameSelection(PlayerPrefsManager.GetGameFile());
         GameControl.gameControl.mainMenuDeleteLevel = 0;

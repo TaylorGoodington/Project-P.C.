@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour {
             Invoke("LoadNextLevel", 3f);
         }
         //THIS NEEDS TO BE UPDATED MANUALLY
-        level01 = 19;
+        level01 = 18;
 	}
 
 	public void LoadLevel (string name) {

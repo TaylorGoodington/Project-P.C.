@@ -51,6 +51,7 @@ public class BoneMarauder1 : EnemyBase
             velocity.x = 0;
             float flinchTime = .33f;
             transform.Translate((player.GetComponent<Player>().knockBackForce / flinchTime) * CombatEngine.combatEngine.enemyKnockBackDirection * Time.deltaTime, 0, 0, Space.Self);
+            CreatePatrolPath();
         }
 
         else if (isAttacking)

@@ -5,7 +5,7 @@ public class Controller2D : RaycastController {
 	public float maxClimbAngle = 80;
 	public float maxDescendAngle = 80;
 	
-	[HideInInspector]
+	//[HideInInspector]
 	public bool isWallJumpable;
 //	[HideInInspector]
 //	public bool isClimbable;
@@ -60,8 +60,7 @@ public class Controller2D : RaycastController {
 		if (velocity.y != 0) {
 			VerticalCollisions (ref velocity);
         }
-		
-		
+
 		transform.Translate (velocity);
 		
 		if (standingOnPlatform) {
@@ -88,12 +87,12 @@ public class Controller2D : RaycastController {
 	void HorizontalCollisions(ref Vector3 velocity) {
 		float directionX = collisions.faceDir;
 		float rayLength = Mathf.Abs (velocity.x) + skinWidth;
-		
-		if (Mathf.Abs(velocity.x) < skinWidth) {
+
+        if (Mathf.Abs(velocity.x) < skinWidth) {
 			rayLength = 2*skinWidth;
 		}
-		
-		for (int i = 0; i < horizontalRayCount; i ++) {
+
+        for (int i = 0; i < horizontalRayCount; i ++) {
 			Vector2 rayOrigin = (directionX == -1)?raycastOrigins.bottomLeft:raycastOrigins.bottomRight;
 			rayOrigin += Vector2.up * (horizontalRaySpacing * i);
 			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);			

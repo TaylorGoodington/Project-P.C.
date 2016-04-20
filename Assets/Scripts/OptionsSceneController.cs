@@ -12,11 +12,10 @@ public class OptionsSceneController : MonoBehaviour {
 	private LevelManager levelManager;
 	
 
-	// Use this for initialization
 	void Start () {
-		musicManager = FindObjectOfType<MusicManager>();
-		playerSoundEffects = FindObjectOfType<PlayerSoundEffects>();
-		levelManager = FindObjectOfType<LevelManager>();
+        musicManager = MusicManager.musicManager;
+		playerSoundEffects = PlayerSoundEffects.playerSoundEffects;
+		levelManager = LevelManager.levelManager;
 		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Music Volume Slider"), null);
 		
 		musicVolumeSlider = transform.GetChild (3).GetComponent<Slider>();
@@ -24,11 +23,9 @@ public class OptionsSceneController : MonoBehaviour {
 		soundEffectsSlider = transform.GetChild (5).GetComponent<Slider>();
 		soundEffectsSlider.value = PlayerPrefsManager.GetMasterEffectsVolume();
 		
-		GameControl gameControl = GameObject.FindObjectOfType<GameControl>();
-		gameControl.mainMenuLevel = 3;
+		GameControl.gameControl.mainMenuLevel = 3;
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		musicManager.ChangeVolume (musicVolumeSlider.value);
 		playerSoundEffects.ChangeVolume(soundEffectsSlider.value);
@@ -37,7 +34,7 @@ public class OptionsSceneController : MonoBehaviour {
 	public void SaveAndExit () {
 		PlayerPrefsManager.SetMasterMusicVolume (musicVolumeSlider.value);
 		PlayerPrefsManager.SetMasterEffectsVolume (soundEffectsSlider.value);
-		levelManager.LoadLevel ("Main Menu");
+		levelManager.LoadLevel ("Start");
 	}
 	
 	public void SetDefaults () {

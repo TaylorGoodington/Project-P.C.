@@ -73,8 +73,9 @@ public class FlyingEnemyBase : EnemyBase
                     }
                     else
                     {
-                        float distance = Mathf.Sqrt((Mathf.Pow(currentPatrolTarget.x - transform.position.x, 2f)) + (Mathf.Pow(currentPatrolTarget.y - transform.position.y, 2f)));
+                        float distance = Mathf.Sqrt((Mathf.Pow(player.transform.position.x - transform.position.x, 2f)) + (Mathf.Pow(player.transform.position.y - transform.position.y, 2f)));
                         float time = distance / chaseSpeed;
+                        Debug.Log(time);
                         controller.Move((player.transform.position - transform.position) * Time.deltaTime / time, input);
                     }
                 }
@@ -89,8 +90,9 @@ public class FlyingEnemyBase : EnemyBase
             //enemy is on screen
             if (GetComponent<SpriteRenderer>().isVisible)
             {
-                //controller.Move(transform.position - primaryPatrolPoint, input);
-                controller.Move((primaryPatrolPoint - transform.position) * Time.deltaTime, input);
+                float distance = Mathf.Sqrt((Mathf.Pow(currentPatrolTarget.x - transform.position.x, 2f)) + (Mathf.Pow(currentPatrolTarget.y - transform.position.y, 2f)));
+                float time = distance / patrolSpeed;
+                controller.Move((primaryPatrolPoint - transform.position) * Time.deltaTime / time, input);
                 offScreenTimer = 3;
                 if (CloseToTheTarget(primaryPatrolPoint))
                 {
@@ -168,7 +170,7 @@ public class FlyingEnemyBase : EnemyBase
             else if (!LineOfSight())
             {
                 EngagementCountDown();
-                float distance = Mathf.Sqrt((Mathf.Pow(currentPatrolTarget.x - transform.position.x, 2f)) + (Mathf.Pow(currentPatrolTarget.y - transform.position.y, 2f)));
+                float distance = Mathf.Sqrt((Mathf.Pow(targetPosition.x - transform.position.x, 2f)) + (Mathf.Pow(targetPosition.y - transform.position.y, 2f)));
                 float time = distance / chaseSpeed;
                 controller.Move((targetPosition - transform.position) * Time.deltaTime / time, input);
             }
