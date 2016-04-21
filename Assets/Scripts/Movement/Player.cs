@@ -167,7 +167,7 @@ public class Player : MonoBehaviour {
                 }
 
                 //Launching an attack.
-                if (Input.GetButtonDown("Attack") && !isAttacking)
+                if (Input.GetButtonDown("Attack") && !isAttacking && !attackLaunched)
                 {
                     attackLaunched = true;
                 }
@@ -256,6 +256,7 @@ public class Player : MonoBehaviour {
             }
 
             //Animation Call Section
+            
             if (climbingUp)
             {
                 UnPauseAnimators();
@@ -263,36 +264,41 @@ public class Player : MonoBehaviour {
                 animator.PlayAnimation(PlayerAnimationController.Animations.ClimbingUp);
             }
 
-            if (attackLaunched && !climbingUp)
+            if (SkillsController.skillsController.activatingAbility &!climbingUp)
+            {
+                //play the ability animation.
+            }
+
+            if (attackLaunched && !climbingUp && !SkillsController.skillsController.activatingAbility)
             {
                 UnPauseAnimators();
                 animator.PlayAnimation(PlayerAnimationController.Animations.Attacking);
-                
+
             }
 
-            if (climbing && !isAttacking && !climbingUp)
+            if (climbing && !isAttacking && !climbingUp && !SkillsController.skillsController.activatingAbility)
             {
                 UnPauseAnimators();
                 animator.PlayAnimation(PlayerAnimationController.Animations.Climbing);
             }
-            if (climbing && (velocity.y == 0 && velocity.x == 0) && !isAttacking && !climbingUp)
+            if (climbing && (velocity.y == 0 && velocity.x == 0) && !isAttacking && !climbingUp && !SkillsController.skillsController.activatingAbility)
             {
                 Invoke("PauseAnimators", 0.1f);
             }
 
-            if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false && !climbing && !climbingUp && !climbingUpMovement)
+            if (velocity.y != 0 && controller.collisions.below == false && isAttacking == false && !climbing && !climbingUp && !climbingUpMovement && !SkillsController.skillsController.activatingAbility)
             {
                 UnPauseAnimators();
                 animator.PlayAnimation(PlayerAnimationController.Animations.Jumping);
             }
 
-            if ((input.x != 0 && controller.collisions.below == true && !climbing && !climbingUp) || GameControl.gameControl.endOfLevel == true)
+            if ((input.x != 0 && controller.collisions.below == true && !climbing && !climbingUp) || GameControl.gameControl.endOfLevel == true && !SkillsController.skillsController.activatingAbility)
             {
                 UnPauseAnimators();
                 animator.PlayAnimation(PlayerAnimationController.Animations.Running);
             }
 
-            if (input.x == 0 && isAttacking == false && controller.collisions.below == true && !climbing && !climbingUp && GameControl.gameControl.endOfLevel == false)
+            if (input.x == 0 && isAttacking == false && controller.collisions.below == true && !climbing && !climbingUp && GameControl.gameControl.endOfLevel == false && !SkillsController.skillsController.activatingAbility)
             {
                 UnPauseAnimators();
                 animator.PlayAnimation(PlayerAnimationController.Animations.Idle);
@@ -301,7 +307,14 @@ public class Player : MonoBehaviour {
 
             float targetVelocityX = input.x * moveSpeed;
             velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
-
+            if (controller.collisions.left && controller.collisions.faceDir == -1)
+            {
+                velocity.x = 0;
+            } 
+            else if (controller.collisions.right && controller.collisions.faceDir == 1)
+            {
+                velocity.x = 0;
+            }
 
 
             if (climbing)

@@ -39,4 +39,9 @@ public class WeaponAnimator : MonoBehaviour {
     {
         GameObject.FindGameObjectWithTag("UserInterface").GetComponent<Animator>().Play("DeathToPit");
     }
+
+    public void DoneActivatingAbility ()
+    {
+        SkillsController.skillsController.activatingAbility = false;
+    }
 }

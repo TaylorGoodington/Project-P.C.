@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +9,10 @@ public class SkillsController : MonoBehaviour {
     private SkillsDatabase skillsDatabase;
     public List<Skills> acquiredSkills;
     public List<Skills> activeSkills;
+    public List<Skills> profile1SlottedSkills;
+    public List<Skills> profile2SlottedSkills;
+    public Skills selectedSkill;
+    public bool activatingAbility;
 
     void Start() {
         skillsController = GetComponent<SkillsController>();
@@ -95,11 +100,12 @@ public class SkillsController : MonoBehaviour {
     public void CheckIfSkillTriggers(int skillID, float triggerRate) {
         int randomNumber = Random.Range(0, 101);
         if (randomNumber > triggerRate) {
-            activeSkills.Add(skillsDatabase.skills[skillID]);
+            ActivateAbility(skillID);
+            
         }
     }
 
-    public void PassiveAbilityIncrease ()
+    public void PassiveAbilityBonuses ()
     {
         //Look through the aquired skills list for Passives.
     }
@@ -165,5 +171,45 @@ public class SkillsController : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public void NextSlottedAbility ()
+    {
+        if (GameControl.gameControl.currentProfile == 1)
+        {
+            int index = profile1SlottedSkills.IndexOf(selectedSkill);
+            if (index == profile1SlottedSkills.Count)
+            {
+                index = 1;
+            }
+            else
+            {
+                index++;
+            }
+            selectedSkill = profile1SlottedSkills[index];
+        }
+        else
+        {
+            int index = profile2SlottedSkills.IndexOf(selectedSkill);
+            if (index == profile2SlottedSkills.Count)
+            {
+                index = 1;
+            }
+            else
+            {
+                index++;
+            }
+            selectedSkill = profile2SlottedSkills[index];
+        }
+    }
+
+    public IEnumerator ActivateAbility (int skillID)
+    {
+        activeSkills.Add(skillsDatabase.skills[skillID]);
+        activatingAbility = true;
+        //play animation on player.
+        float duration = skillsDatabase.skills[skillID].skillDuration;
+        yield return new WaitForSeconds(duration);
+        activeSkills.Remove(skillsDatabase.skills[skillID]);
     }
 }

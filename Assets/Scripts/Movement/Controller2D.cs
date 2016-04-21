@@ -13,7 +13,10 @@ public class Controller2D : RaycastController {
 	public CollisionInfo collisions;
 	[HideInInspector]
 	public Vector2 playerInput;
-	
+
+    float movementXPositive;
+    float movementXNegative;
+
 	public override void Start() {
 		base.Start ();
 		collisions.faceDir = 1;
@@ -51,6 +54,9 @@ public class Controller2D : RaycastController {
             }
 
             HorizontalCollisions(ref velocity);
+            //HorizontalCollisionsNegative(ref velocity);
+            //HorizontalCollisionsPositive(ref velocity);
+            //velocity.x = movementXNegative + movementXPositive;
         }
 			
 		if (velocity.y < 0) {
@@ -160,8 +166,222 @@ public class Controller2D : RaycastController {
 			}
 		}
 	}
-	
-	void VerticalCollisions(ref Vector3 velocity) {
+
+    void HorizontalCollisionsPositive(ref Vector3 velocity)
+    {
+        float directionX = 1;
+        float rayLength = Mathf.Abs(velocity.x) + skinWidth;
+
+        if (Mathf.Abs(velocity.x) < skinWidth)
+        {
+            rayLength = 2 * skinWidth;
+        }
+
+        for (int i = 0; i < horizontalRayCount; i++)
+        {
+            Vector2 rayOrigin = raycastOrigins.bottomRight;
+            rayOrigin += Vector2.up * (horizontalRaySpacing * i);
+            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
+
+            Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
+
+            if (hit)
+            {
+                //this section is for moving through the side of platforms that can be fallen through.
+                if (hit.collider.tag == "Through")
+                {
+                    if (directionX != 0)
+                    {
+                        continue;
+                    }
+                }
+
+                //this section is for moving through the side of platforms that can't be fallen through.
+                if (hit.collider.tag == "3Sides")
+                {
+                    if (directionX != 0)
+                    {
+                        continue;
+                    }
+                }
+
+                if (hit.collider.gameObject.GetComponent<WallJumpable>())
+                {
+                    isWallJumpable = true;
+                }
+                else
+                {
+                    isWallJumpable = false;
+                }
+
+
+                if (hit.distance == 0)
+                {
+                    continue;
+                }
+
+                float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
+
+                //need to augment slope to function only at the collided side.
+                if (i == 0 && slopeAngle <= maxClimbAngle)
+                {
+                    if (collisions.descendingSlope)
+                    {
+                        collisions.descendingSlope = false;
+                        velocity = collisions.velocityOld;
+                    }
+                    float distanceToSlopeStart = 0;
+                    if (slopeAngle != collisions.slopeAngleOld)
+                    {
+                        distanceToSlopeStart = hit.distance - skinWidth;
+                        movementXPositive -= distanceToSlopeStart * directionX;
+                    }
+                    ClimbSlope(ref velocity, slopeAngle);
+                    movementXPositive += distanceToSlopeStart * directionX;
+                }
+
+                if (!collisions.climbingSlope || slopeAngle > maxClimbAngle)
+                {
+                    if (hit.distance - skinWidth <= 1)
+                    {
+                        movementXPositive = 0;
+                    }
+                    movementXPositive = (hit.distance - skinWidth) * directionX;
+                    rayLength = hit.distance;
+
+                    if (collisions.climbingSlope)
+                    {
+                        velocity.y = Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x);
+                    }
+
+                    collisions.right = directionX == 1;
+                }
+            }
+
+            //No Hit.
+            else
+            {
+                if (collisions.faceDir == 1)
+                {
+                    movementXPositive = velocity.x;
+                }
+                else
+                {
+                    movementXPositive = 0;
+                }
+            }
+            Debug.Log(movementXPositive);
+        }
+    }
+
+    void HorizontalCollisionsNegative(ref Vector3 velocity)
+    {
+        float directionX = -1;
+        float rayLength = Mathf.Abs(velocity.x) * directionX + skinWidth;
+
+        if (Mathf.Abs(velocity.x) * directionX < skinWidth)
+        {
+            rayLength = 2 * skinWidth;
+        }
+
+        for (int i = 0; i < horizontalRayCount; i++)
+        {
+            Vector2 rayOrigin = raycastOrigins.bottomLeft;
+            rayOrigin += Vector2.up * (horizontalRaySpacing * i);
+            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
+
+            Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
+
+            if (hit)
+            {
+                //this section is for moving through the side of platforms that can be fallen through.
+                if (hit.collider.tag == "Through")
+                {
+                    if (directionX != 0)
+                    {
+                        continue;
+                    }
+                }
+
+                //this section is for moving through the side of platforms that can't be fallen through.
+                if (hit.collider.tag == "3Sides")
+                {
+                    if (directionX != 0)
+                    {
+                        continue;
+                    }
+                }
+
+                if (hit.collider.gameObject.GetComponent<WallJumpable>())
+                {
+                    isWallJumpable = true;
+                }
+                else
+                {
+                    isWallJumpable = false;
+                }
+
+
+                if (hit.distance == 0)
+                {
+                    continue;
+                }
+
+                float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
+
+                //need to augment slope to function only at the collided side.
+                if (i == 0 && slopeAngle <= maxClimbAngle)
+                {
+                    if (collisions.descendingSlope)
+                    {
+                        collisions.descendingSlope = false;
+                        velocity = collisions.velocityOld;
+                    }
+                    float distanceToSlopeStart = 0;
+                    if (slopeAngle != collisions.slopeAngleOld)
+                    {
+                        distanceToSlopeStart = hit.distance - skinWidth;
+                        movementXNegative -= distanceToSlopeStart * directionX;
+                    }
+                    ClimbSlope(ref velocity, slopeAngle);
+                    movementXNegative += distanceToSlopeStart * directionX;
+                }
+
+                if (!collisions.climbingSlope || slopeAngle > maxClimbAngle)
+                {
+                    Debug.Log(hit.distance - skinWidth);
+                    if (hit.distance - skinWidth <= 1)
+                    {
+                        movementXNegative = 0;
+                    }
+                    movementXNegative = (hit.distance - skinWidth) * directionX;
+                    rayLength = hit.distance;
+
+                    if (collisions.climbingSlope)
+                    {
+                        velocity.y = Mathf.Tan(collisions.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x);
+                    }
+
+                    collisions.right = directionX == 1;
+                }
+            }
+
+            //No Hit.
+            else
+            {
+                if (collisions.faceDir == -1)
+                {
+                    movementXNegative = velocity.x;
+                }
+                else
+                {
+                    movementXNegative = 0;
+                }
+            }
+        }
+    }
+
+    void VerticalCollisions(ref Vector3 velocity) {
 		float directionY = Mathf.Sign (velocity.y);
 		float rayLength = Mathf.Abs (velocity.y) + skinWidth;
 		

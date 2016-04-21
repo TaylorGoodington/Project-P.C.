@@ -99,6 +99,7 @@ public class GameControl : MonoBehaviour {
 
     //this needs to be saved.
     //Next section is for profile selecting.
+    [Range(1, 2)]
     public int currentProfile;
 	
 	public bool reSelectMapObject;
