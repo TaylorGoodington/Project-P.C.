@@ -11,10 +11,12 @@ public class UserInterface : MonoBehaviour {
     public Text healthText;
     public Slider manaBar;
     public Text manaText;
-    //private Image activeSkillIcon;
+    public Image activeSkillIcon;
     public Text activeSkillCooldownTimer;
     public Image activeSkillShade;
     public Image interactionIndicator;
+    public Image[] buffIcons;
+    public List<Skills> activeBuffs;
 
     //Level End Components
     public Text timeText;
@@ -74,9 +76,29 @@ public class UserInterface : MonoBehaviour {
 
     public void UpdateUIInfo()
     {
-        manaText.text = GameControl.gameControl.mp + " / " + GameControl.gameControl.currentMana;
-        healthText.text = GameControl.gameControl.hp + " / " + GameControl.gameControl.currentHealth;
+        manaText.text = GameControl.gameControl.mp + " / " + GameControl.gameControl.currentMana * 10;
+        healthText.text = GameControl.gameControl.hp + " / " + GameControl.gameControl.currentHealth * 10;
 
+        if (SkillsController.skillsController.selectedSkill != null)
+        {
+            activeSkillIcon.sprite = Resources.Load<Sprite>("Ability Icons/" + SkillsController.skillsController.selectedSkill.skillName);
+        }
+
+        //Skill Cooldown Shade & Timer
+        if (SkillsController.skillsController.cooldownList.ContainsKey(SkillsController.skillsController.selectedSkill.skillID))
+        {
+            activeSkillShade.gameObject.SetActive(true);
+            activeSkillCooldownTimer.gameObject.SetActive(true);
+            int skillID = SkillsController.skillsController.selectedSkill.skillID;
+            activeSkillCooldownTimer.text = Mathf.FloorToInt(SkillsController.skillsController.cooldownList[skillID]).ToString();
+        }
+        else
+        {
+            activeSkillShade.gameObject.SetActive(false);
+            activeSkillCooldownTimer.gameObject.SetActive(false);
+        }
+
+        SetBuffIcons();
 
         //Mana Bar
         if (GameControl.gameControl.mp == 0)
@@ -85,7 +107,7 @@ public class UserInterface : MonoBehaviour {
         }
         else
         {
-            manaBar.value = (GameControl.gameControl.mp * 1f) / (GameControl.gameControl.currentMana * 1f);
+            manaBar.value = (GameControl.gameControl.mp * 1f) / (GameControl.gameControl.currentMana * 10 * 1f);
         }
 
         //Health Bar
@@ -95,12 +117,48 @@ public class UserInterface : MonoBehaviour {
         }
         else
         {
-            healthBar.value = (GameControl.gameControl.hp * 1f) / (GameControl.gameControl.currentHealth * 1f);
+            healthBar.value = (GameControl.gameControl.hp * 1f) / (GameControl.gameControl.currentHealth * 10 * 1f);
+        }
+    }
+
+    public void SetBuffIcons ()
+    {
+        //Sets up the active buffs list.
+        foreach (Skills skill in SkillsController.skillsController.activeSkills)
+        {
+            if (skill.animationType == Skills.AnimationType.Buff)
+            {
+                if (!activeBuffs.Contains(skill) && skill.skillDuration > 0)
+                {
+                    activeBuffs.Add(skill);
+                }
+            }
+        }
+
+        foreach (var slot in buffIcons)
+        {
+            int index = System.Array.IndexOf(buffIcons, slot);
+            if (activeBuffs.Count > 0)
+            {
+                if (index <= activeBuffs.Count - 1)
+                {
+                    buffIcons[index].sprite = Resources.Load<Sprite>("Ability Icons/" + activeBuffs[index].skillName);
+                }
+                else
+                {
+                    buffIcons[index].sprite = Resources.Load<Sprite>("Ability Icons/None");
+                }
+            }
+            else
+            {
+                buffIcons[index].sprite = Resources.Load<Sprite>("Ability Icons/None");
+            }
         }
     }
 
     public void EndOfLevel ()
     {
+        SkillsController.skillsController.LevelEndAbilityListCleaning();
         GameControl.gameControl.playerHasControl = false;
         if (SceneManager.GetActiveScene().name == "The Pit" || SceneManager.GetActiveScene().name == "The Pit Intro")
         {

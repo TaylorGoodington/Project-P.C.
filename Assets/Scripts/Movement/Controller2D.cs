@@ -91,8 +91,9 @@ public class Controller2D : RaycastController {
     }
 	
 	void HorizontalCollisions(ref Vector3 velocity) {
-		float directionX = collisions.faceDir;
-		float rayLength = Mathf.Abs (velocity.x) + skinWidth;
+		//float directionX = collisions.faceDir;
+        float directionX = (velocity.x > 0) ? 1: -1;
+        float rayLength = Mathf.Abs (velocity.x) + skinWidth;
 
         if (Mathf.Abs(velocity.x) < skinWidth) {
 			rayLength = 2*skinWidth;

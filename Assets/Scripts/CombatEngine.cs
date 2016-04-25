@@ -20,6 +20,7 @@ public class CombatEngine : MonoBehaviour {
     public int enemyFaceDirection;
     public int enemyKnockBackForce;
     public int enemyKnockBackDirection;
+    public Skills damagingAbility;
 
     void Start () {
 		combatEngine = GetComponent<CombatEngine>();
@@ -113,7 +114,7 @@ public class CombatEngine : MonoBehaviour {
         return true;
     }
 
-    public bool DealingDamageToEnemyPhase(Collider2D collider)
+    public bool DealingDamageToEnemyPhase(Collider2D collider, bool damageFromAbility = false)
     {
         int enemyDefense = collider.gameObject.GetComponent<EnemyStats>().defense;
 
@@ -122,6 +123,34 @@ public class CombatEngine : MonoBehaviour {
 
         CalculateAttackDamage();
         CalculateSecondaryStats();
+
+        if (damageFromAbility)
+        {
+            //TODO change attack damage based on skill used...
+            Skills.RequiredStat damageStat = damagingAbility.requiredStatName;
+            if(damageStat == Skills.RequiredStat.Intelligence)
+            {
+                attackDamage = GameControl.gameControl.currentIntelligence;
+            }
+            else if (damageStat == Skills.RequiredStat.Strength)
+            {
+                attackDamage = GameControl.gameControl.currentStrength;
+            }
+            else if (damageStat == Skills.RequiredStat.Defense)
+            {
+                attackDamage = GameControl.gameControl.currentDefense;
+            }
+            else if (damageStat == Skills.RequiredStat.Agility)
+            {
+                attackDamage = GameControl.gameControl.currentSpeed;
+            }
+            else
+            {
+                //no modification.
+            }
+            attackDamage = Mathf.RoundToInt(attackDamage * damagingAbility.damageDelt);
+        }
+
 
         //Check for a crit.
         float randomNumber = Random.Range(0, 100);
@@ -163,13 +192,13 @@ public class CombatEngine : MonoBehaviour {
         }
     }
 	
-	public void AttackingEnemies (Collider2D collider)
+	public void AttackingEnemies (Collider2D collider, bool damageFromAbility = false)
     {
         if (AttackingPhase(collider, Attacker.Player))
         {
             if (HittingPhase(collider, Attacker.Player))
             {
-                if (DealingDamageToEnemyPhase(collider))
+                if (DealingDamageToEnemyPhase(collider, damageFromAbility))
                 {
                     
                 }
@@ -191,20 +220,23 @@ public class CombatEngine : MonoBehaviour {
             {
                 if (DealingDamageToPlayerPhase(collider, damage))
                 {
-                    //Hazard Response.
-                    if (collider.GetComponent<Hazard>())
+                    if (!GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().uninterupatble)
                     {
-                        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
-                        collider.GetComponent<Hazard>().SendMessage("KnockBack");
-                    }
+                        //Hazard Response.
+                        if (collider.GetComponent<Hazard>())
+                        {
+                            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
+                            collider.GetComponent<Hazard>().SendMessage("KnockBack");
+                        }
 
-                    //Conventional Enemy.
-                    else
-                    {
-                        enemyFaceDirection = collider.GetComponent<Controller2D>().collisions.faceDir;
-                        enemyKnockBackForce = collider.GetComponent<EnemyStats>().knockbackForce;
-                        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
-                        GameObject.FindGameObjectWithTag("Player").SendMessage("Knockback");
+                        //Conventional Enemy.
+                        else
+                        {
+                            enemyFaceDirection = collider.GetComponent<Controller2D>().collisions.faceDir;
+                            enemyKnockBackForce = collider.GetComponent<EnemyStats>().knockbackForce;
+                            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().flinching = true;
+                            GameObject.FindGameObjectWithTag("Player").SendMessage("Knockback");
+                        }
                     }
                 }
             }

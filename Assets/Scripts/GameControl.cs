@@ -101,8 +101,12 @@ public class GameControl : MonoBehaviour {
     //Next section is for profile selecting.
     [Range(1, 2)]
     public int currentProfile;
-	
-	public bool reSelectMapObject;
+    public List<Skills> acquiredSkills;
+    public List<Skills> profile1SlottedSkills;
+    public List<Skills> profile2SlottedSkills;
+    public Skills selectedSkill;
+
+    public bool reSelectMapObject;
 
     public float hpRatio;
     public float mpRatio;
@@ -140,6 +144,7 @@ public class GameControl : MonoBehaviour {
         ladyDeathMenu = 0;
         endOfLevel = false;
         dying = false;
+        currentProfile = 1;
 		
 		playerSoundEffects.ChangeVolume(PlayerPrefsManager.GetMasterEffectsVolume());
 		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
@@ -182,7 +187,6 @@ public class GameControl : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.L))
             {
                 LevelManager.levelManager.LoadLevel("Level 55");
-                
             }
 
             #region Back Button
@@ -256,6 +260,7 @@ public class GameControl : MonoBehaviour {
             //TODO TESTING FOR SWITCHING GEAR...MODIFY FOR ACTUAL USE LATER.
             if (Input.GetKeyDown(KeyCode.Tab))
             {
+                SkillsController.skillsController.ClassSwitch();
                 //changing the equipment.
                 if (equippedEquipmentIndex < 4)
                 {
@@ -312,6 +317,8 @@ public class GameControl : MonoBehaviour {
                 //Update Perks
 
                 //Update Aquired Skills List
+
+                SkillsController.skillsController.DoneSwitchingClasses();
             }
             #endregion
 
@@ -345,6 +352,10 @@ public class GameControl : MonoBehaviour {
         if (hp < 0)
         {
             hp = 0;
+        }
+        if (hp > currentHealth * 10)
+        {
+            hp = currentHealth * 10;
         }
 	}
 
@@ -429,8 +440,8 @@ public class GameControl : MonoBehaviour {
         }
         else
         {
-            hp = currentHealth;
-            mp = currentMana;
+            hp = currentHealth * 10;
+            mp = currentMana * 10;
         }
     }
 	
@@ -507,37 +518,38 @@ public class GameControl : MonoBehaviour {
 	
 	
 	public void LoadFile (int fileNumber) {	
-		if(File.Exists(Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat")) {
+		if(File.Exists(Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat"))
+        {
             BinaryFormatter binaryFormatter = new BinaryFormatter();
-			FileStream saveFile = File.Open (Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat", FileMode.Open);
-			PlayerData playerData = (PlayerData) binaryFormatter.Deserialize(saveFile);
-			
-			
-			playerName = playerData.playerName;
-			gameProgress = playerData.gameProgress;
-			playerLevel = playerData.playerLevel;
-			
-			baseStrength = playerData.baseStrength;
-			baseDefense = playerData.baseDefense;
-			baseSpeed = playerData.baseSpeed;
-			baseIntelligence = playerData.baseIntelligence;
-			baseHealth = playerData.baseHealth;
-			baseMana = playerData.baseMana;
-			
-			itemInventoryList = playerData.itemInventoryList;
-			equipmentInventoryList = playerData.equipmentInventoryList;
-			
-			currentStrength = playerData.currentStrength;
-			currentDefense = playerData.currentDefense;
-			currentSpeed = playerData.currentSpeed;
-			currentIntelligence = playerData.currentIntelligence;
-			currentHealth = playerData.currentHealth;
-			currentMana = playerData.currentMana;
-			
-			equippedHead = playerData.equippedHead;
-			equippedChest = playerData.equippedChest;
-			equippedPants = playerData.equippedPants;
-			equippedFeet = playerData.equippedFeet;
+            FileStream saveFile = File.Open(Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat", FileMode.Open);
+            PlayerData playerData = (PlayerData)binaryFormatter.Deserialize(saveFile);
+
+
+            playerName = playerData.playerName;
+            gameProgress = playerData.gameProgress;
+            playerLevel = playerData.playerLevel;
+
+            baseStrength = playerData.baseStrength;
+            baseDefense = playerData.baseDefense;
+            baseSpeed = playerData.baseSpeed;
+            baseIntelligence = playerData.baseIntelligence;
+            baseHealth = playerData.baseHealth;
+            baseMana = playerData.baseMana;
+
+            itemInventoryList = playerData.itemInventoryList;
+            equipmentInventoryList = playerData.equipmentInventoryList;
+
+            currentStrength = playerData.currentStrength;
+            currentDefense = playerData.currentDefense;
+            currentSpeed = playerData.currentSpeed;
+            currentIntelligence = playerData.currentIntelligence;
+            currentHealth = playerData.currentHealth;
+            currentMana = playerData.currentMana;
+
+            equippedHead = playerData.equippedHead;
+            equippedChest = playerData.equippedChest;
+            equippedPants = playerData.equippedPants;
+            equippedFeet = playerData.equippedFeet;
 
             //ToDo needs to be saved
             equippedEquipmentIndex = 1;
@@ -551,9 +563,12 @@ public class GameControl : MonoBehaviour {
             EquipmentInventory.equipmentInventory.UpdateEquippedStats();
             xpToLevel = ExperienceToLevel.experienceToLevel.levels[playerLevel].experienceToLevel;
 
+            //TODO Remove after testing.
+            LoadSkills();
+
             saveFile.Close(); //I wonder if this should go at the end of the method...
-		}
-		if (fileNumber == 1) {
+        }
+        if (fileNumber == 1) {
 			PlayerPrefsManager.SetGameFile(1);
 			PlayerPrefsManager.SetFile1PlayerName(playerName);
 			PlayerPrefsManager.SetFile1LevelProgress(gameProgress);
@@ -570,13 +585,30 @@ public class GameControl : MonoBehaviour {
 			Save ();
 		}
 	}
-	
-	
-	//**************************************************************************************
-	//New Game Section
-	//**************************************************************************************
-	
-	public void NewGame (int fileNumber) {
+
+    private void LoadSkills()
+    {
+        //Change these lines to actually load the data.
+        acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[0]);
+        acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[1]);
+        acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[2]);
+        profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[0]);
+        profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[1]);
+        profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[2]);
+        selectedSkill = SkillsDatabase.skillsDatabase.skills[0];
+
+        //Keep these lines.
+        SkillsController.skillsController.acquiredSkills = acquiredSkills;
+        SkillsController.skillsController.profile1SlottedSkills = profile1SlottedSkills;
+        SkillsController.skillsController.selectedSkill = selectedSkill;
+    }
+
+
+    //**************************************************************************************
+    //New Game Section
+    //**************************************************************************************
+
+    public void NewGame (int fileNumber) {
         //do some stuff about initializing here
         ResetNewGameData();
 		
@@ -624,8 +656,11 @@ public class GameControl : MonoBehaviour {
         weaponsList.Add(equipmentDatabase.equipment[70]);
 
         AddLevelScores();
-		
-		SaveFile(fileNumber);
+
+        //TODO Remove after testing.
+        LoadSkills();
+
+        SaveFile(fileNumber);
 	}
 
     public void ResetNewGameData ()

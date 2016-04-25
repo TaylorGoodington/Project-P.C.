@@ -38,7 +38,7 @@ public class PlayerAnimationController : MonoBehaviour
         PlayBodyAnimation(animation);
         PlayEquipmentAnimation(animation);
         PlayWeaponAnimation(animation);
-        if (animation == Animations.Buff)
+        if (animation == Animations.Buff || animation == Animations.Ability || animation == Animations.MovementAbility || animation == Animations.Ultimate)
         {
             PlayBackgroundEffectsAnimation(animation);
         }
@@ -113,7 +113,15 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayBackgroundEffectsAnimation (Animations animation)
     {
-        //TODO change when skills are more complete.
-        backgroundEffectsAnimator.Play("Strength" + animation + "1");
+        string animationName = SkillsController.skillsController.selectedSkill.skillName;
+        if (SkillsController.skillsController.selectedSkill.locationInScene == "Foreground")
+        {
+            backgroundEffectsAnimator.gameObject.GetComponent<SpriteRenderer>().sortingOrder = 7;
+        }
+        else
+        {
+            backgroundEffectsAnimator.gameObject.GetComponent<SpriteRenderer>().sortingOrder = 2;
+        }
+        backgroundEffectsAnimator.Play(animationName);
     }
 }

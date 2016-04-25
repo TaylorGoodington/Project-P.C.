@@ -3,6 +3,8 @@ using System.Collections;
 
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
+
+    #region Variables
     [Tooltip("This field is used to specify which layers block the attacking and abilities raycasts.")]
     public LayerMask attackingLayer;
 
@@ -52,8 +54,11 @@ public class Player : MonoBehaviour {
     public bool flinching;
     public bool deathStanding;
     bool knockBack;
-	
-	void Start() {
+    public bool uninterupatble;
+    public bool callingActivateAbility;
+    #endregion
+
+    void Start() {
 		controller = GetComponent<Controller2D> ();
         animator = GetComponent<PlayerAnimationController>();
         playerCollider = GetComponent<BoxCollider2D>();
@@ -68,6 +73,8 @@ public class Player : MonoBehaviour {
         deathStanding = false;
         knockBack = false;
         climbingUpMovement = false;
+        uninterupatble = false;
+        callingActivateAbility = false;
 	}
 
     void Update()
@@ -113,6 +120,7 @@ public class Player : MonoBehaviour {
         else if (flinching) {
             isAttacking = false;
             attackLaunched = false;
+            SkillsController.skillsController.activatingAbility = false;
             CombatEngine.combatEngine.comboCount = 1;
             animator.PlayAnimation(PlayerAnimationController.Animations.Flinching);
             PlayerSoundEffects.playerSoundEffects.PlaySoundEffect(PlayerSoundEffects.playerSoundEffects.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuUnable));
@@ -137,6 +145,8 @@ public class Player : MonoBehaviour {
             else if (GameControl.gameControl.AnyOpenMenus() == false || GameControl.gameControl.playerHasControl == true)
             {
                 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+                
+                #region Wall Jumping
                 int wallDirX = (controller.collisions.left) ? -1 : 1;
                 bool wallSliding = false;
                 if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && controller.isWallJumpable == true)
@@ -165,6 +175,7 @@ public class Player : MonoBehaviour {
                         timeToWallUnstick = wallStickTime;
                     }
                 }
+                #endregion
 
                 //Launching an attack.
                 if (Input.GetButtonDown("Attack") && !isAttacking && !attackLaunched)
@@ -172,6 +183,7 @@ public class Player : MonoBehaviour {
                     attackLaunched = true;
                 }
 
+                #region Jumping
                 //cant jump if attacking.
                 if (!isAttacking)
                 {
@@ -214,6 +226,7 @@ public class Player : MonoBehaviour {
                         }
                     }
                 }
+                #endregion
 
                 //climbing stuff
                 if (isClimbable)
@@ -225,14 +238,7 @@ public class Player : MonoBehaviour {
                     }
                 }
             }
-
-            ////climbingupmovement
-            //if (controller.collisions.below)
-            //{
-            //    climbingUpMovement = false;
-            //}
-
-
+            
             //flips sprite depending on direction facing.
             if (controller.collisions.faceDir == 1)
             {
@@ -240,6 +246,7 @@ public class Player : MonoBehaviour {
                 animator.bodyAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
                 animator.equipmentAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
                 animator.weaponAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                animator.backgroundEffectsAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = false;
             }
             else
             {
@@ -247,6 +254,7 @@ public class Player : MonoBehaviour {
                 animator.bodyAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
                 animator.equipmentAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
                 animator.weaponAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                animator.backgroundEffectsAnimator.gameObject.GetComponent<SpriteRenderer>().flipX = true;
             }
 
             //cant move if attacking.
@@ -255,8 +263,25 @@ public class Player : MonoBehaviour {
                 input = Vector2.zero;
             }
 
-            //Animation Call Section
-            
+            #region Abilities
+            if (!SkillsController.skillsController.activatingAbility)
+            {
+                if (Input.GetButtonDown("Ability Cycle"))
+                {
+                    SkillsController.skillsController.NextSlottedAbility();
+                }
+
+                if (!climbingUp)
+                {
+                    if (Input.GetButtonDown("Use Ability"))
+                    {
+                        SkillsController.skillsController.activatingAbility = true;
+                    }
+                }
+            }
+            #endregion
+
+            #region Animations
             if (climbingUp)
             {
                 UnPauseAnimators();
@@ -266,14 +291,13 @@ public class Player : MonoBehaviour {
 
             if (SkillsController.skillsController.activatingAbility &!climbingUp)
             {
-                //play the ability animation.
+                ActivateAbility();
             }
 
             if (attackLaunched && !climbingUp && !SkillsController.skillsController.activatingAbility)
             {
                 UnPauseAnimators();
                 animator.PlayAnimation(PlayerAnimationController.Animations.Attacking);
-
             }
 
             if (climbing && !isAttacking && !climbingUp && !SkillsController.skillsController.activatingAbility)
@@ -303,10 +327,12 @@ public class Player : MonoBehaviour {
                 UnPauseAnimators();
                 animator.PlayAnimation(PlayerAnimationController.Animations.Idle);
             }
-
+            #endregion
 
             float targetVelocityX = input.x * moveSpeed;
             velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+
+            //Stops movement if colliding with a wall, prevents sliding through based on residual velocity.
             if (controller.collisions.left && controller.collisions.faceDir == -1)
             {
                 velocity.x = 0;
@@ -342,11 +368,45 @@ public class Player : MonoBehaviour {
             {
                 velocity.y = 0;
             }
+        }
+    }
 
-            //TODO testing buffs
-            if (Input.GetKeyDown(KeyCode.U))
+    private void ActivateAbility()
+    {
+        int skillID = SkillsController.skillsController.selectedSkill.skillID;
+
+        if (!callingActivateAbility)
+        {
+            callingActivateAbility = true;
+            SkillsController.skillsController.ActivateAbilityTest(skillID);
+        }
+        else
+        {
+            if (SkillsController.skillsController.activatingAbility && SkillsDatabase.skillsDatabase.skills[skillID].animationType != Skills.AnimationType.None)
             {
-                animator.PlayAnimation(PlayerAnimationController.Animations.Buff);
+                input = Vector2.zero;
+                if (SkillsController.skillsController.selectedSkill.animationType == Skills.AnimationType.Ability)
+                {
+                    animator.PlayAnimation(PlayerAnimationController.Animations.Ability);
+                }
+                else if (SkillsController.skillsController.selectedSkill.animationType == Skills.AnimationType.Buff)
+                {
+                    animator.PlayAnimation(PlayerAnimationController.Animations.Buff);
+                }
+                else if (SkillsController.skillsController.selectedSkill.animationType == Skills.AnimationType.MovementAbility)
+                {
+                    animator.PlayAnimation(PlayerAnimationController.Animations.MovementAbility);
+                }
+                else
+                {
+                    animator.PlayAnimation(PlayerAnimationController.Animations.Ultimate);
+                }
+            }
+            else
+            {
+                Debug.Log("no animation/requirements not met.");
+                callingActivateAbility = false;
+                SkillsController.skillsController.activatingAbility = false;
             }
         }
     }
@@ -410,7 +470,8 @@ public class Player : MonoBehaviour {
             GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().showInteractableDisplay = false;
         }
     }
-	//called from attacking animation at the begining and end.
+	
+    //called from attacking animation at the begining and end.
 	public void IsAttacking () {
 		isAttacking = !isAttacking;
 	}
@@ -457,6 +518,7 @@ public class Player : MonoBehaviour {
         animator.bodyAnimator.gameObject.GetComponent<Animator>().enabled = false;
         animator.equipmentAnimator.gameObject.GetComponent<Animator>().enabled = false;
         animator.weaponAnimator.gameObject.GetComponent<Animator>().enabled = false;
+        animator.backgroundEffectsAnimator.gameObject.GetComponent<Animator>().enabled = false;
     }
 
     public void UnPauseAnimators ()
@@ -465,6 +527,7 @@ public class Player : MonoBehaviour {
         animator.bodyAnimator.gameObject.GetComponent<Animator>().enabled = true;
         animator.equipmentAnimator.gameObject.GetComponent<Animator>().enabled = true;
         animator.weaponAnimator.gameObject.GetComponent<Animator>().enabled = true;
+        animator.backgroundEffectsAnimator.gameObject.GetComponent<Animator>().enabled = true;
     }
 
     //called by the animator.

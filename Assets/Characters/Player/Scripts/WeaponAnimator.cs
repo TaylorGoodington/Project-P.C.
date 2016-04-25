@@ -42,6 +42,17 @@ public class WeaponAnimator : MonoBehaviour {
 
     public void DoneActivatingAbility ()
     {
+        SkillsController.skillsController.CallActivateAbility(SkillsController.skillsController.skillBeingActivated);
         SkillsController.skillsController.activatingAbility = false;
+        player.uninterupatble = false;
+        player.callingActivateAbility = false;
+    }
+
+    public void LaunchAbilityProjectile ()
+    {
+        if (SkillsController.skillsController.selectedSkill.projectileFired)
+        {
+            SkillsController.skillsController.FireProjectile();
+        }
     }
 }
