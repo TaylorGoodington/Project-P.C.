@@ -37,6 +37,7 @@ public class Skills
     public float mpIncrease;
     public float mp5Increase;
     public float critModifier;
+    public int knockbackForce;
 
     public enum TriggerPhase
     {
@@ -84,7 +85,7 @@ public class Skills
                    TriggerPhase phase, AnimationType animation, string location, bool projectile, float cost, float cd, bool interupt, int duration, float trigRate,
                    float damage, float enemySTRate, int enemyST, float playerSTRate, int playerST,
                    float damageUp, float strengthUp, float defenseUp, float speedUp, float intelligenceUp, float healthUp, 
-                   float hpUp, float hp5Up, float manaUp, float mpUp, float mp5Up, float crit) {
+                   float hpUp, float hp5Up, float manaUp, float mpUp, float mp5Up, float crit, int knockback) {
         skillID = id;
         groupNumber = groupID;
         skillName = name;
@@ -118,6 +119,7 @@ public class Skills
         mpIncrease = mpUp;
         mp5Increase = mp5Up;
         critModifier = crit;
+        knockbackForce = knockback;
     }
 
     public Skills()

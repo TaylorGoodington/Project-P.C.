@@ -101,6 +101,8 @@ public class AbilityProjectiles : MonoBehaviour {
             objectHit = collider.transform;
             this.transform.position = new Vector3(transform.position.x + (5 * direction), transform.position.y);
             CombatEngine.combatEngine.damagingAbility = currentSkill;
+            player.gameObject.GetComponent<Player>().knockBackForce = currentSkill.knockbackForce;
+            CombatEngine.combatEngine.enemyKnockBackDirection = direction;
             CombatEngine.combatEngine.AttackingEnemies(collider, true);
         }
 

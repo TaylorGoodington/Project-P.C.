@@ -75,7 +75,6 @@ public class FlyingEnemyBase : EnemyBase
                     {
                         float distance = Mathf.Sqrt((Mathf.Pow(player.transform.position.x - transform.position.x, 2f)) + (Mathf.Pow(player.transform.position.y - transform.position.y, 2f)));
                         float time = distance / chaseSpeed;
-                        Debug.Log(time);
                         controller.Move((player.transform.position - transform.position) * Time.deltaTime / time, input);
                     }
                 }

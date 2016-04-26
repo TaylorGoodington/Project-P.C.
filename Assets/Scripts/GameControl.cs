@@ -260,7 +260,7 @@ public class GameControl : MonoBehaviour {
             //TODO TESTING FOR SWITCHING GEAR...MODIFY FOR ACTUAL USE LATER.
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                SkillsController.skillsController.ClassSwitch();
+                SkillsController.skillsController.ChangingEquipmentOrPerks();
                 //changing the equipment.
                 if (equippedEquipmentIndex < 4)
                 {
@@ -318,7 +318,7 @@ public class GameControl : MonoBehaviour {
 
                 //Update Aquired Skills List
 
-                SkillsController.skillsController.DoneSwitchingClasses();
+                SkillsController.skillsController.DoneChangingEquipmentOrPerks();
             }
             #endregion
 
@@ -592,9 +592,11 @@ public class GameControl : MonoBehaviour {
         acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[0]);
         acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[1]);
         acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[2]);
+        acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[3]);
         profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[0]);
         profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[1]);
         profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[2]);
+        profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[3]);
         selectedSkill = SkillsDatabase.skillsDatabase.skills[0];
 
         //Keep these lines.

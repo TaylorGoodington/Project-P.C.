@@ -56,6 +56,9 @@ public class Player : MonoBehaviour {
     bool knockBack;
     public bool uninterupatble;
     public bool callingActivateAbility;
+    public bool movementAbility;
+    float targetXMovement;
+    int movementAbilityDirection;
     #endregion
 
     void Start() {
@@ -117,9 +120,11 @@ public class Player : MonoBehaviour {
                 animator.PlayAnimation(PlayerAnimationController.Animations.Running);
             }
         }
+        #region Flinching Section
         else if (flinching) {
             isAttacking = false;
             attackLaunched = false;
+            movementAbility = false;
             SkillsController.skillsController.activatingAbility = false;
             CombatEngine.combatEngine.comboCount = 1;
             animator.PlayAnimation(PlayerAnimationController.Animations.Flinching);
@@ -127,13 +132,56 @@ public class Player : MonoBehaviour {
             if (knockBack)
             {
                 float flinchTime = .1f;
-                transform.Translate((CombatEngine.combatEngine.enemyKnockBackForce / flinchTime) * CombatEngine.combatEngine.enemyFaceDirection * Time.deltaTime, 0, 0, Space.Self);
+                //transform.Translate((CombatEngine.combatEngine.enemyKnockBackForce / flinchTime) * CombatEngine.combatEngine.enemyFaceDirection * Time.deltaTime, 0, 0, Space.Self);
+                gravity = -1000;
+                velocity.y += gravity * Time.deltaTime;
+                velocity.x = (CombatEngine.combatEngine.enemyKnockBackForce / flinchTime) * CombatEngine.combatEngine.enemyFaceDirection * Time.deltaTime;
+                controller.Move(velocity, input);
             }
             gravity = -1000;
             velocity.y += gravity * Time.deltaTime;
             velocity.x = 0;
             controller.Move(velocity * Time.deltaTime, input);
         }
+        #endregion
+        #region Movement Ability Section
+        else if (movementAbility)
+        {
+            if (movementAbilityDirection == 1)
+            {
+                if (transform.position.x < targetXMovement)
+                {
+                    Skills skill = SkillsController.skillsController.selectedSkill;
+                    velocity.x = 300 * Time.deltaTime;
+                    velocity.y = 0;
+                    controller.Move(velocity, input);
+                }
+                else
+                {
+                    SkillsController.skillsController.activatingAbility = false;
+                    uninterupatble = false;
+                    callingActivateAbility = false;
+                    movementAbility = false;
+                }
+            }
+            else
+            {
+                if (transform.position.x > targetXMovement)
+                {
+                    Skills skill = SkillsController.skillsController.selectedSkill;
+                    velocity.x = 300 * -1 * Time.deltaTime;
+                    controller.Move(velocity, input);
+                }
+                else
+                {
+                    SkillsController.skillsController.activatingAbility = false;
+                    uninterupatble = false;
+                    callingActivateAbility = false;
+                    movementAbility = false;
+                }
+            }
+        }
+        #endregion
         else
         {
             //If a menu is open or the player doesn't have control.
@@ -181,6 +229,7 @@ public class Player : MonoBehaviour {
                 if (Input.GetButtonDown("Attack") && !isAttacking && !attackLaunched)
                 {
                     attackLaunched = true;
+                    velocity.y = 0;
                 }
 
                 #region Jumping
@@ -273,7 +322,7 @@ public class Player : MonoBehaviour {
 
                 if (!climbingUp)
                 {
-                    if (Input.GetButtonDown("Use Ability"))
+                    if (Input.GetButtonDown("Use Ability") && controller.collisions.below)
                     {
                         SkillsController.skillsController.activatingAbility = true;
                     }
@@ -291,13 +340,23 @@ public class Player : MonoBehaviour {
 
             if (SkillsController.skillsController.activatingAbility &!climbingUp)
             {
+                UnPauseAnimators();
                 ActivateAbility();
             }
 
             if (attackLaunched && !climbingUp && !SkillsController.skillsController.activatingAbility)
             {
-                UnPauseAnimators();
-                animator.PlayAnimation(PlayerAnimationController.Animations.Attacking);
+                if (controller.collisions.below)
+                {
+                    UnPauseAnimators();
+                    animator.PlayAnimation(PlayerAnimationController.Animations.Attacking);
+                }
+                else
+                {
+                    Debug.Log("Aerial Maneuvers");
+                    UnPauseAnimators();
+                    animator.PlayAnimation(PlayerAnimationController.Animations.Attacking);
+                }
             }
 
             if (climbing && !isAttacking && !climbingUp && !SkillsController.skillsController.activatingAbility)
@@ -342,7 +401,7 @@ public class Player : MonoBehaviour {
                 velocity.x = 0;
             }
 
-
+            #region Y Velocity Adjustments
             if (climbing)
             {
                 gravity = 0;
@@ -357,10 +416,17 @@ public class Player : MonoBehaviour {
                 }
                 
             }
-            else {
+            else if (!climbing && !controller.collisions.below && isAttacking)
+            {
+                gravity = -5;
+                velocity.y += gravity * Time.deltaTime;
+            }
+            else
+            {
                 gravity = -1000;
                 velocity.y += gravity * Time.deltaTime;
             }
+            #endregion
 
             controller.Move(velocity * Time.deltaTime, input);
 
@@ -385,6 +451,8 @@ public class Player : MonoBehaviour {
             if (SkillsController.skillsController.activatingAbility && SkillsDatabase.skillsDatabase.skills[skillID].animationType != Skills.AnimationType.None)
             {
                 input = Vector2.zero;
+                isAttacking = false;
+                attackLaunched = false;
                 if (SkillsController.skillsController.selectedSkill.animationType == Skills.AnimationType.Ability)
                 {
                     animator.PlayAnimation(PlayerAnimationController.Animations.Ability);
@@ -395,7 +463,10 @@ public class Player : MonoBehaviour {
                 }
                 else if (SkillsController.skillsController.selectedSkill.animationType == Skills.AnimationType.MovementAbility)
                 {
+                    Skills skill = SkillsController.skillsController.selectedSkill;
+                    targetXMovement = transform.position.x + (skill.knockbackForce * controller.collisions.faceDir);
                     animator.PlayAnimation(PlayerAnimationController.Animations.MovementAbility);
+                    movementAbilityDirection = controller.collisions.faceDir;
                 }
                 else
                 {
@@ -482,8 +553,8 @@ public class Player : MonoBehaviour {
         attackLaunched = false;
         CombatEngine.combatEngine.runComboClock = true;
         CombatEngine.combatEngine.comboCountDown = CombatEngine.combatEngine.comboWindow;
-
-        if (CombatEngine.combatEngine.comboCount < CombatEngine.combatEngine.maxCombos)
+        Player player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        if (CombatEngine.combatEngine.comboCount < CombatEngine.combatEngine.maxCombos && player.controller.collisions.below)
         {
             CombatEngine.combatEngine.comboCount++;
         }

@@ -46,6 +46,7 @@ public class WeaponAnimator : MonoBehaviour {
         SkillsController.skillsController.activatingAbility = false;
         player.uninterupatble = false;
         player.callingActivateAbility = false;
+        player.movementAbility = false;
     }
 
     public void LaunchAbilityProjectile ()
@@ -54,5 +55,12 @@ public class WeaponAnimator : MonoBehaviour {
         {
             SkillsController.skillsController.FireProjectile();
         }
+    }
+
+    public void ActivateMovementAbility ()
+    {
+        SkillsController.skillsController.CallActivateAbility(SkillsController.skillsController.skillBeingActivated);
+        SkillsController.skillsController.activatingAbility = false;
+        player.movementAbility = true;
     }
 }

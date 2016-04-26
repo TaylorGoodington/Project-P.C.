@@ -186,6 +186,10 @@ public class EnemyBase : MonoBehaviour {
     public virtual void Update ()
     {
         RageManagement();
+        if (!beingAttacked)
+        {
+            controller.enemyFaceDirection = controller.collisions.faceDir;
+        }
 
         //flips sprite depending on direction facing.
         if (controller.collisions.faceDir == -1)

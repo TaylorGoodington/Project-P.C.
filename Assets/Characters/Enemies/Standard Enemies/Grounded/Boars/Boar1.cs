@@ -51,7 +51,11 @@ public class Boar1 : EnemyBase
             enemyAnimationController.Play(enemyType + "Flinching");
             velocity.x = 0;
             float flinchTime = .33f;
-            transform.Translate((player.GetComponent<Player>().knockBackForce / flinchTime) * CombatEngine.combatEngine.enemyKnockBackDirection * Time.deltaTime, 0, 0, Space.Self);
+            //transform.Translate((player.GetComponent<Player>().knockBackForce / flinchTime) * CombatEngine.combatEngine.enemyKnockBackDirection * Time.deltaTime, 0, 0, Space.Self);
+            gravity = -1000;
+            velocity.y += gravity * Time.deltaTime;
+            velocity.x = (player.GetComponent<Player>().knockBackForce / flinchTime) * CombatEngine.combatEngine.enemyKnockBackDirection * Time.deltaTime;
+            controller.Move(velocity, input);
             CreatePatrolPath();
         }
 

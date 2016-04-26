@@ -133,7 +133,7 @@ public class SkillsController : MonoBehaviour {
         }
     }
 
-    public void ClassSwitch ()
+    public void ChangingEquipmentOrPerks ()
     {
         switchingClasses = true;
         foreach (Skills skill in activeSkills)
@@ -143,7 +143,7 @@ public class SkillsController : MonoBehaviour {
         talliedSkills.Clear();
     }
 
-    public void DoneSwitchingClasses ()
+    public void DoneChangingEquipmentOrPerks ()
     {
         switchingClasses = false;
     }
