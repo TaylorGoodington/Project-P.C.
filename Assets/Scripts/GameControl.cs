@@ -16,6 +16,7 @@ public class GameControl : MonoBehaviour {
     public GameObject equipmentBaseMenu;
     public GameObject equipmentSlotMenu;
 	public GameObject pauseMenu;
+
 	public PlayerSoundEffects playerSoundEffects;
 	public MusicManager musicManager;
 	
@@ -36,21 +37,23 @@ public class GameControl : MonoBehaviour {
 	//Player Data//
 	
 	public string playerName;
-	
 	public int gameProgress;
-	
 	public int playerLevel;
-	
 	public int playerClass;
-	
 	public int baseStrength;
 	public int baseDefense;
 	public int baseSpeed;
 	public int baseIntelligence;
 	public int baseHealth;
 	public int baseMana;
-//	this needs to be saved.
-	public int hp;
+    public int currentStrength;
+    public int currentDefense;
+    public int currentSpeed;
+    public int currentIntelligence;
+    public int currentHealth;
+    public int currentMana;
+    //	this needs to be saved.
+    public int hp;
 	public int mp;
     public int xp;
     public int xpToLevel;
@@ -59,13 +62,6 @@ public class GameControl : MonoBehaviour {
     public int equippedEquipmentIndex;
     public int maxCombos;
     public int playThroughNumber;
-	
-	public int currentStrength;
-	public int currentDefense;
-	public int currentSpeed;
-	public int currentIntelligence;
-	public int currentHealth;
-	public int currentMana;
 	
 	public List<Items> itemInventoryList;
 	public List<Equipment> equipmentInventoryList;
@@ -115,7 +111,9 @@ public class GameControl : MonoBehaviour {
 
     [HideInInspector]
     public bool endOfLevel;
+    [HideInInspector]
     public bool startFromLoad;
+    [HideInInspector]
     public bool dying;
 
     void Awake () {
@@ -253,7 +251,7 @@ public class GameControl : MonoBehaviour {
             //TODO TESTING THE PIT INTO LEVEL...
             if (Input.GetKeyDown(KeyCode.O))
             {
-                LevelManager.levelManager.LoadLevel("The Pit Intro");
+                LevelManager.levelManager.LoadLevel("Level 30");
             }
 
             #region Equipment Switching for testing
@@ -445,12 +443,7 @@ public class GameControl : MonoBehaviour {
         }
     }
 	
-	
-	//**************************************************************************************//
-	//Save Section//
-	//**************************************************************************************//
-	
-	
+	//Save Section
 	public void Save () {
 		BinaryFormatter binaryFormatter = new BinaryFormatter ();
 		FileStream saveFile = File.Create (Application.persistentDataPath + "/playerInfo" + PlayerPrefsManager.GetGameFile() + ".dat");

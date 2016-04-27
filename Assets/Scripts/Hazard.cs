@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(EnemyStats))]
@@ -10,18 +11,18 @@ public class Hazard : MonoBehaviour {
     EnemyStats stats;
     Collider2D hitCollider;
 
-	void Start ()
+    void Start()
     {
         stats = GetComponent<EnemyStats>();
         hitCollider = GetComponent<Collider2D>();
         stats.acquiredSkillsList.Add(SkillsDatabase.skillsDatabase.skills[0]);
         causingDamage = false;
         damagePerSecond = stats.maximumDamage;
-	}
+    }
 
-    public IEnumerator TakeDamageOverTime ()
+    public IEnumerator TakeDamageOverTime()
     {
-        while(causingDamage)
+        while (causingDamage)
         {
             CombatEngine.combatEngine.AttackingPlayer(hitCollider, damagePerSecond);
             yield return new WaitForSeconds(1);

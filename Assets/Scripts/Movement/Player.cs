@@ -44,7 +44,8 @@ public class Player : MonoBehaviour {
 	float gravity;
 	float maxJumpVelocity;
 	float minJumpVelocity;
-	Vector3 velocity;
+    [HideInInspector]
+	public Vector3 velocity;
 	float velocityXSmoothing;
 	
 	Controller2D controller;
@@ -132,16 +133,20 @@ public class Player : MonoBehaviour {
             if (knockBack)
             {
                 float flinchTime = .1f;
-                //transform.Translate((CombatEngine.combatEngine.enemyKnockBackForce / flinchTime) * CombatEngine.combatEngine.enemyFaceDirection * Time.deltaTime, 0, 0, Space.Self);
                 gravity = -1000;
+                velocity.y = 0;
                 velocity.y += gravity * Time.deltaTime;
                 velocity.x = (CombatEngine.combatEngine.enemyKnockBackForce / flinchTime) * CombatEngine.combatEngine.enemyFaceDirection * Time.deltaTime;
-                controller.Move(velocity, input);
+                controller.Move(velocity * Time.deltaTime, input);
             }
-            gravity = -1000;
-            velocity.y += gravity * Time.deltaTime;
-            velocity.x = 0;
-            controller.Move(velocity * Time.deltaTime, input);
+            else
+            {
+                gravity = -1000;
+                velocity.y = 0;
+                velocity.y += gravity * Time.deltaTime;
+                velocity.x = 0;
+                controller.Move(velocity * Time.deltaTime, input);
+            }
         }
         #endregion
         #region Movement Ability Section

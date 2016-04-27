@@ -15,6 +15,11 @@ public class Demo_ClassSelection : MonoBehaviour {
 
     void Update ()
     {
+        if (Input.GetButtonDown("Cancel"))
+        {
+            //play transition back to start scene.
+        }
+
         if (EventSystem.current.currentSelectedGameObject.name == "Soldier")
         {
             className.text = "Soldier";
@@ -47,21 +52,34 @@ public class Demo_ClassSelection : MonoBehaviour {
 
     public void SelectSoldier ()
     {
+        GameControl.gameControl.NewGame(1);
         //set gamecontrol stuff
+        GameControl.gameControl.equippedWeapon = 10;
+        GameControl.gameControl.equippedEquipmentIndex = 1;
+        GameControl.gameControl.skinColorIndex = 2;
+        GameControl.gameControl.hairIndex = 2;
+        GameControl.gameControl.maxCombos = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].maxCombos;
+        GameControl.gameControl.CurrentClass();
+        EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+        SkillsController.skillsController.DoneChangingEquipmentOrPerks();
+        LevelManager.levelManager.LoadLevel("Level Selection");
     }
 
     public void SelectRanger ()
     {
 
+        LevelManager.levelManager.LoadLevel("Level Selection");
     }
 
     public void SelectPaladin()
     {
 
+        LevelManager.levelManager.LoadLevel("Level Selection");
     }
 
     public void SelectWizard()
     {
 
+        LevelManager.levelManager.LoadLevel("Level Selection");
     }
 }
