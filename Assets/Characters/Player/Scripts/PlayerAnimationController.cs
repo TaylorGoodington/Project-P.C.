@@ -7,6 +7,7 @@ public class PlayerAnimationController : MonoBehaviour
     public Animator weaponAnimator;
     public Animator equipmentAnimator;
     public Animator backgroundEffectsAnimator;
+    public Animations currentAnimation;
 
     //Naming Convention for player animations are as follows:
     //For Attacking: Hair1SwordAttacking1, (animator type)(animator type index)(weapon type)(animation name)(combo count)
@@ -24,6 +25,7 @@ public class PlayerAnimationController : MonoBehaviour
         Climbing,
         ClimbingUp,
         Attacking,
+        AerialAttacking,
         DeathFalling,
         DeathStanding,
         Buff,
@@ -34,6 +36,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayAnimation (Animations animation)
     {
+        currentAnimation = animation;
+
         PlayHairAnimation(animation);
         PlayBodyAnimation(animation);
         PlayEquipmentAnimation(animation);
@@ -41,6 +45,10 @@ public class PlayerAnimationController : MonoBehaviour
         if (animation == Animations.Buff || animation == Animations.Ability || animation == Animations.MovementAbility || animation == Animations.Ultimate)
         {
             PlayBackgroundEffectsAnimation(animation);
+        }
+        else
+        {
+            backgroundEffectsAnimator.Play("Nothing");
         }
     }
 

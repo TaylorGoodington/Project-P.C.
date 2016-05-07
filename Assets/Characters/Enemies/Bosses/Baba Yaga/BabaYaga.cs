@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BabaYaga : EnemyBase {
+public class BabaYaga : EnemyBase
+{
 
     #region Variables
     public bool changingLocations;
@@ -25,6 +26,8 @@ public class BabaYaga : EnemyBase {
     public GameObject skullFormation1;
     public GameObject skullFormation2;
     public GameObject skullFormation3;
+
+    bool death;
     #endregion
 
     public override void Start()
@@ -80,7 +83,22 @@ public class BabaYaga : EnemyBase {
             //Checks for death.
             if (stats.hP <= 0)
             {
-                enemyAnimationController.Play("Death");
+                enemyAnimationController.Play("BabaYagaDeath");
+                pestel.Play("PestelFadeOut");
+                if (!death)
+                {
+                    death = true;
+                    if (attackNumber == 1)
+                    {
+                        Destroy(GameObject.FindObjectOfType<FreePestel>().gameObject);
+                    }
+                    else
+                    {
+                        GameObject formation = GameObject.FindObjectOfType<SkullFormation>().gameObject;
+                        Destroy(formation);
+                        isAttacking = false;
+                    }
+                }
             }
 
             //player is dead.
@@ -98,7 +116,7 @@ public class BabaYaga : EnemyBase {
                 else
                 {
                     //Play Flinch Animation.
-                    enemyAnimationController.Play("Idle");
+                    enemyAnimationController.Play("BabaYagaFlinching");
                 }
 
                 if (!damagedTimerIsOn)
@@ -160,8 +178,9 @@ public class BabaYaga : EnemyBase {
         }
     }
 
-    void AggressionPhase ()
+    void AggressionPhase()
     {
+        int oldAggressionPhase = aggressionPhase;
         if (stats.hP > (stats.maxHP * .75))
         {
             aggressionPhase = 1;
@@ -177,6 +196,33 @@ public class BabaYaga : EnemyBase {
         else
         {
             aggressionPhase = 4;
+        }
+
+        if (oldAggressionPhase != aggressionPhase)
+        {
+            ClearTheBoard();
+        }
+    }
+
+    void ClearTheBoard()
+    {
+        changingLocations = false;
+        swapTimer = 0;
+        if (attackNumber == 1)
+        {
+            if (GameObject.FindObjectOfType<FreePestel>())
+            {
+                GameObject.FindObjectOfType<FreePestel>().returning = true;
+            }
+        }
+        else
+        {
+            if (GameObject.FindObjectOfType<SkullFormation>())
+            {
+                GameObject formation = GameObject.FindObjectOfType<SkullFormation>().gameObject;
+                Destroy(formation);
+                isAttacking = false;
+            }
         }
     }
 

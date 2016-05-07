@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class GameControl : MonoBehaviour {
-
-	public static GameControl gameControl;
+    #region Variables
+    public static GameControl gameControl;
     static GameControl thisObject;
 	
 	//item inventory menu for instantiating.
@@ -29,7 +29,6 @@ public class GameControl : MonoBehaviour {
 	
 	public ClassesDatabase classesDatabase;	
 	
-    [HideInInspector]
 	public MainMenuControl mainMenuControl;
 
     public bool playerHasControl;
@@ -52,7 +51,6 @@ public class GameControl : MonoBehaviour {
     public int currentIntelligence;
     public int currentHealth;
     public int currentMana;
-    //	this needs to be saved.
     public int hp;
 	public int mp;
     public int xp;
@@ -60,24 +58,20 @@ public class GameControl : MonoBehaviour {
     public int hairIndex;
     public int skinColorIndex;
     public int equippedEquipmentIndex;
+    public int equippedWeapon;
     public int maxCombos;
     public int playThroughNumber;
 	
 	public List<Items> itemInventoryList;
 	public List<Equipment> equipmentInventoryList;
-
-//	this needs to be saved.
 	public List<Equipment> weaponsList;
-
     public List<LevelScores> levelScores;
 
+    //remove later.
 	public int equippedHead;
 	public int equippedChest;
 	public int equippedPants;
 	public int equippedFeet;
-	
-	public int equippedWeapon;
-    //	this needs to be saved.
     public int activeItem;
 	public int availableEvolutions;
 
@@ -115,6 +109,7 @@ public class GameControl : MonoBehaviour {
     public bool startFromLoad;
     [HideInInspector]
     public bool dying;
+    #endregion
 
     void Awake () {
         if (thisObject != null)
@@ -184,7 +179,7 @@ public class GameControl : MonoBehaviour {
             //for level testing...
             if (Input.GetKeyDown(KeyCode.L))
             {
-                LevelManager.levelManager.LoadLevel("Level 55");
+                LevelManager.levelManager.LoadLevel("Level 11");
             }
 
             #region Back Button
@@ -251,7 +246,7 @@ public class GameControl : MonoBehaviour {
             //TODO TESTING THE PIT INTO LEVEL...
             if (Input.GetKeyDown(KeyCode.O))
             {
-                LevelManager.levelManager.LoadLevel("Level 30");
+                LevelManager.levelManager.LoadLevel("Level 68");
             }
 
             #region Equipment Switching for testing
@@ -346,6 +341,7 @@ public class GameControl : MonoBehaviour {
             EventSystem.current.SetSelectedGameObject(null);
         }
 
+        #region MP/HP Adjustments
         //HP adjuster...
         if (hp < 0)
         {
@@ -355,7 +351,18 @@ public class GameControl : MonoBehaviour {
         {
             hp = currentHealth * 10;
         }
-	}
+
+        //MP Adjster...
+        if (mp < 0)
+        {
+            mp = 0;
+        }
+        if (mp > currentMana * 10)
+        {
+            mp = currentMana * 10;
+        }
+        #endregion
+    }
 
     //This is really only needed for new games but for now we can call it at the begining of every game and just overwrite as needed.
     public void AddLevelScores ()
@@ -453,50 +460,66 @@ public class GameControl : MonoBehaviour {
 		playerData.playerName = playerName;
 		playerData.gameProgress = gameProgress;
 		playerData.playerLevel = playerLevel;
-		
 		playerData.baseStrength = baseStrength;
 		playerData.baseDefense = baseDefense;
 		playerData.baseSpeed = baseSpeed;
 		playerData.baseIntelligence = baseIntelligence;
 		playerData.baseHealth = baseHealth;
 		playerData.baseMana = baseMana;
-		
+        playerData.currentStrength = currentStrength;
+        playerData.currentDefense = currentDefense;
+        playerData.currentSpeed = currentSpeed;
+        playerData.currentIntelligence = currentIntelligence;
+        playerData.currentHealth = currentHealth;
+        playerData.currentMana = currentMana;
+
+        playerData.hairIndex = hairIndex;
+        playerData.skinColorIndex = skinColorIndex;
+
+        playerData.playThroughNumber = playThroughNumber;
+        playerData.equippedWeapon = equippedWeapon;
+        playerData.equippedEquipmentIndex = equippedEquipmentIndex;
+
+        playerData.weaponsList = weaponsList;
+        playerData.equipmentInventoryList = equipmentInventoryList;
+		playerData.levelScores = levelScores;
+
+        playerData.currentProfile = currentProfile;
+        playerData.acquiredSkills = acquiredSkills;
+        playerData.profile1SlottedSkills = profile1SlottedSkills;
+        playerData.profile2SlottedSkills = profile2SlottedSkills;
+        playerData.selectedSkill = selectedSkill;
+
+		//Remove after equipment revamp.
 		playerData.itemInventoryList = itemInventoryList;
-		playerData.equipmentInventoryList = equipmentInventoryList;
-		
-		playerData.currentStrength = currentStrength;
-		playerData.currentDefense = currentDefense;
-		playerData.currentSpeed = currentSpeed;
-		playerData.currentIntelligence = currentIntelligence;
-		playerData.currentHealth = currentHealth;
-		playerData.currentMana = currentMana;
-		
 		playerData.equippedHead = equippedHead;
 		playerData.equippedChest = equippedChest;
 		playerData.equippedPants = equippedPants;
 		playerData.equippedFeet = equippedFeet;
-		
-		playerData.equippedWeapon = equippedWeapon;
+        //*****************************
 
-        playerData.levelScores = levelScores;
-		
-		
-		binaryFormatter.Serialize (saveFile, playerData);
+        binaryFormatter.Serialize (saveFile, playerData);
 		saveFile.Close();
 	}
 	
-	public void SaveFile (int fileNumber) {
-		if (fileNumber == 1) {
+	public void SaveFile (int fileNumber)
+    {
+		if (fileNumber == 1)
+        {
 			PlayerPrefsManager.SetGameFile(1);
 			PlayerPrefsManager.SetFile1PlayerName(playerName);
 			PlayerPrefsManager.SetFile1LevelProgress(gameProgress);
 			Save ();
-		} else if (fileNumber == 2) {
+		}
+        else if (fileNumber == 2)
+        {
 			PlayerPrefsManager.SetGameFile(2);
 			PlayerPrefsManager.SetFile2PlayerName(playerName);
 			PlayerPrefsManager.SetFile2LevelProgress(gameProgress);
 			Save ();
-		} else {
+		}
+        else
+        {
 			PlayerPrefsManager.SetGameFile(3);
 			PlayerPrefsManager.SetFile3PlayerName(playerName);
 			PlayerPrefsManager.SetFile3LevelProgress(gameProgress);
@@ -504,19 +527,13 @@ public class GameControl : MonoBehaviour {
 		}
 	}
 	
-	
-	//**************************************************************************************
-	//Load Section
-	//**************************************************************************************
-	
-	
 	public void LoadFile (int fileNumber) {	
 		if(File.Exists(Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat"))
         {
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             FileStream saveFile = File.Open(Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat", FileMode.Open);
             PlayerData playerData = (PlayerData)binaryFormatter.Deserialize(saveFile);
-
+            
 
             playerName = playerData.playerName;
             gameProgress = playerData.gameProgress;
@@ -559,19 +576,25 @@ public class GameControl : MonoBehaviour {
             //TODO Remove after testing.
             LoadSkills();
 
-            saveFile.Close(); //I wonder if this should go at the end of the method...
+            saveFile.Close(); //I wonder if this should go at the end of the method...            
         }
-        if (fileNumber == 1) {
+
+        if (fileNumber == 1)
+        {
 			PlayerPrefsManager.SetGameFile(1);
 			PlayerPrefsManager.SetFile1PlayerName(playerName);
 			PlayerPrefsManager.SetFile1LevelProgress(gameProgress);
 			Save ();
-		} else if (fileNumber == 2) {
+		}
+        else if (fileNumber == 2)
+        {
 			PlayerPrefsManager.SetGameFile(2);
 			PlayerPrefsManager.SetFile2PlayerName(playerName);
 			PlayerPrefsManager.SetFile2LevelProgress(gameProgress);
 			Save ();
-		} else {
+		}
+        else
+        {
 			PlayerPrefsManager.SetGameFile(3);
 			PlayerPrefsManager.SetFile3PlayerName(playerName);
 			PlayerPrefsManager.SetFile3LevelProgress(gameProgress);
@@ -582,27 +605,22 @@ public class GameControl : MonoBehaviour {
     private void LoadSkills()
     {
         //Change these lines to actually load the data.
-        acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[0]);
+        acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[4]);
         acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[1]);
         acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[2]);
         acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[3]);
-        profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[0]);
+        profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[4]);
         profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[1]);
         profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[2]);
         profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[3]);
-        selectedSkill = SkillsDatabase.skillsDatabase.skills[0];
+        selectedSkill = SkillsDatabase.skillsDatabase.skills[4];
 
         //Keep these lines.
         SkillsController.skillsController.acquiredSkills = acquiredSkills;
         SkillsController.skillsController.profile1SlottedSkills = profile1SlottedSkills;
         SkillsController.skillsController.selectedSkill = selectedSkill;
     }
-
-
-    //**************************************************************************************
-    //New Game Section
-    //**************************************************************************************
-
+    
     public void NewGame (int fileNumber) {
         //do some stuff about initializing here
         ResetNewGameData();
@@ -661,16 +679,13 @@ public class GameControl : MonoBehaviour {
     public void ResetNewGameData ()
     {
         levelScores.Clear();
-        itemInventoryList.Clear();
         equipmentInventoryList.Clear();
+        weaponsList.Clear();
+        acquiredSkills.Clear();
+        profile1SlottedSkills.Clear();
+        profile2SlottedSkills.Clear();
     }
 	
-	
-	//**************************************************************************************
-	//Delete Game Section
-	//**************************************************************************************
-	
-
 	public void DeleteGame (int fileNumber) {
 		File.Delete (Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat");
 	
@@ -701,23 +716,36 @@ class PlayerData {
 	public int baseIntelligence;
 	public int baseHealth;
 	public int baseMana;
-	
-	public List<Items> itemInventoryList;
+    public int currentStrength;
+    public int currentDefense;
+    public int currentSpeed;
+    public int currentIntelligence;
+    public int currentHealth;
+    public int currentMana;
+
+    public int hairIndex;
+    public int skinColorIndex;
+
+    public int playThroughNumber;
+    public int equippedWeapon;
+    public int equippedEquipmentIndex;
+
+    public List<Equipment> weaponsList;
 	public List<Equipment> equipmentInventoryList;
-    //public List<Weapons> weaponInventoryList;
     public List<LevelScores> levelScores;
 
-	public int currentStrength;
-	public int currentDefense;
-	public int currentSpeed;
-	public int currentIntelligence;
-	public int currentHealth;
-	public int currentMana;
-	
-	public int equippedHead;
+    public int currentProfile;
+    public List<Skills> acquiredSkills;
+    public List<Skills> profile1SlottedSkills;
+    public List<Skills> profile2SlottedSkills;
+    public Skills selectedSkill;
+
+    //TODO 
+    #region This needs to be removed after equipment gets revamped.
+    public List<Items> itemInventoryList;
+    public int equippedHead;
 	public int equippedChest;
 	public int equippedPants;
 	public int equippedFeet;
-	
-	public int equippedWeapon;
+    #endregion
 }

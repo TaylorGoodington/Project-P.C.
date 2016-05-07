@@ -63,7 +63,7 @@ public class SkullFormation : MonoBehaviour {
         }
     }
 
-    void EmptyClip ()
+    public void EmptyClip ()
     {
         if (skullPoints[5].transform.childCount == 0)
         {

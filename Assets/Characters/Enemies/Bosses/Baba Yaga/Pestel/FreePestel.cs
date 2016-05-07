@@ -2,7 +2,8 @@
 
 [RequireComponent(typeof(EnemyStats))]
 [RequireComponent(typeof(Hazard))]
-public class FreePestel : MonoBehaviour {
+public class FreePestel : MonoBehaviour
+{
 
     int maxPestelStrikes;
     int pestelStrikes;
@@ -12,12 +13,13 @@ public class FreePestel : MonoBehaviour {
     float pestelStrikeIntervals;
     float intervalTimer;
     GameObject babaYaga;
-    bool returning;
+    public bool returning;
     int returnSpeed = 180;
     AttackPhase attackPhase;
     Animator animator;
 
-	void Start () {
+	void Start ()
+    {
         babaYaga = GameObject.FindGameObjectWithTag("BabaYaga");
         maxPestelStrikes = 2 + babaYaga.GetComponent<BabaYaga>().aggressionPhase;
         pestelStrikeIntervals = 5 - (babaYaga.GetComponent<BabaYaga>().aggressionPhase);
@@ -46,6 +48,7 @@ public class FreePestel : MonoBehaviour {
         {
             if (attackPhase == AttackPhase.Rising)
             {
+                animator.Play("FreeIdle");
                 if (transform.position.y < targetHeight)
                 {
                     transform.Translate(new Vector3(0, 1) * Time.deltaTime * strikeSpeed, Space.World);
@@ -62,6 +65,7 @@ public class FreePestel : MonoBehaviour {
                 if (transform.position.y > floor)
                 {
                     transform.Translate(new Vector3(0, -1) * Time.deltaTime * strikeSpeed, Space.World);
+                    animator.Play("Striking");
                 }
                 else
                 {
@@ -80,6 +84,7 @@ public class FreePestel : MonoBehaviour {
                 }
                 else
                 {
+                    animator.Play("FreeIdle");
                     float playerPositionX = GameObject.FindGameObjectWithTag("Player").transform.position.x;
                     int fudgeFactor = 1;
 

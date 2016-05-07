@@ -13,6 +13,7 @@ public class Level30 : MonoBehaviour {
     Animator animator;
 
     bool gateClosed;
+    bool madeIt;
 
     void Start () {
         bossTrap.SetActive(false);
@@ -24,6 +25,7 @@ public class Level30 : MonoBehaviour {
         animator = GetComponent<Animator>();
         animator.Play("IdleNoGate");
         gateClosed = false;
+        madeIt = false;
     }
 
     void OnTriggerEnter2D (Collider2D collider)
@@ -46,5 +48,31 @@ public class Level30 : MonoBehaviour {
         leftSideGateWall.SetActive(true);
         rightSideGateHazard.SetActive(true);
         rightSideGateWall.SetActive(true);
+    }
+
+    void Update()
+    {
+        if (gateClosed && !madeIt)
+        {
+            if (GameObject.FindGameObjectWithTag("Player").transform.position.x >= 1405)
+            {
+                GameControl.gameControl.endOfLevel = false;
+                GameControl.gameControl.playerHasControl = true;
+                madeIt = true;
+            }
+            else
+            {
+                GameControl.gameControl.playerHasControl = false;
+                GameControl.gameControl.endOfLevel = true;
+            }
+        }
+        if (!babaYaga)
+        {
+            //do nothing.
+        }
+        else if (babaYaga.GetComponent<EnemyStats>().hP <= 0)
+        {
+            animator.Play("OpeningTheGate");
+        }
     }
 }

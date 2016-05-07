@@ -7,7 +7,6 @@ public class Skills
     public int groupNumber;
     public string skillName;
     public string skillDescription;
-    public Sprite skillIcon;
     public RequiredStat requiredStatName;
     public int requiredStatValue;
     public RequiredWeapon requiredWeapon;

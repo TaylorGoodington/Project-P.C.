@@ -216,15 +216,23 @@ public class SkillsController : MonoBehaviour {
 
     public void LevelEndAbilityListCleaning ()
     {
-        foreach (Skills skill in activeSkills)
+        StopAllCoroutines();
+        for (int i = 0; i < activeSkills.Count; i++)
         {
-            if (skill.triggerPhase != Skills.TriggerPhase.Passive)
+            if (activeSkills[i].triggerPhase != Skills.TriggerPhase.Passive)
             {
-                activeSkills.Remove(skill);
+                activeSkills.RemoveAt(i);
             }
         }
-        
-        cooldownList = new Dictionary<int, float>();
+
+        //for (int i = 0; i < cooldownList.Count; i++)
+        //{
+        //    var key = cooldownList.ElementAt(i);
+        //    int itemKey = key.Key;
+        //    cooldownList[itemKey] = 0;
+        //}
+
+        cooldownList.Clear();
     }
 
     public void ActivateEnemyAbilities (Skills.TriggerPhase trigger, Collider2D collider)

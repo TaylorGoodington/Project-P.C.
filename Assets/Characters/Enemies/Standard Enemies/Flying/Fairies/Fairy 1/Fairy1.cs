@@ -43,7 +43,7 @@ public class Fairy1 : FlyingEnemyBase
             gravity = -1000;
             velocity.y += gravity * Time.deltaTime;
             velocity.x = (player.GetComponent<Player>().knockBackForce / flinchTime) * CombatEngine.combatEngine.enemyKnockBackDirection * Time.deltaTime;
-            controller.Move(velocity, input);
+            controller.Move(velocity * Time.deltaTime, input);
         }
 
         else if (isAttacking)

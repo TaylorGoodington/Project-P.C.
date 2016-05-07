@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-[RequireComponent(typeof(Controller2D))]
-[RequireComponent(typeof(EnemyStats))]
 public class BoneMarauder1 : EnemyBase
 {
     string enemyType = "BoneMarauder1";

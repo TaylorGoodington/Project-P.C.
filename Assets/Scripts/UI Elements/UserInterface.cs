@@ -194,6 +194,7 @@ public class UserInterface : MonoBehaviour {
                 GameControl.gameControl.levelScores[LevelManager.levelManager.lastLevelPlayed - LevelManager.levelManager.level01 + 1].enemiesDefeated = LevelManager.levelManager.enemiesDefeated;
             }
         }
+        SkillsController.skillsController.LevelEndAbilityListCleaning();
     }
 
     //Used by the end of level animation to reset bool in player.
@@ -335,6 +336,7 @@ public class UserInterface : MonoBehaviour {
 
     public void DeathToPit ()
     {
+        SkillsController.skillsController.LevelEndAbilityListCleaning();
         LevelManager.levelManager.LoadLevel("The Pit");
     }
 }
