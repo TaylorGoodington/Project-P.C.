@@ -61,6 +61,8 @@ public class Player : MonoBehaviour
     public bool movementAbility;
     float targetXMovement;
     int movementAbilityDirection;
+
+    public WeaponColliders weaponCollider;
     #endregion
 
     void Start()
@@ -129,7 +131,10 @@ public class Player : MonoBehaviour
         {
             isAttacking = false;
             attackLaunched = false;
+            weaponCollider.DisableActiveCollider();
             movementAbility = false;
+            callingActivateAbility = false;
+            climbing = false;
             SkillsController.skillsController.activatingAbility = false;
             CombatEngine.combatEngine.comboCount = 1;
             animator.PlayAnimation(PlayerAnimationController.Animations.Flinching);
@@ -160,7 +165,6 @@ public class Player : MonoBehaviour
             {
                 if (transform.position.x < targetXMovement && !controller.collisions.right)
                 {
-                    Skills skill = SkillsController.skillsController.selectedSkill;
                     velocity.x = 300 * Time.deltaTime;
                     velocity.y = 0;
                     controller.Move(velocity, input);
@@ -177,7 +181,6 @@ public class Player : MonoBehaviour
             {
                 if (transform.position.x > targetXMovement && !controller.collisions.left)
                 {
-                    Skills skill = SkillsController.skillsController.selectedSkill;
                     velocity.x = 300 * -1 * Time.deltaTime;
                     controller.Move(velocity, input);
                 }
@@ -590,6 +593,7 @@ public class Player : MonoBehaviour
         {
             CombatEngine.combatEngine.comboCount = 1;
         }
+        weaponCollider.DisableActiveCollider();
     }
 
     //called by climbing up animation to stop animating.
@@ -638,30 +642,17 @@ public class Player : MonoBehaviour
         deathStanding = false;
     }
 
+
     //called from the animations for attacking.
     public void Attack()
     {
-        float directionX = controller.collisions.faceDir;
-        float rayLength = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].attackRange;
-        float rayOriginX = (directionX == 1) ? playerCollider.bounds.max.x + 0.01f : playerCollider.bounds.min.x - 0.01f;
-        float rayOriginY = playerCollider.bounds.center.y;
-        Vector2 rayOrigin = new Vector2(rayOriginX, rayOriginY);
-
         knockBackForce = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].knockbackForce;
         CombatEngine.combatEngine.enemyKnockBackDirection = controller.collisions.faceDir;
 
         //Wizards(4) and Rangers(3) fire a projectile that calls attack on contact.
+        int projectileNumber = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentTier - 1;
         if (GameControl.gameControl.playerClass == 3)
         {
-            int projectileNumber = GameControl.gameControl.equippedWeapon % 10;
-            //fire projectile.
-            Instantiate(ClassesDatabase.classDatabase.arrows[projectileNumber], transform.position, Quaternion.identity);
-
-        }
-        else if (GameControl.gameControl.playerClass == 4)
-        {
-            int projectileNumber = GameControl.gameControl.equippedWeapon % 10;
-            //fire projectile.
             if (controller.collisions.below)
             {
                 Instantiate(ClassesDatabase.classDatabase.arrows[projectileNumber], transform.position, Quaternion.identity);
@@ -670,20 +661,21 @@ public class Player : MonoBehaviour
             {
                 Instantiate(ClassesDatabase.classDatabase.arrows[projectileNumber], new Vector3(transform.position.x, transform.position.y + 9), Quaternion.identity);
             }
-
         }
-        // everyone else swings.
+        else if (GameControl.gameControl.playerClass == 4)
+        {
+            if (controller.collisions.below)
+            {
+                Instantiate(ClassesDatabase.classDatabase.magicMissles[projectileNumber], transform.position, Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(ClassesDatabase.classDatabase.magicMissles[projectileNumber], new Vector3(transform.position.x, transform.position.y + 9), Quaternion.identity);
+            }
+        }
         else
         {
-            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, attackingLayer);
-            //Layer 14 is currently the enemies layer.
-            if (hit)
-            {
-                if (hit.collider.gameObject.layer == 14)
-                {
-                    CombatEngine.combatEngine.AttackingEnemies(hit.collider);
-                }
-            }
+            weaponCollider.ActivateWeaponCollider(controller.collisions.below);
         }
     }
 }

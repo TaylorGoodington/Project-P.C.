@@ -103,7 +103,7 @@ public class AbilityProjectiles : MonoBehaviour {
             CombatEngine.combatEngine.damagingAbility = currentSkill;
             player.gameObject.GetComponent<Player>().knockBackForce = currentSkill.knockbackForce;
             CombatEngine.combatEngine.enemyKnockBackDirection = direction;
-            CombatEngine.combatEngine.AttackingEnemies(collider, true);
+            StartCoroutine(CombatEngine.combatEngine.AttackingEnemy(collider, true));
         }
 
         //Platforms

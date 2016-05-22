@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Projectile : MonoBehaviour {
 
@@ -15,8 +14,9 @@ public class Projectile : MonoBehaviour {
     ProjectileType projectileType;
     int direction;
     bool decaying;
-    float decayTimer = 3f;
+    float decayTimer = 2f;
     int projectileNumber;
+    string weaponType;
 
 
     void Start()
@@ -30,14 +30,15 @@ public class Projectile : MonoBehaviour {
         hit = false;
         decaying = false;
         projectileType = (GameControl.gameControl.playerClass == 3) ? ProjectileType.Arrow : ProjectileType.MagicMissle;
-        projectileNumber = GameControl.gameControl.equippedWeapon;
+        weaponType = (GameControl.gameControl.playerClass == 3) ? "Bow" : "Staff";
+        projectileNumber = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentTier;
         UpdateDirection();
     }
     //Play correct animation.
 
     void Update()
     {
-        animationController.Play("Projectile" + projectileNumber);
+        animationController.Play(weaponType + "Projectile" + projectileNumber);
 
         if (!hit)
         {
@@ -105,7 +106,7 @@ public class Projectile : MonoBehaviour {
             hit = true;
             objectHit = collider.transform;
             this.transform.position = new Vector3(transform.position.x + (5 * direction), transform.position.y);
-            CombatEngine.combatEngine.AttackingEnemies(collider);
+            StartCoroutine(CombatEngine.combatEngine.AttackingEnemy(collider));
         }
 
         //Platforms

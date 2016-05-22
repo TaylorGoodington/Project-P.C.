@@ -60,7 +60,7 @@ public class Demo_ClassSelection : MonoBehaviour {
         GameControl.gameControl.hairIndex = 2;
         GameControl.gameControl.maxCombos = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].maxCombos;
         GameControl.gameControl.CurrentClass();
-        EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+        //EquipmentInventory.equipmentInventory.UpdateEquippedStats();
         SkillsController.skillsController.DoneChangingEquipmentOrPerks();
         LevelManager.levelManager.LoadLevel("Level Selection");
     }

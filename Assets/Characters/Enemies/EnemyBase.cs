@@ -1319,11 +1319,7 @@ public class EnemyBase : MonoBehaviour {
     {
         foreach (Equipment equipment in stats.equipmentDropped)
         {
-            int randomNumber = Random.Range(0, 101);
-            if (randomNumber <= equipment.dropRate)
-            {
-                GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().receivedEquipment.Add(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]);
-            }
+            
         }
     }
 
@@ -1346,13 +1342,14 @@ public class EnemyBase : MonoBehaviour {
         beingAttacked = false;
     }
 
-    //this will be used to gauge interactions...I might need to do these things in the climbable script.
     public void OnTriggerEnter2D(Collider2D collider)
     {
-
+        if (collider.tag == "WeaponCollider")
+        {
+            StartCoroutine(CombatEngine.combatEngine.AttackingEnemy(enemyCollider));
+        }
     }
 
-    //this will be used to gauge interactions...I might need to do these things in the climbable script.
     public void OnTriggerExit2D(Collider2D collider)
     {
 

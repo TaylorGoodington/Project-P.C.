@@ -1,13 +1,13 @@
 ﻿[System.Serializable]
 public class Equipment {
-	
-	public string equipmentName;
+
 	public int equipmentID;
-	public string equipmentDescription;
+    public string equipmentName;
+    public string equipmentDescription;
 	public EquipmentType equipmentType;
-	public EquipmentMaterial equipmentMaterial;
-	public EquipmentSlot equipmentSlot;
-    public float attackRange;
+    public int equipmentTier;
+    public int equipmentPowerLevel;
+    public int equipmentLevelRequirement;
 	public int equipmentStrength;
 	public int equipmentDefense;
 	public int equipmentSpeed;
@@ -17,16 +17,14 @@ public class Equipment {
 	public int equipmentSkill;
 	public int knockbackForce;
     public int maxCombos;
-	public int quantity;
-    public int dropRate;
 
 	
-	public enum EquipmentType { 
-		Head,
-		Chest,
-		Pants,
-		Feet,
-		Sword,
+	public enum EquipmentType {
+        Cloth,
+        Leather,
+        Chainmail,
+        Platemail,
+        Sword,
 		Axe,
 		Dagger,
 		Bow,
@@ -36,40 +34,17 @@ public class Equipment {
 		Polearm
 	}
 	
-	public enum EquipmentMaterial {
-		Cloth,
-		Leather,
-		Chainmail,
-		Platemail,
-		Soldier,
-		Berserker,
-		Rogue,
-		Ranger,
-		Wizard,
-		Sorcerer,
-		Monk,
-		Paladin
-	}
 	
-	public enum EquipmentSlot {
-		Head,
-		Chest,
-		Weapon,
-		Pants,
-		Feet
-	}
-	
-	
-	public Equipment (int id, string name, string description, EquipmentType type, EquipmentMaterial material, EquipmentSlot slot, float range,
+	public Equipment (int id, string name, string description, EquipmentType type, int tier, int powerLevel, int levelRequirement,
 					  int strength, int defense, int speed, int intelligence, int health, int mana,
-					  int skill, int knockback, int combos, int qty, int rate) {
+					  int skill, int knockback, int combos) {
 		equipmentID = id;
 		equipmentName = name;
 		equipmentDescription = description;
 		equipmentType = type;
-		equipmentMaterial = material;
-		equipmentSlot = slot;
-        attackRange = range;
+        equipmentTier = tier;
+        equipmentPowerLevel = powerLevel;
+        equipmentLevelRequirement = levelRequirement;
 		equipmentStrength = strength;
 		equipmentDefense = defense;
 		equipmentSpeed = speed;
@@ -79,12 +54,5 @@ public class Equipment {
 		equipmentSkill = skill;
 		knockbackForce = knockback;
         maxCombos = combos;
-		quantity = qty;
-        dropRate = rate;
 	}
-	
-	public Equipment () {
-		
-	}
-	
 }

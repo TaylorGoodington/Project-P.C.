@@ -224,14 +224,6 @@ public class SkillsController : MonoBehaviour {
                 activeSkills.RemoveAt(i);
             }
         }
-
-        //for (int i = 0; i < cooldownList.Count; i++)
-        //{
-        //    var key = cooldownList.ElementAt(i);
-        //    int itemKey = key.Key;
-        //    cooldownList[itemKey] = 0;
-        //}
-
         cooldownList.Clear();
     }
 

@@ -9,11 +9,17 @@ public class PlayerAnimationController : MonoBehaviour
     public Animator backgroundEffectsAnimator;
     public Animations currentAnimation;
 
-    //Naming Convention for player animations are as follows:
+    //Naming Conventions for hair and body are as follows:
     //For Attacking: Hair1SwordAttacking1, (animator type)(animator type index)(weapon type)(animation name)(combo count)
     //Not Attacking: Hair1Jumping, (animator type)(animator type index)(animation name)
-    //All weapons dont reference their weapon type.
-    //ToDo Skills...
+
+    //Naming Conventions for weapons are as follows:
+    //For Attacking: Sword1Attacking1, (weapon type)(weapon tier index)(animation name)(combo count)
+    //Not Attacking: Sword1Jumping, (weapon type)(weapon tier index)(animation name)
+    
+    //Naming Conventions for equipment are as follows:
+    //For Attacking: Wizard RobesSwordAttacking1, (equipment name)(weapon type)(animation name)(combo count)
+    //Not Attacking: Wizard RobesJumping, (equipment name)(animation name)
 
     //Master list of animations.
     public enum Animations
@@ -37,7 +43,7 @@ public class PlayerAnimationController : MonoBehaviour
     public void PlayAnimation (Animations animation)
     {
         currentAnimation = animation;
-
+        
         PlayHairAnimation(animation);
         PlayBodyAnimation(animation);
         PlayEquipmentAnimation(animation);
@@ -91,14 +97,16 @@ public class PlayerAnimationController : MonoBehaviour
         string animationName = animation.ToString();
         if (animation == Animations.Attacking)
         {
-            weaponAnimator.Play("Weapon" +
-                                GameControl.gameControl.equippedWeapon +
+            weaponAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentType.ToString() +
+                                EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentTier.ToString() +
                                 animationName +
                                 CombatEngine.combatEngine.comboCount);
         }
         else
         {
-            weaponAnimator.Play("Weapon" + GameControl.gameControl.equippedWeapon + animationName);
+            weaponAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentType.ToString() +
+                                EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentTier.ToString() +
+                                animationName);
         }
     }
 
@@ -107,15 +115,14 @@ public class PlayerAnimationController : MonoBehaviour
         string animationName = animation.ToString();
         if (animation == Animations.Attacking)
         {
-            equipmentAnimator.Play("Equipment" + 
-                                   GameControl.gameControl.equippedEquipmentIndex +
+            equipmentAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedEquipmentIndex].equipmentName +
                                    EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentType + 
                                    animationName +
                                    CombatEngine.combatEngine.comboCount);
         }
         else
         {
-            equipmentAnimator.Play("Equipment" + GameControl.gameControl.equippedEquipmentIndex + animationName);
+            equipmentAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedEquipmentIndex].equipmentName + animationName);
         }
     }
 

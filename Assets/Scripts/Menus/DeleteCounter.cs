@@ -9,13 +9,13 @@ public class DeleteCounter : MonoBehaviour {
 	private int maxItemQuantity;
 	
 	private ItemDatabase itemDatabase;
-	private EquipmentDatabase equipmentDatabase;
+	//private EquipmentDatabase equipmentDatabase;
 	private PlayerSoundEffects playerSoundEffects;
 	
 	// Use this for initialization
 	void Start () {
 		itemDatabase = GameObject.FindGameObjectWithTag("Items Database").GetComponent<ItemDatabase>();
-		equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
+		//equipmentDatabase = GameObject.FindGameObjectWithTag("Equipment Database").GetComponent<EquipmentDatabase>();
 		playerSoundEffects = GameObject.FindObjectOfType<PlayerSoundEffects>();
 	
 		numberOfItems = 1;
@@ -27,7 +27,7 @@ public class DeleteCounter : MonoBehaviour {
 		if (GameObject.FindGameObjectWithTag("Item Destroy Verification Canvas")) {
 			maxItemQuantity = itemDatabase.items[PlayerPrefsManager.GetEquipmentID()].quantity;
 		} else {
-			maxItemQuantity = equipmentDatabase.equipment[PlayerPrefsManager.GetEquipmentID()].quantity;
+			//maxItemQuantity = equipmentDatabase.equipment[PlayerPrefsManager.GetEquipmentID()].quantity;
 		}
 	}
 	

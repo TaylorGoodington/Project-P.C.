@@ -121,9 +121,6 @@ public class Fairy1 : FlyingEnemyBase
     {
         stats.itemsDropped.Add(ItemDatabase.itemDatabase.items[2]);
         stats.itemsDropped[0].dropRate = 50;
-
-        stats.equipmentDropped.Add(EquipmentDatabase.equipmentDatabase.equipment[0]);
-        stats.equipmentDropped[0].dropRate = 50;
     }
 
     //Called by falling into a pit.

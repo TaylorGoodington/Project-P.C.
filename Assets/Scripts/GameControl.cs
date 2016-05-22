@@ -68,10 +68,6 @@ public class GameControl : MonoBehaviour {
     public List<LevelScores> levelScores;
 
     //remove later.
-	public int equippedHead;
-	public int equippedChest;
-	public int equippedPants;
-	public int equippedFeet;
     public int activeItem;
 	public int availableEvolutions;
 
@@ -225,7 +221,7 @@ public class GameControl : MonoBehaviour {
                 //Equipment Menu.
                 if (equipmentMenuLevel > 0)
                 {
-                    equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousEquipmentMenu(equipmentMenuLevel);
+                    //equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousEquipmentMenu(equipmentMenuLevel);
                     equipmentMenuLevel--;
                 }
                 //Lady Death Menu.
@@ -237,7 +233,7 @@ public class GameControl : MonoBehaviour {
                 //Weapon Evolution Menu.
                 if (weaponEvolutionMenuLevel > 0)
                 {
-                    equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousWeaponMenu(weaponEvolutionMenuLevel);
+                    //equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousWeaponMenu(weaponEvolutionMenuLevel);
                     weaponEvolutionMenuLevel--;
                 }
             }
@@ -255,45 +251,36 @@ public class GameControl : MonoBehaviour {
             {
                 SkillsController.skillsController.ChangingEquipmentOrPerks();
                 //changing the equipment.
-                if (equippedEquipmentIndex < 4)
-                {
-                    equippedEquipmentIndex++;
-                }
-                else
-                {
-                    equippedEquipmentIndex = 1;
-                }
 
-                //changes the rest of the stuff.
-                if (equippedEquipmentIndex == 1)
+                if (equippedEquipmentIndex == 411)
                 {
                     //playerClass = 1;
-                    equippedWeapon = 10;
-                    equippedEquipmentIndex = 1;
+                    equippedWeapon = 1;
+                    equippedEquipmentIndex = 401;
                     skinColorIndex = 2;
                     hairIndex = 2;
                 }
-                else if (equippedEquipmentIndex == 2)
+                else if (equippedEquipmentIndex == 401)
                 {
                     //playerClass = 3;
-                    equippedWeapon = 40;
-                    equippedEquipmentIndex = 2;
+                    equippedWeapon = 151;
+                    equippedEquipmentIndex = 428;
                     skinColorIndex = 1;
                     hairIndex = 1;
                 }
-                else if (equippedEquipmentIndex == 3)
+                else if (equippedEquipmentIndex == 428)
                 {
                     //playerClass = 2;
-                    equippedWeapon = 80;
-                    equippedEquipmentIndex = 3;
+                    equippedWeapon = 351;
+                    equippedEquipmentIndex = 433;
                     skinColorIndex = 2;
                     hairIndex = 3;
                 }
-                else if (equippedEquipmentIndex == 4)
+                else if (equippedEquipmentIndex == 433)
                 {
                     //playerClass = 4;
-                    equippedWeapon = 70;
-                    equippedEquipmentIndex = 4;
+                    equippedWeapon = 301;
+                    equippedEquipmentIndex = 411;
                     skinColorIndex = 3;
                     hairIndex = 4;
                 }
@@ -305,7 +292,7 @@ public class GameControl : MonoBehaviour {
                 CurrentClass();
 
                 //Updates Equipment
-                EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+                //EquipmentInventory.equipmentInventory.UpdateEquippedStats();
 
                 //Update Perks
 
@@ -400,33 +387,53 @@ public class GameControl : MonoBehaviour {
         baseHealth += ClassesDatabase.classDatabase.classes[playerClass].healthLevelBonus;
         baseMana += ClassesDatabase.classDatabase.classes[playerClass].manaLevelBonus;
 
-        EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+        //EquipmentInventory.equipmentInventory.UpdateEquippedStats();
 
         CalculateHealthAndMana(false);
     }
-	
-	//I dont like the way this works, I would rather do a find based on the equipped weapon material...
-	public void CurrentClass () {
-		string weaponClass = equipmentDatabase.equipment [equippedWeapon].equipmentMaterial.ToString();
-		if (weaponClass == "Soldier") {
+
+    public void UpdateEquippedStats()
+    {
+        hpRatio = (float)hp / currentHealth;
+        mpRatio = (float)mp / currentMana;
+
+        currentStrength = baseStrength + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentStrength +
+                          EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentStrength;
+        currentDefense = baseDefense + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentDefense +
+                         EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentDefense;
+        currentSpeed = baseSpeed + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentSpeed +
+                       EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentSpeed;
+        currentIntelligence = baseIntelligence + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentIntelligence +
+                              EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentIntelligence;
+        currentHealth = baseHealth + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentHealth +
+                        EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentHealth;
+        currentMana = baseMana + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentMana +
+                      EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentMana;
+
+        CalculateHealthAndMana(true);
+    }
+
+    public void CurrentClass () {
+		string weaponClass = equipmentDatabase.equipment [equippedWeapon].equipmentType.ToString();
+		if (weaponClass == "Sword") {
 			int classIndex = 0;
 			playerClass = classIndex;
-		} else if (weaponClass == "Berserker") {
+		} else if (weaponClass == "Axe") {
 			int classIndex = 1;
 			playerClass = classIndex;
-		} else if (weaponClass == "Rogue") {
+		} else if (weaponClass == "Dagger") {
 			int classIndex = 2;
 			playerClass = classIndex;
-		} else if (weaponClass == "Ranger") {
+		} else if (weaponClass == "Bow") {
 			int classIndex = 3;
 			playerClass = classIndex;
-		} else if (weaponClass == "Wizard") {
+		} else if (weaponClass == "Staff") {
 			int classIndex = 4;
 			playerClass = classIndex;
-		} else if (weaponClass == "Sorcerer") {
+		} else if (weaponClass == "Talisman") {
 			int classIndex = 5;
 			playerClass = classIndex;
-		} else if (weaponClass == "Monk") {
+		} else if (weaponClass == "Fist") {
 			int classIndex = 6;
 			playerClass = classIndex;
 		} else {
@@ -492,10 +499,6 @@ public class GameControl : MonoBehaviour {
 
 		//Remove after equipment revamp.
 		playerData.itemInventoryList = itemInventoryList;
-		playerData.equippedHead = equippedHead;
-		playerData.equippedChest = equippedChest;
-		playerData.equippedPants = equippedPants;
-		playerData.equippedFeet = equippedFeet;
         //*****************************
 
         binaryFormatter.Serialize (saveFile, playerData);
@@ -556,21 +559,15 @@ public class GameControl : MonoBehaviour {
             currentHealth = playerData.currentHealth;
             currentMana = playerData.currentMana;
 
-            equippedHead = playerData.equippedHead;
-            equippedChest = playerData.equippedChest;
-            equippedPants = playerData.equippedPants;
-            equippedFeet = playerData.equippedFeet;
-
             //ToDo needs to be saved
-            equippedEquipmentIndex = 1;
-            skinColorIndex = 1;
-            hairIndex = 1;
-
+            equippedEquipmentIndex = playerData.equippedEquipmentIndex;
+            skinColorIndex = playerData.skinColorIndex;
+            hairIndex = playerData.hairIndex;
             equippedWeapon = playerData.equippedWeapon;
 
             levelScores = playerData.levelScores;
 
-            EquipmentInventory.equipmentInventory.UpdateEquippedStats();
+            UpdateEquippedStats();
             xpToLevel = ExperienceToLevel.experienceToLevel.levels[playerLevel].experienceToLevel;
 
             //TODO Remove after testing.
@@ -629,7 +626,7 @@ public class GameControl : MonoBehaviour {
 		playerName = "Taylor" + fileNumber;
 		gameProgress = 27;
 
-		playerLevel = 0;
+		playerLevel = 1;
 		baseStrength = 1;
 		baseDefense = 1;
 		baseSpeed = 1;
@@ -637,36 +634,17 @@ public class GameControl : MonoBehaviour {
 		baseHealth = 1;
 		baseMana = 1;
 
-        currentStrength = 1;
-        currentDefense = 1;
-        currentSpeed = 1;
-        currentIntelligence = 1;
-        currentHealth = 1;
-        currentMana = 1;
-
-        playerClass = 6;
-        equippedWeapon = 10;
-        equippedHead = 1;
-        equippedChest = 2;
-        equippedPants = 3;
-        equippedFeet = 4;
+        playerClass = 0;
+        equippedWeapon = 1;
 
         //ToDo needs to be saved
-        equippedEquipmentIndex = 1;
+        equippedEquipmentIndex = 401;
         skinColorIndex = 2;
         hairIndex = 2;
         maxCombos = 3;
 
         xpToLevel = ExperienceToLevel.experienceToLevel.levels[playerLevel].experienceToLevel;
-        EquipmentInventory.equipmentInventory.UpdateEquippedStats();
-        //ToDo move this to after intro story stuff...
-        weaponsList.Add(equipmentDatabase.equipment[50]);
-        weaponsList.Add(equipmentDatabase.equipment[20]);
-        weaponsList.Add(equipmentDatabase.equipment[30]);
-        weaponsList.Add(equipmentDatabase.equipment[40]);
-        weaponsList.Add(equipmentDatabase.equipment[80]);
-        weaponsList.Add(equipmentDatabase.equipment[60]);
-        weaponsList.Add(equipmentDatabase.equipment[70]);
+        UpdateEquippedStats();
 
         AddLevelScores();
 
@@ -743,9 +721,5 @@ class PlayerData {
     //TODO 
     #region This needs to be removed after equipment gets revamped.
     public List<Items> itemInventoryList;
-    public int equippedHead;
-	public int equippedChest;
-	public int equippedPants;
-	public int equippedFeet;
     #endregion
 }

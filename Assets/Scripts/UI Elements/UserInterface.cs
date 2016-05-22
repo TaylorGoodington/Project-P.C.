@@ -281,7 +281,7 @@ public class UserInterface : MonoBehaviour {
             if (GameControl.gameControl.equipmentInventoryList.Contains(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]))
             {
                 int index = GameControl.gameControl.equipmentInventoryList.IndexOf(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]);
-                GameControl.gameControl.equipmentInventoryList[index].quantity++;
+                //GameControl.gameControl.equipmentInventoryList[index].quantity++;
             }
             else {
                 GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[equipment.equipmentID]);

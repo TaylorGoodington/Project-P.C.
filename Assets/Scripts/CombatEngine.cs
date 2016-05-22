@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class CombatEngine : MonoBehaviour {
 
     //ToDo Talk about players having dodge & parry type skills. Add the reduction in taking damage to the engine.
-	
-	public static CombatEngine combatEngine;
+
+    public static CombatEngine combatEngine;
     public int attackDamage;
     public float critRate;
     [HideInInspector]
@@ -22,8 +23,8 @@ public class CombatEngine : MonoBehaviour {
     public int enemyKnockBackDirection;
     public Skills damagingAbility;
 
-    void Start () {
-		combatEngine = GetComponent<CombatEngine>();
+    void Start() {
+        combatEngine = GetComponent<CombatEngine>();
         comboCount = 1;
         runComboClock = false;
 
@@ -32,7 +33,7 @@ public class CombatEngine : MonoBehaviour {
     }
 
     //Update used to increment combos.
-    void Update ()
+    void Update()
     {
         maxCombos = GameControl.gameControl.maxCombos;
 
@@ -42,7 +43,7 @@ public class CombatEngine : MonoBehaviour {
         }
     }
 
-    public void RunComboClock ()
+    public void RunComboClock()
     {
         if (comboCountDown > 0)
         {
@@ -66,26 +67,26 @@ public class CombatEngine : MonoBehaviour {
     }
 
     public void CalculateAttackDamage() {
-        Equipment.EquipmentMaterial weaponClass = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentMaterial;
-        if (weaponClass == Equipment.EquipmentMaterial.Soldier || weaponClass == Equipment.EquipmentMaterial.Berserker)
+        Equipment.EquipmentType weaponClass = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentType;
+        if (weaponClass == Equipment.EquipmentType.Sword || weaponClass == Equipment.EquipmentType.Axe)
         {
             attackDamage = GameControl.gameControl.currentStrength;
         }
-        else if (weaponClass == Equipment.EquipmentMaterial.Paladin || weaponClass == Equipment.EquipmentMaterial.Monk)
+        else if (weaponClass == Equipment.EquipmentType.Polearm || weaponClass == Equipment.EquipmentType.Fist)
         {
             attackDamage = GameControl.gameControl.currentStrength;
         }
-        else if (weaponClass == Equipment.EquipmentMaterial.Sorcerer || weaponClass == Equipment.EquipmentMaterial.Rogue)
+        else if (weaponClass == Equipment.EquipmentType.Talisman || weaponClass == Equipment.EquipmentType.Dagger)
         {
             attackDamage = GameControl.gameControl.currentStrength;
         }
-        else if (weaponClass == Equipment.EquipmentMaterial.Ranger || weaponClass == Equipment.EquipmentMaterial.Wizard)
+        else if (weaponClass == Equipment.EquipmentType.Bow || weaponClass == Equipment.EquipmentType.Staff)
         {
             attackDamage = GameControl.gameControl.currentIntelligence;
         }
     }
 
-    public bool AttackingPhase (Collider2D collider, Attacker attacker) {
+    public bool AttackingPhase(Collider2D collider, Attacker attacker) {
         if (attacker == Attacker.Player)
         {
             SkillsController.skillsController.ActivatePlayerAbilities(Skills.TriggerPhase.Attacking);
@@ -128,7 +129,7 @@ public class CombatEngine : MonoBehaviour {
         {
             //TODO change attack damage based on skill used...
             Skills.RequiredStat damageStat = damagingAbility.requiredStatName;
-            if(damageStat == Skills.RequiredStat.Intelligence)
+            if (damageStat == Skills.RequiredStat.Intelligence)
             {
                 attackDamage = GameControl.gameControl.currentIntelligence;
             }
@@ -152,12 +153,12 @@ public class CombatEngine : MonoBehaviour {
         }
 
 
-        //Check for a crit.
-        float randomNumber = Random.Range(0, 100);
-        if (randomNumber <= critRate)
-        {
-            attackDamage = attackDamage * 2;
-        }
+        ////Check for a crit.
+        //float randomNumber = Random.Range(0, 100);
+        //if (randomNumber <= critRate)
+        //{
+        //    attackDamage = attackDamage * 2;
+        //}
 
         if ((attackDamage - enemyDefense) > 0)
         {
@@ -172,7 +173,7 @@ public class CombatEngine : MonoBehaviour {
         }
     }
 
-    public bool DealingDamageToPlayerPhase (Collider2D collider, int damage)
+    public bool DealingDamageToPlayerPhase(Collider2D collider, int damage)
     {
         int playerDefense = GameControl.gameControl.currentDefense;
         int enemyAttackDamage = damage;
@@ -191,8 +192,8 @@ public class CombatEngine : MonoBehaviour {
             return true;
         }
     }
-	
-	public void AttackingEnemies (Collider2D collider, bool damageFromAbility = false)
+
+    public IEnumerator AttackingEnemy(Collider2D collider, bool damageFromAbility = false)
     {
         if (AttackingPhase(collider, Attacker.Player))
         {
@@ -200,7 +201,7 @@ public class CombatEngine : MonoBehaviour {
             {
                 if (DealingDamageToEnemyPhase(collider, damageFromAbility))
                 {
-                    
+
                 }
             }
         }
@@ -209,7 +210,28 @@ public class CombatEngine : MonoBehaviour {
             //at the end we should clear the active skills list for anything the triggered, that doesnt have a duration.
             SkillsController.skillsController.ClearAttackingCombatTriggeredAbilitiesFromList();
         }
-	}
+        yield return null;
+    }
+
+
+ //   public void AttackingEnemies (Collider2D collider, bool damageFromAbility = false)
+ //   {
+ //       if (AttackingPhase(collider, Attacker.Player))
+ //       {
+ //           if (HittingPhase(collider, Attacker.Player))
+ //           {
+ //               if (DealingDamageToEnemyPhase(collider, damageFromAbility))
+ //               {
+                    
+ //               }
+ //           }
+ //       }
+ //       else
+ //       {
+ //           //at the end we should clear the active skills list for anything the triggered, that doesnt have a duration.
+ //           SkillsController.skillsController.ClearAttackingCombatTriggeredAbilitiesFromList();
+ //       }
+	//}
 
     //The collider being passed here is actually the enemy attacker, since we would have no other way of knowing which one it was.
     public void AttackingPlayer (Collider2D collider, int damage)

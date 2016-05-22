@@ -36,7 +36,7 @@ public class ContentPanel : MonoBehaviour {
 				weaponNameText.text = equipmentDatabase.equipment[weaponID].equipmentName;
 				
 				Text weaponLevel = child.GetChild(3).GetComponent<Text>();
-				weaponLevel.text = equipmentDatabase.equipment[weaponID].quantity.ToString();
+				//weaponLevel.text = equipmentDatabase.equipment[weaponID].quantity.ToString();
 			}
 		}
 	}
@@ -53,7 +53,7 @@ public class ContentPanel : MonoBehaviour {
 				weaponNameText.text = equipmentDatabase.equipment[weaponID + 1].equipmentName;
 				
 				Text weaponLevel = child.GetChild(3).GetComponent<Text>();
-				weaponLevel.text = equipmentDatabase.equipment[weaponID + 1].quantity.ToString();
+				//weaponLevel.text = equipmentDatabase.equipment[weaponID + 1].quantity.ToString();
 			}
 		}
 	}

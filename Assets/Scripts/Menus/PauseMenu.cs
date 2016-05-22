@@ -33,7 +33,7 @@ public class PauseMenu : MonoBehaviour {
 		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
 		
 		Destroy (gameObject);
-		equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentBaseMenu();
+		//equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentBaseMenu();
 	}
 	
 	public void OpenItemMenu () {
