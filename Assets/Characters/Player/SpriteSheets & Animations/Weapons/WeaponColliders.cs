@@ -15,8 +15,8 @@ public class WeaponColliders : MonoBehaviour {
 
     public void ActivateWeaponCollider(bool grounded)
     {
-        var equipmentType = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentType;
-        var equipmentTier = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentTier;
+        var equipmentType = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentType;
+        var equipmentTier = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentTier;
 
         if (grounded)
         {

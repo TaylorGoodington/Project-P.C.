@@ -31,7 +31,7 @@ public class Projectile : MonoBehaviour {
         decaying = false;
         projectileType = (GameControl.gameControl.playerClass == 3) ? ProjectileType.Arrow : ProjectileType.MagicMissle;
         weaponType = (GameControl.gameControl.playerClass == 3) ? "Bow" : "Staff";
-        projectileNumber = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentTier;
+        projectileNumber = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentTier;
         UpdateDirection();
     }
     //Play correct animation.

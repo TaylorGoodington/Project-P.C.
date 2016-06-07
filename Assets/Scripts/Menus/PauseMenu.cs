@@ -1,71 +1,161 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class PauseMenu : MonoBehaviour {
 
-	public GameObject itemMenu;
-	public GameObject equipmentMenu;
-	public GameObject skillsMenu;
-	public GameObject playerOptionsMenu;
-	
-	//item inventory script access.
-	public GameObject itemInventory;
-	
-	// equipment inventory script access.
-	public GameObject equipmentInventory;
+    Dictionary<int, int> pauseMenuPath;
+    int currentLevel;
 
-    private GameObject exitObject;
-    private Text exitText;
-	
-	void Start () {
-		EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("Equipment Menu"),null);
-        //ASSIGN EXIT OBJECT
+    public GameObject pauseMenu;
+    public GameObject[] level2;
+    public GameObject[] level3;
+    public GameObject[] level4;
+
+    [HideInInspector] public string path;
+    [HideInInspector] public string funnel;
+
+    void Start () {
+        pauseMenuPath = new Dictionary<int, int>();
+        pauseMenuPath.Add(1, 1);
+        pauseMenuPath.Add(2, 1);
+        pauseMenuPath.Add(3, 1);
+        currentLevel = 1;
 	}
 
     void Update ()
     {
-        //adjust exitText based on where the pause menu is being opened from.
+        if (Input.GetButtonDown("Cancel"))
+        {
+            Back();
+        }
     }
 	
-	public void OpenEquipmentMenu () {
-		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
-		
-		Destroy (gameObject);
-		//equipmentInventory.GetComponent<EquipmentInventory>().OpenEquipmentBaseMenu();
-	}
-	
-	public void OpenItemMenu () {
-		PlayerSoundEffects sound = GameObject.FindGameObjectWithTag("Player Sound Effects").GetComponent<PlayerSoundEffects>();
-		sound.PlaySoundEffect(sound.SoundEffectToArrayInt(PlayerSoundEffects.SoundEffect.MenuNavigation));
-		itemInventory.GetComponent<Inventory>().OpenItemMenu();
-		Destroy (gameObject);
-	}
-
-    public void AdjustExitFunctionality ()
+	public void Advance (int fork)
     {
-        //Change listeners to have the correct exit button.
+        funnel = EventSystem.current.currentSelectedGameObject.name;
+        if (currentLevel == 1)
+        {
+            pauseMenu.SetActive(false);
+            level2[fork].SetActive(true);
+            EventSystem.current.SetSelectedGameObject(level2[fork].transform.GetChild(0).gameObject);
+            currentLevel = 2;
+
+            if (fork == 1)
+            {
+                path = "Equipment";
+            }
+            else if (fork == 2)
+            {
+                path = "Skills";
+            }
+        }
+        else if (currentLevel == 2)
+        {
+            level2[fork].SetActive(false);
+            level3[fork].SetActive(true);
+            EventSystem.current.SetSelectedGameObject(level3[fork].transform.GetChild(0).gameObject);
+            currentLevel = 3;
+        }
+        else if (currentLevel == 3)
+        {
+            level3[fork].SetActive(false);
+            level4[fork].SetActive(true);
+            EventSystem.current.SetSelectedGameObject(level4[fork].transform.GetChild(0).gameObject);
+            currentLevel = 4;
+        }
+
+        if (EventSystem.current.currentSelectedGameObject.transform.parent.gameObject.name == "Selections Menu")
+        {
+            transform.parent.GetComponent<SelectionMenu>().ReRunList();
+        }
+
+        pauseMenuPath[currentLevel] = fork;
     }
 
-    public void OpenExitDialogue ()
+    public void Back ()
     {
-        //Turn on exit object
-        //set new selected object
-        //need to do something with pause menu levels to make sure back works.
-        AdjustExitFunctionality();
+        if (currentLevel == 4)
+        {
+            level4[pauseMenuPath[3]].SetActive(false);
+            level3[pauseMenuPath[2]].SetActive(true);
+            EventSystem.current.SetSelectedGameObject(level3[pauseMenuPath[3]].transform.GetChild(pauseMenuPath[3] - 1).gameObject);
+            currentLevel = 3;
+        }
+        else if (currentLevel == 3)
+        {
+            level3[pauseMenuPath[2]].SetActive(false);
+            level2[pauseMenuPath[1]].SetActive(true);
+            EventSystem.current.SetSelectedGameObject(level2[pauseMenuPath[2]].transform.GetChild(pauseMenuPath[2] - 1).gameObject);
+            currentLevel = 2;
+        }
+        else if (currentLevel == 2)
+        {
+            level2[pauseMenuPath[1]].SetActive(false);
+            pauseMenu.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(pauseMenu.transform.GetChild(pauseMenuPath[1] - 1).gameObject);
+            currentLevel = 1;
+        }
+        else if (currentLevel == 1)
+        {
+            GetComponent<Animator>().Play("Close");
+        }
     }
 
-    public void CloseExitDialogue ()
+    public void TurnOnPauseMenu ()
     {
-        //turn off exit object
-        //set exit to selected object
-        //need to do something with pause menu levels to make sure back works.
+        pauseMenu.SetActive(true);
     }
 
-    //Calls navigation sound effect from PlayerSoundEffects.
-    public void PlayNavigationSound ()
+    public void MakeFirstSelection ()
     {
-        PlayerSoundEffects.playerSoundEffects.PlayNavigationSound();
+        GameObject equipment = GameObject.FindGameObjectWithTag("Pause Menu").transform.GetChild(2).transform.GetChild(0).gameObject;
+        EventSystem.current.SetSelectedGameObject(equipment);
+        GameObject equipment1 = GameObject.FindGameObjectWithTag("Pause Menu").transform.GetChild(2).transform.GetChild(1).gameObject;
+        EventSystem.current.SetSelectedGameObject(equipment);
+        EventSystem.current.SetSelectedGameObject(equipment);
+    }
+
+    public void CloseMenus ()
+    {
+        if (currentLevel == 4)
+        {
+            level4[pauseMenuPath[3]].SetActive(false);
+
+        }
+        else if (currentLevel == 3)
+        {
+            level3[pauseMenuPath[2]].SetActive(false);
+
+        }
+        else if (currentLevel == 2)
+        {
+            level2[pauseMenuPath[1]].SetActive(false);
+
+        }
+        else if (currentLevel == 1)
+        {
+            pauseMenu.SetActive(false);
+        }
+    }
+
+    public void Destroy ()
+    {
+        Destroy(this.gameObject);
+
+        if (LevelManager.levelManager.inMapScenes == true)
+        {
+            GameControl.gameControl.reSelectMapObject = true;
+        }
+    }
+
+    public void PlayerHasControl ()
+    {
+        GameControl.gameControl.playerHasControl = true;
+    }
+
+    public void PlayerDoesntHaveControl ()
+    {
+        GameControl.gameControl.playerHasControl = false;
     }
 }

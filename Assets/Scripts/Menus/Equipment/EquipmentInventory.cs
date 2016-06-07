@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using System.Collections;
 
 public class EquipmentInventory : MonoBehaviour {
 
@@ -752,7 +750,7 @@ public class EquipmentInventory : MonoBehaviour {
     //		gameControl.equipmentMenuLevel = 2;
     //	}
 
-    
+
 
 
     //	public void DestroyEquipmentInInventory () {

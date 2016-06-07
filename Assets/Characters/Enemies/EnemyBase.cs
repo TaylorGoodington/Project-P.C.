@@ -33,11 +33,11 @@ public class EnemyBase : MonoBehaviour {
 
     [HideInInspector]
     public float engagementCounter;
-    [HideInInspector]
+    //[HideInInspector]
     public bool changingDirection;
-    [HideInInspector]
+    //[HideInInspector]
     public float minPatrolX;
-    [HideInInspector]
+    //[HideInInspector]
     public float maxPatrolX;
     [HideInInspector]
     public GameObject patrolPlatform;
@@ -1208,6 +1208,7 @@ public class EnemyBase : MonoBehaviour {
         yield return new WaitForSeconds(pivotTime);
         controller.collisions.faceDir = controller.collisions.faceDir * -1;
         velocity.x = Mathf.Lerp(velocity.x, controller.collisions.faceDir * moveSpeed, 1f);
+        changingDirection = false;
     }
 
     public void CreatePatrolPath()
@@ -1308,7 +1309,6 @@ public class EnemyBase : MonoBehaviour {
         GameControl.gameControl.xp += stats.expGranted;
 
         EquipmentDrops();
-        ItemDrops();
         GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().CallReceiveEquipment();
 
         Destroy(this.gameObject);
@@ -1320,19 +1320,6 @@ public class EnemyBase : MonoBehaviour {
         foreach (Equipment equipment in stats.equipmentDropped)
         {
             
-        }
-    }
-
-    //Add Item drops to player list
-    public void ItemDrops()
-    {
-        foreach (Items item in stats.itemsDropped)
-        {
-            int randomNumber = Random.Range(0, 101);
-            if (randomNumber <= item.dropRate)
-            {
-                GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().receivedItems.Add(ItemDatabase.itemDatabase.items[item.itemID]);
-            }
         }
     }
 

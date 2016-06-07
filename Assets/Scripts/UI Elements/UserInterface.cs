@@ -32,8 +32,6 @@ public class UserInterface : MonoBehaviour {
     [HideInInspector]
     public List<Equipment> receivedEquipment;
     [HideInInspector]
-    public List<Items> receivedItems;
-    [HideInInspector]
     public bool tallyingSpoils;
     private Animator animator;
     [HideInInspector]
@@ -289,24 +287,7 @@ public class UserInterface : MonoBehaviour {
             yield return new WaitForSeconds(1.1f);
         }
 
-        foreach (Items item in receivedItems)
-        {
-            equipmentGainedIcon.sprite = Resources.Load<Sprite>("Item Icons/" + ItemDatabase.itemDatabase.items[item.itemID].itemName);
-            equipmentGainedText.text = ItemDatabase.itemDatabase.items[item.itemID].itemName;
-            EquipmentGained.equipmentGained.EquipmentGainedAnimation();
-            if (GameControl.gameControl.itemInventoryList.Contains(ItemDatabase.itemDatabase.items[item.itemID]))
-            {
-                int index = GameControl.gameControl.itemInventoryList.IndexOf(ItemDatabase.itemDatabase.items[item.itemID]);
-                GameControl.gameControl.itemInventoryList[index].quantity++;
-            }
-            else {
-                GameControl.gameControl.itemInventoryList.Add(ItemDatabase.itemDatabase.items[item.itemID]);
-            }
-            yield return new WaitForSeconds(1.1f);
-        }
-
         GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().receivedEquipment.Clear();
-        GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().receivedItems.Clear();
         tallyingSpoils = false;
     }
 

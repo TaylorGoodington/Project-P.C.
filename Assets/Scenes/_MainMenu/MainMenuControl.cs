@@ -25,8 +25,6 @@ public class MainMenuControl : MonoBehaviour {
 
     void Start ()
     {
-        GameControl.gameControl.mainMenuControl = this;
-
         startAnimator = startObjects.gameObject.GetComponent<Animator>();
         mainMenuAnimator = mainMenuObjects.gameObject.GetComponent<Animator>();
         optionsAnimator = optionsObjects.gameObject.GetComponent<Animator>();

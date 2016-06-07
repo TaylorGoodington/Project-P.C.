@@ -105,8 +105,7 @@ public class LevelManager : MonoBehaviour {
     public void InitializeLevel (int level)
     {
         Animator initializationAnimator = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<Animator>();
-        GameControl.gameControl.UpdateEquippedStats();
-        GameControl.gameControl.CalculateHealthAndMana(false);
+        GameControl.gameControl.UpdateEquippedStats(false);
         enemiesDefeated = 0;
         levelTime = 0;
 
@@ -221,8 +220,7 @@ public class LevelManager : MonoBehaviour {
             cameraManager.transform.GetChild(1).gameObject.SetActive(false);
 
             Animator initializationAnimator = GameObject.FindGameObjectWithTag("UserInterface").GetComponent<Animator>();
-            GameControl.gameControl.UpdateEquippedStats();
-            GameControl.gameControl.CalculateHealthAndMana(false);
+            GameControl.gameControl.UpdateEquippedStats(false);
             enemiesDefeated = 0;
             levelTime = 0;
             initializationAnimator.Play("LevelIntroTransition");

@@ -165,8 +165,7 @@ public class Goblin1 : EnemyBase {
     //Add Items and Equipment Drops here...
     public void AddItemsAndEquipmentDrops()
     {
-        stats.itemsDropped.Add(ItemDatabase.itemDatabase.items[2]);
-        stats.itemsDropped[0].dropRate = 50;
+        
     }
 
     //Called by falling into a pit.

@@ -1,20 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerMapSprite : MonoBehaviour {
-
-    public SpriteRenderer body;
-    public Sprite[] bodySprites;
-    public SpriteRenderer equipment;
-    public Sprite[] equipmentSprites;
-    int equipmentIndex;
-    public SpriteRenderer hair;
-    public Sprite[] hairSprites;
-    public SpriteRenderer weapon;
-    public Sprite[] weaponSprites;
-    int weaponIndex;
+public class PlayerMapSprite : MonoBehaviour
+{
+    public Image body;
+    public Image equipment;
+    public Image hair;
+    public Image weapon;
+    PlayerSpriteDatabase spriteDatabase;
 
     void Start ()
     {
+        spriteDatabase = PlayerSpriteDatabase.playerSpriteDatabase;
         UpdateSprites();
     }
 
@@ -31,56 +28,14 @@ public class PlayerMapSprite : MonoBehaviour {
         transform.position = position;
     }
 
-    void UpdateSprites()
+    public void UpdateSprites()
     {
-        body.sprite = bodySprites[GameControl.gameControl.skinColorIndex - 1];
-        hair.sprite = hairSprites[GameControl.gameControl.hairIndex - 1];
-        AssignEquipmentIndex();
-        equipment.sprite = equipmentSprites[equipmentIndex];
-        AssignWeaponIndex();
-        weapon.sprite = weaponSprites[weaponIndex];
-    }
-
-    void AssignEquipmentIndex ()
-    {
-        if (EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedEquipmentIndex].equipmentName == "Pit Rags")
-        {
-            equipmentIndex = 0;
-        }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedEquipmentIndex].equipmentName == "Wizard Robes")
-        {
-            equipmentIndex = 1;
-        }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedEquipmentIndex].equipmentName == "Leather Armor")
-        {
-            equipmentIndex = 2;
-        }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedEquipmentIndex].equipmentName == "Plate Armor")
-        {
-            equipmentIndex = 3;
-        }
-    }
-
-    void AssignWeaponIndex ()
-    {
-        string weaponType = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentType.ToString();
-        int weaponNumber = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentTier;
-        string weaponTypeAndNumber = weaponType + weaponNumber;
-        if (weaponTypeAndNumber == "Sword1")
-        {
-            weaponIndex = 0;
-        }
-        else if (weaponTypeAndNumber == "Staff1")
-        {
-            weaponIndex = 10;
-        }
-        else if (weaponTypeAndNumber == "Bow1")
-        {
-            weaponIndex = 20;
-        }
-        else if (weaponTypeAndNumber == "Polearm1")
-        {
-            weaponIndex = 30;
-        }
+        body.sprite = spriteDatabase.bodySprites[GameControl.gameControl.skinColorIndex - 1];
+        hair.sprite = spriteDatabase.hairSprites[GameControl.gameControl.hairIndex - 1];
+        spriteDatabase.AssignEquipmentID(false);
+        spriteDatabase.AssignEquipmentIndex();
+        spriteDatabase.AssignWeaponIndex();
+        equipment.sprite = spriteDatabase.equipmentSprites[spriteDatabase.equipmentIndex];
+        weapon.sprite = spriteDatabase.weaponSprites[spriteDatabase.weaponIndex];
     }
 }

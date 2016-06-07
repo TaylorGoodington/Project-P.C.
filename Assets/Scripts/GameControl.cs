@@ -11,30 +11,11 @@ public class GameControl : MonoBehaviour {
     public static GameControl gameControl;
     static GameControl thisObject;
 	
-	//item inventory menu for instantiating.
-	public GameObject itemInventoryMenu;
-    public GameObject equipmentBaseMenu;
-    public GameObject equipmentSlotMenu;
 	public GameObject pauseMenu;
-
-	public PlayerSoundEffects playerSoundEffects;
-	public MusicManager musicManager;
-	
-	//item inventory script access.
-	public GameObject itemInventory;
-	
-	// equipment inventory script access.
-	public GameObject equipmentInventory;
-	public EquipmentDatabase equipmentDatabase;
-	
-	public ClassesDatabase classesDatabase;	
-	
-	public MainMenuControl mainMenuControl;
 
     public bool playerHasControl;
 	
 	//Player Data//
-	
 	public string playerName;
 	public int gameProgress;
 	public int playerLevel;
@@ -57,41 +38,25 @@ public class GameControl : MonoBehaviour {
     public int xpToLevel;
     public int hairIndex;
     public int skinColorIndex;
-    public int equippedEquipmentIndex;
-    public int equippedWeapon;
     public int maxCombos;
     public int playThroughNumber;
-	
-	public List<Items> itemInventoryList;
+    public int currency;
+
 	public List<Equipment> equipmentInventoryList;
-	public List<Equipment> weaponsList;
     public List<LevelScores> levelScores;
 
-    //remove later.
-    public int activeItem;
-	public int availableEvolutions;
-
-    #region Menu Levels
-    //Menu Levels are incremented by functions that dive deeper into the respective menu and are decremented by the back function.
-    public int equipmentMenuLevel = 0;
-	public int weaponEvolutionMenuLevel = 0;
-	public int pauseMenuLevel = 0;
-	public int itemsMenuLevel = 0;
-	public int mainMenuLevel = 0;
-	public int mainMenuDeleteLevel = 0;
-	public int mainMenuCopyLevel = 0;
-    public int ladyDeathMenu = 0;
-    #endregion
-
-    //this needs to be saved.
     //Next section is for profile selecting.
     [Range(1, 2)]
     public int currentProfile;
     public List<Skills> acquiredSkills;
+    public Skills selectedSkill;
     public List<Skills> profile1SlottedSkills;
     public List<Skills> profile2SlottedSkills;
-    public Skills selectedSkill;
-
+    public int profile1Equipment;
+    public int profile2Equipment;
+    public int profile1Weapon;
+    public int profile2Weapon;
+    
     public bool reSelectMapObject;
 
     public float hpRatio;
@@ -105,6 +70,18 @@ public class GameControl : MonoBehaviour {
     public bool startFromLoad;
     [HideInInspector]
     public bool dying;
+
+    #region Menu Levels
+    //Menu Levels are incremented by functions that dive deeper into the respective menu and are decremented by the back function.
+    public int equipmentMenuLevel = 0;
+    public int weaponEvolutionMenuLevel = 0;
+    public int pauseMenuLevel = 0;
+    public int itemsMenuLevel = 0;
+    public int mainMenuLevel = 0;
+    public int mainMenuDeleteLevel = 0;
+    public int mainMenuCopyLevel = 0;
+    public int ladyDeathMenu = 0;
+    #endregion
     #endregion
 
     void Awake () {
@@ -119,11 +96,14 @@ public class GameControl : MonoBehaviour {
 	
 	void Start () {
 		gameControl = GetComponent<GameControl>();
+
         reSelectMapObject = false;
         startFromLoad = true;
         playerHasControl = true;
-	
-		equipmentMenuLevel = 0;
+        endOfLevel = false;
+        dying = false;
+
+        equipmentMenuLevel = 0;
 		weaponEvolutionMenuLevel = 0;
 		pauseMenuLevel = 0;
 		itemsMenuLevel = 0;
@@ -131,12 +111,10 @@ public class GameControl : MonoBehaviour {
 		mainMenuDeleteLevel = 0;
 		mainMenuCopyLevel = 0;
         ladyDeathMenu = 0;
-        endOfLevel = false;
-        dying = false;
         currentProfile = 1;
 		
-		playerSoundEffects.ChangeVolume(PlayerPrefsManager.GetMasterEffectsVolume());
-		musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
+		PlayerSoundEffects.playerSoundEffects.ChangeVolume(PlayerPrefsManager.GetMasterEffectsVolume());
+		MusicManager.musicManager.ChangeVolume(PlayerPrefsManager.GetMasterMusicVolume());
     }
 	
 	void Update () {
@@ -146,7 +124,7 @@ public class GameControl : MonoBehaviour {
             if (Input.GetButtonDown("Open Pause Menu"))
             {
                 //makes opening pause menu impossible from the listed scenes, need to add a few for the world/region menus and cutscenes....might be easier to say when instead of when cant.
-                if (SceneManager.GetActiveScene().name == "_Splash" || SceneManager.GetActiveScene().name == "Start" ||
+                if (SceneManager.GetActiveScene().name == "Company Logo" || SceneManager.GetActiveScene().name == "Start" ||
                     SceneManager.GetActiveScene().name == "Main Menu" || SceneManager.GetActiveScene().name == "01b Options" || SceneManager.GetActiveScene().name == "Extras"
                     || GameObject.FindGameObjectWithTag("Back Dialogue"))
                 {
@@ -157,16 +135,10 @@ public class GameControl : MonoBehaviour {
                     if (AnyOpenMenus())
                     {
                         ClosePauseMenu();
-                        //MAKE A WAY TO CLOSE ALL PAUSE RELATED MENUS.
-                        pauseMenuLevel = 0;
-                        if (LevelManager.levelManager.inMapScenes == true)
-                        {
-                            reSelectMapObject = true;
-                        }
                     }
-                    else {
+                    else
+                    {
                         OpenPauseMenu();
-                        pauseMenuLevel = 1;
                     }
                 }
             }
@@ -175,7 +147,7 @@ public class GameControl : MonoBehaviour {
             //for level testing...
             if (Input.GetKeyDown(KeyCode.L))
             {
-                LevelManager.levelManager.LoadLevel("Level 11");
+                LevelManager.levelManager.LoadLevel("The Pit Intro");
             }
 
             #region Back Button
@@ -185,19 +157,19 @@ public class GameControl : MonoBehaviour {
                 //Main Menu.
                 if (mainMenuLevel > 0)
                 {
-                    mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousMainMenu(mainMenuLevel);
+                    GameObject.FindGameObjectWithTag("Main Menu").GetComponent<MainMenuControl>().OpenPreviousMainMenu(mainMenuLevel);
                     mainMenuLevel--;
                 }
                 //Copy Branch
                 if (mainMenuCopyLevel > 0)
                 {
-                    mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousCopyMenu(mainMenuCopyLevel);
+                    GameObject.FindGameObjectWithTag("Main Menu").GetComponent<MainMenuControl>().OpenPreviousCopyMenu(mainMenuCopyLevel);
                     mainMenuCopyLevel--;
                 }
                 //Delete Branch
                 if (mainMenuDeleteLevel > 0)
                 {
-                    mainMenuControl.GetComponent<MainMenuControl>().OpenPreviousDeleteMenu(mainMenuDeleteLevel);
+                    GameObject.FindGameObjectWithTag("Main Menu").GetComponent<MainMenuControl>().OpenPreviousDeleteMenu(mainMenuDeleteLevel);
                     mainMenuDeleteLevel--;
                 }
 
@@ -212,18 +184,7 @@ public class GameControl : MonoBehaviour {
                         reSelectMapObject = true;
                     }
                 }
-                //Items Menu.
-                if (itemsMenuLevel > 0)
-                {
-                    itemInventory.GetComponent<Inventory>().OpenPreviousWeaponMenu(itemsMenuLevel);
-                    itemsMenuLevel--;
-                }
-                //Equipment Menu.
-                if (equipmentMenuLevel > 0)
-                {
-                    //equipmentInventory.GetComponent<EquipmentInventory>().OpenPreviousEquipmentMenu(equipmentMenuLevel);
-                    equipmentMenuLevel--;
-                }
+
                 //Lady Death Menu.
                 if (ladyDeathMenu > 0)
                 {
@@ -239,12 +200,6 @@ public class GameControl : MonoBehaviour {
             }
             #endregion
 
-            //TODO TESTING THE PIT INTO LEVEL...
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                LevelManager.levelManager.LoadLevel("Level 68");
-            }
-
             #region Equipment Switching for testing
             //TODO TESTING FOR SWITCHING GEAR...MODIFY FOR ACTUAL USE LATER.
             if (Input.GetKeyDown(KeyCode.Tab))
@@ -252,41 +207,41 @@ public class GameControl : MonoBehaviour {
                 SkillsController.skillsController.ChangingEquipmentOrPerks();
                 //changing the equipment.
 
-                if (equippedEquipmentIndex == 411)
+                if (profile1Equipment == 411)
                 {
                     //playerClass = 1;
-                    equippedWeapon = 1;
-                    equippedEquipmentIndex = 401;
+                    profile1Weapon = 1;
+                    profile1Equipment = 401;
                     skinColorIndex = 2;
                     hairIndex = 2;
                 }
-                else if (equippedEquipmentIndex == 401)
+                else if (profile1Equipment == 401)
                 {
                     //playerClass = 3;
-                    equippedWeapon = 151;
-                    equippedEquipmentIndex = 428;
+                    profile1Weapon = 151;
+                    profile1Equipment = 428;
                     skinColorIndex = 1;
                     hairIndex = 1;
                 }
-                else if (equippedEquipmentIndex == 428)
+                else if (profile1Equipment == 428)
                 {
                     //playerClass = 2;
-                    equippedWeapon = 351;
-                    equippedEquipmentIndex = 433;
+                    profile1Weapon = 351;
+                    profile1Equipment = 433;
                     skinColorIndex = 2;
                     hairIndex = 3;
                 }
-                else if (equippedEquipmentIndex == 433)
+                else if (profile1Equipment == 433)
                 {
                     //playerClass = 4;
-                    equippedWeapon = 301;
-                    equippedEquipmentIndex = 411;
+                    profile1Weapon = 301;
+                    profile1Equipment = 411;
                     skinColorIndex = 3;
                     hairIndex = 4;
                 }
 
                 //Adjusts the max combo.
-                maxCombos = EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].maxCombos;
+                maxCombos = EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].maxCombos;
 
                 //Adjusts Current Class.
                 CurrentClass();
@@ -362,11 +317,14 @@ public class GameControl : MonoBehaviour {
     }
 	
 	public bool AnyOpenMenus () {
-		int menuIndex = equipmentMenuLevel + weaponEvolutionMenuLevel + pauseMenuLevel + itemsMenuLevel + mainMenuLevel + mainMenuDeleteLevel + mainMenuCopyLevel + ladyDeathMenu;
-		if (menuIndex > 0) {
+		int menuIndex = weaponEvolutionMenuLevel + mainMenuLevel + mainMenuDeleteLevel + mainMenuCopyLevel + ladyDeathMenu;
+		if (menuIndex > 0 || GameObject.FindGameObjectWithTag("Pause Menu"))
+        {
 			return true;
-		} else {
-			return false;
+		}
+        else
+        {
+            return false;
 		}
 	}
 	
@@ -375,7 +333,7 @@ public class GameControl : MonoBehaviour {
 	}
 	
 	public void ClosePauseMenu () {
-		Destroy(GameObject.FindGameObjectWithTag("Pause Menu"));
+		GameObject.FindGameObjectWithTag("Pause Menu").GetComponent<Animator>().Play("Close");
 	}
 
     public void LevelUpStats ()
@@ -387,34 +345,46 @@ public class GameControl : MonoBehaviour {
         baseHealth += ClassesDatabase.classDatabase.classes[playerClass].healthLevelBonus;
         baseMana += ClassesDatabase.classDatabase.classes[playerClass].manaLevelBonus;
 
-        //EquipmentInventory.equipmentInventory.UpdateEquippedStats();
-
-        CalculateHealthAndMana(false);
+        UpdateEquippedStats(false);
     }
 
-    public void UpdateEquippedStats()
+    public void UpdateEquippedStats(bool equipmentChange)
     {
         hpRatio = (float)hp / currentHealth;
         mpRatio = (float)mp / currentMana;
 
-        currentStrength = baseStrength + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentStrength +
-                          EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentStrength;
-        currentDefense = baseDefense + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentDefense +
-                         EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentDefense;
-        currentSpeed = baseSpeed + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentSpeed +
-                       EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentSpeed;
-        currentIntelligence = baseIntelligence + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentIntelligence +
-                              EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentIntelligence;
-        currentHealth = baseHealth + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentHealth +
-                        EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentHealth;
-        currentMana = baseMana + EquipmentDatabase.equipmentDatabase.equipment[equippedWeapon].equipmentMana +
-                      EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentIndex].equipmentMana;
+        currentStrength = baseStrength + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentStrength +
+                          EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentStrength;
+        currentDefense = baseDefense + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentDefense +
+                         EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentDefense;
+        currentSpeed = baseSpeed + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentSpeed +
+                       EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentSpeed;
+        currentIntelligence = baseIntelligence + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentIntelligence +
+                              EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentIntelligence;
+        currentHealth = baseHealth + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentHealth +
+                        EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentHealth;
+        currentMana = baseMana + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentMana +
+                      EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentMana;
 
-        CalculateHealthAndMana(true);
+        CalculateHealthAndMana(equipmentChange);
+    }
+
+    public void CalculateHealthAndMana(bool equipmentChange)
+    {
+        if (equipmentChange)
+        {
+            hp = Mathf.RoundToInt(currentHealth * hpRatio);
+            mp = Mathf.RoundToInt(currentMana * mpRatio);
+        }
+        else
+        {
+            hp = currentHealth * 10;
+            mp = currentMana * 10;
+        }
     }
 
     public void CurrentClass () {
-		string weaponClass = equipmentDatabase.equipment [equippedWeapon].equipmentType.ToString();
+		string weaponClass = EquipmentDatabase.equipmentDatabase.equipment [profile1Weapon].equipmentType.ToString();
 		if (weaponClass == "Sword") {
 			int classIndex = 0;
 			playerClass = classIndex;
@@ -441,23 +411,7 @@ public class GameControl : MonoBehaviour {
 			playerClass = classIndex;
 		}
 	}
-
-    //HP & MP
-    public void CalculateHealthAndMana (bool resetFromEquipment)
-    {
-        if (resetFromEquipment)
-        {
-            hp = Mathf.RoundToInt(currentHealth * hpRatio);
-            mp = Mathf.RoundToInt(currentMana * mpRatio);
-        }
-        else
-        {
-            hp = currentHealth * 10;
-            mp = currentMana * 10;
-        }
-    }
 	
-	//Save Section
 	public void Save () {
 		BinaryFormatter binaryFormatter = new BinaryFormatter ();
 		FileStream saveFile = File.Create (Application.persistentDataPath + "/playerInfo" + PlayerPrefsManager.GetGameFile() + ".dat");
@@ -484,22 +438,19 @@ public class GameControl : MonoBehaviour {
         playerData.skinColorIndex = skinColorIndex;
 
         playerData.playThroughNumber = playThroughNumber;
-        playerData.equippedWeapon = equippedWeapon;
-        playerData.equippedEquipmentIndex = equippedEquipmentIndex;
-
-        playerData.weaponsList = weaponsList;
+        
         playerData.equipmentInventoryList = equipmentInventoryList;
 		playerData.levelScores = levelScores;
-
+        playerData.currency = currency;
         playerData.currentProfile = currentProfile;
         playerData.acquiredSkills = acquiredSkills;
+        playerData.selectedSkill = selectedSkill;
         playerData.profile1SlottedSkills = profile1SlottedSkills;
         playerData.profile2SlottedSkills = profile2SlottedSkills;
-        playerData.selectedSkill = selectedSkill;
-
-		//Remove after equipment revamp.
-		playerData.itemInventoryList = itemInventoryList;
-        //*****************************
+        playerData.profile1Equipment = profile1Equipment;
+        playerData.profile2Equipment = profile2Equipment;
+        playerData.profile1Weapon = profile1Weapon;
+        playerData.profile2Weapon = profile2Weapon;
 
         binaryFormatter.Serialize (saveFile, playerData);
 		saveFile.Close();
@@ -512,6 +463,7 @@ public class GameControl : MonoBehaviour {
 			PlayerPrefsManager.SetGameFile(1);
 			PlayerPrefsManager.SetFile1PlayerName(playerName);
 			PlayerPrefsManager.SetFile1LevelProgress(gameProgress);
+            PlayerPrefsManager.SetFile1PlayerLevel(playerLevel);
 			Save ();
 		}
         else if (fileNumber == 2)
@@ -519,14 +471,16 @@ public class GameControl : MonoBehaviour {
 			PlayerPrefsManager.SetGameFile(2);
 			PlayerPrefsManager.SetFile2PlayerName(playerName);
 			PlayerPrefsManager.SetFile2LevelProgress(gameProgress);
-			Save ();
+            PlayerPrefsManager.SetFile2PlayerLevel(playerLevel);
+            Save ();
 		}
         else
         {
 			PlayerPrefsManager.SetGameFile(3);
 			PlayerPrefsManager.SetFile3PlayerName(playerName);
 			PlayerPrefsManager.SetFile3LevelProgress(gameProgress);
-			Save ();
+            PlayerPrefsManager.SetFile3PlayerLevel(playerLevel);
+            Save ();
 		}
 	}
 	
@@ -536,7 +490,6 @@ public class GameControl : MonoBehaviour {
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             FileStream saveFile = File.Open(Application.persistentDataPath + "/playerInfo" + fileNumber + ".dat", FileMode.Open);
             PlayerData playerData = (PlayerData)binaryFormatter.Deserialize(saveFile);
-            
 
             playerName = playerData.playerName;
             gameProgress = playerData.gameProgress;
@@ -549,68 +502,54 @@ public class GameControl : MonoBehaviour {
             baseHealth = playerData.baseHealth;
             baseMana = playerData.baseMana;
 
-            itemInventoryList = playerData.itemInventoryList;
-            equipmentInventoryList = playerData.equipmentInventoryList;
-
             currentStrength = playerData.currentStrength;
             currentDefense = playerData.currentDefense;
             currentSpeed = playerData.currentSpeed;
             currentIntelligence = playerData.currentIntelligence;
             currentHealth = playerData.currentHealth;
             currentMana = playerData.currentMana;
+            
 
-            //ToDo needs to be saved
-            equippedEquipmentIndex = playerData.equippedEquipmentIndex;
-            skinColorIndex = playerData.skinColorIndex;
             hairIndex = playerData.hairIndex;
-            equippedWeapon = playerData.equippedWeapon;
+            skinColorIndex = playerData.skinColorIndex;
 
+            playThroughNumber = playerData.playThroughNumber;
+            equipmentInventoryList = playerData.equipmentInventoryList;
             levelScores = playerData.levelScores;
 
-            UpdateEquippedStats();
+            currency = playerData.currency;
+            currentProfile = playerData.currentProfile;
+            acquiredSkills = playerData.acquiredSkills;
+            selectedSkill = playerData.selectedSkill;
+            profile1SlottedSkills = playerData.profile1SlottedSkills;
+            profile2SlottedSkills = playerData.profile2SlottedSkills;
+            profile1Equipment = playerData.profile1Equipment;
+            profile2Equipment = playerData.profile2Equipment;
+            profile1Weapon = playerData.profile1Weapon;
+            profile2Weapon = playerData.profile2Weapon;
+
+            UpdateEquippedStats(false);
             xpToLevel = ExperienceToLevel.experienceToLevel.levels[playerLevel].experienceToLevel;
 
             //TODO Remove after testing.
             LoadSkills();
 
-            saveFile.Close(); //I wonder if this should go at the end of the method...            
+            saveFile.Close();          
         }
-
-        if (fileNumber == 1)
-        {
-			PlayerPrefsManager.SetGameFile(1);
-			PlayerPrefsManager.SetFile1PlayerName(playerName);
-			PlayerPrefsManager.SetFile1LevelProgress(gameProgress);
-			Save ();
-		}
-        else if (fileNumber == 2)
-        {
-			PlayerPrefsManager.SetGameFile(2);
-			PlayerPrefsManager.SetFile2PlayerName(playerName);
-			PlayerPrefsManager.SetFile2LevelProgress(gameProgress);
-			Save ();
-		}
-        else
-        {
-			PlayerPrefsManager.SetGameFile(3);
-			PlayerPrefsManager.SetFile3PlayerName(playerName);
-			PlayerPrefsManager.SetFile3LevelProgress(gameProgress);
-			Save ();
-		}
 	}
 
     private void LoadSkills()
     {
         //Change these lines to actually load the data.
-        acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[4]);
+        acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[0]);
         acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[1]);
-        acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[2]);
+        acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[4]);
         acquiredSkills.Add(SkillsDatabase.skillsDatabase.skills[3]);
-        profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[4]);
+        profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[0]);
         profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[1]);
-        profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[2]);
+        profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[4]);
         profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[3]);
-        selectedSkill = SkillsDatabase.skillsDatabase.skills[4];
+        selectedSkill = SkillsDatabase.skillsDatabase.skills[0];
 
         //Keep these lines.
         SkillsController.skillsController.acquiredSkills = acquiredSkills;
@@ -619,12 +558,10 @@ public class GameControl : MonoBehaviour {
     }
     
     public void NewGame (int fileNumber) {
-        //do some stuff about initializing here
         ResetNewGameData();
 		
-		//remove this stuff at some point.
-		playerName = "Taylor" + fileNumber;
-		gameProgress = 27;
+		playerName = "";
+		gameProgress = 0;
 
 		playerLevel = 1;
 		baseStrength = 1;
@@ -635,19 +572,16 @@ public class GameControl : MonoBehaviour {
 		baseMana = 1;
 
         playerClass = 0;
-        equippedWeapon = 1;
-
-        //ToDo needs to be saved
-        equippedEquipmentIndex = 401;
-        skinColorIndex = 2;
-        hairIndex = 2;
-        maxCombos = 3;
+        profile1Weapon = 1;
+        profile1Equipment = 401;
+        skinColorIndex = 1;
+        hairIndex = 1;
 
         xpToLevel = ExperienceToLevel.experienceToLevel.levels[playerLevel].experienceToLevel;
-        UpdateEquippedStats();
+        UpdateEquippedStats(false);
 
         AddLevelScores();
-
+        currency = 0;
         //TODO Remove after testing.
         LoadSkills();
 
@@ -658,7 +592,6 @@ public class GameControl : MonoBehaviour {
     {
         levelScores.Clear();
         equipmentInventoryList.Clear();
-        weaponsList.Clear();
         acquiredSkills.Clear();
         profile1SlottedSkills.Clear();
         profile2SlottedSkills.Clear();
@@ -703,23 +636,18 @@ class PlayerData {
 
     public int hairIndex;
     public int skinColorIndex;
-
     public int playThroughNumber;
-    public int equippedWeapon;
-    public int equippedEquipmentIndex;
-
-    public List<Equipment> weaponsList;
+    
 	public List<Equipment> equipmentInventoryList;
     public List<LevelScores> levelScores;
-
+    public int currency;
     public int currentProfile;
     public List<Skills> acquiredSkills;
+    public Skills selectedSkill;
     public List<Skills> profile1SlottedSkills;
     public List<Skills> profile2SlottedSkills;
-    public Skills selectedSkill;
-
-    //TODO 
-    #region This needs to be removed after equipment gets revamped.
-    public List<Items> itemInventoryList;
-    #endregion
+    public int profile1Equipment;
+    public int profile2Equipment;
+    public int profile1Weapon;
+    public int profile2Weapon;
 }

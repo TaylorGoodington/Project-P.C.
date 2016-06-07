@@ -67,7 +67,7 @@ public class CombatEngine : MonoBehaviour {
     }
 
     public void CalculateAttackDamage() {
-        Equipment.EquipmentType weaponClass = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentType;
+        Equipment.EquipmentType weaponClass = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentType;
         if (weaponClass == Equipment.EquipmentType.Sword || weaponClass == Equipment.EquipmentType.Axe)
         {
             attackDamage = GameControl.gameControl.currentStrength;
@@ -212,26 +212,6 @@ public class CombatEngine : MonoBehaviour {
         }
         yield return null;
     }
-
-
- //   public void AttackingEnemies (Collider2D collider, bool damageFromAbility = false)
- //   {
- //       if (AttackingPhase(collider, Attacker.Player))
- //       {
- //           if (HittingPhase(collider, Attacker.Player))
- //           {
- //               if (DealingDamageToEnemyPhase(collider, damageFromAbility))
- //               {
-                    
- //               }
- //           }
- //       }
- //       else
- //       {
- //           //at the end we should clear the active skills list for anything the triggered, that doesnt have a duration.
- //           SkillsController.skillsController.ClearAttackingCombatTriggeredAbilitiesFromList();
- //       }
-	//}
 
     //The collider being passed here is actually the enemy attacker, since we would have no other way of knowing which one it was.
     public void AttackingPlayer (Collider2D collider, int damage)

@@ -3,6 +3,7 @@
 public class BoneMarauder1 : EnemyBase
 {
     string enemyType = "BoneMarauder1";
+    public GameObject weaponCollider;
 
     public override void Start()
     {
@@ -163,8 +164,7 @@ public class BoneMarauder1 : EnemyBase
     //Add Items and Equipment Drops here...
     public void AddItemsAndEquipmentDrops()
     {
-        stats.itemsDropped.Add(ItemDatabase.itemDatabase.items[2]);
-        stats.itemsDropped[0].dropRate = 50;
+        
     }
 
     //Called by falling into a pit.
@@ -176,7 +176,13 @@ public class BoneMarauder1 : EnemyBase
     //Called from the animator.
     public override void Attack()
     {
-        //Overwrite if neccesary.
-        base.Attack();
+        if (GetComponent<SpriteRenderer>().flipX)
+        {
+            weaponCollider.transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+        else
+        {
+            weaponCollider.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 }

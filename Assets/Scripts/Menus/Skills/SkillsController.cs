@@ -328,7 +328,7 @@ public class SkillsController : MonoBehaviour {
     public void ActivateAbilityTest (int skillID)
     {
         if ((skillsDatabase.skills[skillID].requiredWeapon.ToString() == "None" ||
-            skillsDatabase.skills[skillID].requiredWeapon.ToString() == EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentType.ToString()) &&
+            skillsDatabase.skills[skillID].requiredWeapon.ToString() == EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentType.ToString()) &&
             cooldownList.ContainsKey(skillID) == false &&
             GameControl.gameControl.mp >= skillsDatabase.skills[skillID].manaCost)
         {

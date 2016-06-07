@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class BabaYaga : EnemyBase
 {
-
     #region Variables
     public bool changingLocations;
 
@@ -26,7 +24,7 @@ public class BabaYaga : EnemyBase
     public GameObject skullFormation1;
     public GameObject skullFormation2;
     public GameObject skullFormation3;
-
+    float attackTimer;
     bool death;
     #endregion
 
@@ -39,6 +37,7 @@ public class BabaYaga : EnemyBase
         changingLocations = false;
         beingAttacked = false;
         swapTimer = initialSwapTime - aggressionPhase;
+        attackTimer = 3;
         aggressionPhase = 1;
         freePestelPosition = new Vector3(1535, 153);
         pestelIsFree = false;
@@ -54,8 +53,7 @@ public class BabaYaga : EnemyBase
     //Add Items and Equipment Drops here...
     public void AddItemsAndEquipmentDrops()
     {
-        stats.itemsDropped.Add(ItemDatabase.itemDatabase.items[2]);
-        stats.itemsDropped[0].dropRate = 50;
+        
     }
 
     public override void Update()
@@ -121,6 +119,7 @@ public class BabaYaga : EnemyBase
                     if (beingAttackedTimer > 0)
                     {
                         beingAttackedTimer -= Time.deltaTime;
+                        swapTimer = beingAttackedTimer;
                     }
                     else
                     {
@@ -163,7 +162,7 @@ public class BabaYaga : EnemyBase
                 //Attack!
                 if (!isAttacking)
                 {
-                    StartCoroutine("Attack");
+                    AttackTimer();
                 }
             }
         }
@@ -197,8 +196,15 @@ public class BabaYaga : EnemyBase
 
     void ClearTheBoard()
     {
-        changingLocations = false;
-        swapTimer = 0;
+        attackTimer += 1;
+        FlinchRecovered();
+        enemyAnimationController.Play("FadeOut");
+        if (!pestelIsFree)
+        {
+            pestel.Play("PestelFadeOut");
+        }
+        swapTimer = initialSwapTime - aggressionPhase;
+
         if (attackNumber == 1)
         {
             if (GameObject.FindObjectOfType<FreePestel>())
@@ -227,6 +233,21 @@ public class BabaYaga : EnemyBase
             {
                 StartChangingLocations();
             }
+        }
+    }
+
+    void AttackTimer ()
+    {
+        if (attackTimer <= 0)
+        {
+            if (!changingLocations)
+            {
+                Attack();
+            }
+        }
+        else
+        {
+            attackTimer -= Time.deltaTime;
         }
     }
 
@@ -268,14 +289,14 @@ public class BabaYaga : EnemyBase
     public void LocationsChanged ()
     {
         changingLocations = false;
+        damagedTimerIsOn = false;
     }
 
     //Called from the animator.
-    new IEnumerator Attack()
+    public override void Attack()
     {
         isAttacking = true;
         attackNumber = Random.Range(0, 5);
-        yield return new WaitForSeconds(5 - aggressionPhase);
 
         if (attackNumber == 1)
         {

@@ -5,14 +5,12 @@ public class ParallaxScrolling : MonoBehaviour {
 	public static ParallaxScrolling parallaxScrolling;
 
 	public Transform[] backgrounds;
-	public float smoothing = 20;
+	//private float smoothing = 20;
 	
 	private Collider2D levelCollider;
 	private float levelSizeX;
 	private float levelSizeY;
-	[HideInInspector]
-	public Bounds levelBounds;
-	//private Controller2D Controller2D;
+	[HideInInspector] public Bounds levelBounds;
 	
 	//this works in 2:1 aspect ratio.
 	private float cameraWidth;
@@ -24,10 +22,9 @@ public class ParallaxScrolling : MonoBehaviour {
 		cameraPosition = GameObject.FindGameObjectWithTag("MainCamera").transform.position;
 		cameraWidth = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().orthographicSize * 2 * 2;
 		levelCollider = this.GetComponent<Collider2D>();
-		levelSizeX = levelCollider.bounds.size.x - (cameraWidth / 2);
-		levelSizeY = levelCollider.bounds.size.y;
+		levelSizeX = levelCollider.bounds.size.x;
+        levelSizeY = levelCollider.bounds.size.y;
 		levelBounds = levelCollider.bounds;
-		//Controller2D = GameObject.FindObjectOfType<Controller2D>();
 	}
 	
 	//called from the camera follow script.
@@ -38,13 +35,14 @@ public class ParallaxScrolling : MonoBehaviour {
 			float backgroundSizeY = backgrounds[i].GetComponent<SpriteRenderer>().bounds.size.y * 1;
 			
 			float maxBackgroundPositionY = levelSizeY - backgroundSizeY;
-//			float maxCameraPositionY = levelSizeY - (cameraWidth / 4);
+            float distanceToMoveX = levelSizeX - cameraWidth;
+            float distanceToMoveY = levelSizeX - (cameraWidth / 2);
 
-			float rateOfMovementX = (backgroundSizeX - cameraWidth) / levelSizeX;
-			float rateOfMovementY = (backgroundSizeY - (cameraWidth / 2)) / levelSizeY;
+            float rateOfMovementX = (backgroundSizeX - cameraWidth) / distanceToMoveX;
+			float rateOfMovementY = (backgroundSizeY - (cameraWidth / 2)) / distanceToMoveY;
 
-			var backgroundTargetPositionX = ((cameraPosition.x - cameraWidth / 2) + (rateOfMovementX * (cameraWidth / 2))) - (cameraPosition.x * (rateOfMovementX));
-			var backgroundTargetPositionY = ((cameraPosition.y - cameraWidth / 4) + (rateOfMovementY * (cameraWidth / 4))) - (cameraPosition.y * (rateOfMovementY));
+            var backgroundTargetPositionX = ((cameraPosition.x - cameraWidth / 2) + (rateOfMovementX * (cameraWidth / 2))) - (cameraPosition.x * (rateOfMovementX));
+            var backgroundTargetPositionY = ((cameraPosition.y - cameraWidth / 4) + (rateOfMovementY * (cameraWidth / 4))) - (cameraPosition.y * (rateOfMovementY));
 			
 			backgrounds[i].position = Vector3.Lerp(
                 //From:

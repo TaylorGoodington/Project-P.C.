@@ -129,6 +129,7 @@ public class Player : MonoBehaviour
         #region Flinching Section
         else if (flinching)
         {
+            UnPauseAnimators();
             isAttacking = false;
             attackLaunched = false;
             weaponCollider.DisableActiveCollider();
@@ -145,7 +146,7 @@ public class Player : MonoBehaviour
                 gravity = -1000;
                 velocity.y = 0;
                 velocity.y += gravity * Time.deltaTime;
-                velocity.x = (CombatEngine.combatEngine.enemyKnockBackForce / flinchTime) * CombatEngine.combatEngine.enemyFaceDirection * Time.deltaTime;
+                velocity.x = (CombatEngine.combatEngine.enemyKnockBackForce / flinchTime) * CombatEngine.combatEngine.enemyFaceDirection;
                 controller.Move(velocity * Time.deltaTime, input);
             }
             else
@@ -553,6 +554,12 @@ public class Player : MonoBehaviour
         {
             GameObject.FindGameObjectWithTag("UserInterface").GetComponent<UserInterface>().showInteractableDisplay = true;
         }
+
+        if (collider.tag == "EnemyWeaponCollider")
+        {
+            GameObject enemy = collider.transform.parent.gameObject;
+            CombatEngine.combatEngine.AttackingPlayer(enemy.GetComponent<Collider2D>(), enemy.GetComponent<EnemyStats>().maximumDamage);
+        }
     }
 
     //this will be used to gauge interactions...I might need to do these things in the climbable script.
@@ -646,11 +653,11 @@ public class Player : MonoBehaviour
     //called from the animations for attacking.
     public void Attack()
     {
-        knockBackForce = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].knockbackForce;
+        knockBackForce = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].knockbackForce;
         CombatEngine.combatEngine.enemyKnockBackDirection = controller.collisions.faceDir;
 
         //Wizards(4) and Rangers(3) fire a projectile that calls attack on contact.
-        int projectileNumber = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].equipmentTier - 1;
+        int projectileNumber = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentTier - 1;
         if (GameControl.gameControl.playerClass == 3)
         {
             if (controller.collisions.below)

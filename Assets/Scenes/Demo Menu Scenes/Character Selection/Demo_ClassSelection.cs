@@ -54,11 +54,11 @@ public class Demo_ClassSelection : MonoBehaviour {
     {
         GameControl.gameControl.NewGame(1);
         //set gamecontrol stuff
-        GameControl.gameControl.equippedWeapon = 10;
-        GameControl.gameControl.equippedEquipmentIndex = 1;
+        GameControl.gameControl.profile1Weapon = 10;
+        GameControl.gameControl.profile1Equipment = 1;
         GameControl.gameControl.skinColorIndex = 2;
         GameControl.gameControl.hairIndex = 2;
-        GameControl.gameControl.maxCombos = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.equippedWeapon].maxCombos;
+        GameControl.gameControl.maxCombos = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].maxCombos;
         GameControl.gameControl.CurrentClass();
         //EquipmentInventory.equipmentInventory.UpdateEquippedStats();
         SkillsController.skillsController.DoneChangingEquipmentOrPerks();

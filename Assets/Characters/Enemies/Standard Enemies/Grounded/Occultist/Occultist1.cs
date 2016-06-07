@@ -83,19 +83,19 @@ public class Occultist1 : EnemyBase
             if (state == EnemyState.Attacking)
             {
                 //This is where we would call the animator to attack.
-                if (!InAttackRange())
-                {
-                    isAttacking = false;
+                //if (!InAttackRange())
+                //{
+                //    isAttacking = false;
                     state = EnemyState.Chasing;
-                }
-                else
-                {
-                    if (!isAttacking && controller.collisions.below == true)
-                    {
-                        isAttacking = true;
-                        enemyAnimationController.Play(enemyType + "Attacking");
-                    }
-                }
+                //}
+                //else
+                //{
+                //    if (!isAttacking && controller.collisions.below == true)
+                //    {
+                //        isAttacking = true;
+                //        enemyAnimationController.Play(enemyType + "Attacking");
+                //    }
+                //}
             }
 
             //Chasing
@@ -165,8 +165,7 @@ public class Occultist1 : EnemyBase
     //Add Items and Equipment Drops here...
     public void AddItemsAndEquipmentDrops()
     {
-        stats.itemsDropped.Add(ItemDatabase.itemDatabase.items[2]);
-        stats.itemsDropped[0].dropRate = 50;
+        
     }
 
     //Called by falling into a pit.

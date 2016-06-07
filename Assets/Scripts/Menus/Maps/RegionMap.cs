@@ -7,14 +7,18 @@ public class RegionMap : MonoBehaviour {
     Animator animator;
     public GameObject currentSelected;
     public GameObject quitDialogue;
+    public GameObject playerMapSprite;
     public bool headingToWorldMap;
     GameObject levelToLoad;
+    bool playerSpriteIsUp;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         TransitionToRegionMap();
         headingToWorldMap = false;
+        playerSpriteIsUp = false;
+        playerMapSprite.SetActive(false);
     }
 
     void Update()
@@ -28,7 +32,11 @@ public class RegionMap : MonoBehaviour {
         if (!GameControl.gameControl.AnyOpenMenus() && quitDialogue.activeSelf == false)
         {
             currentSelected = EventSystem.current.currentSelectedGameObject;
-
+            if (playerSpriteIsUp)
+            {
+                playerMapSprite.SetActive(true);
+                playerMapSprite.GetComponent<PlayerMapSprite>().SetPosition(currentSelected.transform.position);
+            }
             if (Input.GetButtonDown("Cancel"))
             {
                 OpenQuitDialogue();
@@ -155,6 +163,7 @@ public class RegionMap : MonoBehaviour {
         }
 
         GameControl.gameControl.playerHasControl = true;
+        playerSpriteIsUp = true;
     }
 
     //Called by the animator
@@ -170,6 +179,7 @@ public class RegionMap : MonoBehaviour {
         GameControl.gameControl.playerHasControl = false;
         CloseQuitDialogue();
         animator.Play("Transition Out");
+        playerSpriteIsUp = false;
     }
 
     //Called by the animator
@@ -202,7 +212,8 @@ public class RegionMap : MonoBehaviour {
     {
         quitDialogue.SetActive(true);
         headingToWorldMap = false;
-        EventSystem.current.SetSelectedGameObject(quitDialogue.transform.GetChild(4).gameObject);
+        GameObject yes = quitDialogue.transform.FindChild("Yes").gameObject;
+        EventSystem.current.SetSelectedGameObject(yes);
     }
 
     public void CloseQuitDialogue()
