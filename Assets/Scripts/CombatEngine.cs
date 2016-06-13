@@ -72,7 +72,7 @@ public class CombatEngine : MonoBehaviour {
         {
             attackDamage = GameControl.gameControl.currentStrength;
         }
-        else if (weaponClass == Equipment.EquipmentType.Polearm || weaponClass == Equipment.EquipmentType.Fist)
+        else if (weaponClass == Equipment.EquipmentType.Polearm || weaponClass == Equipment.EquipmentType.Knuckle)
         {
             attackDamage = GameControl.gameControl.currentStrength;
         }

@@ -2,30 +2,31 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class SelectionMenu : MonoBehaviour {
+public class SelectionMenu : MonoBehaviour
+{
 
     string path;
     string funnel;
     List<Skills> inventorySkillsList;
     List<Equipment> inventoryEquipmentList;
     List<Skills> skillsList;
-    List<Equipment> equipmentList;
+    public List<Equipment> equipmentList;
 
-	void Start () {
-        inventorySkillsList = GameControl.gameControl.acquiredSkills;
-        inventoryEquipmentList = GameControl.gameControl.equipmentInventoryList;
-
-        skillsList = new List<Skills>();
-        equipmentList = new List<Equipment>();
-    }
-
-    public void ReRunList ()
+    void Start()
     {
         inventorySkillsList = GameControl.gameControl.acquiredSkills;
         inventoryEquipmentList = GameControl.gameControl.equipmentInventoryList;
+    }
 
-        skillsList = new List<Skills>();
-        equipmentList = new List<Equipment>();
+    public void OnEnable()
+    {
+        ReRunList();
+    }
+
+    public void ReRunList()
+    {
+        inventorySkillsList = GameControl.gameControl.acquiredSkills;
+        inventoryEquipmentList = GameControl.gameControl.equipmentInventoryList;
 
         path = GameObject.FindGameObjectWithTag("Pause Menu").GetComponent<PauseMenu>().path;
         funnel = GameObject.FindGameObjectWithTag("Pause Menu").GetComponent<PauseMenu>().funnel;
@@ -35,15 +36,18 @@ public class SelectionMenu : MonoBehaviour {
         PopulateSelectionMenu();
     }
 
-    public void DefineSelectionList ()
+    public void DefineSelectionList()
     {
+        skillsList = new List<Skills>();
+        equipmentList = new List<Equipment>();
+
         if (path == "Equipment")
         {
             if (funnel == "Equipment")
             {
                 foreach (Equipment armor in inventoryEquipmentList)
                 {
-                    if (EquipmentController.Equipmentcontroller.IsArmorEquipable(armor.equipmentName))
+                    if (EquipmentController.equipmentController.IsArmorEquipable(armor.equipmentName))
                     {
                         equipmentList.Add(armor);
                     }
@@ -53,7 +57,9 @@ public class SelectionMenu : MonoBehaviour {
             {
                 foreach (Equipment weapon in inventoryEquipmentList)
                 {
-                    if (weapon.equipmentType.ToString() == funnel)
+                    string weaponName = weapon.equipmentType.ToString();
+                    weaponName = (weaponName == "Staff") ? "Staves" : weaponName + "s";
+                    if (weaponName == funnel)
                     {
                         equipmentList.Add(weapon);
                     }
@@ -72,86 +78,43 @@ public class SelectionMenu : MonoBehaviour {
         }
     }
 
-    public void PopulateSelectionMenu ()
+    public void PopulateSelectionMenu()
     {
         int index = 0;
 
         #region Equipment Section
         if (path == "Equipment")
         {
-            #region Armor
-            if (funnel == "Equipment")
+            foreach (Transform child in transform)
             {
-                foreach (Transform child in transform)
+                if (index < equipmentList.Count)
                 {
+                    child.gameObject.SetActive(true);
+                    child.GetComponent<Text>().text = equipmentList[index].equipmentName;
+                    child.transform.GetChild(0).GetComponent<Text>().text = equipmentList[index].equipmentID.ToString();
+
                     //Checks if the Equipment is equipped
-                    if (GameControl.gameControl.currentProfile == 1)
+                    if (GameControl.gameControl.profile1Equipment == equipmentList[index].equipmentID ||
+                        GameControl.gameControl.profile2Equipment == equipmentList[index].equipmentID ||
+                        GameControl.gameControl.profile1Weapon == equipmentList[index].equipmentID ||
+                        GameControl.gameControl.profile2Weapon == equipmentList[index].equipmentID)
                     {
-                        if (GameControl.gameControl.profile1Equipment == equipmentList[index].equipmentID)
-                        {
-                            child.GetComponent<Button>().interactable = false;
-                        }
+                        //add listener that makes rejection noise
                     }
                     else
                     {
-                        if (GameControl.gameControl.profile2Equipment == equipmentList[index].equipmentID)
-                        {
-                            child.GetComponent<Button>().interactable = false;
-                        }
+                        //add listener that swtiched the equipment
+                        //Button playButton = expansion.transform.GetChild(1).GetComponent<Button>();
+                        //playButton.onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().PlayGame(fileNumber));
                     }
-
-                    //Updates List if necessary
-                    if (index > skillsList.Count)
-                    {
-                        child.gameObject.SetActive(false);
-                    }
-                    else
-                    {
-                        child.GetComponent<Text>().text = equipmentList[index].equipmentName;
-                        child.transform.GetChild(0).GetComponent<Text>().text = equipmentList[index].equipmentID.ToString();
-                    }
-
-                    index++;
                 }
-            }
-            #endregion
-
-            #region Weapons
-            else
-            {
-                foreach (Transform child in transform)
+                else
                 {
-                    //Checks if the Weapon is equipped
-                    if (GameControl.gameControl.currentProfile == 1)
-                    {
-                        if (GameControl.gameControl.profile1Weapon == equipmentList[index].equipmentID)
-                        {
-                            child.GetComponent<Button>().interactable = false;
-                        }
-                    }
-                    else
-                    {
-                        if (GameControl.gameControl.profile2Weapon == equipmentList[index].equipmentID)
-                        {
-                            child.GetComponent<Button>().interactable = false;
-                        }
-                    }
-
-                    //Updates List if necessary
-                    if (index > skillsList.Count)
-                    {
-                        child.gameObject.SetActive(false);
-                    }
-                    else
-                    {
-                        child.GetComponent<Text>().text = equipmentList[index].equipmentName;
-                        child.transform.GetChild(0).GetComponent<Text>().text = equipmentList[index].equipmentID.ToString();
-                    }
-
-                    index++;
+                    child.gameObject.SetActive(false);
                 }
+
+                index++;
             }
-            #endregion
         }
         #endregion
 
@@ -186,7 +149,7 @@ public class SelectionMenu : MonoBehaviour {
                     child.GetComponent<Text>().text = skillsList[index].skillName;
                     child.transform.GetChild(0).GetComponent<Text>().text = skillsList[index].skillID.ToString();
                 }
-                
+
                 index++;
             }
         }

@@ -28,7 +28,7 @@ public class Equipment {
 		Axe,
 		Dagger,
 		Bow,
-		Fist,
+		Knuckle,
 		Talisman,
 		Staff,
 		Polearm

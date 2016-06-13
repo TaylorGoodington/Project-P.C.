@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class EquipmentController: MonoBehaviour
 {
     #region Variables
-    public static EquipmentController Equipmentcontroller;
+    public static EquipmentController equipmentController;
     public bool proceedWithUpgradeAnyway;
 
     Dictionary<int, int> upgradeCost;
@@ -23,6 +23,7 @@ public class EquipmentController: MonoBehaviour
 
     void Start ()
     {
+        equipmentController = GetComponent<EquipmentController>();
         InitializeClassArmorList();
         InitializeEquipmentUpgradeCosts();
         proceedWithUpgradeAnyway = false;
@@ -101,6 +102,32 @@ public class EquipmentController: MonoBehaviour
         paladinArmor.Add("Noble Cuirass");
         paladinArmor.Add("Hallowed Robe");
         #endregion
+    }
+
+    public void InitializeNewGameEquipment ()
+    {
+        //Armor
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[401]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[411]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[421]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[431]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[441]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[451]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[461]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[471]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[481]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[491]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[501]);
+
+        //Weapons
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[1]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[51]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[101]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[151]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[201]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[251]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[301]);
+        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[351]);
     }
 
     public bool IsArmorEquipable (string armor)

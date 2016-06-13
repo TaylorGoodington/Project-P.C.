@@ -147,6 +147,7 @@ public class GameControl : MonoBehaviour {
             //for level testing...
             if (Input.GetKeyDown(KeyCode.L))
             {
+                LoadFile(1);
                 LevelManager.levelManager.LoadLevel("The Pit Intro");
             }
 
@@ -403,7 +404,7 @@ public class GameControl : MonoBehaviour {
 		} else if (weaponClass == "Talisman") {
 			int classIndex = 5;
 			playerClass = classIndex;
-		} else if (weaponClass == "Fist") {
+		} else if (weaponClass == "Knuckles") {
 			int classIndex = 6;
 			playerClass = classIndex;
 		} else {
@@ -584,6 +585,7 @@ public class GameControl : MonoBehaviour {
         currency = 0;
         //TODO Remove after testing.
         LoadSkills();
+        EquipmentController.equipmentController.InitializeNewGameEquipment();
 
         SaveFile(fileNumber);
 	}

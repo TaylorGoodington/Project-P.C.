@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerSpriteDatabase : MonoBehaviour
 {
@@ -9,7 +11,7 @@ public class PlayerSpriteDatabase : MonoBehaviour
     public Sprite[] hairSprites;
     public Sprite[] weaponSprites;
     int weaponID;
-    int equipmentID;
+    int armorID;
     public int weaponIndex;
     public int equipmentIndex;
 
@@ -22,59 +24,61 @@ public class PlayerSpriteDatabase : MonoBehaviour
     {
         if (inPauseMenu)
         {
-            //set both equipment and weapon IDs to whatever is in the text of the first child.
+            int equipmentID;
+            int.TryParse(EventSystem.current.currentSelectedGameObject.transform.GetChild(0).GetComponent<Text>().text, out equipmentID);
+            weaponID = equipmentID;
+            armorID = equipmentID;
         }
         else
         {
-            equipmentID = (GameControl.gameControl.currentProfile == 1) ? GameControl.gameControl.profile1Equipment : GameControl.gameControl.profile2Equipment;
+            armorID = (GameControl.gameControl.currentProfile == 1) ? GameControl.gameControl.profile1Equipment : GameControl.gameControl.profile2Equipment;
             weaponID = (GameControl.gameControl.currentProfile == 1) ? GameControl.gameControl.profile1Weapon : GameControl.gameControl.profile2Weapon;
         }
     }
     
-    //TODO Update for the profile being used.
     public void AssignEquipmentIndex()
     {
-        if (EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName == "Pit Rags")
+        if (EquipmentDatabase.equipmentDatabase.equipment[armorID].equipmentName == "Pit Rags")
         {
             equipmentIndex = 0;
         }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName == "Arcane Cloak")
+        else if (EquipmentDatabase.equipmentDatabase.equipment[armorID].equipmentName == "Arcane Cloak")
         {
             equipmentIndex = 1;
         }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName == "Leather Armor")
+        else if (EquipmentDatabase.equipmentDatabase.equipment[armorID].equipmentName == "Leather Armor")
         {
             equipmentIndex = 2;
         }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName == "Plate Armor")
+        else if (EquipmentDatabase.equipmentDatabase.equipment[armorID].equipmentName == "Plate Armor")
         {
             equipmentIndex = 3;
         }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName == "Chain Mail")
+        else if (EquipmentDatabase.equipmentDatabase.equipment[armorID].equipmentName == "Chain Mail")
         {
             equipmentIndex = 4;
         }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName == "Mystic Cowl")
+        else if (EquipmentDatabase.equipmentDatabase.equipment[armorID].equipmentName == "Mystic Cowl")
         {
             equipmentIndex = 5;
         }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName == "Noble Cuirass")
+        else if (EquipmentDatabase.equipmentDatabase.equipment[armorID].equipmentName == "Noble Cuirass")
         {
             equipmentIndex = 6;
         }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName == "Dueling Carapace")
+        else if (EquipmentDatabase.equipmentDatabase.equipment[armorID].equipmentName == "Dueling Carapace")
         {
             equipmentIndex = 7;
         }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName == "Martial Gi")
+        else if (EquipmentDatabase.equipmentDatabase.equipment[armorID].equipmentName == "Martial Gi")
         {
             equipmentIndex = 8;
         }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName == "Hallowed Robe")
+        else if (EquipmentDatabase.equipmentDatabase.equipment[armorID].equipmentName == "Hallowed Robe")
         {
             equipmentIndex = 9;
         }
-        else if (EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName == "Wild Mantle")
+        else if (EquipmentDatabase.equipmentDatabase.equipment[armorID].equipmentName == "Wild Mantle")
         {
             equipmentIndex = 10;
         }
