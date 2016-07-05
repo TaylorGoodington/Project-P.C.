@@ -1,28 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CombatEngine : MonoBehaviour {
-
-    //ToDo Talk about players having dodge & parry type skills. Add the reduction in taking damage to the engine.
-
+public class CombatEngine : MonoBehaviour
+{
     public static CombatEngine combatEngine;
     public int attackDamage;
     public float critRate;
-    [HideInInspector]
-    public int maxCombos;
+    [HideInInspector] public int maxCombos;
     public int comboCount;
     public bool runComboClock;
     public float comboWindow;
     public float comboCountDown;
-
-    private float maxIntelligence = 10000; //ToDo UPDATE AT SOME POINT
-    private float maxNakedCritRate = 25;
-
     public int enemyFaceDirection;
     public int enemyKnockBackForce;
     public int enemyKnockBackDirection;
     public Skills damagingAbility;
 
+    private float maxIntelligence = 10000; //ToDo UPDATE AT SOME POINT
+    private float maxNakedCritRate = 25;
+    
     void Start() {
         combatEngine = GetComponent<CombatEngine>();
         comboCount = 1;

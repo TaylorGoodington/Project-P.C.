@@ -6,7 +6,7 @@ using System.Collections;
 
 public class PauseMenu : MonoBehaviour
 {
-    Dictionary<int, int> pauseMenuPath;
+    public Dictionary<int, int> pauseMenuPath;
     int currentLevel;
 
     public GameObject pauseMenu;
@@ -35,6 +35,14 @@ public class PauseMenu : MonoBehaviour
         if (Input.GetButtonDown("Cancel"))
         {
             Back();
+        }
+
+        if (Input.GetButtonDown("Switch Profiles"))
+        {
+            for (int i = currentLevel; i > 1; i--)
+            {
+                Back();
+            }
         }
 
         UpdateRightMenu();
@@ -176,6 +184,7 @@ public class PauseMenu : MonoBehaviour
         #region Player Info Menu
         if (rightMenu.transform.GetChild(0).gameObject.activeSelf == true)
         {
+            GameObject.FindGameObjectWithTag("InfoSprite").GetComponent<PlayerMenuSprite>().InitializeSprites();
             Text playerLevel = rightMenu.transform.GetChild(0).transform.GetChild(1).GetComponent<Text>();
             Text playerExperience = rightMenu.transform.GetChild(0).transform.GetChild(2).GetComponent<Text>();
             Text weaponName = rightMenu.transform.GetChild(0).transform.GetChild(3).GetComponent<Text>();
@@ -277,6 +286,7 @@ public class PauseMenu : MonoBehaviour
             Text agilityStat = rightMenu.transform.GetChild(2).transform.GetChild(6).GetComponent<Text>();
             Text healthStat = rightMenu.transform.GetChild(2).transform.GetChild(7).GetComponent<Text>();
             Text manaStat = rightMenu.transform.GetChild(2).transform.GetChild(8).GetComponent<Text>();
+            Text levelRequirement = rightMenu.transform.GetChild(2).transform.GetChild(9).GetComponent<Text>();
 
             if (EventSystem.current.currentSelectedGameObject.transform.childCount > 0)
             {
@@ -308,6 +318,7 @@ public class PauseMenu : MonoBehaviour
 
                 equipmentName.text = EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentName;
                 equipmentDescription.text = EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentDescription;
+                levelRequirement.text = "level   requirement   " + EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentLevelRequirement;
 
                 int strengthDifference = EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentStrength - EquipmentDatabase.equipmentDatabase.equipment[comparisonEquipment].equipmentStrength;
                 if (strengthDifference > 0)
@@ -409,6 +420,15 @@ public class PauseMenu : MonoBehaviour
                 {
                     manaStat.text = Mathf.Abs(manaDifference).ToString();
                     manaStat.color = Color.red;
+                }
+
+                if (GameControl.gameControl.playerLevel >= EquipmentDatabase.equipmentDatabase.equipment[equipmentID].equipmentLevelRequirement)
+                {
+                    levelRequirement.color = Color.white;
+                }
+                else
+                {
+                    levelRequirement.color = Color.red;
                 }
             }
         }

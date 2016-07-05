@@ -8,6 +8,8 @@ public class PlayerAnimationController : MonoBehaviour
     public Animator equipmentAnimator;
     public Animator backgroundEffectsAnimator;
     public Animations currentAnimation;
+    int equippedWeaponID;
+    int equippedEquipmentID;
 
     //Naming Conventions for hair and body are as follows:
     //For Attacking: Hair1SwordAttacking1, (animator type)(animator type index)(weapon type)(animation name)(combo count)
@@ -42,6 +44,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayAnimation (Animations animation)
     {
+        equippedWeaponID = (GameControl.gameControl.currentProfile == 1) ? GameControl.gameControl.profile1Weapon : GameControl.gameControl.profile2Weapon;
+        equippedEquipmentID = (GameControl.gameControl.currentProfile == 1) ? GameControl.gameControl.profile1Equipment : GameControl.gameControl.profile2Equipment;
         currentAnimation = animation;
         
         PlayHairAnimation(animation);
@@ -65,7 +69,7 @@ public class PlayerAnimationController : MonoBehaviour
         {
             hairAnimator.Play("Hair" + 
                               GameControl.gameControl.hairIndex + 
-                              EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentType + 
+                              EquipmentDatabase.equipmentDatabase.equipment[equippedWeaponID].equipmentType + 
                               animationName + 
                               CombatEngine.combatEngine.comboCount);
         }
@@ -82,7 +86,7 @@ public class PlayerAnimationController : MonoBehaviour
         {
             bodyAnimator.Play("Body" + 
                               GameControl.gameControl.skinColorIndex +
-                              EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentType + 
+                              EquipmentDatabase.equipmentDatabase.equipment[equippedWeaponID].equipmentType + 
                               animationName +
                               CombatEngine.combatEngine.comboCount);
         }
@@ -97,15 +101,15 @@ public class PlayerAnimationController : MonoBehaviour
         string animationName = animation.ToString();
         if (animation == Animations.Attacking)
         {
-            weaponAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentType.ToString() +
-                                EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentTier.ToString() +
+            weaponAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[equippedWeaponID].equipmentType.ToString() +
+                                EquipmentDatabase.equipmentDatabase.equipment[equippedWeaponID].equipmentTier.ToString() +
                                 animationName +
                                 CombatEngine.combatEngine.comboCount);
         }
         else
         {
-            weaponAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentType.ToString() +
-                                EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentTier.ToString() +
+            weaponAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[equippedWeaponID].equipmentType.ToString() +
+                                EquipmentDatabase.equipmentDatabase.equipment[equippedWeaponID].equipmentTier.ToString() +
                                 animationName);
         }
     }
@@ -115,14 +119,14 @@ public class PlayerAnimationController : MonoBehaviour
         string animationName = animation.ToString();
         if (animation == Animations.Attacking)
         {
-            equipmentAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Equipment].equipmentName +
-                                   EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].equipmentType + 
+            equipmentAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentID].equipmentName +
+                                   EquipmentDatabase.equipmentDatabase.equipment[equippedWeaponID].equipmentType + 
                                    animationName +
                                    CombatEngine.combatEngine.comboCount);
         }
         else
         {
-            equipmentAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Equipment].equipmentName + animationName);
+            equipmentAnimator.Play(EquipmentDatabase.equipmentDatabase.equipment[equippedEquipmentID].equipmentName + animationName);
         }
     }
 

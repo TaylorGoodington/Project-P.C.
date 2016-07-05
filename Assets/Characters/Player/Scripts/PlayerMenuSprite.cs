@@ -18,13 +18,13 @@ public class PlayerMenuSprite : MonoBehaviour
 
     public void InitializeSprites()
     {
-        spriteDatabase.AssignEquipmentID(false);
-        spriteDatabase.AssignEquipmentIndex();
-        spriteDatabase.AssignWeaponIndex();
-        body.sprite = spriteDatabase.bodySprites[GameControl.gameControl.skinColorIndex - 1];
-        hair.sprite = spriteDatabase.hairSprites[GameControl.gameControl.hairIndex - 1];
-        equipment.sprite = spriteDatabase.equipmentSprites[spriteDatabase.equipmentIndex];
-        weapon.sprite = spriteDatabase.weaponSprites[spriteDatabase.weaponIndex];
+        PlayerSpriteDatabase.playerSpriteDatabase.AssignEquipmentID(false);
+        PlayerSpriteDatabase.playerSpriteDatabase.AssignEquipmentIndex();
+        PlayerSpriteDatabase.playerSpriteDatabase.AssignWeaponIndex();
+        body.sprite = PlayerSpriteDatabase.playerSpriteDatabase.bodySprites[GameControl.gameControl.skinColorIndex - 1];
+        hair.sprite = PlayerSpriteDatabase.playerSpriteDatabase.hairSprites[GameControl.gameControl.hairIndex - 1];
+        equipment.sprite = PlayerSpriteDatabase.playerSpriteDatabase.equipmentSprites[PlayerSpriteDatabase.playerSpriteDatabase.equipmentIndex];
+        weapon.sprite = PlayerSpriteDatabase.playerSpriteDatabase.weaponSprites[PlayerSpriteDatabase.playerSpriteDatabase.weaponIndex];
     }
 
     //Called by event triggers on the selection menu.

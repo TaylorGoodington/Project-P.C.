@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class SelectionMenu : MonoBehaviour
 {
-
     string path;
     string funnel;
     List<Skills> inventorySkillsList;
@@ -92,6 +91,8 @@ public class SelectionMenu : MonoBehaviour
                     child.gameObject.SetActive(true);
                     child.GetComponent<Text>().text = equipmentList[index].equipmentName;
                     child.transform.GetChild(0).GetComponent<Text>().text = equipmentList[index].equipmentID.ToString();
+                    Button playButton = child.GetComponent<Button>();
+                    playButton.onClick.RemoveAllListeners();
 
                     //Checks if the Equipment is equipped
                     if (GameControl.gameControl.profile1Equipment == equipmentList[index].equipmentID ||
@@ -99,13 +100,19 @@ public class SelectionMenu : MonoBehaviour
                         GameControl.gameControl.profile1Weapon == equipmentList[index].equipmentID ||
                         GameControl.gameControl.profile2Weapon == equipmentList[index].equipmentID)
                     {
-                        //add listener that makes rejection noise
+                        playButton.onClick.AddListener(() => TestButton());
+                        child.GetComponent<Text>().color = Color.grey;
+                        //do something with equipped icon.
+                    }
+                    else if (GameControl.gameControl.playerLevel < equipmentList[index].equipmentLevelRequirement)
+                    {
+                        playButton.onClick.AddListener(() => TestButton());
+                        child.GetComponent<Text>().color = Color.grey;
                     }
                     else
                     {
-                        //add listener that swtiched the equipment
-                        //Button playButton = expansion.transform.GetChild(1).GetComponent<Button>();
-                        //playButton.onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().PlayGame(fileNumber));
+                        playButton.onClick.AddListener(() => EquipmentController.equipmentController.ChangeEquipmentFromMenu());
+                        child.GetComponent<Text>().color = Color.white;
                     }
                 }
                 else
@@ -154,5 +161,11 @@ public class SelectionMenu : MonoBehaviour
             }
         }
         #endregion
+    }
+
+    //TODO Remove later
+    public void TestButton ()
+    {
+        Debug.Log("Already Equipped");
     }
 }

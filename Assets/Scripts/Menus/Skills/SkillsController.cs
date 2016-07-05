@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SkillsController : MonoBehaviour {
-
+public class SkillsController : MonoBehaviour
+{
+    #region Variables
     public static SkillsController skillsController;
     private SkillsDatabase skillsDatabase;
-    public List<Skills> acquiredSkills;
     public List<Skills> activeSkills;
-    public List<Skills> profile1SlottedSkills;
-    public List<Skills> profile2SlottedSkills;
     public Dictionary<int, float> cooldownList;
     public Skills selectedSkill;
     public bool activatingAbility;
@@ -24,6 +24,7 @@ public class SkillsController : MonoBehaviour {
     float intelligenceModifier;
     float defenseModifier;
     bool switchingClasses;
+    #endregion
 
     void Start() {
         skillsController = GetComponent<SkillsController>();
@@ -65,14 +66,114 @@ public class SkillsController : MonoBehaviour {
         }
     }
 
+    public bool SkillRequirementsMet (Skills skill)
+    {
+        if (skill.requiredStatName == Skills.RequiredStat.Agility)
+        {
+            if (GameControl.gameControl.currentSpeed >= skill.requiredStatValue)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (skill.requiredStatName == Skills.RequiredStat.Defense)
+        {
+            if (GameControl.gameControl.currentDefense >= skill.requiredStatValue)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (skill.requiredStatName == Skills.RequiredStat.Intelligence)
+        {
+            if (GameControl.gameControl.currentIntelligence >= skill.requiredStatValue)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (skill.requiredStatName == Skills.RequiredStat.Strength)
+        {
+            if (GameControl.gameControl.currentStrength >= skill.requiredStatValue)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public void UpdateAcquiredAndActiveSkillsLists ()
+    {
+        //Deleting the old lists.
+        GameControl.gameControl.acquiredSkills.Clear();
+        activeSkills.Clear();
+
+        //rebuilding the lists.
+        foreach (Skills skill in skillsDatabase.skills)
+        {
+            if (SkillRequirementsMet(skill))
+            {
+                if (!GameControl.gameControl.acquiredSkills.Contains(skill))
+                {
+                    GameControl.gameControl.acquiredSkills.Add(skill);
+                }
+                if (skill.triggerPhase == Skills.TriggerPhase.Passive)
+                {
+                    if (!activeSkills.Contains(skill))
+                    {
+                        activeSkills.Add(skill);
+                    }
+                }
+            }
+        }
+    }
+
+    //TODO Create this function.
+    public void UpdatePerkWebSkills ()
+    {
+        //clear the list
+        //add back skills based on dictionaries in gamecontrol.
+    }
+
+    public void ChangingEquipmentOrPerks()
+    {
+        switchingClasses = true;
+        foreach (Skills skill in activeSkills)
+        {
+            ReduceModifiers(skill);
+        }
+        talliedSkills.Clear();
+    }
+
+    public void DoneChangingEquipmentOrPerks()
+    {
+        switchingClasses = false;
+    }
+
     public void ActivatePlayerAbilities(Skills.TriggerPhase triggerPhase)
     {
         int currentGroupNumber = 0;
         int triggeringSkill = 0;
         float triggeringSkillRate = 0;
 
-        acquiredSkills.Sort(SortByGroupNumber);
-        foreach (Skills skill in acquiredSkills)
+        GameControl.gameControl.acquiredSkills.Sort(SortByGroupNumber);
+        foreach (Skills skill in GameControl.gameControl.acquiredSkills)
         {
             if (skill.triggerPhase == triggerPhase)
             {
@@ -131,21 +232,6 @@ public class SkillsController : MonoBehaviour {
         if (randomNumber > triggerRate) {
             ActivateAbilityTest(skillID);
         }
-    }
-
-    public void ChangingEquipmentOrPerks ()
-    {
-        switchingClasses = true;
-        foreach (Skills skill in activeSkills)
-        {
-            ReduceModifiers(skill);
-        }
-        talliedSkills.Clear();
-    }
-
-    public void DoneChangingEquipmentOrPerks ()
-    {
-        switchingClasses = false;
     }
 
     public void AmendStatsFromActiveSkills ()
@@ -294,8 +380,8 @@ public class SkillsController : MonoBehaviour {
     {
         if (GameControl.gameControl.currentProfile == 1)
         {
-            int index = profile1SlottedSkills.IndexOf(selectedSkill);
-            if (index == (profile1SlottedSkills.Count - 1))
+            int index = GameControl.gameControl.profile1SlottedSkills.IndexOf(selectedSkill);
+            if (index == (GameControl.gameControl.profile1SlottedSkills.Count - 1))
             {
                 index = 0;
             }
@@ -303,12 +389,12 @@ public class SkillsController : MonoBehaviour {
             {
                 index++;
             }
-            selectedSkill = profile1SlottedSkills[index];
+            selectedSkill = GameControl.gameControl.profile1SlottedSkills[index];
         }
         else
         {
-            int index = profile2SlottedSkills.IndexOf(selectedSkill);
-            if (index == profile2SlottedSkills.Count)
+            int index = GameControl.gameControl.profile2SlottedSkills.IndexOf(selectedSkill);
+            if (index == GameControl.gameControl.profile2SlottedSkills.Count)
             {
                 index = 1;
             }
@@ -316,7 +402,30 @@ public class SkillsController : MonoBehaviour {
             {
                 index++;
             }
-            selectedSkill = profile2SlottedSkills[index];
+            selectedSkill = GameControl.gameControl.profile2SlottedSkills[index];
+        }
+    }
+
+    public void ChangeSlottedSkillsFromMenu ()
+    {
+        //slot1Fork will need to be updated if changes are made.
+        int slot1Fork = 3;
+        int skillSlot = (GameObject.FindGameObjectWithTag("Pause Menu").GetComponent<PauseMenu>().pauseMenuPath[3] - slot1Fork);
+        int skillID;
+        int.TryParse(EventSystem.current.currentSelectedGameObject.transform.GetChild(0).GetComponent<Text>().text, out skillID);
+        ChangeSlottedSkills(skillSlot, skillID);
+        GameObject.FindGameObjectWithTag("Selection Menu").GetComponent<SelectionMenu>().ReRunList();
+    }
+
+    public void ChangeSlottedSkills (int skillSlot, int skillID)
+    {
+        if (GameControl.gameControl.currentProfile == 1)
+        {
+            GameControl.gameControl.profile1SlottedSkills[skillSlot] = skillsDatabase.skills[skillID];
+        }
+        else
+        {
+            GameControl.gameControl.profile2SlottedSkills[skillSlot] = skillsDatabase.skills[skillID];
         }
     }
 

@@ -73,10 +73,7 @@ public class GameControl : MonoBehaviour {
 
     #region Menu Levels
     //Menu Levels are incremented by functions that dive deeper into the respective menu and are decremented by the back function.
-    public int equipmentMenuLevel = 0;
     public int weaponEvolutionMenuLevel = 0;
-    public int pauseMenuLevel = 0;
-    public int itemsMenuLevel = 0;
     public int mainMenuLevel = 0;
     public int mainMenuDeleteLevel = 0;
     public int mainMenuCopyLevel = 0;
@@ -103,10 +100,7 @@ public class GameControl : MonoBehaviour {
         endOfLevel = false;
         dying = false;
 
-        equipmentMenuLevel = 0;
 		weaponEvolutionMenuLevel = 0;
-		pauseMenuLevel = 0;
-		itemsMenuLevel = 0;
 		mainMenuLevel = 0;
 		mainMenuDeleteLevel = 0;
 		mainMenuCopyLevel = 0;
@@ -135,6 +129,10 @@ public class GameControl : MonoBehaviour {
                     if (AnyOpenMenus())
                     {
                         ClosePauseMenu();
+                        if (LevelManager.levelManager.inMapScenes == true)
+                        {
+                            reSelectMapObject = true;
+                        }
                     }
                     else
                     {
@@ -149,6 +147,32 @@ public class GameControl : MonoBehaviour {
             {
                 LoadFile(1);
                 LevelManager.levelManager.LoadLevel("The Pit Intro");
+            }
+
+            //for Equipment Testing
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[9]);
+                equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[13]);
+                equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[16]);
+                equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[22]);
+                equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[50]);
+                equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[166]);
+                equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[176]);
+            }
+
+            //upgrade equipment testing
+            if (Input.GetButtonDown("Switch Profiles"))
+            {
+                playerHasControl = false;
+                //play some animation that transitions profiles.
+            }
+
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                //playerLevel = 7;
+                currency = 10000;
+                EquipmentController.equipmentController.UpgradeEquipment(1);
             }
 
             #region Back Button
@@ -172,18 +196,6 @@ public class GameControl : MonoBehaviour {
                 {
                     GameObject.FindGameObjectWithTag("Main Menu").GetComponent<MainMenuControl>().OpenPreviousDeleteMenu(mainMenuDeleteLevel);
                     mainMenuDeleteLevel--;
-                }
-
-
-                //Pause Menu.
-                if (pauseMenuLevel > 0)
-                {
-                    ClosePauseMenu();
-                    pauseMenuLevel--;
-                    if (LevelManager.levelManager.inMapScenes == true)
-                    {
-                        reSelectMapObject = true;
-                    }
                 }
 
                 //Lady Death Menu.
@@ -307,6 +319,42 @@ public class GameControl : MonoBehaviour {
         #endregion
     }
 
+    //TODO Update Perk Web Skills
+    //Called from profile switching animation.
+    void SwitchProfiles ()
+    {
+        if (currentProfile == 1)
+        {
+            currentProfile = 2;
+            selectedSkill = profile2SlottedSkills[0];
+        }
+        else
+        {
+            currentProfile = 1;
+            selectedSkill = profile1SlottedSkills[0];
+        }
+
+        //Updates Stats
+        UpdateEquippedStats(true);
+
+        SkillsController.skillsController.ChangingEquipmentOrPerks();
+
+        //Updates Skills
+        SkillsController.skillsController.UpdateAcquiredAndActiveSkillsLists();
+
+        //Update Perk Web Skills.
+        SkillsController.skillsController.UpdatePerkWebSkills();
+
+        //Adjusts the max combo.
+        EquipmentController.equipmentController.UpdateMaxCombos();
+
+        //Adjusts Current Class.
+        CurrentClass();
+        
+        SkillsController.skillsController.DoneChangingEquipmentOrPerks();
+        playerHasControl = true;
+    }
+
     //This is really only needed for new games but for now we can call it at the begining of every game and just overwrite as needed.
     public void AddLevelScores ()
     {
@@ -329,11 +377,13 @@ public class GameControl : MonoBehaviour {
 		}
 	}
 	
-	public void OpenPauseMenu () {
+	public void OpenPauseMenu ()
+    {
 		Instantiate(pauseMenu);
 	}
 	
-	public void ClosePauseMenu () {
+	public void ClosePauseMenu ()
+    {
 		GameObject.FindGameObjectWithTag("Pause Menu").GetComponent<Animator>().Play("Close");
 	}
 
@@ -347,6 +397,9 @@ public class GameControl : MonoBehaviour {
         baseMana += ClassesDatabase.classDatabase.classes[playerClass].manaLevelBonus;
 
         UpdateEquippedStats(false);
+        SkillsController.skillsController.ChangingEquipmentOrPerks();
+        SkillsController.skillsController.UpdateAcquiredAndActiveSkillsLists();
+        SkillsController.skillsController.DoneChangingEquipmentOrPerks();
     }
 
     public void UpdateEquippedStats(bool equipmentChange)
@@ -354,18 +407,36 @@ public class GameControl : MonoBehaviour {
         hpRatio = (float)hp / currentHealth;
         mpRatio = (float)mp / currentMana;
 
-        currentStrength = baseStrength + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentStrength +
+        if (currentProfile == 1)
+        {
+            currentStrength = baseStrength + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentStrength +
                           EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentStrength;
-        currentDefense = baseDefense + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentDefense +
-                         EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentDefense;
-        currentSpeed = baseSpeed + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentSpeed +
-                       EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentSpeed;
-        currentIntelligence = baseIntelligence + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentIntelligence +
-                              EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentIntelligence;
-        currentHealth = baseHealth + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentHealth +
-                        EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentHealth;
-        currentMana = baseMana + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentMana +
-                      EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentMana;
+            currentDefense = baseDefense + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentDefense +
+                             EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentDefense;
+            currentSpeed = baseSpeed + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentSpeed +
+                           EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentSpeed;
+            currentIntelligence = baseIntelligence + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentIntelligence +
+                                  EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentIntelligence;
+            currentHealth = baseHealth + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentHealth +
+                            EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentHealth;
+            currentMana = baseMana + EquipmentDatabase.equipmentDatabase.equipment[profile1Weapon].equipmentMana +
+                          EquipmentDatabase.equipmentDatabase.equipment[profile1Equipment].equipmentMana;
+        }
+        else
+        {
+            currentStrength = baseStrength + EquipmentDatabase.equipmentDatabase.equipment[profile2Weapon].equipmentStrength +
+                          EquipmentDatabase.equipmentDatabase.equipment[profile2Equipment].equipmentStrength;
+            currentDefense = baseDefense + EquipmentDatabase.equipmentDatabase.equipment[profile2Weapon].equipmentDefense +
+                             EquipmentDatabase.equipmentDatabase.equipment[profile2Equipment].equipmentDefense;
+            currentSpeed = baseSpeed + EquipmentDatabase.equipmentDatabase.equipment[profile2Weapon].equipmentSpeed +
+                           EquipmentDatabase.equipmentDatabase.equipment[profile2Equipment].equipmentSpeed;
+            currentIntelligence = baseIntelligence + EquipmentDatabase.equipmentDatabase.equipment[profile2Weapon].equipmentIntelligence +
+                                  EquipmentDatabase.equipmentDatabase.equipment[profile2Equipment].equipmentIntelligence;
+            currentHealth = baseHealth + EquipmentDatabase.equipmentDatabase.equipment[profile2Weapon].equipmentHealth +
+                            EquipmentDatabase.equipmentDatabase.equipment[profile2Equipment].equipmentHealth;
+            currentMana = baseMana + EquipmentDatabase.equipmentDatabase.equipment[profile2Weapon].equipmentMana +
+                          EquipmentDatabase.equipmentDatabase.equipment[profile2Equipment].equipmentMana;
+        }
 
         CalculateHealthAndMana(equipmentChange);
     }
@@ -552,9 +623,7 @@ public class GameControl : MonoBehaviour {
         profile1SlottedSkills.Add(SkillsDatabase.skillsDatabase.skills[3]);
         selectedSkill = SkillsDatabase.skillsDatabase.skills[0];
 
-        //Keep these lines.
-        SkillsController.skillsController.acquiredSkills = acquiredSkills;
-        SkillsController.skillsController.profile1SlottedSkills = profile1SlottedSkills;
+        //Keep this lines.
         SkillsController.skillsController.selectedSkill = selectedSkill;
     }
     

@@ -195,9 +195,22 @@ public class EquipmentController: MonoBehaviour
                 if (EquipmentLevelRequirementMet(equipmentID + 1))
                 {
                     #region Upgrade Equipment
-                    GameControl.gameControl.equipmentInventoryList.Remove(EquipmentDatabase.equipmentDatabase.equipment[equipmentID]);
                     GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[equipmentID + 1]);
+                    int index = 0;
+                    int count = 0;
+                    foreach (Equipment equip in GameControl.gameControl.equipmentInventoryList)
+                    {
+                        if (equip.equipmentID == equipmentID)
+                        {
+                            index = count;
+                        }
+                        count++;
+                    }
+                    GameControl.gameControl.equipmentInventoryList.RemoveAt(index);
+                    GameControl.gameControl.currency -= cost;
+                    //Play satisfying animation for upgrade!
                     #endregion
+
                     if (GameControl.gameControl.profile1Equipment == equipmentID)
                     {
                         GameControl.gameControl.profile1Equipment = equipmentID + 1;
@@ -214,33 +227,34 @@ public class EquipmentController: MonoBehaviour
                     {
                         GameControl.gameControl.profile2Weapon = equipmentID + 1;
                     }
+                    UpdateMaxCombos();
+                    GameControl.gameControl.UpdateEquippedStats(true);
                 }
                 else
                 {
-                    if (!proceedWithUpgradeAnyway)
-                    {
-                        //present message showing that the equipment wont be equipable once upgraded and the next best piece of equipment will be automatically selected.
-                        //just turning on the message from pause prefab.
-
-                        //add listener to the button on the message with the equipment ID.
-                        //Button playButton = expansion.transform.GetChild(1).GetComponent<Button>();
-                        //playButton.onClick.AddListener(() => GameObject.FindObjectOfType<MainMenuControl>().PlayGame(fileNumber));
-
-                        proceedWithUpgradeAnyway = true;
-                    }
-                    else
-                    {
-                        #region Upgrade Equipment
-                        GameControl.gameControl.equipmentInventoryList.Remove(EquipmentDatabase.equipmentDatabase.equipment[equipmentID]);
-                        GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[equipmentID + 1]);
-                        #endregion
-                        //switch out equipped equipment for last that meets level requirement.
-                        proceedWithUpgradeAnyway = false;
-                    }
+                    //Display message that the equipment is going to be too high to equip switch equipment to upgrade.
+                    Debug.Log("Cant Upgrade cuz equipped tho");
                 }
             }
-            GameControl.gameControl.UpdateEquippedStats(true);
-            //Play satisfying animation for upgrade!
+            else
+            {
+                #region Upgrade Equipment
+                GameControl.gameControl.equipmentInventoryList.Add(EquipmentDatabase.equipmentDatabase.equipment[equipmentID + 1]);
+                int index = 0;
+                int count = 0;
+                foreach (Equipment equip in GameControl.gameControl.equipmentInventoryList)
+                {
+                    if (equip.equipmentID == equipmentID)
+                    {
+                        index = count;
+                    }
+                    count++;
+                }
+                GameControl.gameControl.equipmentInventoryList.RemoveAt(index);
+                GameControl.gameControl.currency -= cost;
+                //Play satisfying animation for upgrade!
+                #endregion
+            }
         }
         else
         {
@@ -267,10 +281,9 @@ public class EquipmentController: MonoBehaviour
         int equipmentID;
         int.TryParse(EventSystem.current.currentSelectedGameObject.transform.GetChild(0).GetComponent<Text>().text, out equipmentID);
         SwitchEquipment(equipmentID);
-        transform.parent.GetComponent<SelectionMenu>().ReRunList();
+        GameObject.FindGameObjectWithTag("Selection Menu").GetComponent<SelectionMenu>().ReRunList();
     }
 
-    //TODO Update Acquired and Active Skills list
     public void SwitchEquipment (int equipmentID)
     {        
         if (EquipmentLevelRequirementMet(equipmentID))
@@ -283,6 +296,7 @@ public class EquipmentController: MonoBehaviour
                 if (isEquipmentAWeapon)
                 {
                     GameControl.gameControl.profile1Weapon = equipmentID;
+                    GameControl.gameControl.CurrentClass();
 
                     if (!IsArmorEquipable(EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Equipment].equipmentName))
                     {
@@ -305,6 +319,7 @@ public class EquipmentController: MonoBehaviour
                 if (isEquipmentAWeapon)
                 {
                     GameControl.gameControl.profile2Weapon = equipmentID;
+                    GameControl.gameControl.CurrentClass();
 
                     if (!IsArmorEquipable(EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile2Equipment].equipmentName))
                     {
@@ -322,9 +337,11 @@ public class EquipmentController: MonoBehaviour
                     GameControl.gameControl.profile2Equipment = equipmentID;
                 }
             }
-
-            //TODO Update Acquired and Active Skills list
             GameControl.gameControl.UpdateEquippedStats(true);
+            SkillsController.skillsController.ChangingEquipmentOrPerks();
+            SkillsController.skillsController.UpdateAcquiredAndActiveSkillsLists();
+            SkillsController.skillsController.DoneChangingEquipmentOrPerks();
+            UpdateMaxCombos();
         }
         else
         {
@@ -358,6 +375,20 @@ public class EquipmentController: MonoBehaviour
         else
         {
             return false;
+        }
+    }
+
+    public void UpdateMaxCombos ()
+    {
+        if (GameControl.gameControl.currentProfile == 1)
+        {
+            GameControl.gameControl.maxCombos = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Weapon].maxCombos +
+                                                EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile1Equipment].maxCombos;
+        }
+        else
+        {
+            GameControl.gameControl.maxCombos = EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile2Weapon].maxCombos +
+                                                EquipmentDatabase.equipmentDatabase.equipment[GameControl.gameControl.profile2Equipment].maxCombos;
         }
     }
 }
