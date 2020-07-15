@@ -1,24 +1,39 @@
 fileFormatVersion: 2
 guid: c52fce44c2c358a428acc0bfb958635c
-timeCreated: 1461517612
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: Heal Sheet_0
-    21300002: Heal Sheet_1
-    21300004: Heal Sheet_2
-    21300006: Heal Sheet_3
-    21300008: Heal Sheet_4
-    21300010: Heal Sheet_5
-    21300012: Heal Sheet_6
-  serializedVersion: 2
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: Heal Sheet_0
+  - first:
+      213: 21300002
+    second: Heal Sheet_1
+  - first:
+      213: 21300004
+    second: Heal Sheet_2
+  - first:
+      213: 21300006
+    second: Heal Sheet_3
+  - first:
+      213: 21300008
+    second: Heal Sheet_4
+  - first:
+      213: 21300010
+    second: Heal Sheet_5
+  - first:
+      213: 21300012
+    second: Heal Sheet_6
+  externalObjects: {}
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -27,37 +42,61 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: 16
-    mipBias: -1
-    wrapMode: 1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: Heal Sheet_0
+    - serializedVersion: 2
+      name: Heal Sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -67,15 +106,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 2.999999, y: 1}
-        - {x: -4.000001, y: 1}
-        - {x: -12.000001, y: -4}
-        - {x: -12.000001, y: -20}
-        - {x: 9.999999, y: -20}
-        - {x: 9.999999, y: -10}
-        - {x: 7.999999, y: -1}
-    - name: Heal Sheet_1
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Heal Sheet_1
       rect:
         serializedVersion: 2
         x: 50
@@ -85,20 +127,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 10, y: -20}
-        - {x: 10, y: -6}
-        - {x: 8, y: 0}
-        - {x: 1, y: 3}
-        - {x: -5, y: 3}
-        - {x: -10, y: -5}
-        - {x: -12, y: -12}
-        - {x: -12, y: -17}
-        - {x: -9, y: -20}
-        - {x: -4, y: -20}
-        - {x: -4, y: -16}
-        - {x: -4, y: -20}
-    - name: Heal Sheet_2
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Heal Sheet_2
       rect:
         serializedVersion: 2
         x: 100
@@ -108,24 +148,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -4, y: -17}
-        - {x: -2, y: -19}
-        - {x: 2, y: -19}
-        - {x: 5, y: -18}
-        - {x: 7, y: -17}
-        - {x: 10, y: -16}
-        - {x: 10, y: -3}
-        - {x: 0, y: 5}
-        - {x: -8, y: 5}
-        - {x: -12, y: 2}
-        - {x: -12, y: -15}
-        - {x: -11, y: -20}
-        - {x: -4, y: -20}
-        - {x: -4, y: -15}
-        - {x: -5, y: -13}
-        - {x: -4, y: -12}
-    - name: Heal Sheet_3
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Heal Sheet_3
       rect:
         serializedVersion: 2
         x: 150
@@ -135,29 +169,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -9, y: -18}
-        - {x: -7, y: -20}
-        - {x: -4, y: -19}
-        - {x: -4, y: -14}
-        - {x: -6, y: -12}
-        - {x: -9, y: -13}
-      - - {x: -1, y: -7}
-        - {x: -4, y: -8}
-        - {x: -4, y: -17}
-        - {x: 4, y: -17}
-        - {x: 5, y: -15}
-        - {x: 5, y: -7}
-      - - {x: -11, y: 0}
-        - {x: -12, y: -6}
-        - {x: -12, y: -12}
-        - {x: -11, y: -14}
-        - {x: 10, y: -14}
-        - {x: 10, y: -6}
-        - {x: 8, y: 0}
-        - {x: 2, y: 6}
-        - {x: -3, y: 7}
-    - name: Heal Sheet_4
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Heal Sheet_4
       rect:
         serializedVersion: 2
         x: 200
@@ -167,35 +190,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -9, y: -16}
-        - {x: -7, y: -18}
-        - {x: -4, y: -17}
-        - {x: -4, y: -13}
-        - {x: -6, y: -11}
-        - {x: -9, y: -12}
-      - - {x: -4, y: -13}
-        - {x: -3, y: -15}
-        - {x: 0, y: -15}
-        - {x: 5, y: -13}
-        - {x: 5, y: -7}
-        - {x: 4, y: -5}
-        - {x: 0, y: -5}
-        - {x: -4, y: -7}
-      - - {x: 5, y: -10}
-        - {x: 7, y: -12}
-        - {x: 10, y: -11}
-        - {x: 10, y: -7}
-        - {x: 8, y: -5}
-        - {x: 5, y: -6}
-      - - {x: -8, y: 9}
-        - {x: -12, y: -1}
-        - {x: -12, y: -8}
-        - {x: -6, y: -8}
-        - {x: 8, y: -3}
-        - {x: 8, y: 5}
-        - {x: 4, y: 9}
-    - name: Heal Sheet_5
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Heal Sheet_5
       rect:
         serializedVersion: 2
         x: 250
@@ -205,43 +211,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -9, y: -14}
-        - {x: -7, y: -16}
-        - {x: -4, y: -15}
-        - {x: -4, y: -12}
-        - {x: -6, y: -10}
-        - {x: -9, y: -11}
-      - - {x: -2, y: -3}
-        - {x: -4, y: -8}
-        - {x: -4, y: -13}
-        - {x: -2, y: -13}
-        - {x: 1, y: -12}
-        - {x: 5, y: -9}
-        - {x: 5, y: -5}
-        - {x: 3, y: -3}
-      - - {x: 5, y: -7}
-        - {x: 7, y: -9}
-        - {x: 10, y: -8}
-        - {x: 10, y: -5}
-        - {x: 8, y: -3}
-        - {x: 5, y: -4}
-      - - {x: -7, y: 12}
-        - {x: -12, y: 1}
-        - {x: -12, y: -4}
-        - {x: -10, y: -4}
-        - {x: 0, y: 0}
-        - {x: 3, y: 6}
-        - {x: 3, y: 12}
-      - - {x: 3, y: 6}
-        - {x: 1, y: 2}
-        - {x: 1, y: 0}
-        - {x: 3, y: -2}
-        - {x: 6, y: -1}
-        - {x: 8, y: 3}
-        - {x: 8, y: 5}
-        - {x: 6, y: 7}
-    - name: Heal Sheet_6
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Heal Sheet_6
       rect:
         serializedVersion: 2
         x: 300
@@ -251,49 +232,29 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -7, y: -14}
-        - {x: -4, y: -13}
-        - {x: -4, y: -10}
-        - {x: -7, y: -9}
-        - {x: -9, y: -11}
-      - - {x: -4, y: -9}
-        - {x: -2, y: -11}
-        - {x: 1, y: -10}
-        - {x: 1, y: -7}
-        - {x: -1, y: -5}
-        - {x: -4, y: -6}
-      - - {x: 0, y: -5}
-        - {x: 2, y: -7}
-        - {x: 5, y: -6}
-        - {x: 5, y: -3}
-        - {x: 3, y: -1}
-        - {x: 0, y: -2}
-      - - {x: 7, y: -6}
-        - {x: 10, y: -5}
-        - {x: 10, y: -2}
-        - {x: 7, y: -1}
-        - {x: 5, y: -3}
-      - - {x: 2, y: 15}
-        - {x: -2, y: 15}
-        - {x: -12, y: 4}
-        - {x: -12, y: 1}
-        - {x: -10, y: 0}
-        - {x: -7, y: 0}
-        - {x: 3, y: 10}
-        - {x: 3, y: 14}
-      - - {x: 3, y: 0}
-        - {x: 6, y: 1}
-        - {x: 6, y: 4}
-        - {x: 3, y: 5}
-        - {x: 1, y: 3}
-      - - {x: 5, y: 5}
-        - {x: 8, y: 6}
-        - {x: 8, y: 9}
-        - {x: 5, y: 10}
-        - {x: 3, y: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

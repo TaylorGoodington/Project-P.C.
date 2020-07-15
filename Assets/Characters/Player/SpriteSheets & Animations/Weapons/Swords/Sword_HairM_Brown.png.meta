@@ -1,39 +1,84 @@
 fileFormatVersion: 2
 guid: 8f3681d88c4657e4f8483b2a0deff9dc
-timeCreated: 1459697942
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: Sword_HairM_Brown_0
-    21300002: Sword_HairM_Brown_1
-    21300004: Sword_HairM_Brown_2
-    21300006: Sword_HairM_Brown_3
-    21300008: Sword_HairM_Brown_4
-    21300010: Sword_HairM_Brown_5
-    21300012: Sword_HairM_Brown_6
-    21300014: Sword_HairM_Brown_7
-    21300016: Sword_HairM_Brown_8
-    21300018: Sword_HairM_Brown_9
-    21300020: Sword_HairM_Brown_10
-    21300022: Sword_HairM_Brown_11
-    21300024: Sword_HairM_Brown_12
-    21300026: Sword_HairM_Brown_13
-    21300028: Sword_HairM_Brown_14
-    21300030: Sword_HairM_Brown_15
-    21300032: Sword_HairM_Brown_16
-    21300034: Sword_HairM_Brown_17
-    21300036: Sword_HairM_Brown_18
-    21300038: Sword_HairM_Brown_19
-    21300040: Sword_HairM_Brown_20
-    21300042: Sword_HairM_Brown_21
-  serializedVersion: 2
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: Sword_HairM_Brown_0
+  - first:
+      213: 21300002
+    second: Sword_HairM_Brown_1
+  - first:
+      213: 21300004
+    second: Sword_HairM_Brown_2
+  - first:
+      213: 21300006
+    second: Sword_HairM_Brown_3
+  - first:
+      213: 21300008
+    second: Sword_HairM_Brown_4
+  - first:
+      213: 21300010
+    second: Sword_HairM_Brown_5
+  - first:
+      213: 21300012
+    second: Sword_HairM_Brown_6
+  - first:
+      213: 21300014
+    second: Sword_HairM_Brown_7
+  - first:
+      213: 21300016
+    second: Sword_HairM_Brown_8
+  - first:
+      213: 21300018
+    second: Sword_HairM_Brown_9
+  - first:
+      213: 21300020
+    second: Sword_HairM_Brown_10
+  - first:
+      213: 21300022
+    second: Sword_HairM_Brown_11
+  - first:
+      213: 21300024
+    second: Sword_HairM_Brown_12
+  - first:
+      213: 21300026
+    second: Sword_HairM_Brown_13
+  - first:
+      213: 21300028
+    second: Sword_HairM_Brown_14
+  - first:
+      213: 21300030
+    second: Sword_HairM_Brown_15
+  - first:
+      213: 21300032
+    second: Sword_HairM_Brown_16
+  - first:
+      213: 21300034
+    second: Sword_HairM_Brown_17
+  - first:
+      213: 21300036
+    second: Sword_HairM_Brown_18
+  - first:
+      213: 21300038
+    second: Sword_HairM_Brown_19
+  - first:
+      213: 21300040
+    second: Sword_HairM_Brown_20
+  - first:
+      213: 21300042
+    second: Sword_HairM_Brown_21
+  externalObjects: {}
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -42,37 +87,61 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: 16
-    mipBias: -1
-    wrapMode: 1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: Sword_HairM_Brown_0
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_0
       rect:
         serializedVersion: 2
         x: 0
@@ -82,13 +151,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -4.000001, y: -5}
-        - {x: 8.999999, y: -4}
-        - {x: 8.999999, y: 7}
-        - {x: -5.000001, y: 7}
-        - {x: -7.000001, y: 0}
-    - name: Sword_HairM_Brown_1
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_1
       rect:
         serializedVersion: 2
         x: 50
@@ -98,16 +172,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 0, y: 6}
-        - {x: -2, y: 5}
-        - {x: -4, y: 2}
-        - {x: -4, y: -1}
-        - {x: -2, y: -6}
-        - {x: 3, y: -6}
-        - {x: 9, y: -4}
-        - {x: 9, y: 6}
-    - name: Sword_HairM_Brown_2
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_2
       rect:
         serializedVersion: 2
         x: 100
@@ -117,16 +193,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -1, y: 7}
-        - {x: -4, y: 0}
-        - {x: -2, y: -5}
-        - {x: 2, y: -5}
-        - {x: 11, y: -3}
-        - {x: 12, y: -1}
-        - {x: 12, y: 1}
-        - {x: 11, y: 7}
-    - name: Sword_HairM_Brown_3
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_3
       rect:
         serializedVersion: 2
         x: 150
@@ -136,15 +214,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -1, y: 6}
-        - {x: -4, y: -1}
-        - {x: -1, y: -6}
-        - {x: 12, y: -5}
-        - {x: 12, y: 2}
-        - {x: 11, y: 5}
-        - {x: 9, y: 6}
-    - name: Sword_HairM_Brown_4
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_4
       rect:
         serializedVersion: 2
         x: 200
@@ -154,15 +235,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -6, y: 14}
-        - {x: -9, y: 7}
-        - {x: -7, y: 2}
-        - {x: 0, y: 2}
-        - {x: 7, y: 3}
-        - {x: 7, y: 12}
-        - {x: 4, y: 14}
-    - name: Sword_HairM_Brown_5
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_5
       rect:
         serializedVersion: 2
         x: 0
@@ -172,13 +256,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5.000001, y: -5}
-        - {x: 7.999999, y: -4}
-        - {x: 7.999999, y: 7}
-        - {x: -6.000001, y: 7}
-        - {x: -8.000001, y: 0}
-    - name: Sword_HairM_Brown_6
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_6
       rect:
         serializedVersion: 2
         x: 50
@@ -188,17 +277,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -1, y: 12}
-        - {x: -3, y: 12}
-        - {x: -8, y: 6}
-        - {x: -8, y: -1}
-        - {x: -3, y: -5}
-        - {x: 3, y: -5}
-        - {x: 8, y: 2}
-        - {x: 8, y: 6}
-        - {x: 4, y: 10}
-    - name: Sword_HairM_Brown_7
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_7
       rect:
         serializedVersion: 2
         x: 100
@@ -208,17 +298,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -1, y: 12}
-        - {x: -3, y: 12}
-        - {x: -8, y: 6}
-        - {x: -8, y: -1}
-        - {x: -3, y: -5}
-        - {x: 3, y: -5}
-        - {x: 8, y: 2}
-        - {x: 8, y: 6}
-        - {x: 4, y: 10}
-    - name: Sword_HairM_Brown_8
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_8
       rect:
         serializedVersion: 2
         x: 150
@@ -228,16 +319,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -7, y: 3}
-        - {x: -7, y: 2}
-        - {x: -4, y: -1}
-        - {x: -1, y: -1}
-        - {x: 3, y: 0}
-        - {x: 5, y: 4}
-        - {x: 4, y: 7}
-        - {x: -2, y: 8}
-    - name: Sword_HairM_Brown_9
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03305410000000000800000000000000
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_9
       rect:
         serializedVersion: 2
         x: 0
@@ -247,13 +340,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5.000001, y: -5}
-        - {x: 7.999999, y: -4}
-        - {x: 7.999999, y: 7}
-        - {x: -6.000001, y: 7}
-        - {x: -8.000001, y: 0}
-    - name: Sword_HairM_Brown_10
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23305410000000000800000000000000
+      internalID: 21300018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_10
       rect:
         serializedVersion: 2
         x: 50
@@ -263,15 +361,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -2, y: 4}
-        - {x: -5, y: -3}
-        - {x: -2, y: -8}
-        - {x: 11, y: -7}
-        - {x: 11, y: 0}
-        - {x: 10, y: 3}
-        - {x: 8, y: 4}
-    - name: Sword_HairM_Brown_11
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43305410000000000800000000000000
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_11
       rect:
         serializedVersion: 2
         x: 100
@@ -281,13 +382,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 5, y: -11}
-        - {x: 18, y: -10}
-        - {x: 18, y: 1}
-        - {x: 4, y: 1}
-        - {x: 2, y: -6}
-    - name: Sword_HairM_Brown_12
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63305410000000000800000000000000
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_12
       rect:
         serializedVersion: 2
         x: 150
@@ -297,15 +403,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 20, y: -5}
-        - {x: 10, y: -5}
-        - {x: 7, y: -12}
-        - {x: 8, y: -16}
-        - {x: 23, y: -16}
-        - {x: 23, y: -10}
-        - {x: 22, y: -6}
-    - name: Sword_HairM_Brown_13
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83305410000000000800000000000000
+      internalID: 21300024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_13
       rect:
         serializedVersion: 2
         x: 0
@@ -315,13 +424,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5.000001, y: -5}
-        - {x: 7.999999, y: -4}
-        - {x: 7.999999, y: 7}
-        - {x: -6.000001, y: 7}
-        - {x: -8.000001, y: 0}
-    - name: Sword_HairM_Brown_14
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3305410000000000800000000000000
+      internalID: 21300026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_14
       rect:
         serializedVersion: 2
         x: 50
@@ -331,17 +445,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 10, y: 6}
-        - {x: 8, y: 7}
-        - {x: -2, y: 7}
-        - {x: -5, y: 0}
-        - {x: -2, y: -5}
-        - {x: 1, y: -4}
-        - {x: 9, y: -4}
-        - {x: 11, y: -3}
-        - {x: 11, y: 1}
-    - name: Sword_HairM_Brown_15
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3305410000000000800000000000000
+      internalID: 21300028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_15
       rect:
         serializedVersion: 2
         x: 100
@@ -351,17 +466,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 10, y: 6}
-        - {x: 8, y: 7}
-        - {x: -2, y: 7}
-        - {x: -5, y: 0}
-        - {x: -2, y: -5}
-        - {x: 1, y: -4}
-        - {x: 9, y: -4}
-        - {x: 11, y: -3}
-        - {x: 11, y: 1}
-    - name: Sword_HairM_Brown_16
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3305410000000000800000000000000
+      internalID: 21300030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_16
       rect:
         serializedVersion: 2
         x: 150
@@ -371,17 +487,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 11, y: 6}
-        - {x: 9, y: 7}
-        - {x: -1, y: 7}
-        - {x: -4, y: 0}
-        - {x: -1, y: -5}
-        - {x: 2, y: -4}
-        - {x: 10, y: -4}
-        - {x: 12, y: -3}
-        - {x: 12, y: 1}
-    - name: Sword_HairM_Brown_17
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04305410000000000800000000000000
+      internalID: 21300032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_17
       rect:
         serializedVersion: 2
         x: 200
@@ -391,17 +508,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 11, y: 6}
-        - {x: 9, y: 7}
-        - {x: -1, y: 7}
-        - {x: -4, y: 0}
-        - {x: -1, y: -5}
-        - {x: 2, y: -4}
-        - {x: 10, y: -4}
-        - {x: 12, y: -3}
-        - {x: 12, y: 1}
-    - name: Sword_HairM_Brown_18
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24305410000000000800000000000000
+      internalID: 21300034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_18
       rect:
         serializedVersion: 2
         x: 0
@@ -411,13 +529,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -4.000001, y: -5}
-        - {x: 8.999999, y: -4}
-        - {x: 8.999999, y: 7}
-        - {x: -5.000001, y: 7}
-        - {x: -7.000001, y: 0}
-    - name: Sword_HairM_Brown_19
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44305410000000000800000000000000
+      internalID: 21300036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_19
       rect:
         serializedVersion: 2
         x: 50
@@ -427,13 +550,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -4, y: -5}
-        - {x: 9, y: -4}
-        - {x: 9, y: 7}
-        - {x: -5, y: 7}
-        - {x: -7, y: 0}
-    - name: Sword_HairM_Brown_20
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64305410000000000800000000000000
+      internalID: 21300038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_20
       rect:
         serializedVersion: 2
         x: 0
@@ -443,13 +571,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5.000001, y: -5}
-        - {x: 7.999999, y: -4}
-        - {x: 7.999999, y: 7}
-        - {x: -6.000001, y: 7}
-        - {x: -8.000001, y: 0}
-    - name: Sword_HairM_Brown_21
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84305410000000000800000000000000
+      internalID: 21300040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sword_HairM_Brown_21
       rect:
         serializedVersion: 2
         x: 50
@@ -459,14 +592,29 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -4, y: -6}
-        - {x: 9, y: -5}
-        - {x: 9, y: 6}
-        - {x: -5, y: 6}
-        - {x: -7, y: -1}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4305410000000000800000000000000
+      internalID: 21300042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

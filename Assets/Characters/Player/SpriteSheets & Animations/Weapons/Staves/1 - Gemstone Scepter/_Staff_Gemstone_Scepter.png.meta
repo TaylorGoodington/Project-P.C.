@@ -1,39 +1,84 @@
 fileFormatVersion: 2
 guid: 86e8d47346a8d4b40bcc88414163281c
-timeCreated: 1459697615
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: Staff_Gemstone_Scepter_0
-    21300002: Staff_Gemstone_Scepter_1
-    21300004: Staff_Gemstone_Scepter_2
-    21300006: Staff_Gemstone_Scepter_3
-    21300008: Staff_Gemstone_Scepter_4
-    21300010: Staff_Gemstone_Scepter_5
-    21300012: Staff_Gemstone_Scepter_6
-    21300014: Staff_Gemstone_Scepter_7
-    21300016: Staff_Gemstone_Scepter_8
-    21300018: Staff_Gemstone_Scepter_9
-    21300020: Staff_Gemstone_Scepter_10
-    21300022: Staff_Gemstone_Scepter_11
-    21300024: Staff_Gemstone_Scepter_12
-    21300026: Staff_Gemstone_Scepter_13
-    21300028: Staff_Gemstone_Scepter_14
-    21300030: Staff_Gemstone_Scepter_15
-    21300032: Staff_Gemstone_Scepter_16
-    21300034: Staff_Gemstone_Scepter_17
-    21300036: Staff_Gemstone_Scepter_18
-    21300038: Staff_Gemstone_Scepter_19
-    21300040: Staff_Gemstone_Scepter_20
-    21300042: Staff_Gemstone_Scepter_21
-  serializedVersion: 2
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: Staff_Gemstone_Scepter_0
+  - first:
+      213: 21300002
+    second: Staff_Gemstone_Scepter_1
+  - first:
+      213: 21300004
+    second: Staff_Gemstone_Scepter_2
+  - first:
+      213: 21300006
+    second: Staff_Gemstone_Scepter_3
+  - first:
+      213: 21300008
+    second: Staff_Gemstone_Scepter_4
+  - first:
+      213: 21300010
+    second: Staff_Gemstone_Scepter_5
+  - first:
+      213: 21300012
+    second: Staff_Gemstone_Scepter_6
+  - first:
+      213: 21300014
+    second: Staff_Gemstone_Scepter_7
+  - first:
+      213: 21300016
+    second: Staff_Gemstone_Scepter_8
+  - first:
+      213: 21300018
+    second: Staff_Gemstone_Scepter_9
+  - first:
+      213: 21300020
+    second: Staff_Gemstone_Scepter_10
+  - first:
+      213: 21300022
+    second: Staff_Gemstone_Scepter_11
+  - first:
+      213: 21300024
+    second: Staff_Gemstone_Scepter_12
+  - first:
+      213: 21300026
+    second: Staff_Gemstone_Scepter_13
+  - first:
+      213: 21300028
+    second: Staff_Gemstone_Scepter_14
+  - first:
+      213: 21300030
+    second: Staff_Gemstone_Scepter_15
+  - first:
+      213: 21300032
+    second: Staff_Gemstone_Scepter_16
+  - first:
+      213: 21300034
+    second: Staff_Gemstone_Scepter_17
+  - first:
+      213: 21300036
+    second: Staff_Gemstone_Scepter_18
+  - first:
+      213: 21300038
+    second: Staff_Gemstone_Scepter_19
+  - first:
+      213: 21300040
+    second: Staff_Gemstone_Scepter_20
+  - first:
+      213: 21300042
+    second: Staff_Gemstone_Scepter_21
+  externalObjects: {}
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -42,37 +87,61 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: 16
-    mipBias: -1
-    wrapMode: 1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: Staff_Gemstone_Scepter_0
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_0
       rect:
         serializedVersion: 2
         x: 0
@@ -82,20 +151,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5.000001, y: -8}
-        - {x: -6.000001, y: -11}
-        - {x: -5.000001, y: -15}
-        - {x: 12.999999, y: -15}
-        - {x: 13.999999, y: -14}
-        - {x: 13.999999, y: -11}
-        - {x: 12.999999, y: -8}
-      - - {x: -10.000001, y: -14}
-        - {x: -7.000001, y: -13}
-        - {x: -7.000001, y: -10}
-        - {x: -10.000001, y: -9}
-        - {x: -12.000001, y: -11}
-    - name: Staff_Gemstone_Scepter_1
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_1
       rect:
         serializedVersion: 2
         x: 50
@@ -105,21 +172,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 8, y: -15}
-        - {x: 11, y: -14}
-        - {x: 11, y: -11}
-        - {x: 8, y: -10}
-        - {x: 6, y: -12}
-      - - {x: 5, y: -8}
-        - {x: 6, y: -9}
-        - {x: 11, y: -9}
-        - {x: 12, y: -8}
-        - {x: 12, y: 8}
-        - {x: 11, y: 11}
-        - {x: 7, y: 11}
-        - {x: 5, y: 9}
-    - name: Staff_Gemstone_Scepter_2
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_2
       rect:
         serializedVersion: 2
         x: 100
@@ -129,21 +193,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -1, y: -15}
-        - {x: 2, y: -14}
-        - {x: 2, y: -11}
-        - {x: -1, y: -10}
-        - {x: -3, y: -12}
-      - - {x: 9, y: 4}
-        - {x: 1, y: -5}
-        - {x: 1, y: -10}
-        - {x: 2, y: -11}
-        - {x: 4, y: -11}
-        - {x: 13, y: -6}
-        - {x: 15, y: -1}
-        - {x: 15, y: 4}
-    - name: Staff_Gemstone_Scepter_3
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_3
       rect:
         serializedVersion: 2
         x: 150
@@ -153,20 +214,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -6, y: -7}
-        - {x: -7, y: -9}
-        - {x: -7, y: -12}
-        - {x: 1, y: -20}
-        - {x: 8, y: -20}
-        - {x: 8, y: -15}
-        - {x: -2, y: -7}
-      - - {x: -9, y: -8}
-        - {x: -6, y: -7}
-        - {x: -6, y: -4}
-        - {x: -9, y: -3}
-        - {x: -11, y: -5}
-    - name: Staff_Gemstone_Scepter_4
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_4
       rect:
         serializedVersion: 2
         x: 200
@@ -176,21 +235,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5, y: -10}
-        - {x: -2, y: -9}
-        - {x: -2, y: -6}
-        - {x: -5, y: -5}
-        - {x: -7, y: -7}
-      - - {x: 6, y: 9}
-        - {x: -3, y: 0}
-        - {x: -3, y: -4}
-        - {x: -2, y: -6}
-        - {x: 0, y: -6}
-        - {x: 8, y: -1}
-        - {x: 11, y: 4}
-        - {x: 11, y: 9}
-    - name: Staff_Gemstone_Scepter_5
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_5
       rect:
         serializedVersion: 2
         x: 0
@@ -200,20 +256,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -6.000001, y: -7}
-        - {x: -7.000001, y: -10}
-        - {x: -6.000001, y: -14}
-        - {x: 11.999999, y: -14}
-        - {x: 12.999999, y: -13}
-        - {x: 12.999999, y: -10}
-        - {x: 11.999999, y: -7}
-      - - {x: -11.000001, y: -13}
-        - {x: -8.000001, y: -12}
-        - {x: -8.000001, y: -9}
-        - {x: -11.000001, y: -8}
-        - {x: -13.000001, y: -10}
-    - name: Staff_Gemstone_Scepter_6
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_6
       rect:
         serializedVersion: 2
         x: 50
@@ -223,15 +277,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -3, y: -10}
-        - {x: -2, y: -11}
-        - {x: 1, y: -11}
-        - {x: 4, y: -10}
-        - {x: 4, y: 8}
-        - {x: 1, y: 9}
-        - {x: -3, y: 8}
-    - name: Staff_Gemstone_Scepter_7
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_7
       rect:
         serializedVersion: 2
         x: 100
@@ -241,15 +298,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -3, y: -10}
-        - {x: -2, y: -11}
-        - {x: 1, y: -11}
-        - {x: 4, y: -10}
-        - {x: 4, y: 8}
-        - {x: 1, y: 9}
-        - {x: -3, y: 8}
-    - name: Staff_Gemstone_Scepter_8
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_8
       rect:
         serializedVersion: 2
         x: 150
@@ -259,16 +319,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -2, y: 7}
-        - {x: -3, y: 3}
-        - {x: -3, y: -9}
-        - {x: 0, y: -10}
-        - {x: 3, y: -10}
-        - {x: 4, y: -7}
-        - {x: 4, y: 3}
-        - {x: 1, y: 8}
-    - name: Staff_Gemstone_Scepter_9
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03305410000000000800000000000000
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_9
       rect:
         serializedVersion: 2
         x: 0
@@ -278,15 +340,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13.000001, y: -15}
-        - {x: -10.000001, y: -17}
-        - {x: 12.999999, y: -17}
-        - {x: 12.999999, y: -12}
-        - {x: 10.999999, y: -10}
-        - {x: -12.000001, y: -10}
-        - {x: -13.000001, y: -11}
-    - name: Staff_Gemstone_Scepter_10
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23305410000000000800000000000000
+      internalID: 21300018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_10
       rect:
         serializedVersion: 2
         x: 50
@@ -296,14 +361,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -12, y: -20}
-        - {x: 13, y: -20}
-        - {x: 13, y: -16}
-        - {x: 11, y: -14}
-        - {x: -12, y: -14}
-        - {x: -13, y: -17}
-    - name: Staff_Gemstone_Scepter_11
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43305410000000000800000000000000
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_11
       rect:
         serializedVersion: 2
         x: 100
@@ -313,14 +382,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13, y: -17}
-        - {x: -12, y: -20}
-        - {x: 11, y: -20}
-        - {x: 13, y: -18}
-        - {x: 12, y: -15}
-        - {x: -11, y: -15}
-    - name: Staff_Gemstone_Scepter_12
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63305410000000000800000000000000
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_12
       rect:
         serializedVersion: 2
         x: 150
@@ -330,14 +403,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13, y: -17}
-        - {x: -12, y: -20}
-        - {x: 11, y: -20}
-        - {x: 13, y: -18}
-        - {x: 12, y: -15}
-        - {x: -11, y: -15}
-    - name: Staff_Gemstone_Scepter_13
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83305410000000000800000000000000
+      internalID: 21300024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_13
       rect:
         serializedVersion: 2
         x: 0
@@ -347,20 +424,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -6.000001, y: -8}
-        - {x: -7.000001, y: -11}
-        - {x: -6.000001, y: -15}
-        - {x: 11.999999, y: -15}
-        - {x: 12.999999, y: -14}
-        - {x: 12.999999, y: -11}
-        - {x: 11.999999, y: -8}
-      - - {x: -11.000001, y: -14}
-        - {x: -8.000001, y: -13}
-        - {x: -8.000001, y: -10}
-        - {x: -11.000001, y: -9}
-        - {x: -13.000001, y: -11}
-    - name: Staff_Gemstone_Scepter_14
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3305410000000000800000000000000
+      internalID: 21300026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_14
       rect:
         serializedVersion: 2
         x: 50
@@ -370,17 +445,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 13, y: 1}
-        - {x: 2, y: -3}
-        - {x: 2, y: -8}
-        - {x: 3, y: -11}
-        - {x: 8, y: -11}
-        - {x: 18, y: -10}
-        - {x: 25, y: -5}
-        - {x: 25, y: -1}
-        - {x: 24, y: 1}
-    - name: Staff_Gemstone_Scepter_15
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3305410000000000800000000000000
+      internalID: 21300028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_15
       rect:
         serializedVersion: 2
         x: 100
@@ -390,18 +466,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 25, y: 3}
-        - {x: 18, y: 3}
-        - {x: 14, y: 2}
-        - {x: 2, y: -7}
-        - {x: 2, y: -9}
-        - {x: 3, y: -11}
-        - {x: 6, y: -11}
-        - {x: 23, y: -8}
-        - {x: 27, y: -6}
-        - {x: 27, y: 0}
-    - name: Staff_Gemstone_Scepter_16
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3305410000000000800000000000000
+      internalID: 21300030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_16
       rect:
         serializedVersion: 2
         x: 150
@@ -411,16 +487,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 16, y: 1}
-        - {x: 4, y: -6}
-        - {x: 2, y: -8}
-        - {x: 3, y: -11}
-        - {x: 13, y: -11}
-        - {x: 25, y: -4}
-        - {x: 25, y: 0}
-        - {x: 23, y: 1}
-    - name: Staff_Gemstone_Scepter_17
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04305410000000000800000000000000
+      internalID: 21300032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_17
       rect:
         serializedVersion: 2
         x: 0
@@ -430,15 +508,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 27, y: -6}
-        - {x: 18, y: -8}
-        - {x: 14.999999, y: -10}
-        - {x: 14.999999, y: -20}
-        - {x: 35, y: -20}
-        - {x: 35, y: -10}
-        - {x: 32, y: -6}
-    - name: Staff_Gemstone_Scepter_18
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24305410000000000800000000000000
+      internalID: 21300034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_18
       rect:
         serializedVersion: 2
         x: 50
@@ -448,14 +529,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 24, y: -7}
-        - {x: 17, y: -12}
-        - {x: 17, y: -20}
-        - {x: 35, y: -20}
-        - {x: 35, y: -9}
-        - {x: 30, y: -7}
-    - name: Staff_Gemstone_Scepter_19
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44305410000000000800000000000000
+      internalID: 21300036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_19
       rect:
         serializedVersion: 2
         x: 100
@@ -465,15 +550,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 21, y: -9}
-        - {x: 19, y: -11}
-        - {x: 15, y: -18}
-        - {x: 17, y: -20}
-        - {x: 35, y: -20}
-        - {x: 35, y: -8}
-        - {x: 26, y: -7}
-    - name: Staff_Gemstone_Scepter_20
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64305410000000000800000000000000
+      internalID: 21300038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_20
       rect:
         serializedVersion: 2
         x: 0
@@ -483,20 +571,18 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5.000001, y: -8}
-        - {x: -6.000001, y: -11}
-        - {x: -5.000001, y: -15}
-        - {x: 12.999999, y: -15}
-        - {x: 13.999999, y: -14}
-        - {x: 13.999999, y: -11}
-        - {x: 12.999999, y: -8}
-      - - {x: -10.000001, y: -14}
-        - {x: -7.000001, y: -13}
-        - {x: -7.000001, y: -10}
-        - {x: -10.000001, y: -9}
-        - {x: -12.000001, y: -11}
-    - name: Staff_Gemstone_Scepter_21
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84305410000000000800000000000000
+      internalID: 21300040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Staff_Gemstone_Scepter_21
       rect:
         serializedVersion: 2
         x: 50
@@ -506,21 +592,29 @@ TextureImporter:
       alignment: 9
       pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5, y: -8}
-        - {x: -6, y: -11}
-        - {x: -5, y: -15}
-        - {x: 13, y: -15}
-        - {x: 14, y: -14}
-        - {x: 14, y: -11}
-        - {x: 13, y: -8}
-      - - {x: -10, y: -14}
-        - {x: -7, y: -13}
-        - {x: -7, y: -10}
-        - {x: -10, y: -9}
-        - {x: -12, y: -11}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4305410000000000800000000000000
+      internalID: 21300042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
