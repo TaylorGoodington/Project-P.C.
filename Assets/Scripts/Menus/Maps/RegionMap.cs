@@ -212,7 +212,7 @@ public class RegionMap : MonoBehaviour {
     {
         quitDialogue.SetActive(true);
         headingToWorldMap = false;
-        GameObject yes = quitDialogue.transform.FindChild("Yes").gameObject;
+        GameObject yes = quitDialogue.transform.Find("Yes").gameObject;
         EventSystem.current.SetSelectedGameObject(yes);
     }
 

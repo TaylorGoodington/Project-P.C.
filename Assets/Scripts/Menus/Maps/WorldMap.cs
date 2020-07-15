@@ -146,7 +146,7 @@ public class WorldMap : MonoBehaviour {
     public void OpenQuitDialogue ()
     {
         quitDialogue.SetActive(true);
-        GameObject yes = quitDialogue.transform.FindChild("Yes").gameObject;
+        GameObject yes = quitDialogue.transform.Find("Yes").gameObject;
         EventSystem.current.SetSelectedGameObject(yes);
     }
 
